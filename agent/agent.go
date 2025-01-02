@@ -14,6 +14,7 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"Dana"
+	"Dana/agent/repository"
 	"Dana/config"
 	"Dana/internal"
 	"Dana/internal/snmp"
@@ -24,8 +25,12 @@ import (
 
 // Server runs a set of plugins.
 type Server struct {
-	Config *config.Config
-	echo   *echo.Echo
+	Config         *config.Config
+	echo           *echo.Echo
+	WmiRepo        repository.WmiRepo
+	SnmpRepo       repository.SnmpRepo
+	PrometheusRepo repository.PrometheusRepo
+	InfluxRepo     repository.InfluxDbV2Repo
 }
 
 // NewServer returns a Server for the given Config.
@@ -107,11 +112,20 @@ type outputUnit struct {
 // Run starts and runs the Server until the context is done.
 func (a *Server) Run(ctx context.Context) error {
 	v1 := a.echo.Group("/v1")
-	v1.GET("/health", HealthCheck)
-	v1.GET("/query", Query)
-	v1.GET("/input/:type", GetInputs)
-	v1.POST("/input/:type", PostInput)
-	v1.DELETE("/input/:type", DeleteInput)
+	v1.GET("/health", a.HealthCheck)
+	v1.GET("/query", a.Query)
+	v1.GET("/input/wmi", a.GetInputsWmi)
+	v1.POST("/input/wmi", a.PostInputWmi)
+	v1.DELETE("/input/wmi", a.DeleteInputWmi)
+	v1.GET("/input/snmp", a.GetInputsSnmp)
+	v1.POST("/input/snmp", a.PostInputSnmp)
+	v1.DELETE("/input/snmp", a.DeleteInputSnmp)
+	v1.GET("/input/prometheus", a.GetInputsPrometheus)
+	v1.POST("/input/prometheus", a.PostInputPrometheus)
+	v1.DELETE("/input/prometheus", a.DeleteInputPrometheus)
+	v1.GET("/input/influx", a.GetInputsInflux)
+	v1.POST("/input/influx", a.PostInputInflux)
+	v1.DELETE("/input/influx", a.DeleteInputInflux)
 
 	go func() { a.echo.Logger.Fatal(a.echo.Start("0.0.0.0:8080")) }()
 
