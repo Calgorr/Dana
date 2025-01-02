@@ -106,6 +106,15 @@ type outputUnit struct {
 
 // Run starts and runs the Server until the context is done.
 func (a *Server) Run(ctx context.Context) error {
+	v1 := a.echo.Group("/v1")
+	v1.GET("/health", HealthCheck)
+	v1.GET("/query", Query)
+	v1.GET("/input/:type", GetInputs)
+	v1.POST("/input/:type", PostInput)
+	v1.DELETE("/input/:type", DeleteInput)
+
+	go func() { a.echo.Logger.Fatal(a.echo.Start("0.0.0.0:8080")) }()
+
 	log.Printf("I! [agent] Config: Interval:%s, Quiet:%#v, Hostname:%#v, "+
 		"Flush Interval:%s",
 		time.Duration(a.Config.Agent.Interval), a.Config.Agent.Quiet,

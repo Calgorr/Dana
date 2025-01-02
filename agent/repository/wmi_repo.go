@@ -2,10 +2,10 @@ package repository
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 
-	"github.com/jackc/pgx/v5"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 
 	"Dana/agent/model"
 )
@@ -16,100 +16,78 @@ type WmiRepo interface {
 	DeleteWmi(context.Context, string) error
 }
 
-func NewWmiRepo(pg *pgx.Conn) WmiRepo {
-	_, err := pg.Exec(context.Background(), WmiConfigCreateTable)
-	if err != nil {
-		panic(err)
-	}
+func NewWmiRepo(client *mongo.Client, databaseName, collectionName string) WmiRepo {
+	collection := client.Database(databaseName).Collection(collectionName)
 	return &wmiRepo{
-		pg: pg,
+		collection: collection,
 	}
 }
 
 type wmiRepo struct {
-	pg *pgx.Conn
+	collection *mongo.Collection
 }
 
-const (
-	WmiConfigCreateTable = `
-	CREATE TABLE IF NOT EXISTS wmi_config (
-		id SERIAL PRIMARY KEY,
-		host TEXT NOT NULL,
-		username TEXT NOT NULL,
-		password TEXT NOT NULL,
-		queries JSONB NOT NULL,
-		methods JSONB NOT NULL
-	);
-	`
-	WmiInsertQuery = `
-	INSERT INTO wmi_config (host, username, password, queries, methods)
-	VALUES ($1, $2, $3, $4, $5)
-	RETURNING id;
-	`
-	WmiSelectQuery = `
-	SELECT id, host, username, password, queries, methods
-	FROM wmi_config;
-	`
-	WmiDeleteQuery = `
-	DELETE FROM wmi_config 
-	WHERE id = $1;
-	`
-)
-
 func (w *wmiRepo) AddWmiInput(ctx context.Context, wmi *model.Wmi) error {
-	// Queries and Methods as JSONB
-	queriesJSON := wmi.Queries
-	methodsJSON := wmi.Methods
+	// Create a new document for insertion
+	document := bson.M{
+		"host":     wmi.Host,
+		"username": wmi.Username,
+		"password": wmi.Password,
+		"queries":  wmi.Queries,
+		"methods":  wmi.Methods,
+	}
 
-	var id int
-	err := w.pg.QueryRow(ctx, WmiInsertQuery, wmi.Host, wmi.Username, wmi.Password, queriesJSON, methodsJSON).Scan(&id)
+	// Insert the document into the collection
+	result, err := w.collection.InsertOne(ctx, document)
 	if err != nil {
 		return err
 	}
-	wmi.ID = id
+
+	// Set the ID from the inserted document (MongoDB generates the _id)
+	wmi.ID = result.InsertedID.(int)
 	return nil
 }
 
 func (w *wmiRepo) GetWmis(ctx context.Context) ([]*model.Wmi, error) {
-	rows, err := w.pg.Query(ctx, WmiSelectQuery)
+	// Find all documents in the collection
+	cursor, err := w.collection.Find(ctx, bson.M{})
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func(cursor *mongo.Cursor, ctx context.Context) {
+		err := cursor.Close(ctx)
+		if err != nil {
+			return
+		}
+	}(cursor, ctx)
 
 	var wmis []*model.Wmi
-	for rows.Next() {
+	for cursor.Next(ctx) {
 		var wmi model.Wmi
-		var queriesJSON, methodsJSON []byte
-		if err := rows.Scan(&wmi.ID, &wmi.Host, &wmi.Username, &wmi.Password, &queriesJSON, &methodsJSON); err != nil {
+		if err := cursor.Decode(&wmi); err != nil {
 			return nil, err
 		}
 
-		// Assuming you have a function to unmarshal JSON into the appropriate Go structures
-		if err := json.Unmarshal(queriesJSON, &wmi.Queries); err != nil {
-			return nil, err
-		}
-		if err := json.Unmarshal(methodsJSON, &wmi.Methods); err != nil {
-			return nil, err
-		}
-
+		// Append the decoded wmi to the result slice
 		wmis = append(wmis, &wmi)
 	}
 
-	if rows.Err() != nil {
-		return nil, rows.Err()
+	if cursor.Err() != nil {
+		return nil, cursor.Err()
 	}
 
 	return wmis, nil
 }
 
 func (w *wmiRepo) DeleteWmi(ctx context.Context, id string) error {
-	commandTag, err := w.pg.Exec(ctx, WmiDeleteQuery, id)
+	// Delete the document with the given ID
+	filter := bson.M{"_id": id}
+	result, err := w.collection.DeleteOne(ctx, filter)
 	if err != nil {
 		return err
 	}
-	if commandTag.RowsAffected() == 0 {
-		return errors.New("no rows affected")
+	if result.DeletedCount == 0 {
+		return errors.New("no document found with the given ID")
 	}
 	return nil
 }

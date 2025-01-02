@@ -4,7 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"github.com/jackc/pgx/v5"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	_ "go.mongodb.org/mongo-driver/mongo/options"
 
 	"Dana/agent/model"
 )
@@ -15,103 +17,83 @@ type SnmpRepo interface {
 	DeleteSnmp(context.Context, string) error
 }
 
-func NewSnmpRepo(pg *pgx.Conn) SnmpRepo {
-	_, err := pg.Exec(context.Background(), SnmpConfigCreateTable)
-	if err != nil {
-		panic(err)
-	}
+func NewSnmpRepo(client *mongo.Client, databaseName, collectionName string) SnmpRepo {
+	collection := client.Database(databaseName).Collection(collectionName)
 	return &snmpRepo{
-		pg: pg,
+		collection: collection,
 	}
 }
 
 type snmpRepo struct {
-	pg *pgx.Conn
+	collection *mongo.Collection
 }
 
-const (
-	SnmpConfigCreateTable = `
-	CREATE TABLE IF NOT EXISTS snmp_config (
-		id SERIAL PRIMARY KEY,
-		service_address TEXT NOT NULL,
-		timeout TEXT NOT NULL,
-		version TEXT NOT NULL,
-		security_info JSONB NOT NULL
-	);
-	`
-	SnmpInsertQuery = `
-	INSERT INTO snmp_config (service_address, timeout, version, security_info)
-	VALUES ($1, $2, $3, $4)
-	RETURNING id;
-	`
-	SnmpSelectQuery = `
-	SELECT id, service_address, timeout, version, security_info
-	FROM snmp_config;
-	`
-	SnmpDeleteQuery = `
-	DELETE FROM snmp_config 
-	WHERE id = $1;
-	`
-)
-
 func (s *snmpRepo) AddSnmpInput(ctx context.Context, snmp *model.Snmp) error {
-	// Security-related information as JSONB
-	securityInfo := map[string]string{
-		"sec_name":      snmp.SecName,
-		"auth_protocol": snmp.AuthProtocol,
-		"auth_password": snmp.AuthPassword,
-		"sec_level":     snmp.SecLevel,
-		"priv_protocol": snmp.PrivProtocol,
-		"priv_password": snmp.PrivPassword,
+	// Create a new document for insertion
+	document := bson.M{
+		"service_address": snmp.ServiceAddress,
+		"path":            snmp.Path,
+		"timeout":         snmp.Timeout,
+		"version":         snmp.Version,
+		"sec_name":        snmp.SecName,
+		"auth_protocol":   snmp.AuthProtocol,
+		"auth_password":   snmp.AuthPassword,
+		"sec_level":       snmp.SecLevel,
+		"priv_protocol":   snmp.PrivProtocol,
+		"priv_password":   snmp.PrivPassword,
 	}
 
-	var id int
-	err := s.pg.QueryRow(ctx, SnmpInsertQuery, snmp.ServiceAddress, snmp.Timeout, snmp.Version, securityInfo).Scan(&id)
+	// Insert the document into the collection
+	result, err := s.collection.InsertOne(ctx, document)
 	if err != nil {
 		return err
 	}
-	snmp.ID = id
+
+	// Set the ID from the inserted document (MongoDB generates the _id)
+	snmp.ID = result.InsertedID.(int)
 	return nil
 }
 
 func (s *snmpRepo) GetSnmps(ctx context.Context) ([]*model.Snmp, error) {
-	rows, err := s.pg.Query(ctx, SnmpSelectQuery)
+	// Find all documents in the collection
+	cursor, err := s.collection.Find(ctx, bson.M{})
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func(cursor *mongo.Cursor, ctx context.Context) {
+		err := cursor.Close(ctx)
+		if err != nil {
+			return
+		}
+	}(cursor, ctx)
 
 	var snmps []*model.Snmp
-	for rows.Next() {
+	for cursor.Next(ctx) {
 		var snmp model.Snmp
-		var securityInfo map[string]string
-		if err := rows.Scan(&snmp.ID, &snmp.ServiceAddress, &snmp.Timeout, &snmp.Version, &securityInfo); err != nil {
+		if err := cursor.Decode(&snmp); err != nil {
 			return nil, err
 		}
-		// Mapping the security info back to struct fields
-		snmp.SecName = securityInfo["sec_name"]
-		snmp.AuthProtocol = securityInfo["auth_protocol"]
-		snmp.AuthPassword = securityInfo["auth_password"]
-		snmp.SecLevel = securityInfo["sec_level"]
-		snmp.PrivProtocol = securityInfo["priv_protocol"]
-		snmp.PrivPassword = securityInfo["priv_password"]
+
+		// Append the decoded snmp to the result slice
 		snmps = append(snmps, &snmp)
 	}
 
-	if rows.Err() != nil {
-		return nil, rows.Err()
+	if cursor.Err() != nil {
+		return nil, cursor.Err()
 	}
 
 	return snmps, nil
 }
 
 func (s *snmpRepo) DeleteSnmp(ctx context.Context, id string) error {
-	commandTag, err := s.pg.Exec(ctx, SnmpDeleteQuery, id)
+	// Delete the document with the given ID
+	filter := bson.M{"_id": id}
+	result, err := s.collection.DeleteOne(ctx, filter)
 	if err != nil {
 		return err
 	}
-	if commandTag.RowsAffected() == 0 {
-		return errors.New("no rows affected")
+	if result.DeletedCount == 0 {
+		return errors.New("no document found with the given ID")
 	}
 	return nil
 }
