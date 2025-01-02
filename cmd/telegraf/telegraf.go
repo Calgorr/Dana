@@ -429,7 +429,7 @@ func (t *Telegraf) runAgent(ctx context.Context, reloadConfig bool) error {
 			log.Print("W! " + color.RedString(msg))
 		}
 	}
-	ag := agent.NewAgent(c)
+	ag := agent.NewServer(c)
 
 	// Notify systemd that telegraf is ready
 	// SdNotify() only tries to notify if the NOTIFY_SOCKET environment is set, so it's safe to call when systemd isn't present.

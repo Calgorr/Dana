@@ -84,7 +84,7 @@ func getConfigCommands(configHandlingFlags []cli.Flag, outputBuffer io.Writer) [
 							return err
 						}
 
-						ag := agent.NewAgent(c)
+						ag := agent.NewServer(c)
 						return ag.InitPlugins()
 					},
 				},

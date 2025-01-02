@@ -26,7 +26,7 @@ import (
 func TestAgent_OmitHostname(t *testing.T) {
 	c := config.NewConfig()
 	c.Agent.OmitHostname = true
-	_ = NewAgent(c)
+	_ = NewServer(c)
 	require.NotContains(t, c.Tags, "host")
 }
 
@@ -35,35 +35,35 @@ func TestAgent_LoadPlugin(t *testing.T) {
 	c.InputFilters = []string{"mysql"}
 	err := c.LoadConfig("../config/testdata/telegraf-agent.toml")
 	require.NoError(t, err)
-	a := NewAgent(c)
+	a := NewServer(c)
 	require.Len(t, a.Config.Inputs, 1)
 
 	c = config.NewConfig()
 	c.InputFilters = []string{"foo"}
 	err = c.LoadConfig("../config/testdata/telegraf-agent.toml")
 	require.NoError(t, err)
-	a = NewAgent(c)
+	a = NewServer(c)
 	require.Empty(t, a.Config.Inputs)
 
 	c = config.NewConfig()
 	c.InputFilters = []string{"mysql", "foo"}
 	err = c.LoadConfig("../config/testdata/telegraf-agent.toml")
 	require.NoError(t, err)
-	a = NewAgent(c)
+	a = NewServer(c)
 	require.Len(t, a.Config.Inputs, 1)
 
 	c = config.NewConfig()
 	c.InputFilters = []string{"mysql", "redis"}
 	err = c.LoadConfig("../config/testdata/telegraf-agent.toml")
 	require.NoError(t, err)
-	a = NewAgent(c)
+	a = NewServer(c)
 	require.Len(t, a.Config.Inputs, 2)
 
 	c = config.NewConfig()
 	c.InputFilters = []string{"mysql", "foo", "redis", "bar"}
 	err = c.LoadConfig("../config/testdata/telegraf-agent.toml")
 	require.NoError(t, err)
-	a = NewAgent(c)
+	a = NewServer(c)
 	require.Len(t, a.Config.Inputs, 2)
 }
 
@@ -72,34 +72,34 @@ func TestAgent_LoadOutput(t *testing.T) {
 	c.OutputFilters = []string{"influxdb"}
 	err := c.LoadConfig("../config/testdata/telegraf-agent.toml")
 	require.NoError(t, err)
-	a := NewAgent(c)
+	a := NewServer(c)
 	require.Len(t, a.Config.Outputs, 2)
 
 	c = config.NewConfig()
 	c.OutputFilters = []string{"kafka"}
 	err = c.LoadConfig("../config/testdata/telegraf-agent.toml")
 	require.NoError(t, err)
-	a = NewAgent(c)
+	a = NewServer(c)
 	require.Len(t, a.Config.Outputs, 1)
 
 	c = config.NewConfig()
 	err = c.LoadConfig("../config/testdata/telegraf-agent.toml")
 	require.NoError(t, err)
-	a = NewAgent(c)
+	a = NewServer(c)
 	require.Len(t, a.Config.Outputs, 3)
 
 	c = config.NewConfig()
 	c.OutputFilters = []string{"foo"}
 	err = c.LoadConfig("../config/testdata/telegraf-agent.toml")
 	require.NoError(t, err)
-	a = NewAgent(c)
+	a = NewServer(c)
 	require.Empty(t, a.Config.Outputs)
 
 	c = config.NewConfig()
 	c.OutputFilters = []string{"influxdb", "foo"}
 	err = c.LoadConfig("../config/testdata/telegraf-agent.toml")
 	require.NoError(t, err)
-	a = NewAgent(c)
+	a = NewServer(c)
 	require.Len(t, a.Config.Outputs, 2)
 
 	c = config.NewConfig()
@@ -107,14 +107,14 @@ func TestAgent_LoadOutput(t *testing.T) {
 	err = c.LoadConfig("../config/testdata/telegraf-agent.toml")
 	require.NoError(t, err)
 	require.Len(t, c.Outputs, 3)
-	a = NewAgent(c)
+	a = NewServer(c)
 	require.Len(t, a.Config.Outputs, 3)
 
 	c = config.NewConfig()
 	c.OutputFilters = []string{"influxdb", "foo", "kafka", "bar"}
 	err = c.LoadConfig("../config/testdata/telegraf-agent.toml")
 	require.NoError(t, err)
-	a = NewAgent(c)
+	a = NewServer(c)
 	require.Len(t, a.Config.Outputs, 3)
 }
 
@@ -212,7 +212,7 @@ func TestCases(t *testing.T) {
 			require.Empty(t, cfg.Outputs, "No output(s) allowed in the config!")
 
 			// Setup the agent and run the agent in "once" mode
-			agent := NewAgent(cfg)
+			agent := NewServer(cfg)
 			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 			defer cancel()
 			actual, err := collect(ctx, agent, 0)
@@ -229,7 +229,7 @@ func TestCases(t *testing.T) {
 }
 
 // Implement a "test-mode" like call but collect the metrics
-func collect(ctx context.Context, a *Agent, wait time.Duration) ([]telegraf.Metric, error) {
+func collect(ctx context.Context, a *Server, wait time.Duration) ([]telegraf.Metric, error) {
 	var received []telegraf.Metric
 	var mu sync.Mutex
 

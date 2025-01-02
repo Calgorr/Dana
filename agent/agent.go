@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/fatih/color"
+	"github.com/labstack/echo/v4"
 
 	"Dana"
 	"Dana/config"
@@ -21,15 +22,17 @@ import (
 	"Dana/plugins/serializers/influx"
 )
 
-// Agent runs a set of plugins.
-type Agent struct {
+// Server runs a set of plugins.
+type Server struct {
 	Config *config.Config
+	echo   *echo.Echo
 }
 
-// NewAgent returns an Agent for the given Config.
-func NewAgent(cfg *config.Config) *Agent {
-	a := &Agent{
+// NewServer returns a Server for the given Config.
+func NewServer(cfg *config.Config) *Server {
+	a := &Server{
 		Config: cfg,
+		echo:   echo.New(),
 	}
 	return a
 }
@@ -101,8 +104,8 @@ type outputUnit struct {
 	outputs []*models.RunningOutput
 }
 
-// Run starts and runs the Agent until the context is done.
-func (a *Agent) Run(ctx context.Context) error {
+// Run starts and runs the Server until the context is done.
+func (a *Server) Run(ctx context.Context) error {
 	log.Printf("I! [agent] Config: Interval:%s, Quiet:%#v, Hostname:%#v, "+
 		"Flush Interval:%s",
 		time.Duration(a.Config.Agent.Interval), a.Config.Agent.Quiet,
@@ -219,7 +222,7 @@ func (a *Agent) Run(ctx context.Context) error {
 }
 
 // InitPlugins runs the Init function on plugins.
-func (a *Agent) InitPlugins() error {
+func (a *Server) InitPlugins() error {
 	for _, input := range a.Config.Inputs {
 		// Share the snmp translator setting with plugins that need it.
 		if tp, ok := input.Input.(snmp.TranslatorPlugin); ok {
@@ -260,7 +263,7 @@ func (a *Agent) InitPlugins() error {
 }
 
 // initPersister initializes the persister and registers the plugins.
-func (a *Agent) initPersister() error {
+func (a *Server) initPersister() error {
 	if err := a.Config.Persister.Init(); err != nil {
 		return err
 	}
@@ -341,7 +344,7 @@ func (a *Agent) initPersister() error {
 	return nil
 }
 
-func (a *Agent) startInputs(
+func (a *Server) startInputs(
 	dst chan<- telegraf.Metric,
 	inputs []*models.RunningInput,
 ) (*inputUnit, error) {
@@ -389,7 +392,7 @@ func (a *Agent) startInputs(
 //
 // When the context is done the timers are stopped and this function returns
 // after all ongoing Gather calls complete.
-func (a *Agent) runInputs(
+func (a *Server) runInputs(
 	ctx context.Context,
 	startTime time.Time,
 	unit *inputUnit,
@@ -451,7 +454,7 @@ func (a *Agent) runInputs(
 // testStartInputs is a variation of startInputs for use in --test and --once
 // mode. It differs by logging Start errors and returning only plugins
 // successfully started.
-func (a *Agent) testStartInputs(
+func (a *Server) testStartInputs(
 	dst chan<- telegraf.Metric,
 	inputs []*models.RunningInput,
 ) *inputUnit {
@@ -482,7 +485,7 @@ func (a *Agent) testStartInputs(
 
 // testRunInputs is a variation of runInputs for use in --test and --once mode.
 // Instead of using a ticker to run the inputs they are called once immediately.
-func (a *Agent) testRunInputs(
+func (a *Server) testRunInputs(
 	ctx context.Context,
 	wait time.Duration,
 	unit *inputUnit,
@@ -563,7 +566,7 @@ func stopRunningOutputs(outputs []*models.RunningOutput) {
 
 // gather runs an input's gather function periodically until the context is
 // done.
-func (a *Agent) gatherLoop(
+func (a *Server) gatherLoop(
 	ctx context.Context,
 	acc telegraf.Accumulator,
 	input *models.RunningInput,
@@ -585,7 +588,7 @@ func (a *Agent) gatherLoop(
 
 // gatherOnce runs the input's Gather function once, logging a warning each
 // interval it fails to complete before.
-func (a *Agent) gatherOnce(
+func (a *Server) gatherOnce(
 	acc telegraf.Accumulator,
 	input *models.RunningInput,
 	ticker Ticker,
@@ -620,7 +623,7 @@ func (a *Agent) gatherOnce(
 
 // startProcessors sets up the processor chain and calls Start on all
 // processors.  If an error occurs any started processors are Stopped.
-func (a *Agent) startProcessors(
+func (a *Server) startProcessors(
 	dst chan<- telegraf.Metric,
 	runningProcessors models.RunningProcessors,
 ) (chan<- telegraf.Metric, []*processorUnit, error) {
@@ -660,7 +663,7 @@ func (a *Agent) startProcessors(
 
 // runProcessors begins processing metrics and runs until the source channel is
 // closed and all metrics have been written.
-func (a *Agent) runProcessors(
+func (a *Server) runProcessors(
 	units []*processorUnit,
 ) {
 	var wg sync.WaitGroup
@@ -685,7 +688,7 @@ func (a *Agent) runProcessors(
 }
 
 // startAggregators sets up the aggregator unit and returns the source channel.
-func (a *Agent) startAggregators(aggC, outputC chan<- telegraf.Metric, aggregators []*models.RunningAggregator) (chan<- telegraf.Metric, *aggregatorUnit) {
+func (a *Server) startAggregators(aggC, outputC chan<- telegraf.Metric, aggregators []*models.RunningAggregator) (chan<- telegraf.Metric, *aggregatorUnit) {
 	src := make(chan telegraf.Metric, 100)
 	unit := &aggregatorUnit{
 		src:         src,
@@ -698,7 +701,7 @@ func (a *Agent) startAggregators(aggC, outputC chan<- telegraf.Metric, aggregato
 
 // runAggregators beings aggregating metrics and runs until the source channel
 // is closed and all metrics have been written.
-func (a *Agent) runAggregators(
+func (a *Server) runAggregators(
 	startTime time.Time,
 	unit *aggregatorUnit,
 ) {
@@ -772,7 +775,7 @@ func updateWindow(start time.Time, roundInterval bool, period time.Duration) (ti
 }
 
 // push runs the push for a single aggregator every period.
-func (a *Agent) push(
+func (a *Server) push(
 	ctx context.Context,
 	aggregator *models.RunningAggregator,
 	acc telegraf.Accumulator,
@@ -796,7 +799,7 @@ func (a *Agent) push(
 
 // startOutputs calls Connect on all outputs and returns the source channel.
 // If an error occurs calling Connect, all started plugins have Close called.
-func (a *Agent) startOutputs(
+func (a *Server) startOutputs(
 	ctx context.Context,
 	outputs []*models.RunningOutput,
 ) (chan<- telegraf.Metric, *outputUnit, error) {
@@ -825,7 +828,7 @@ func (a *Agent) startOutputs(
 }
 
 // connectOutput connects to all outputs.
-func (a *Agent) connectOutput(ctx context.Context, output *models.RunningOutput) error {
+func (a *Server) connectOutput(ctx context.Context, output *models.RunningOutput) error {
 	log.Printf("D! [agent] Attempting connection to [%s]", output.LogName())
 	if err := output.Connect(); err != nil {
 		log.Printf("E! [agent] Failed to connect to [%s], retrying in 15s, error was %q", output.LogName(), err)
@@ -845,7 +848,7 @@ func (a *Agent) connectOutput(ctx context.Context, output *models.RunningOutput)
 // runOutputs begins processing metrics and returns until the source channel is
 // closed and all metrics have been written.  On shutdown metrics will be
 // written one last time and dropped if unsuccessful.
-func (a *Agent) runOutputs(
+func (a *Server) runOutputs(
 	unit *outputUnit,
 ) {
 	var wg sync.WaitGroup
@@ -900,7 +903,7 @@ func (a *Agent) runOutputs(
 
 // flushLoop runs an output's flush function periodically until the context is
 // done.
-func (a *Agent) flushLoop(
+func (a *Server) flushLoop(
 	ctx context.Context,
 	output *models.RunningOutput,
 	ticker Ticker,
@@ -941,7 +944,7 @@ func (a *Agent) flushLoop(
 
 // flushOnce runs the output's Write function once, logging a warning each
 // interval it fails to complete before the flush interval elapses.
-func (a *Agent) flushOnce(
+func (a *Server) flushOnce(
 	output *models.RunningOutput,
 	ticker Ticker,
 	writeFunc func() error,
@@ -966,7 +969,7 @@ func (a *Agent) flushOnce(
 
 // flushBatch runs the output's Write function once Unlike flushOnce the
 // interval elapsing is not considered during these flushes.
-func (a *Agent) flushBatch(
+func (a *Server) flushBatch(
 	output *models.RunningOutput,
 	writeFunc func() error,
 ) error {
@@ -977,7 +980,7 @@ func (a *Agent) flushBatch(
 
 // Test runs the inputs, processors and aggregators for a single gather and
 // writes the metrics to stdout.
-func (a *Agent) Test(ctx context.Context, wait time.Duration) error {
+func (a *Server) Test(ctx context.Context, wait time.Duration) error {
 	src := make(chan telegraf.Metric, 100)
 
 	var wg sync.WaitGroup
@@ -1010,7 +1013,7 @@ func (a *Agent) Test(ctx context.Context, wait time.Duration) error {
 // runTest runs the agent and performs a single gather sending output to the
 // outputC. After gathering pauses for the wait duration to allow service
 // inputs to run.
-func (a *Agent) runTest(ctx context.Context, wait time.Duration, outputC chan<- telegraf.Metric) error {
+func (a *Server) runTest(ctx context.Context, wait time.Duration, outputC chan<- telegraf.Metric) error {
 	// Set the default for processor skipping
 	if a.Config.Agent.SkipProcessorsAfterAggregators == nil {
 		msg := `The default value of 'skip_processors_after_aggregators' will change to 'true' with Telegraf v1.40.0! `
@@ -1092,7 +1095,7 @@ func (a *Agent) runTest(ctx context.Context, wait time.Duration, outputC chan<- 
 }
 
 // Once runs the full agent for a single gather.
-func (a *Agent) Once(ctx context.Context, wait time.Duration) error {
+func (a *Server) Once(ctx context.Context, wait time.Duration) error {
 	err := a.runOnce(ctx, wait)
 	if err != nil {
 		return err
@@ -1115,7 +1118,7 @@ func (a *Agent) Once(ctx context.Context, wait time.Duration) error {
 // runOnce runs the agent and performs a single gather sending output to the
 // outputC. After gathering pauses for the wait duration to allow service
 // inputs to run.
-func (a *Agent) runOnce(ctx context.Context, wait time.Duration) error {
+func (a *Server) runOnce(ctx context.Context, wait time.Duration) error {
 	// Set the default for processor skipping
 	if a.Config.Agent.SkipProcessorsAfterAggregators == nil {
 		msg := `The default value of 'skip_processors_after_aggregators' will change to 'true' with Telegraf v1.40.0! `
