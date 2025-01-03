@@ -2,6 +2,9 @@ package agent
 
 import (
 	"errors"
+	"io"
+	"net/http"
+	"net/url"
 
 	"github.com/influxdata/toml/ast"
 	"github.com/labstack/echo/v4"
@@ -40,6 +43,70 @@ func (a *Server) Login(ctx echo.Context) error {
 		return ctx.JSON(500, "internal server error")
 	}
 	return ctx.JSON(200, token)
+}
+
+func (a *Server) Query(ctx echo.Context) error {
+	// Base target URL
+	baseURL := "http://influxdb:8080"
+
+	// Parse the target URL
+	targetURL, err := url.Parse(baseURL)
+	if err != nil {
+		return ctx.String(http.StatusInternalServerError, "Invalid target URL")
+	}
+
+	targetURL.Path = "/query" // Set the fixed base path
+	targetURL.RawQuery = ctx.QueryString()
+
+	// Create a new request to the target
+	req := ctx.Request()
+	client := &http.Client{}
+
+	// Copy the request body
+	var bodyReader io.Reader = nil
+	if req.Body != nil {
+		bodyReader = req.Body
+	}
+
+	// Build the proxied request
+	targetReq, err := http.NewRequest(req.Method, targetURL.String(), bodyReader)
+	if err != nil {
+		return ctx.String(http.StatusInternalServerError, "Failed to create proxy request")
+	}
+
+	// Copy headers from the original request
+	for name, values := range req.Header {
+		for _, value := range values {
+			targetReq.Header.Add(name, value)
+		}
+	}
+
+	// Make the request to the target server
+	resp, err := client.Do(targetReq)
+	if err != nil {
+		return ctx.String(http.StatusBadGateway, "Failed to contact target server")
+	}
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			return
+		}
+	}(resp.Body)
+
+	// Copy the response body and headers to the client
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return ctx.String(http.StatusInternalServerError, "Failed to read response body")
+	}
+
+	for name, values := range resp.Header {
+		for _, value := range values {
+			ctx.Response().Header().Add(name, value)
+		}
+	}
+
+	// Return the response from the target server
+	return ctx.Blob(resp.StatusCode, resp.Header.Get("Content-Type"), body)
 }
 
 func (a *Server) PostInput(ctx echo.Context) error {
