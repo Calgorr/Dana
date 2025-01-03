@@ -29,6 +29,7 @@ type Server struct {
 	echo         *echo.Echo
 	InputRepo    repository.HandlerInputRepo
 	InputDstChan chan<- telegraf.Metric
+	StartTime    time.Time
 }
 
 // NewServer returns a Server for the given Config.
@@ -151,6 +152,7 @@ func (a *Server) Run(ctx context.Context) error {
 	}
 
 	startTime := time.Now()
+	a.StartTime = startTime
 
 	log.Printf("D! [agent] Connecting outputs")
 	next, ou, err := a.startOutputs(ctx, a.Config.Outputs)
