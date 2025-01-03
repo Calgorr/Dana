@@ -14,6 +14,7 @@ import (
 	"github.com/labstack/echo/v4"
 
 	"Dana"
+	authentication "Dana/agent/Auth"
 	"Dana/agent/repository"
 	"Dana/config"
 	"Dana/internal"
@@ -28,6 +29,7 @@ type Server struct {
 	Config       *config.Config
 	echo         *echo.Echo
 	InputRepo    repository.HandlerInputRepo
+	UserRepo     repository.UserRepo
 	InputDstChan chan<- telegraf.Metric
 	StartTime    time.Time
 }
@@ -110,12 +112,15 @@ type outputUnit struct {
 
 // Run starts and runs the Server until the context is done.
 func (a *Server) Run(ctx context.Context) error {
-	v1 := a.echo.Group("/v1")
-	v1.GET("/health", a.HealthCheck)
+	v1 := a.echo.Group("/api/v1")
+	v1.Use(authentication.ValidateJWT)
 	v1.GET("/query", a.Query)
 	v1.GET("/inputs", a.GetInput)
 	v1.GET("/inputs/:type", a.GetInputByType)
 	v1.POST("/input/:type", a.PostInput)
+	a.echo.POST("/login", a.Login)
+	a.echo.POST("/register", a.Register)
+	a.echo.GET("/health", a.HealthCheck)
 
 	go func() { a.echo.Logger.Fatal(a.echo.Start("0.0.0.0:8080")) }()
 

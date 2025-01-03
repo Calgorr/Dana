@@ -6,12 +6,39 @@ import (
 	"github.com/influxdata/toml/ast"
 	"github.com/labstack/echo/v4"
 
+	authentication "Dana/agent/Auth"
 	"Dana/agent/model"
 	"Dana/models"
 )
 
 func (a *Server) HealthCheck(ctx echo.Context) error {
 	return ctx.JSON(200, "OK")
+}
+
+func (a *Server) Register(ctx echo.Context) error {
+	user := &model.User{}
+	if err := ctx.Bind(user); err != nil {
+		return ctx.JSON(400, errors.New("invalid request"))
+	}
+	if err := a.UserRepo.AddUser(ctx.Request().Context(), user); err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, "OK")
+}
+
+func (a *Server) Login(ctx echo.Context) error {
+	user := &model.User{}
+	if err := ctx.Bind(user); err != nil {
+		return ctx.JSON(400, errors.New("invalid request"))
+	}
+	if err := a.UserRepo.UserAuth(ctx.Request().Context(), user.Username, user.Password); err != nil {
+		return ctx.JSON(401, "unauthorized")
+	}
+	token, err := authentication.GenerateJWT(user.Username)
+	if err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, token)
 }
 
 func (a *Server) PostInput(ctx echo.Context) error {
@@ -65,10 +92,8 @@ func MapToASTTable(configMap map[string]interface{}) *ast.Table {
 	for key, value := range configMap {
 		switch v := value.(type) {
 		case map[string]interface{}:
-			// Recursively convert nested maps to tables
 			table.Fields[key] = MapToASTTable(v)
 		case []interface{}:
-			// Handle array types
 			tables := make([]*ast.Table, 0)
 			for _, item := range v {
 				if mapItem, ok := item.(map[string]interface{}); ok {
@@ -78,11 +103,9 @@ func MapToASTTable(configMap map[string]interface{}) *ast.Table {
 			if len(tables) > 0 {
 				table.Fields[key] = tables
 			} else {
-				// If it's not an array of tables, store as is
 				table.Fields[key] = value
 			}
 		default:
-			// Store primitive values as is
 			table.Fields[key] = value
 		}
 	}
