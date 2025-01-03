@@ -26,12 +26,13 @@ import (
 
 // Server runs a set of plugins.
 type Server struct {
-	Config       *config.Config
-	echo         *echo.Echo
-	InputRepo    repository.HandlerInputRepo
-	UserRepo     repository.UserRepo
-	InputDstChan chan<- telegraf.Metric
-	StartTime    time.Time
+	Config        *config.Config
+	echo          *echo.Echo
+	InputRepo     repository.HandlerInputRepo
+	UserRepo      repository.UserRepo
+	DashboardRepo repository.DashboardRepo
+	InputDstChan  chan<- telegraf.Metric
+	StartTime     time.Time
 }
 
 // NewServer returns a Server for the given Config.
@@ -118,6 +119,14 @@ func (a *Server) Run(ctx context.Context) error {
 	v1.GET("/inputs", a.GetInput)
 	v1.GET("/inputs/:type", a.GetInputByType)
 	v1.POST("/input/:type", a.PostInput)
+
+	// Add dashboard routes
+	v1.POST("/dashboards", a.CreateDashboard)
+	v1.GET("/dashboards/:id", a.GetDashboard)
+	v1.PUT("/dashboards", a.UpdateDashboard)
+	v1.DELETE("/dashboards/:id", a.DeleteDashboard)
+	v1.GET("/dashboards", a.GetDashboards)
+
 	a.echo.POST("/login", a.Login)
 	a.echo.POST("/register", a.Register)
 	a.echo.GET("/health", a.HealthCheck)

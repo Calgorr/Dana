@@ -5,6 +5,7 @@ import (
 
 	"github.com/influxdata/toml/ast"
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/mongo"
 
 	authentication "Dana/agent/Auth"
 	"Dana/agent/model"
@@ -80,6 +81,57 @@ func (a *Server) GetInputByType(ctx echo.Context) error {
 		return ctx.JSON(500, errors.New("internal server error"))
 	}
 	return ctx.JSON(200, inputs)
+}
+
+func (a *Server) CreateDashboard(ctx echo.Context) error {
+	dashboard := &model.Dashboard{}
+	if err := ctx.Bind(dashboard); err != nil {
+		return ctx.JSON(400, errors.New("invalid request"))
+	}
+	id, err := a.DashboardRepo.CreateDashboard(ctx.Request().Context(), dashboard)
+	if err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(201, map[string]interface{}{"id": id})
+}
+
+func (a *Server) GetDashboard(ctx echo.Context) error {
+	id := ctx.Param("id")
+	dashboard, err := a.DashboardRepo.GetDashboard(ctx.Request().Context(), id)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return ctx.JSON(404, "dashboard not found")
+		}
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, dashboard)
+}
+
+func (a *Server) UpdateDashboard(ctx echo.Context) error {
+	dashboard := &model.Dashboard{}
+	if err := ctx.Bind(dashboard); err != nil {
+		return ctx.JSON(400, errors.New("invalid request"))
+	}
+	if err := a.DashboardRepo.UpdateDashboard(ctx.Request().Context(), dashboard); err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, "OK")
+}
+
+func (a *Server) DeleteDashboard(ctx echo.Context) error {
+	id := ctx.Param("id")
+	if err := a.DashboardRepo.DeleteDashboard(ctx.Request().Context(), id); err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, "OK")
+}
+
+func (a *Server) GetDashboards(ctx echo.Context) error {
+	dashboards, err := a.DashboardRepo.GetDashboards(ctx.Request().Context())
+	if err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, dashboards)
 }
 
 // MapToASTTable converts a map[string]interface{} to an ast.Table
