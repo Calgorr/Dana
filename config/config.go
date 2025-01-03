@@ -1348,6 +1348,89 @@ func (c *Config) addInput(name string, table *ast.Table) error {
 	return nil
 }
 
+func (c *Config) InputMaker(name string, table *ast.Table) (*models.RunningInput, error) {
+	if len(c.InputFilters) > 0 && !sliceContains(name, c.InputFilters) {
+		return nil, nil
+	}
+
+	// For inputs with parsers we need to compute the set of
+	// options that is not covered by both, the parser and the input.
+	// We achieve this by keeping a local book of missing entries
+	// that counts the number of misses. In case we have a parser
+	// for the input both need to miss the entry. We count the
+	// missing entries at the end.
+	missCount := make(map[string]int)
+	missCountThreshold := 0
+	c.setLocalMissingTomlFieldTracker(missCount)
+	defer c.resetMissingTomlFieldTracker()
+
+	creator, ok := inputs.Inputs[name]
+	if !ok {
+		// Handle removed, deprecated plugins
+		if di, deprecated := inputs.Deprecations[name]; deprecated {
+			printHistoricPluginDeprecationNotice("inputs", name, di)
+			return nil, errors.New("plugin deprecated")
+		}
+
+		return nil, fmt.Errorf("undefined but requested input: %s", name)
+	}
+	input := creator()
+
+	// If the input has a SetParser or SetParserFunc function, it can accept
+	// arbitrary data-formats, so build the requested parser and set it.
+	if t, ok := input.(telegraf.ParserPlugin); ok {
+		missCountThreshold = 1
+		parser, err := c.addParser("inputs", name, table)
+		if err != nil {
+			return nil, fmt.Errorf("adding parser failed: %w", err)
+		}
+		t.SetParser(parser)
+	}
+
+	if t, ok := input.(telegraf.ParserFuncPlugin); ok {
+		missCountThreshold = 1
+		if !c.probeParser("inputs", name, table) {
+			return nil, errors.New("parser not found")
+		}
+		t.SetParserFunc(func() (telegraf.Parser, error) {
+			return c.addParser("inputs", name, table)
+		})
+	}
+
+	pluginConfig, err := c.buildInput(name, table)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.toml.UnmarshalTable(table, input); err != nil {
+		return nil, err
+	}
+
+	if err := c.printUserDeprecation("inputs", name, input); err != nil {
+		return nil, err
+	}
+
+	if c, ok := interface{}(input).(interface{ TLSConfig() (*tls.Config, error) }); ok {
+		if _, err := c.TLSConfig(); err != nil {
+			return nil, err
+		}
+	}
+
+	// Check the number of misses against the threshold
+	for key, count := range missCount {
+		if count <= missCountThreshold {
+			continue
+		}
+		if err := c.missingTomlField(nil, key); err != nil {
+			return nil, err
+		}
+	}
+
+	rp := models.NewRunningInput(input, pluginConfig)
+
+	return rp, nil
+}
+
 // buildAggregator parses Aggregator specific items from the ast.Table,
 // builds the filter and returns a
 // models.AggregatorConfig to be inserted into models.RunningAggregator

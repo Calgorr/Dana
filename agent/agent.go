@@ -25,12 +25,10 @@ import (
 
 // Server runs a set of plugins.
 type Server struct {
-	Config         *config.Config
-	echo           *echo.Echo
-	WmiRepo        repository.WmiRepo
-	SnmpRepo       repository.SnmpRepo
-	PrometheusRepo repository.PrometheusRepo
-	InfluxRepo     repository.InfluxDbV2Repo
+	Config       *config.Config
+	echo         *echo.Echo
+	InputRepo    repository.HandlerInputRepo
+	InputDstChan chan<- telegraf.Metric
 }
 
 // NewServer returns a Server for the given Config.
@@ -114,18 +112,9 @@ func (a *Server) Run(ctx context.Context) error {
 	v1 := a.echo.Group("/v1")
 	v1.GET("/health", a.HealthCheck)
 	v1.GET("/query", a.Query)
-	v1.GET("/input/wmi", a.GetInputsWmi)
-	v1.POST("/input/wmi", a.PostInputWmi)
-	v1.DELETE("/input/wmi", a.DeleteInputWmi)
-	v1.GET("/input/snmp", a.GetInputsSnmp)
-	v1.POST("/input/snmp", a.PostInputSnmp)
-	v1.DELETE("/input/snmp", a.DeleteInputSnmp)
-	v1.GET("/input/prometheus", a.GetInputsPrometheus)
-	v1.POST("/input/prometheus", a.PostInputPrometheus)
-	v1.DELETE("/input/prometheus", a.DeleteInputPrometheus)
-	v1.GET("/input/influx", a.GetInputsInflux)
-	v1.POST("/input/influx", a.PostInputInflux)
-	v1.DELETE("/input/influx", a.DeleteInputInflux)
+	v1.GET("/inputs", a.GetInput)
+	v1.GET("/inputs/:type", a.GetInputByType)
+	v1.POST("/input/:type", a.PostInput)
 
 	go func() { a.echo.Logger.Fatal(a.echo.Start("0.0.0.0:8080")) }()
 
@@ -191,6 +180,7 @@ func (a *Server) Run(ctx context.Context) error {
 		}
 	}
 
+	a.InputDstChan = next
 	iu, err := a.startInputs(next, a.Config.Inputs)
 	if err != nil {
 		return err
