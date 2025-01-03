@@ -31,6 +31,7 @@ type Server struct {
 	InputRepo     repository.HandlerInputRepo
 	UserRepo      repository.UserRepo
 	DashboardRepo repository.DashboardRepo
+	FolderRepo    repository.FolderRepo
 	InputDstChan  chan<- telegraf.Metric
 	StartTime     time.Time
 }
@@ -126,6 +127,13 @@ func (a *Server) Run(ctx context.Context) error {
 	v1.PUT("/dashboards", a.UpdateDashboard)
 	v1.DELETE("/dashboards/:id", a.DeleteDashboard)
 	v1.GET("/dashboards", a.GetDashboards)
+
+	// Add folder routes
+	v1.POST("/folders", a.CreateFolder)
+	v1.GET("/folders/:id", a.GetFolder)
+	v1.PUT("/folders/:folderID/dashboards/:dashboardID", a.UpdateDashboardInFolder)
+	v1.DELETE("/folders/:id", a.DeleteFolder)
+	v1.GET("/folders", a.GetFolders)
 
 	a.echo.POST("/login", a.Login)
 	a.echo.POST("/register", a.Register)

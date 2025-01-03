@@ -134,6 +134,59 @@ func (a *Server) GetDashboards(ctx echo.Context) error {
 	return ctx.JSON(200, dashboards)
 }
 
+func (a *Server) CreateFolder(ctx echo.Context) error {
+	folder := &model.Folder{}
+	if err := ctx.Bind(folder); err != nil {
+		return ctx.JSON(400, errors.New("invalid request"))
+	}
+	id, err := a.FolderRepo.CreateFolder(ctx.Request().Context(), folder)
+	if err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(201, map[string]interface{}{"id": id})
+}
+
+func (a *Server) GetFolder(ctx echo.Context) error {
+	id := ctx.Param("id")
+	folder, err := a.FolderRepo.GetFolder(ctx.Request().Context(), id)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return ctx.JSON(404, "folder not found")
+		}
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, folder)
+}
+
+func (a *Server) UpdateDashboardInFolder(ctx echo.Context) error {
+	folderID := ctx.Param("folderID")
+	dashboardID := ctx.Param("dashboardID")
+	dashboard := &model.Dashboard{}
+	if err := ctx.Bind(dashboard); err != nil {
+		return ctx.JSON(400, errors.New("invalid request"))
+	}
+	if err := a.FolderRepo.UpdateDashboardInFolder(ctx.Request().Context(), folderID, dashboardID, dashboard); err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, "OK")
+}
+
+func (a *Server) DeleteFolder(ctx echo.Context) error {
+	id := ctx.Param("id")
+	if err := a.FolderRepo.DeleteFolder(ctx.Request().Context(), id); err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, "OK")
+}
+
+func (a *Server) GetFolders(ctx echo.Context) error {
+	folders, err := a.FolderRepo.GetFolders(ctx.Request().Context())
+	if err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, folders)
+}
+
 // MapToASTTable converts a map[string]interface{} to an ast.Table
 func MapToASTTable(configMap map[string]interface{}) *ast.Table {
 	table := &ast.Table{
