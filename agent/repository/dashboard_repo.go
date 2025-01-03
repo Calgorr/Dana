@@ -12,7 +12,7 @@ import (
 
 type DashboardRepo interface {
 	// CreateDashboard creates a new dashboard
-	CreateDashboard(ctx context.Context, dashboard *model.Dashboard) (int, error)
+	CreateDashboard(ctx context.Context, dashboard *model.Dashboard) (primitive.ObjectID, error)
 	// GetDashboard gets a dashboard by id
 	GetDashboard(ctx context.Context, id string) (*model.Dashboard, error)
 	// UpdateDashboard updates a dashboard by id
@@ -34,7 +34,7 @@ type dashboardRepo struct {
 	collection *mongo.Collection
 }
 
-func (d *dashboardRepo) CreateDashboard(ctx context.Context, dashboard *model.Dashboard) (int, error) {
+func (d *dashboardRepo) CreateDashboard(ctx context.Context, dashboard *model.Dashboard) (primitive.ObjectID, error) {
 	// Create a new document for insertion
 	document := bson.M{
 		"data": dashboard.Data,
@@ -43,12 +43,9 @@ func (d *dashboardRepo) CreateDashboard(ctx context.Context, dashboard *model.Da
 	// Insert the document into the collection
 	result, err := d.collection.InsertOne(ctx, document)
 	if err != nil {
-		return 0, err
+		return primitive.NilObjectID, err
 	}
-
-	// Set the ID from the inserted document
-	dashboard.ID = result.InsertedID.(primitive.ObjectID)
-	return 1, nil
+	return result.InsertedID.(primitive.ObjectID), nil
 }
 
 func (d *dashboardRepo) GetDashboard(ctx context.Context, id string) (*model.Dashboard, error) {
