@@ -23,6 +23,7 @@ import (
 	"github.com/coreos/go-semver/semver"
 	"github.com/influxdata/toml"
 	"github.com/influxdata/toml/ast"
+	"github.com/spf13/viper"
 
 	"Dana"
 	"Dana/internal"
@@ -97,6 +98,40 @@ type Config struct {
 
 	seenAgentTable     bool
 	seenAgentTableOnce sync.Once
+}
+
+var (
+	ServerCfg = &ServerConfig{}
+)
+
+type ServerConfig struct {
+	InfluxHost   string             `yaml:"influx_host"`
+	InfluxPort   string             `yaml:"influx_port"`
+	MongoHost    string             `yaml:"mongo_host"`
+	MongoPort    string             `yaml:"mongo_port"`
+	Notification NotificationConfig `yaml:"notification"`
+}
+
+type NotificationConfig struct {
+	BaleToken      string `yaml:"bale_token"`
+	BaleChatID     string `yaml:"bale_chat_id"`
+	TelegramToken  string `yaml:"telegram_token"`
+	TelegramChatID string `yaml:"telegram_chat_id"`
+}
+
+func SetConfig() {
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath("./config")
+
+	if err := viper.ReadInConfig(); err != nil {
+		log.Fatalf("Error reading config file: %v", err)
+	}
+
+	if err := viper.Unmarshal(&ServerCfg); err != nil {
+		log.Fatalf("Unable to parse config: %v", err)
+	}
+	fmt.Printf("Parsed Config: %+v\n", ServerCfg)
 }
 
 // Ordered plugins used to keep the order in which they appear in a file

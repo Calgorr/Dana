@@ -138,6 +138,7 @@ func (a *Server) Run(ctx context.Context) error {
 	a.echo.POST("/login", a.Login)
 	a.echo.POST("/register", a.Register)
 	a.echo.GET("/health", a.HealthCheck)
+	config.SetConfig()
 
 	go func() { a.echo.Logger.Fatal(a.echo.Start("0.0.0.0:8080")) }()
 

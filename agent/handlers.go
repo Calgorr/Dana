@@ -12,6 +12,7 @@ import (
 
 	authentication "Dana/agent/Auth"
 	"Dana/agent/model"
+	"Dana/config"
 	"Dana/models"
 )
 
@@ -46,42 +47,35 @@ func (a *Server) Login(ctx echo.Context) error {
 }
 
 func (a *Server) Query(ctx echo.Context) error {
-	// Base target URL
-	baseURL := "http://influxdb:8080"
+	baseURL := config.ServerCfg.InfluxHost + ":" + config.ServerCfg.InfluxPort
 
-	// Parse the target URL
 	targetURL, err := url.Parse(baseURL)
 	if err != nil {
 		return ctx.String(http.StatusInternalServerError, "Invalid target URL")
 	}
 
-	targetURL.Path = "/query" // Set the fixed base path
+	targetURL.Path = "/query"
 	targetURL.RawQuery = ctx.QueryString()
 
-	// Create a new request to the target
 	req := ctx.Request()
 	client := &http.Client{}
 
-	// Copy the request body
 	var bodyReader io.Reader = nil
 	if req.Body != nil {
 		bodyReader = req.Body
 	}
 
-	// Build the proxied request
 	targetReq, err := http.NewRequest(req.Method, targetURL.String(), bodyReader)
 	if err != nil {
 		return ctx.String(http.StatusInternalServerError, "Failed to create proxy request")
 	}
 
-	// Copy headers from the original request
 	for name, values := range req.Header {
 		for _, value := range values {
 			targetReq.Header.Add(name, value)
 		}
 	}
 
-	// Make the request to the target server
 	resp, err := client.Do(targetReq)
 	if err != nil {
 		return ctx.String(http.StatusBadGateway, "Failed to contact target server")
@@ -93,7 +87,6 @@ func (a *Server) Query(ctx echo.Context) error {
 		}
 	}(resp.Body)
 
-	// Copy the response body and headers to the client
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return ctx.String(http.StatusInternalServerError, "Failed to read response body")
@@ -105,7 +98,6 @@ func (a *Server) Query(ctx echo.Context) error {
 		}
 	}
 
-	// Return the response from the target server
 	return ctx.Blob(resp.StatusCode, resp.Header.Get("Content-Type"), body)
 }
 
