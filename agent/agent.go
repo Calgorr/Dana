@@ -135,6 +135,8 @@ func (a *Server) Run(ctx context.Context) error {
 	v1.DELETE("/folders/:id", a.DeleteFolder)
 	v1.GET("/folders", a.GetFolders)
 
+	v1.POST("/notification", a.SendNotification)
+
 	a.echo.POST("/login", a.Login)
 	a.echo.POST("/register", a.Register)
 	a.echo.GET("/health", a.HealthCheck)

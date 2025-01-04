@@ -5,5 +5,7 @@ mongo_port: "27017"
 notification:
   bale_token: "your_bale_token_here"
   bale_chat_id: "your_bale_chat_id_here"
+  bale_url: "https://tapi.bale.ai"
   telegram_token: "your_telegram_token_here"
   telegram_chat_id: "your_telegram_chat_id_here"
+  telegram_url: "https://api.telegram.org/bot"

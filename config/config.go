@@ -114,9 +114,11 @@ type ServerConfig struct {
 
 type NotificationConfig struct {
 	BaleToken      string `yaml:"bale_token"`
-	BaleChatID     string `yaml:"bale_chat_id"`
+	BaleChatID     int64  `yaml:"bale_chat_id"`
+	BaleURL        string `yaml:"bale_url"`
 	TelegramToken  string `yaml:"telegram_token"`
-	TelegramChatID string `yaml:"telegram_chat_id"`
+	TelegramChatID int64  `yaml:"telegram_chat_id"`
+	TelegramURL    string `yaml:"telegram_url"`
 }
 
 func SetConfig() {

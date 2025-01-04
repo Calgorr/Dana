@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// SendNotification sends a message via a Telegram bot
+// SendNotification sends a message via a Telegram or Bale bot
 func SendNotification(url, token, text string, chatID int64) error {
 	apiURL := fmt.Sprintf("%s/bot%s/sendMessage", url, token)
 	payload := map[string]interface{}{

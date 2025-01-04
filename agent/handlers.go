@@ -12,6 +12,7 @@ import (
 
 	authentication "Dana/agent/Auth"
 	"Dana/agent/model"
+	"Dana/agent/notification"
 	"Dana/config"
 	"Dana/models"
 )
@@ -244,6 +245,28 @@ func (a *Server) GetFolders(ctx echo.Context) error {
 		return ctx.JSON(500, "internal server error")
 	}
 	return ctx.JSON(200, folders)
+}
+
+func (a *Server) SendNotification(ctx echo.Context) error {
+	notif := new(model.Notification)
+
+	if err := ctx.Bind(notif); err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]string{
+			"error": "Invalid input",
+		})
+	}
+
+	if notif.ChannelName == "telegram" {
+		notification.SendNotification(config.ServerCfg.Notification.TelegramURL, config.ServerCfg.Notification.TelegramToken, notif.ChannelLevel+" : "+notif.AlertOn, config.ServerCfg.Notification.TelegramChatID)
+	} else if notif.ChannelName == "bale" {
+		notification.SendNotification(config.ServerCfg.Notification.BaleURL, config.ServerCfg.Notification.BaleToken, notif.ChannelLevel+" : "+notif.AlertOn, config.ServerCfg.Notification.BaleChatID)
+	} else {
+		return ctx.JSON(http.StatusBadRequest, map[string]string{
+			"error": "Invalid channel name",
+		})
+	}
+
+	return ctx.JSON(http.StatusOK, notif)
 }
 
 // MapToASTTable converts a map[string]interface{} to an ast.Table
