@@ -296,9 +296,9 @@ func (a *Server) SendNotification(ctx echo.Context) error {
 	}
 
 	if notif.ChannelName == "telegram" {
-		notification.SendNotification("a.Config.TelegramURL", a.Config.ServerConfig.TelegramToken, notif.Alert, int64(n.ChatID))
+		notification.SendNotification("https://api.telegram.org", a.Config.ServerConfig.TelegramToken, notif.Alert, int64(n.ChatID))
 	} else if notif.ChannelName == "bale" {
-		notification.SendNotification("config.ServerCfg.Notification.BaleURL", a.Config.ServerConfig.BaleToken, notif.Alert, int64(n.ChatID))
+		notification.SendNotification("https://tapi.bale.ai", a.Config.ServerConfig.BaleToken, notif.Alert, int64(n.ChatID))
 	} else {
 		return ctx.JSON(http.StatusBadRequest, map[string]string{
 			"error": "Invalid channel name",
