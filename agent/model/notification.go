@@ -1,7 +1,10 @@
 package model
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 type Notification struct {
-	ChannelLevel string `json:"channel_level"`
-	ChannelName  string `json:"channel_name"`
-	AlertOn      string `json:"alert_on"`
+	ID          primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	ChannelName string             `json:"channel_name"`
+	Alert       string             `json:"alert"`
+	ChatID      int                `json:"chat_id"`
 }

@@ -26,14 +26,15 @@ import (
 
 // Server runs a set of plugins.
 type Server struct {
-	Config        *config.Config
-	echo          *echo.Echo
-	InputRepo     repository.HandlerInputRepo
-	UserRepo      repository.UserRepo
-	DashboardRepo repository.DashboardRepo
-	FolderRepo    repository.FolderRepo
-	InputDstChan  chan<- telegraf.Metric
-	StartTime     time.Time
+	Config           *config.Config
+	echo             *echo.Echo
+	InputRepo        repository.HandlerInputRepo
+	UserRepo         repository.UserRepo
+	DashboardRepo    repository.DashboardRepo
+	FolderRepo       repository.FolderRepo
+	NotificationRepo repository.NotificationRepo
+	InputDstChan     chan<- telegraf.Metric
+	StartTime        time.Time
 }
 
 // NewServer returns a Server for the given Config.
@@ -135,12 +136,14 @@ func (a *Server) Run(ctx context.Context) error {
 	v1.DELETE("/folders/:id", a.DeleteFolder)
 	v1.GET("/folders", a.GetFolders)
 
+	v1.POST("/addnotification", a.AddNotification)
+	v1.GET("/notification/:channelName", a.GetNotification)
+	v1.DELETE("/notification/:channelName", a.DeleteNotification)
 	v1.POST("/notification", a.SendNotification)
 
 	a.echo.POST("/login", a.Login)
 	a.echo.POST("/register", a.Register)
 	a.echo.GET("/health", a.HealthCheck)
-	config.SetConfig()
 
 	go func() { a.echo.Logger.Fatal(a.echo.Start("0.0.0.0:8080")) }()
 

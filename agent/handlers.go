@@ -1,6 +1,3 @@
-//go:build (darwin && !cgo) || linux
-// +build darwin,!cgo linux
-
 package agent
 
 import (
@@ -12,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/labstack/echo/v4"
-	toml "github.com/pelletier/go-toml"
+	"github.com/pelletier/go-toml"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	authentication "Dana/agent/Auth"
@@ -52,7 +49,7 @@ func (a *Server) Login(ctx echo.Context) error {
 }
 
 func (a *Server) Query(ctx echo.Context) error {
-	baseURL := config.ServerCfg.InfluxHost + ":" + config.ServerCfg.InfluxPort
+	baseURL := a.Config.ServerConfig.InfluxHost + ":" + a.Config.ServerConfig.InfluxPort
 
 	targetURL, err := url.Parse(baseURL)
 	if err != nil {
@@ -114,7 +111,10 @@ func (a *Server) PostInput(ctx echo.Context) error {
 	if err := a.InputRepo.AddServerInput(ctx.Request().Context(), inputData); err != nil {
 		return ctx.JSON(500, "internal server error")
 	}
-	toml := ConvertMapToTOML(inputData.Data, inputData.Type)
+	toml, err := ConvertMapToTOML(inputData.Data, inputData.Type)
+	if err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
 	newConfig := config.NewConfig()
 	if err := newConfig.LoadConfigData(toml); err != nil {
 		return ctx.JSON(500, errors.New("internal server error"))
@@ -248,6 +248,37 @@ func (a *Server) GetFolders(ctx echo.Context) error {
 	return ctx.JSON(200, folders)
 }
 
+func (a *Server) AddNotification(ctx echo.Context) error {
+	n := &model.Notification{}
+	if err := ctx.Bind(n); err != nil {
+		return ctx.JSON(400, errors.New("invalid request"))
+	}
+	if err := a.NotificationRepo.CreateNotification(ctx.Request().Context(), n); err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, "OK")
+}
+
+func (a *Server) GetNotification(ctx echo.Context) error {
+	channelName := ctx.Param("channelName")
+	n, err := a.NotificationRepo.GetNotification(ctx.Request().Context(), channelName)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return ctx.JSON(404, "notification not found")
+		}
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, n)
+}
+
+func (a *Server) DeleteNotification(ctx echo.Context) error {
+	channelName := ctx.Param("channelName")
+	if err := a.NotificationRepo.DeleteNotification(ctx.Request().Context(), channelName); err != nil {
+		return ctx.JSON(500, "internal server error")
+	}
+	return ctx.JSON(200, "OK")
+}
+
 func (a *Server) SendNotification(ctx echo.Context) error {
 	notif := new(model.Notification)
 
@@ -257,10 +288,17 @@ func (a *Server) SendNotification(ctx echo.Context) error {
 		})
 	}
 
+	n, err := a.NotificationRepo.GetNotification(ctx.Request().Context(), notif.ChannelName)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "Failed to retrieve notification",
+		})
+	}
+
 	if notif.ChannelName == "telegram" {
-		notification.SendNotification(config.ServerCfg.TelegramURL, config.ServerCfg.Notification.TelegramToken, notif.ChannelLevel+" : "+notif.AlertOn, config.ServerCfg.Notification.TelegramChatID)
+		notification.SendNotification("a.Config.TelegramURL", a.Config.ServerConfig.TelegramToken, notif.Alert, int64(n.ChatID))
 	} else if notif.ChannelName == "bale" {
-		notification.SendNotification(config.ServerCfg.Notification.BaleURL, config.ServerCfg.Notification.BaleToken, notif.ChannelLevel+" : "+notif.AlertOn, config.ServerCfg.Notification.BaleChatID)
+		notification.SendNotification("config.ServerCfg.Notification.BaleURL", a.Config.ServerConfig.BaleToken, notif.Alert, int64(n.ChatID))
 	} else {
 		return ctx.JSON(http.StatusBadRequest, map[string]string{
 			"error": "Invalid channel name",
