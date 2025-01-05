@@ -1,20 +1,24 @@
+//go:build (darwin && !cgo) || linux
+// +build darwin,!cgo linux
+
 package agent
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 
-	"github.com/influxdata/toml/ast"
 	"github.com/labstack/echo/v4"
+	toml "github.com/pelletier/go-toml"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	authentication "Dana/agent/Auth"
 	"Dana/agent/model"
 	"Dana/agent/notification"
 	"Dana/config"
-	"Dana/models"
 )
 
 func (a *Server) HealthCheck(ctx echo.Context) error {
@@ -110,17 +114,14 @@ func (a *Server) PostInput(ctx echo.Context) error {
 	if err := a.InputRepo.AddServerInput(ctx.Request().Context(), inputData); err != nil {
 		return ctx.JSON(500, "internal server error")
 	}
-	table := MapToASTTable(inputData.Data)
-	input, err := a.Config.InputMaker(inputData.Type, table)
-	if err != nil {
+	toml := ConvertMapToTOML(inputData.Data, inputData.Type)
+	newConfig := config.NewConfig()
+	if err := newConfig.LoadConfigData(toml); err != nil {
 		return ctx.JSON(500, errors.New("internal server error"))
 	}
-
 	iu := &inputUnit{
-		dst: a.InputDstChan,
-		inputs: []*models.RunningInput{
-			input,
-		},
+		dst:    a.InputDstChan,
+		inputs: newConfig.Inputs,
 	}
 	a.runInputs(ctx.Request().Context(), a.StartTime, iu)
 	return ctx.JSON(200, "OK")
@@ -257,7 +258,7 @@ func (a *Server) SendNotification(ctx echo.Context) error {
 	}
 
 	if notif.ChannelName == "telegram" {
-		notification.SendNotification(config.ServerCfg.Notification.TelegramURL, config.ServerCfg.Notification.TelegramToken, notif.ChannelLevel+" : "+notif.AlertOn, config.ServerCfg.Notification.TelegramChatID)
+		notification.SendNotification(config.ServerCfg.TelegramURL, config.ServerCfg.Notification.TelegramToken, notif.ChannelLevel+" : "+notif.AlertOn, config.ServerCfg.Notification.TelegramChatID)
 	} else if notif.ChannelName == "bale" {
 		notification.SendNotification(config.ServerCfg.Notification.BaleURL, config.ServerCfg.Notification.BaleToken, notif.ChannelLevel+" : "+notif.AlertOn, config.ServerCfg.Notification.BaleChatID)
 	} else {
@@ -269,33 +270,19 @@ func (a *Server) SendNotification(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, notif)
 }
 
-// MapToASTTable converts a map[string]interface{} to an ast.Table
-func MapToASTTable(configMap map[string]interface{}) *ast.Table {
-	table := &ast.Table{
-		Fields: make(map[string]interface{}),
-		Type:   ast.TableTypeNormal,
+// ConvertMapToTOML takes a map[string]interface{} and converts it to a TOML-formatted []byte
+func ConvertMapToTOML(data map[string]interface{}, t string) ([]byte, error) {
+	tomlTree, err := toml.TreeFromMap(data)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create TOML tree: %w", err)
 	}
 
-	for key, value := range configMap {
-		switch v := value.(type) {
-		case map[string]interface{}:
-			table.Fields[key] = MapToASTTable(v)
-		case []interface{}:
-			tables := make([]*ast.Table, 0)
-			for _, item := range v {
-				if mapItem, ok := item.(map[string]interface{}); ok {
-					tables = append(tables, MapToASTTable(mapItem))
-				}
-			}
-			if len(tables) > 0 {
-				table.Fields[key] = tables
-			} else {
-				table.Fields[key] = value
-			}
-		default:
-			table.Fields[key] = value
-		}
+	tomlBytes, err := tomlTree.Marshal()
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal TOML: %w", err)
 	}
 
-	return table
+	updatedToml := strings.ReplaceAll(string(tomlBytes), "\"inputs."+t+"\"", "input."+t)
+
+	return []byte(updatedToml), nil
 }
