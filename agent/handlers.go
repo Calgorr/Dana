@@ -238,7 +238,9 @@ func (a *Server) SendNotification(ctx echo.Context) error {
 		})
 	}
 
-	n, err := a.NotificationRepo.GetNotification(ctx.Request().Context(), notif.ChannelName)
+	notif.ChannelName = ctx.QueryParam("channelName")
+
+	n, err := a.NotificationRepo.GetNotification(ctx.Request().Context(), ctx.QueryParam("channelName"))
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, map[string]string{
 			"error": "Failed to retrieve notification",
@@ -246,9 +248,9 @@ func (a *Server) SendNotification(ctx echo.Context) error {
 	}
 
 	if notif.ChannelName == "telegram" {
-		notification.SendNotification("https://api.telegram.org", a.Config.ServerConfig.TelegramToken, notif.Alert, int64(n.ChatID))
+		notification.SendNotification("https://api.telegram.org", a.Config.ServerConfig.TelegramToken, "checkname: "+notif.CheckName+"\n"+"level: "+notif.Level+"\n"+"message: "+notif.Message, int64(n.ChatID))
 	} else if notif.ChannelName == "bale" {
-		notification.SendNotification("https://tapi.bale.ai", a.Config.ServerConfig.BaleToken, notif.Alert, int64(n.ChatID))
+		notification.SendNotification("https://tapi.bale.ai", a.Config.ServerConfig.BaleToken, "checkname: "+notif.CheckName+"\n"+"level: "+notif.Level+"\n"+"message: "+notif.Message, int64(n.ChatID))
 	} else {
 		return ctx.JSON(http.StatusBadRequest, map[string]string{
 			"error": "Invalid channel name",
