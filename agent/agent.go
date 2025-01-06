@@ -140,6 +140,9 @@ func (a *Server) Run(ctx context.Context) error {
 	v1.GET("/notification/:channelName", a.GetNotification)
 	v1.DELETE("/notification/:channelName", a.DeleteNotification)
 	v1.POST("/notification", a.SendNotification)
+	v1.GET("/notificationEndpoints", a.NotificationEndpoints)
+	v1.GET("/notificationRules", a.NotificationRules)
+	v1.GET("/checks", a.Checks)
 
 	a.echo.POST("/login", a.Login)
 	a.echo.POST("/register", a.Register)

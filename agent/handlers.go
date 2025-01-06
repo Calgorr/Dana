@@ -49,58 +49,8 @@ func (a *Server) Login(ctx echo.Context) error {
 }
 
 func (a *Server) Query(ctx echo.Context) error {
-	baseURL := a.Config.ServerConfig.InfluxHost + ":" + a.Config.ServerConfig.InfluxPort
-
-	targetURL, err := url.Parse(baseURL)
-	if err != nil {
-		return ctx.String(http.StatusInternalServerError, "Invalid target URL")
-	}
-
-	targetURL.Path = "/query"
-	targetURL.RawQuery = ctx.QueryString()
-
-	req := ctx.Request()
-	client := &http.Client{}
-
-	var bodyReader io.Reader = nil
-	if req.Body != nil {
-		bodyReader = req.Body
-	}
-
-	targetReq, err := http.NewRequest(req.Method, targetURL.String(), bodyReader)
-	if err != nil {
-		return ctx.String(http.StatusInternalServerError, "Failed to create proxy request")
-	}
-
-	for name, values := range req.Header {
-		for _, value := range values {
-			targetReq.Header.Add(name, value)
-		}
-	}
-
-	resp, err := client.Do(targetReq)
-	if err != nil {
-		return ctx.String(http.StatusBadGateway, "Failed to contact target server")
-	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			return
-		}
-	}(resp.Body)
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return ctx.String(http.StatusInternalServerError, "Failed to read response body")
-	}
-
-	for name, values := range resp.Header {
-		for _, value := range values {
-			ctx.Response().Header().Add(name, value)
-		}
-	}
-
-	return ctx.Blob(resp.StatusCode, resp.Header.Get("Content-Type"), body)
+	status, header, body := a.proxyRequest(ctx, "/query")
+	return ctx.Blob(status, header, body)
 }
 
 func (a *Server) PostInput(ctx echo.Context) error {
@@ -306,6 +256,75 @@ func (a *Server) SendNotification(ctx echo.Context) error {
 	}
 
 	return ctx.JSON(http.StatusOK, notif)
+}
+
+func (a *Server) NotificationEndpoints(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationEndpoints")
+	return ctx.Blob(status, header, body)
+}
+
+func (a *Server) NotificationRules(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationRules")
+	return ctx.Blob(status, header, body)
+}
+
+func (a *Server) Checks(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/checks")
+	return ctx.Blob(status, header, body)
+}
+
+func (a *Server) proxyRequest(ctx echo.Context, path string) (int, string, []byte) {
+	baseURL := a.Config.ServerConfig.InfluxHost + ":" + a.Config.ServerConfig.InfluxPort
+
+	targetURL, err := url.Parse(baseURL)
+	if err != nil {
+		return http.StatusInternalServerError, "Invalid target URL", nil
+	}
+
+	targetURL.Path = path
+	targetURL.RawQuery = ctx.QueryString()
+
+	req := ctx.Request()
+	client := &http.Client{}
+
+	var bodyReader io.Reader = nil
+	if req.Body != nil {
+		bodyReader = req.Body
+	}
+
+	targetReq, err := http.NewRequest(req.Method, targetURL.String(), bodyReader)
+	if err != nil {
+		return http.StatusInternalServerError, "Failed to create proxy request", nil
+	}
+
+	for name, values := range req.Header {
+		for _, value := range values {
+			targetReq.Header.Add(name, value)
+		}
+	}
+
+	resp, err := client.Do(targetReq)
+	if err != nil {
+		return http.StatusBadGateway, "Failed to contact target server", nil
+	}
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			return
+		}
+	}(resp.Body)
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return http.StatusInternalServerError, "Failed to read response body", nil
+	}
+
+	for name, values := range resp.Header {
+		for _, value := range values {
+			ctx.Response().Header().Add(name, value)
+		}
+	}
+	return resp.StatusCode, resp.Header.Get("Content-Type"), body
 }
 
 // ConvertMapToTOML takes a map[string]interface{} and converts it to a TOML-formatted []byte
