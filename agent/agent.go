@@ -12,6 +12,8 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"Dana"
 	authentication "Dana/agent/Auth"
@@ -39,10 +41,38 @@ type Server struct {
 
 // NewServer returns a Server for the given Config.
 func NewServer(cfg *config.Config) *Server {
+	// Connect to MongoDB
+	clientOptions := options.Client().ApplyURI(cfg.MongoURI())
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	client, err := mongo.Connect(context.Background(), clientOptions)
+	if err != nil {
+		panic(err)
+	}
+	err = client.Ping(ctx, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	// Create repositories
+	inputRepo := repository.NewHandlerInputRepo(client, "db", "inputs")
+	userRepo := repository.NewUserRepo(client, "db", "users")
+	dashboardRepo := repository.NewDashboardRepo(client, "db", "dashboards")
+	folderRepo := repository.NewFolderRepo(client, "db", "folders")
+	notificationRepo := repository.NewNotificationRepo(client, "db", "notifications")
+
+	log.Println("Connected to MongoDB")
 	a := &Server{
 		Config: cfg,
 		echo:   echo.New(),
 	}
+	a.UserRepo = userRepo
+	a.InputRepo = inputRepo
+	a.DashboardRepo = dashboardRepo
+	a.FolderRepo = folderRepo
+	a.NotificationRepo = notificationRepo
+	
 	return a
 }
 

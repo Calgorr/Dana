@@ -18,7 +18,8 @@ type notificationRepo struct {
 	notificationCollection *mongo.Collection
 }
 
-func NewNotificationRepo(notificationCollection *mongo.Collection) NotificationRepo {
+func NewNotificationRepo(client *mongo.Client, databaseName, collectionName string) NotificationRepo {
+	notificationCollection := client.Database(databaseName).Collection(collectionName)
 	return &notificationRepo{
 		notificationCollection: notificationCollection,
 	}

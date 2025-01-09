@@ -61,12 +61,12 @@ func (a *Server) PostInput(ctx echo.Context) error {
 	if err := a.InputRepo.AddServerInput(ctx.Request().Context(), inputData); err != nil {
 		return ctx.JSON(500, "internal server error")
 	}
-	toml, err := ConvertMapToTOML(inputData.Data, inputData.Type)
+	tomll, err := ConvertMapToTOML(inputData.Data, inputData.Type)
 	if err != nil {
 		return ctx.JSON(500, "internal server error")
 	}
 	newConfig := config.NewConfig()
-	if err := newConfig.LoadConfigData(toml); err != nil {
+	if err := newConfig.LoadConfigData(tomll); err != nil {
 		return ctx.JSON(500, errors.New("internal server error"))
 	}
 	iu := &inputUnit{

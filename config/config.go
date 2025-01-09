@@ -110,6 +110,11 @@ type ServerConfig struct {
 	BaleToken     string `toml:"bale_token"`
 }
 
+// MongoURI returns the MongoDB connection URI based on the host and port
+func (c *Config) MongoURI() string {
+	return fmt.Sprintf("mongodb://%s:%s", c.ServerConfig.MongoHost, c.ServerConfig.MongoPort)
+}
+
 // Ordered plugins used to keep the order in which they appear in a file
 type OrderedPlugin struct {
 	Line   int
