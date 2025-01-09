@@ -37,7 +37,7 @@ type Instrumental struct {
 	Timeout    config.Duration `toml:"timeout"`
 	Debug      bool            `toml:"debug"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	conn       net.Conn
 	serializer *graphite.GraphiteSerializer
@@ -95,7 +95,7 @@ func (i *Instrumental) Close() error {
 	return err
 }
 
-func (i *Instrumental) Write(metrics []telegraf.Metric) error {
+func (i *Instrumental) Write(metrics []Dana.Metric) error {
 	if i.conn == nil {
 		err := i.Connect()
 		if err != nil {
@@ -202,7 +202,7 @@ func (i *Instrumental) authenticate(conn net.Conn) error {
 }
 
 func init() {
-	outputs.Add("instrumental", func() telegraf.Output {
+	outputs.Add("instrumental", func() Dana.Output {
 		return &Instrumental{
 			Host:     DefaultHost,
 			Port:     DefaultPort,

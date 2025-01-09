@@ -40,7 +40,7 @@ type Kubernetes struct {
 	LabelInclude      []string        `toml:"label_include"`
 	LabelExclude      []string        `toml:"label_exclude"`
 	ResponseTimeout   config.Duration `toml:"response_timeout"`
-	Log               telegraf.Logger `toml:"-"`
+	Log               Dana.Logger     `toml:"-"`
 
 	tls.ClientConfig
 
@@ -75,7 +75,7 @@ func (k *Kubernetes) Init() error {
 	return nil
 }
 
-func (k *Kubernetes) Gather(acc telegraf.Accumulator) error {
+func (k *Kubernetes) Gather(acc Dana.Accumulator) error {
 	if k.URL != "" {
 		acc.AddError(k.gatherSummary(k.URL, acc))
 		return nil
@@ -99,7 +99,7 @@ func (k *Kubernetes) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func getNodeURLs(log telegraf.Logger) ([]string, error) {
+func getNodeURLs(log Dana.Logger) ([]string, error) {
 	cfg, err := rest.InClusterConfig()
 	if err != nil {
 		return nil, err
@@ -145,7 +145,7 @@ func getNodeAddress(addresses []v1.NodeAddress) string {
 	return ""
 }
 
-func (k *Kubernetes) gatherSummary(baseURL string, acc telegraf.Accumulator) error {
+func (k *Kubernetes) gatherSummary(baseURL string, acc Dana.Accumulator) error {
 	summaryMetrics := &summaryMetrics{}
 	err := k.loadJSON(baseURL+"/stats/summary", summaryMetrics)
 	if err != nil {
@@ -162,7 +162,7 @@ func (k *Kubernetes) gatherSummary(baseURL string, acc telegraf.Accumulator) err
 	return nil
 }
 
-func buildSystemContainerMetrics(summaryMetrics *summaryMetrics, acc telegraf.Accumulator) {
+func buildSystemContainerMetrics(summaryMetrics *summaryMetrics, acc Dana.Accumulator) {
 	for _, container := range summaryMetrics.Node.SystemContainers {
 		tags := map[string]string{
 			"node_name":      summaryMetrics.Node.NodeName,
@@ -184,7 +184,7 @@ func buildSystemContainerMetrics(summaryMetrics *summaryMetrics, acc telegraf.Ac
 	}
 }
 
-func buildNodeMetrics(summaryMetrics *summaryMetrics, acc telegraf.Accumulator, metricName string) {
+func buildNodeMetrics(summaryMetrics *summaryMetrics, acc Dana.Accumulator, metricName string) {
 	tags := map[string]string{
 		"node_name": summaryMetrics.Node.NodeName,
 	}
@@ -273,7 +273,7 @@ func (k *Kubernetes) loadJSON(url string, v interface{}) error {
 	return nil
 }
 
-func buildPodMetrics(summaryMetrics *summaryMetrics, podInfo []item, labelFilter filter.Filter, acc telegraf.Accumulator) {
+func buildPodMetrics(summaryMetrics *summaryMetrics, podInfo []item, labelFilter filter.Filter, acc Dana.Accumulator) {
 	for _, pod := range summaryMetrics.Pods {
 		podLabels := make(map[string]string)
 		containerImages := make(map[string]string)
@@ -361,7 +361,7 @@ func buildPodMetrics(summaryMetrics *summaryMetrics, podInfo []item, labelFilter
 }
 
 func init() {
-	inputs.Add("kubernetes", func() telegraf.Input {
+	inputs.Add("kubernetes", func() Dana.Input {
 		return &Kubernetes{
 			LabelExclude: []string{"*"},
 		}

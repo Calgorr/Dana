@@ -16,7 +16,7 @@ func TestLoadConfig(t *testing.T) {
 	t.Setenv("SECRET_TOKEN", "xxxxxxxxxx")
 	t.Setenv("SECRET_VALUE", `test"\test`)
 
-	inputs.Add("test", func() telegraf.Input {
+	inputs.Add("test", func() Dana.Input {
 		return &serviceInput{}
 	})
 
@@ -32,7 +32,7 @@ func TestLoadConfig(t *testing.T) {
 }
 
 func TestLoadingSpecialTypes(t *testing.T) {
-	inputs.Add("test", func() telegraf.Input {
+	inputs.Add("test", func() Dana.Input {
 		return &testDurationInput{}
 	})
 
@@ -49,7 +49,7 @@ func TestLoadingSpecialTypes(t *testing.T) {
 
 func TestLoadingProcessorWithConfig(t *testing.T) {
 	proc := &testConfigProcessor{}
-	processors.Add("test_config_load", func() telegraf.Processor {
+	processors.Add("test_config_load", func() Dana.Processor {
 		return proc
 	})
 
@@ -73,7 +73,7 @@ func (i *testDurationInput) SampleConfig() string {
 func (i *testDurationInput) Description() string {
 	return ""
 }
-func (i *testDurationInput) Gather(_ telegraf.Accumulator) error {
+func (i *testDurationInput) Gather(_ Dana.Accumulator) error {
 	return nil
 }
 
@@ -88,6 +88,6 @@ func (p *testConfigProcessor) SampleConfig() string {
 func (p *testConfigProcessor) Description() string {
 	return ""
 }
-func (p *testConfigProcessor) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
+func (p *testConfigProcessor) Apply(metrics ...Dana.Metric) []Dana.Metric {
 	return metrics
 }

@@ -12,16 +12,16 @@ import (
 type Persister struct {
 	Filename string
 
-	register map[string]telegraf.StatefulPlugin
+	register map[string]Dana.StatefulPlugin
 }
 
 func (p *Persister) Init() error {
-	p.register = make(map[string]telegraf.StatefulPlugin)
+	p.register = make(map[string]Dana.StatefulPlugin)
 
 	return nil
 }
 
-func (p *Persister) Register(id string, plugin telegraf.StatefulPlugin) error {
+func (p *Persister) Register(id string, plugin Dana.StatefulPlugin) error {
 	if _, found := p.register[id]; found {
 		return fmt.Errorf("plugin with ID %q already registered", id)
 	}

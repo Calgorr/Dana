@@ -48,7 +48,7 @@ func TestCases(t *testing.T) {
 	require.NotEmpty(t, folders)
 
 	// Set up for file inputs
-	processors.Add("lookup", func() telegraf.Processor {
+	processors.Add("lookup", func() Dana.Processor {
 		return &Processor{Log: testutil.Logger{}}
 	})
 
@@ -72,7 +72,7 @@ func TestCases(t *testing.T) {
 			input, err := testutil.ParseMetricsFromFile(inputFilename, parser)
 			require.NoError(t, err)
 
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)
@@ -104,7 +104,7 @@ func TestCasesTracking(t *testing.T) {
 	require.NotEmpty(t, folders)
 
 	// Set up for file inputs
-	processors.Add("lookup", func() telegraf.Processor {
+	processors.Add("lookup", func() Dana.Processor {
 		return &Processor{Log: testutil.Logger{}}
 	})
 
@@ -129,19 +129,19 @@ func TestCasesTracking(t *testing.T) {
 			require.NoError(t, err)
 
 			var mu sync.Mutex
-			delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-			notify := func(di telegraf.DeliveryInfo) {
+			delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+			notify := func(di Dana.DeliveryInfo) {
 				mu.Lock()
 				defer mu.Unlock()
 				delivered = append(delivered, di)
 			}
-			input := make([]telegraf.Metric, 0, len(inputRaw))
+			input := make([]Dana.Metric, 0, len(inputRaw))
 			for _, m := range inputRaw {
 				tm, _ := metric.WithTracking(m, notify)
 				input = append(input, tm)
 			}
 
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)

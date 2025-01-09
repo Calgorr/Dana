@@ -36,7 +36,7 @@ func (c *Compares) runChecks(fv float64) bool {
 	return true
 }
 
-func (c *Compares) Check(metrics []telegraf.Metric) bool {
+func (c *Compares) Check(metrics []Dana.Metric) bool {
 	success := true
 	for _, m := range metrics {
 		fv, ok := m.GetField(c.Field)

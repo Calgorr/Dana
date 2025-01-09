@@ -39,7 +39,7 @@ type AwsEc2Processor struct {
 	MaxParallelCalls      int             `toml:"max_parallel_calls"`
 	TagCacheSize          int             `toml:"tag_cache_size"`
 	LogCacheStats         bool            `toml:"log_cache_stats"`
-	Log                   telegraf.Logger `toml:"-"`
+	Log                   Dana.Logger     `toml:"-"`
 
 	tagCache *freecache.Cache
 
@@ -79,7 +79,7 @@ func (*AwsEc2Processor) SampleConfig() string {
 	return sampleConfig
 }
 
-func (r *AwsEc2Processor) Add(metric telegraf.Metric, _ telegraf.Accumulator) error {
+func (r *AwsEc2Processor) Add(metric Dana.Metric, _ Dana.Accumulator) error {
 	r.parallel.Enqueue(metric)
 	return nil
 }
@@ -100,7 +100,7 @@ func (r *AwsEc2Processor) Init() error {
 	return nil
 }
 
-func (r *AwsEc2Processor) Start(acc telegraf.Accumulator) error {
+func (r *AwsEc2Processor) Start(acc Dana.Accumulator) error {
 	r.tagCache = freecache.NewCache(r.TagCacheSize)
 	if r.LogCacheStats {
 		ctx, cancel := context.WithCancel(context.Background())
@@ -192,7 +192,7 @@ func (r *AwsEc2Processor) logCacheStatistics(ctx context.Context) {
 	}
 }
 
-func (r *AwsEc2Processor) lookupIMDSTags(metric telegraf.Metric) telegraf.Metric {
+func (r *AwsEc2Processor) lookupIMDSTags(metric Dana.Metric) Dana.Metric {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(r.Timeout))
 	defer cancel()
 
@@ -261,7 +261,7 @@ func (r *AwsEc2Processor) lookupIMDSTags(metric telegraf.Metric) telegraf.Metric
 	return metric
 }
 
-func (r *AwsEc2Processor) lookupMetadata(metric telegraf.Metric) telegraf.Metric {
+func (r *AwsEc2Processor) lookupMetadata(metric Dana.Metric) Dana.Metric {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(r.Timeout))
 	defer cancel()
 
@@ -306,7 +306,7 @@ func (r *AwsEc2Processor) lookupMetadata(metric telegraf.Metric) telegraf.Metric
 	return metric
 }
 
-func (r *AwsEc2Processor) lookupEC2Tags(metric telegraf.Metric) telegraf.Metric {
+func (r *AwsEc2Processor) lookupEC2Tags(metric Dana.Metric) Dana.Metric {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(r.Timeout))
 	defer cancel()
 
@@ -357,7 +357,7 @@ func (r *AwsEc2Processor) lookupEC2Tags(metric telegraf.Metric) telegraf.Metric 
 	return metric
 }
 
-func (r *AwsEc2Processor) asyncAdd(metric telegraf.Metric) []telegraf.Metric {
+func (r *AwsEc2Processor) asyncAdd(metric Dana.Metric) []Dana.Metric {
 	// Add IMDS Instance Identity Document tags.
 	if len(r.ImdsTags) > 0 {
 		metric = r.lookupIMDSTags(metric)
@@ -373,11 +373,11 @@ func (r *AwsEc2Processor) asyncAdd(metric telegraf.Metric) []telegraf.Metric {
 		metric = r.lookupEC2Tags(metric)
 	}
 
-	return []telegraf.Metric{metric}
+	return []Dana.Metric{metric}
 }
 
 func init() {
-	processors.AddStreaming("aws_ec2", func() telegraf.StreamingProcessor {
+	processors.AddStreaming("aws_ec2", func() Dana.StreamingProcessor {
 		return newAwsEc2Processor()
 	})
 }

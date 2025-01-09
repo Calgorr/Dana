@@ -44,7 +44,7 @@ func TestSFlow(t *testing.T) {
 
 	acc.Wait(2)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"sflow",
 			map[string]string{

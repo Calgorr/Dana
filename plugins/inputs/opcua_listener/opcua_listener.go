@@ -17,7 +17,7 @@ import (
 type OpcUaListener struct {
 	subscribeClientConfig
 	client *subscribeClient
-	Log    telegraf.Logger `toml:"-"`
+	Log    Dana.Logger `toml:"-"`
 }
 
 //go:embed sample.conf
@@ -40,11 +40,11 @@ func (o *OpcUaListener) Init() (err error) {
 	return err
 }
 
-func (o *OpcUaListener) Start(acc telegraf.Accumulator) error {
+func (o *OpcUaListener) Start(acc Dana.Accumulator) error {
 	return o.connect(acc)
 }
 
-func (o *OpcUaListener) Gather(acc telegraf.Accumulator) error {
+func (o *OpcUaListener) Gather(acc Dana.Accumulator) error {
 	if o.client.State() == opcua.Connected || o.subscribeClientConfig.ConnectFailBehavior == "ignore" {
 		return nil
 	}
@@ -62,7 +62,7 @@ func (o *OpcUaListener) Stop() {
 	cancel()
 }
 
-func (o *OpcUaListener) connect(acc telegraf.Accumulator) error {
+func (o *OpcUaListener) connect(acc Dana.Accumulator) error {
 	ctx := context.Background()
 	ch, err := o.client.startStreamValues(ctx)
 	if err != nil {
@@ -84,7 +84,7 @@ func (o *OpcUaListener) connect(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("opcua_listener", func() telegraf.Input {
+	inputs.Add("opcua_listener", func() Dana.Input {
 		return &OpcUaListener{
 			subscribeClientConfig: subscribeClientConfig{
 				InputClientConfig: input.InputClientConfig{

@@ -63,7 +63,7 @@ type Zipkin struct {
 	ReadTimeout  config.Duration `toml:"read_timeout"`
 	WriteTimeout config.Duration `toml:"write_timeout"`
 
-	Log telegraf.Logger
+	Log Dana.Logger
 
 	address   string
 	handler   Handler
@@ -77,11 +77,11 @@ func (*Zipkin) SampleConfig() string {
 
 // Gather is empty for the zipkin plugin; all gathering is done through
 // the separate goroutine launched in (*Zipkin).Start()
-func (*Zipkin) Gather(telegraf.Accumulator) error { return nil }
+func (*Zipkin) Gather(Dana.Accumulator) error { return nil }
 
 // Start launches a separate goroutine for collecting zipkin client http requests,
-// passing in a telegraf.Accumulator such that data can be collected.
-func (z *Zipkin) Start(acc telegraf.Accumulator) error {
+// passing in a Dana.Accumulator such that data can be collected.
+func (z *Zipkin) Start(acc Dana.Accumulator) error {
 	if z.ReadTimeout < config.Duration(time.Second) {
 		z.ReadTimeout = config.Duration(defaultReadTimeout)
 	}
@@ -137,7 +137,7 @@ func (z *Zipkin) Stop() {
 
 // Listen creates a http server on the zipkin instance it is called with, and
 // serves http until it is stopped by Zipkin's (*Zipkin).Stop()  method.
-func (z *Zipkin) Listen(ln net.Listener, acc telegraf.Accumulator) {
+func (z *Zipkin) Listen(ln net.Listener, acc Dana.Accumulator) {
 	if err := z.server.Serve(ln); err != nil {
 		// Because of the clean shutdown in `(*Zipkin).Stop()`
 		// We're expecting a server closed error at some point
@@ -151,7 +151,7 @@ func (z *Zipkin) Listen(ln net.Listener, acc telegraf.Accumulator) {
 }
 
 func init() {
-	inputs.Add("zipkin", func() telegraf.Input {
+	inputs.Add("zipkin", func() Dana.Input {
 		return &Zipkin{
 			Path: defaultRoute,
 			Port: defaultPort,

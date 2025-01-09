@@ -84,7 +84,7 @@ func TestOpenTelemetry(t *testing.T) {
 	if runtime.GOOS == "windows" {
 		exesuffix = ".exe"
 	}
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"measurement-counter",
 			map[string]string{
@@ -98,7 +98,7 @@ func TestOpenTelemetry(t *testing.T) {
 				"counter": 7,
 			},
 			time.Unix(0, 0),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 	}
 	options := []cmp.Option{
@@ -116,7 +116,7 @@ func TestCases(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	inputs.Add("opentelemetry", func() telegraf.Input {
+	inputs.Add("opentelemetry", func() Dana.Input {
 		return &OpenTelemetry{
 			ServiceAddress:      "127.0.0.1:0",
 			SpanDimensions:      otel2influx.DefaultOtelTracesToLineProtocolConfig().SpanDimensions,
@@ -165,7 +165,7 @@ func TestCases(t *testing.T) {
 			}
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)

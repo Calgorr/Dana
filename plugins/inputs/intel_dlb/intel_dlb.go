@@ -38,11 +38,11 @@ const (
 )
 
 type IntelDLB struct {
-	SocketPath                string          `toml:"socket_path"`
-	EventdevCommands          []string        `toml:"eventdev_commands"`
-	DLBDeviceIDs              []string        `toml:"dlb_device_types"`
-	UnreachableSocketBehavior string          `toml:"unreachable_socket_behavior"`
-	Log                       telegraf.Logger `toml:"-"`
+	SocketPath                string      `toml:"socket_path"`
+	EventdevCommands          []string    `toml:"eventdev_commands"`
+	DLBDeviceIDs              []string    `toml:"dlb_device_types"`
+	UnreachableSocketBehavior string      `toml:"unreachable_socket_behavior"`
+	Log                       Dana.Logger `toml:"-"`
 
 	connection           net.Conn
 	devicesDir           []string
@@ -103,7 +103,7 @@ func (d *IntelDLB) Init() error {
 	return nil
 }
 
-func (d *IntelDLB) Gather(acc telegraf.Accumulator) error {
+func (d *IntelDLB) Gather(acc Dana.Accumulator) error {
 	err := d.gatherMetricsFromSocket(acc)
 	if err != nil {
 		socketErr := fmt.Errorf("gathering metrics from socket by given commands failed: %w", err)
@@ -121,7 +121,7 @@ func (d *IntelDLB) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (d *IntelDLB) gatherRasMetrics(acc telegraf.Accumulator) error {
+func (d *IntelDLB) gatherRasMetrics(acc Dana.Accumulator) error {
 	for _, devicePath := range d.devicesDir {
 		rasTags := map[string]string{
 			"device": filepath.Base(filepath.Dir(devicePath)),
@@ -167,7 +167,7 @@ func (d *IntelDLB) readRasMetrics(devicePath, metricPath string) (map[string]int
 	return rasMetric, nil
 }
 
-func (d *IntelDLB) gatherMetricsFromSocket(acc telegraf.Accumulator) error {
+func (d *IntelDLB) gatherMetricsFromSocket(acc Dana.Accumulator) error {
 	// Get device indexes and those indexes to available commands
 	commandsWithIndex, err := d.gatherCommandsWithDeviceIndex()
 	if err != nil {
@@ -466,7 +466,7 @@ func validateEventdevCommands(commands []string) error {
 }
 
 func init() {
-	inputs.Add(pluginName, func() telegraf.Input {
+	inputs.Add(pluginName, func() Dana.Input {
 		return &IntelDLB{
 			rasReader: rasReaderImpl{},
 		}

@@ -34,7 +34,7 @@ type Chrony struct {
 	SocketGroup string          `toml:"socket_group"`
 	SocketPerms string          `toml:"socket_perms"`
 	Metrics     []string        `toml:"metrics"`
-	Log         telegraf.Logger `toml:"-"`
+	Log         Dana.Logger     `toml:"-"`
 
 	conn   net.Conn
 	client *fbchrony.Client
@@ -97,7 +97,7 @@ func (c *Chrony) Init() error {
 	return nil
 }
 
-func (c *Chrony) Start(_ telegraf.Accumulator) error {
+func (c *Chrony) Start(_ Dana.Accumulator) error {
 	if c.Server != "" {
 		// Create a connection
 		u, err := url.Parse(c.Server)
@@ -145,7 +145,7 @@ func (c *Chrony) Start(_ telegraf.Accumulator) error {
 	return nil
 }
 
-func (c *Chrony) Gather(acc telegraf.Accumulator) error {
+func (c *Chrony) Gather(acc Dana.Accumulator) error {
 	for _, m := range c.Metrics {
 		switch m {
 		case "activity":
@@ -216,7 +216,7 @@ func (c *Chrony) dialUnix(address string) (*net.UnixConn, error) {
 	return conn, nil
 }
 
-func (c *Chrony) gatherActivity(acc telegraf.Accumulator) error {
+func (c *Chrony) gatherActivity(acc Dana.Accumulator) error {
 	req := fbchrony.NewActivityPacket()
 	r, err := c.client.Communicate(req)
 	if err != nil {
@@ -244,7 +244,7 @@ func (c *Chrony) gatherActivity(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (c *Chrony) gatherTracking(acc telegraf.Accumulator) error {
+func (c *Chrony) gatherTracking(acc Dana.Accumulator) error {
 	req := fbchrony.NewTrackingPacket()
 	r, err := c.client.Communicate(req)
 	if err != nil {
@@ -293,7 +293,7 @@ func (c *Chrony) gatherTracking(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (c *Chrony) gatherServerStats(acc telegraf.Accumulator) error {
+func (c *Chrony) gatherServerStats(acc Dana.Accumulator) error {
 	req := fbchrony.NewServerStatsPacket()
 	r, err := c.client.Communicate(req)
 	if err != nil {
@@ -387,7 +387,7 @@ func (c *Chrony) getSourceName(ip net.IP) (string, error) {
 	return string(sourceName.Name[:]), nil
 }
 
-func (c *Chrony) gatherSources(acc telegraf.Accumulator) error {
+func (c *Chrony) gatherSources(acc Dana.Accumulator) error {
 	sourcesReq := fbchrony.NewSourcesPacket()
 	sourcesRaw, err := c.client.Communicate(sourcesReq)
 	if err != nil {
@@ -456,7 +456,7 @@ func (c *Chrony) gatherSources(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (c *Chrony) gatherSourceStats(acc telegraf.Accumulator) error {
+func (c *Chrony) gatherSourceStats(acc Dana.Accumulator) error {
 	sourcesReq := fbchrony.NewSourcesPacket()
 	sourcesRaw, err := c.client.Communicate(sourcesReq)
 	if err != nil {
@@ -525,7 +525,7 @@ func (c *Chrony) gatherSourceStats(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("chrony", func() telegraf.Input {
+	inputs.Add("chrony", func() Dana.Input {
 		return &Chrony{Timeout: config.Duration(3 * time.Second)}
 	})
 }

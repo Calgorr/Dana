@@ -95,7 +95,7 @@ func (*Burrow) SampleConfig() string {
 	return sampleConfig
 }
 
-func (b *Burrow) Gather(acc telegraf.Accumulator) error {
+func (b *Burrow) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	if len(b.Servers) == 0 {
@@ -218,7 +218,7 @@ func (b *Burrow) getResponse(u *url.URL) (*apiResponse, error) {
 	return ares, dec.Decode(ares)
 }
 
-func (b *Burrow) gatherServer(src *url.URL, acc telegraf.Accumulator) error {
+func (b *Burrow) gatherServer(src *url.URL, acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	r, err := b.getResponse(src)
@@ -257,7 +257,7 @@ func (b *Burrow) gatherServer(src *url.URL, acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (b *Burrow) gatherTopics(guard chan struct{}, src *url.URL, cluster string, acc telegraf.Accumulator) {
+func (b *Burrow) gatherTopics(guard chan struct{}, src *url.URL, cluster string, acc Dana.Accumulator) {
 	var wg sync.WaitGroup
 
 	r, err := b.getResponse(src)
@@ -296,7 +296,7 @@ func (b *Burrow) gatherTopics(guard chan struct{}, src *url.URL, cluster string,
 	wg.Wait()
 }
 
-func genTopicMetrics(r *apiResponse, cluster, topic string, acc telegraf.Accumulator) {
+func genTopicMetrics(r *apiResponse, cluster, topic string, acc Dana.Accumulator) {
 	for i, offset := range r.Offsets {
 		tags := map[string]string{
 			"cluster":   cluster,
@@ -314,7 +314,7 @@ func genTopicMetrics(r *apiResponse, cluster, topic string, acc telegraf.Accumul
 	}
 }
 
-func (b *Burrow) gatherGroups(guard chan struct{}, src *url.URL, cluster string, acc telegraf.Accumulator) {
+func (b *Burrow) gatherGroups(guard chan struct{}, src *url.URL, cluster string, acc Dana.Accumulator) {
 	var wg sync.WaitGroup
 
 	r, err := b.getResponse(src)
@@ -354,7 +354,7 @@ func (b *Burrow) gatherGroups(guard chan struct{}, src *url.URL, cluster string,
 	wg.Wait()
 }
 
-func genGroupStatusMetrics(r *apiResponse, cluster, group string, acc telegraf.Accumulator) {
+func genGroupStatusMetrics(r *apiResponse, cluster, group string, acc Dana.Accumulator) {
 	partitionCount := r.Status.PartitionCount
 	if partitionCount == 0 {
 		partitionCount = len(r.Status.Partitions)
@@ -393,7 +393,7 @@ func genGroupStatusMetrics(r *apiResponse, cluster, group string, acc telegraf.A
 	)
 }
 
-func (b *Burrow) genGroupLagMetrics(r *apiResponse, cluster, group string, acc telegraf.Accumulator) {
+func (b *Burrow) genGroupLagMetrics(r *apiResponse, cluster, group string, acc Dana.Accumulator) {
 	for _, partition := range r.Status.Partitions {
 		if !b.filterTopics.Match(partition.Topic) {
 			continue
@@ -451,7 +451,7 @@ func mapStatusToCode(src string) int {
 }
 
 func init() {
-	inputs.Add("burrow", func() telegraf.Input {
+	inputs.Add("burrow", func() Dana.Input {
 		return &Burrow{}
 	})
 }

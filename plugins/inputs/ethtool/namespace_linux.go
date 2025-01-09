@@ -41,7 +41,7 @@ type namespaceGoroutine struct {
 	handle        netns.NsHandle
 	ethtoolClient *ethtool.Ethtool
 	c             chan namespacedAction
-	log           telegraf.Logger
+	log           Dana.Logger
 }
 
 func (n *namespaceGoroutine) name() string {

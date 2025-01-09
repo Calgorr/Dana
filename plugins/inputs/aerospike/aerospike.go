@@ -59,7 +59,7 @@ func (*Aerospike) SampleConfig() string {
 	return sampleConfig
 }
 
-func (a *Aerospike) Gather(acc telegraf.Accumulator) error {
+func (a *Aerospike) Gather(acc Dana.Accumulator) error {
 	if !a.initialized {
 		tlsConfig, err := a.ClientConfig.TLSConfig()
 		if err != nil {
@@ -97,7 +97,7 @@ func (a *Aerospike) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (a *Aerospike) gatherServer(acc telegraf.Accumulator, hostPort string) error {
+func (a *Aerospike) gatherServer(acc Dana.Accumulator, hostPort string) error {
 	policy := as.NewClientPolicy()
 	policy.User = a.Username
 	policy.Password = a.Password
@@ -198,7 +198,7 @@ func getNodeInfo(n *as.Node, infoPolicy *as.InfoPolicy) (map[string]string, erro
 	return stats, nil
 }
 
-func parseNodeInfo(acc telegraf.Accumulator, stats map[string]string, hostPort, nodeName string) {
+func parseNodeInfo(acc Dana.Accumulator, stats map[string]string, hostPort, nodeName string) {
 	nTags := map[string]string{
 		"aerospike_host": hostPort,
 		"node_name":      nodeName,
@@ -240,7 +240,7 @@ func getNamespaceInfo(namespace string, n *as.Node, infoPolicy *as.InfoPolicy) (
 	return stats, err
 }
 
-func parseNamespaceInfo(acc telegraf.Accumulator, stats map[string]string, hostPort, namespace, nodeName string) {
+func parseNamespaceInfo(acc Dana.Accumulator, stats map[string]string, hostPort, namespace, nodeName string) {
 	nTags := map[string]string{
 		"aerospike_host": hostPort,
 		"node_name":      nodeName,
@@ -305,7 +305,7 @@ func getSetInfo(namespaceSet string, n *as.Node, infoPolicy *as.InfoPolicy) (map
 	return stats, nil
 }
 
-func parseSetInfo(acc telegraf.Accumulator, stats map[string]string, hostPort, namespaceSet, nodeName string) {
+func parseSetInfo(acc Dana.Accumulator, stats map[string]string, hostPort, namespaceSet, nodeName string) {
 	stat := strings.Split(
 		strings.TrimSuffix(
 			stats["sets/"+namespaceSet], ";"), ":")
@@ -327,7 +327,7 @@ func parseSetInfo(acc telegraf.Accumulator, stats map[string]string, hostPort, n
 	acc.AddFields("aerospike_set", nFields, nTags, time.Now())
 }
 
-func (a *Aerospike) getTTLHistogram(acc telegraf.Accumulator, hostPort, namespace, set string, n *as.Node, infoPolicy *as.InfoPolicy) error {
+func (a *Aerospike) getTTLHistogram(acc Dana.Accumulator, hostPort, namespace, set string, n *as.Node, infoPolicy *as.InfoPolicy) error {
 	stats, err := getHistogram(namespace, set, "ttl", n, infoPolicy)
 	if err != nil {
 		return err
@@ -339,7 +339,7 @@ func (a *Aerospike) getTTLHistogram(acc telegraf.Accumulator, hostPort, namespac
 	return nil
 }
 
-func (a *Aerospike) getObjectSizeLinearHistogram(acc telegraf.Accumulator, hostPort, namespace, set string, n *as.Node, infoPolicy *as.InfoPolicy) error {
+func (a *Aerospike) getObjectSizeLinearHistogram(acc Dana.Accumulator, hostPort, namespace, set string, n *as.Node, infoPolicy *as.InfoPolicy) error {
 	stats, err := getHistogram(namespace, set, "object-size-linear", n, infoPolicy)
 	if err != nil {
 		return err
@@ -366,7 +366,7 @@ func getHistogram(namespace, set, histogramType string, n *as.Node, infoPolicy *
 	return stats, nil
 }
 
-func (a *Aerospike) parseHistogram(acc telegraf.Accumulator, stats, nTags map[string]string, histogramType string) {
+func (a *Aerospike) parseHistogram(acc Dana.Accumulator, stats, nTags map[string]string, histogramType string) {
 	nFields := make(map[string]interface{})
 
 	for _, stat := range stats {
@@ -451,7 +451,7 @@ func createTags(hostPort, nodeName, namespace, set string) map[string]string {
 }
 
 func init() {
-	inputs.Add("aerospike", func() telegraf.Input {
+	inputs.Add("aerospike", func() Dana.Input {
 		return &Aerospike{}
 	})
 }

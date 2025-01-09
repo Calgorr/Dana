@@ -64,7 +64,7 @@ func TestIPv4SW(t *testing.T) {
 	packet, err := hex.DecodeString(str)
 	require.NoError(t, err)
 
-	actual := make([]telegraf.Metric, 0)
+	actual := make([]Dana.Metric, 0)
 	dc := newDecoder()
 	dc.OnPacket(func(p *v5Format) {
 		metrics := makeMetrics(p)
@@ -74,7 +74,7 @@ func TestIPv4SW(t *testing.T) {
 	err = dc.Decode(buf)
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"sflow",
 			map[string]string{
@@ -193,7 +193,7 @@ func TestExpandFlow(t *testing.T) {
 	require.NoError(t, err)
 	actual := makeMetrics(p)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"sflow",
 			map[string]string{
@@ -334,7 +334,7 @@ func TestIPv4SWRT(t *testing.T) {
 	require.NoError(t, err)
 	actual := makeMetrics(p)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"sflow",
 			map[string]string{
@@ -561,7 +561,7 @@ func TestIPv6SW(t *testing.T) {
 	require.NoError(t, err)
 	actual := makeMetrics(p)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 
 		testutil.MustMetric(
 			"sflow",
@@ -632,7 +632,7 @@ func TestExpandFlowCounter(t *testing.T) {
 	require.NoError(t, err)
 	actual := makeMetrics(p)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"sflow",
 			map[string]string{
@@ -835,6 +835,6 @@ func TestFlowExpandCounter(t *testing.T) {
 	actual := makeMetrics(p)
 
 	// we don't do anything with samples yet
-	expected := make([]telegraf.Metric, 0)
+	expected := make([]Dana.Metric, 0)
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 }

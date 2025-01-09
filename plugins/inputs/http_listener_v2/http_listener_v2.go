@@ -68,7 +68,7 @@ type HTTPListenerV2 struct {
 	tlsConf *tls.Config
 
 	timeFunc
-	Log telegraf.Logger
+	Log Dana.Logger
 
 	wg    sync.WaitGroup
 	close chan struct{}
@@ -76,8 +76,8 @@ type HTTPListenerV2 struct {
 	listener net.Listener
 	url      *url.URL
 
-	telegraf.Parser
-	acc telegraf.Accumulator
+	Dana.Parser
+	acc Dana.Accumulator
 }
 
 // timeFunc provides a timestamp for the metrics
@@ -113,11 +113,11 @@ func (h *HTTPListenerV2) Init() error {
 	return nil
 }
 
-func (h *HTTPListenerV2) SetParser(parser telegraf.Parser) {
+func (h *HTTPListenerV2) SetParser(parser Dana.Parser) {
 	h.Parser = parser
 }
 
-func (h *HTTPListenerV2) Start(acc telegraf.Accumulator) error {
+func (h *HTTPListenerV2) Start(acc Dana.Accumulator) error {
 	u := h.url
 	address := u.Host
 	switch u.Scheme {
@@ -197,7 +197,7 @@ func (h *HTTPListenerV2) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*HTTPListenerV2) Gather(telegraf.Accumulator) error {
+func (*HTTPListenerV2) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -420,7 +420,7 @@ func (h *HTTPListenerV2) authenticateIfSet(handler http.HandlerFunc, res http.Re
 }
 
 func init() {
-	inputs.Add("http_listener_v2", func() telegraf.Input {
+	inputs.Add("http_listener_v2", func() Dana.Input {
 		return &HTTPListenerV2{
 			ServiceAddress: ":8080",
 			timeFunc:       time.Now,

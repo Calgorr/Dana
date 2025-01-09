@@ -126,17 +126,17 @@ func TestParseSchema(t *testing.T) {
 
 	require.NoError(t, err)
 	// Test Gauge
-	require.Equal(t, telegraf.Counter, schemaMap["osd"]["op"],
+	require.Equal(t, Dana.Counter, schemaMap["osd"]["op"],
 		"op should be a Counter")
 	// Test Counter
-	require.Equal(t, telegraf.Gauge, schemaMap["osd"]["op_wip"],
+	require.Equal(t, Dana.Gauge, schemaMap["osd"]["op_wip"],
 		"op_wip should be a Gauge")
 	// Test LongRunAvg
-	require.Equal(t, telegraf.Counter, schemaMap["osd"]["op_latency.avgcount"],
+	require.Equal(t, Dana.Counter, schemaMap["osd"]["op_latency.avgcount"],
 		"op_latency.avgcount should be a Counter")
-	require.Equal(t, telegraf.Counter, schemaMap["osd"]["op_latency.sum"],
+	require.Equal(t, Dana.Counter, schemaMap["osd"]["op_latency.sum"],
 		"op_latency.sum should be a Counter")
-	require.Equal(t, telegraf.Gauge, schemaMap["osd"]["op_latency.avgtime"],
+	require.Equal(t, Dana.Gauge, schemaMap["osd"]["op_latency.avgtime"],
 		"op_latency.avgtime should be a Gauge")
 }
 

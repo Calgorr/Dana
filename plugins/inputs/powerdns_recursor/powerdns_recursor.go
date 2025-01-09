@@ -22,10 +22,10 @@ type PowerdnsRecursor struct {
 	SocketMode             string   `toml:"socket_mode"`
 	ControlProtocolVersion int      `toml:"control_protocol_version"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	mode             uint32
-	gatherFromServer func(address string, acc telegraf.Accumulator) error
+	gatherFromServer func(address string, acc Dana.Accumulator) error
 }
 
 func (*PowerdnsRecursor) SampleConfig() string {
@@ -65,7 +65,7 @@ func (p *PowerdnsRecursor) Init() error {
 	return nil
 }
 
-func (p *PowerdnsRecursor) Gather(acc telegraf.Accumulator) error {
+func (p *PowerdnsRecursor) Gather(acc Dana.Accumulator) error {
 	for _, serverSocket := range p.UnixSockets {
 		if err := p.gatherFromServer(serverSocket, acc); err != nil {
 			acc.AddError(err)
@@ -76,7 +76,7 @@ func (p *PowerdnsRecursor) Gather(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("powerdns_recursor", func() telegraf.Input {
+	inputs.Add("powerdns_recursor", func() Dana.Input {
 		return &PowerdnsRecursor{
 			mode: uint32(0666),
 		}

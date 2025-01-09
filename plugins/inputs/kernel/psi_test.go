@@ -32,7 +32,7 @@ func TestPSIStats(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, k.gatherPressure(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"pressure",
 			map[string]string{
@@ -45,7 +45,7 @@ func TestPSIStats(t *testing.T) {
 				"avg300": float64(300),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"pressure",
@@ -57,7 +57,7 @@ func TestPSIStats(t *testing.T) {
 				"total": uint64(114514),
 			},
 			time.Unix(0, 0),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		metric.New(
 			"pressure",
@@ -71,7 +71,7 @@ func TestPSIStats(t *testing.T) {
 				"avg300": float64(300),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"pressure",
@@ -83,7 +83,7 @@ func TestPSIStats(t *testing.T) {
 				"total": uint64(114514),
 			},
 			time.Unix(0, 0),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		metric.New(
 			"pressure",
@@ -97,7 +97,7 @@ func TestPSIStats(t *testing.T) {
 				"avg300": float64(300),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"pressure",
@@ -109,7 +109,7 @@ func TestPSIStats(t *testing.T) {
 				"total": uint64(114514),
 			},
 			time.Unix(0, 0),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		metric.New(
 			"pressure",
@@ -123,7 +123,7 @@ func TestPSIStats(t *testing.T) {
 				"avg300": float64(30),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"pressure",
@@ -135,7 +135,7 @@ func TestPSIStats(t *testing.T) {
 				"total": uint64(11451),
 			},
 			time.Unix(0, 0),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		metric.New(
 			"pressure",
@@ -149,7 +149,7 @@ func TestPSIStats(t *testing.T) {
 				"avg300": float64(30),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"pressure",
@@ -161,7 +161,7 @@ func TestPSIStats(t *testing.T) {
 				"total": uint64(11451),
 			},
 			time.Unix(0, 0),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 	}
 

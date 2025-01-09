@@ -30,7 +30,7 @@ func TestMultipleConfigs(t *testing.T) {
 	parser := &influx.Parser{}
 	require.NoError(t, parser.Init())
 
-	inputs.Add("file", func() telegraf.Input {
+	inputs.Add("file", func() Dana.Input {
 		return &file.File{}
 	})
 

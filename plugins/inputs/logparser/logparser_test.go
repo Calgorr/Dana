@@ -61,7 +61,7 @@ func TestGrokParseLogFiles(t *testing.T) {
 
 	logparser.Stop()
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"logparser_grok",
 			map[string]string{

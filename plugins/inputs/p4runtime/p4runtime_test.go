@@ -113,7 +113,7 @@ func TestOneCounterRead(t *testing.T) {
 	tests := []struct {
 		forwardingPipelineConfig *p4.ForwardingPipelineConfig
 		EntityCounterEntry       *p4.Entity_CounterEntry
-		expected                 []telegraf.Metric
+		expected                 []Dana.Metric
 	}{
 		{
 			forwardingPipelineConfig: &p4.ForwardingPipelineConfig{
@@ -129,7 +129,7 @@ func TestOneCounterRead(t *testing.T) {
 				5,
 				&p4.CounterData{ByteCount: 5, PacketCount: 1},
 			),
-			expected: []telegraf.Metric{testutil.MustMetric(
+			expected: []Dana.Metric{testutil.MustMetric(
 				"p4_runtime",
 				map[string]string{
 					"p4program_name": "P4Program",
@@ -160,7 +160,7 @@ func TestOneCounterRead(t *testing.T) {
 				5,
 				&p4.CounterData{ByteCount: 5},
 			),
-			expected: []telegraf.Metric{testutil.MustMetric(
+			expected: []Dana.Metric{testutil.MustMetric(
 				"p4_runtime",
 				map[string]string{
 					"p4program_name": "P4Program",
@@ -191,7 +191,7 @@ func TestOneCounterRead(t *testing.T) {
 				5,
 				&p4.CounterData{PacketCount: 1},
 			),
-			expected: []telegraf.Metric{testutil.MustMetric(
+			expected: []Dana.Metric{testutil.MustMetric(
 				"p4_runtime",
 				map[string]string{
 					"p4program_name": "P4Program",
@@ -263,7 +263,7 @@ func TestMultipleEntitiesSingleCounterRead(t *testing.T) {
 	totalNumOfEntriesArr := [3]int{2, 10, 100}
 
 	for _, totalNumOfEntries := range totalNumOfEntriesArr {
-		var expected []telegraf.Metric
+		var expected []Dana.Metric
 
 		fmt.Println(
 			"Running TestMultipleEntitiesSingleCounterRead with ",
@@ -352,7 +352,7 @@ func TestSingleEntitiesMultipleCounterRead(t *testing.T) {
 	totalNumOfCountersArr := [3]int{2, 10, 100}
 
 	for _, totalNumOfCounters := range totalNumOfCountersArr {
-		var expected []telegraf.Metric
+		var expected []Dana.Metric
 
 		fmt.Println(
 			"Running TestSingleEntitiesMultipleCounterRead with ",

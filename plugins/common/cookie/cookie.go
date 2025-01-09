@@ -33,7 +33,7 @@ type CookieAuthConfig struct {
 	wg     sync.WaitGroup
 }
 
-func (c *CookieAuthConfig) Start(client *http.Client, log telegraf.Logger, clock clockutil.Clock) (err error) {
+func (c *CookieAuthConfig) Start(client *http.Client, log Dana.Logger, clock clockutil.Clock) (err error) {
 	if err := c.initializeClient(client); err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func (c *CookieAuthConfig) initializeClient(client *http.Client) (err error) {
 	return c.auth()
 }
 
-func (c *CookieAuthConfig) authRenewal(ctx context.Context, ticker *clockutil.Ticker, log telegraf.Logger) {
+func (c *CookieAuthConfig) authRenewal(ctx context.Context, ticker *clockutil.Ticker, log Dana.Logger) {
 	for {
 		select {
 		case <-ctx.Done():

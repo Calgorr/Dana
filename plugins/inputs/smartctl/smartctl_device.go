@@ -9,7 +9,7 @@ import (
 	"Dana/internal"
 )
 
-func (s *Smartctl) scanDevice(acc telegraf.Accumulator, deviceName, deviceType string) error {
+func (s *Smartctl) scanDevice(acc Dana.Accumulator, deviceName, deviceType string) error {
 	args := []string{"--json", "--all", deviceName, "--device", deviceType, "--nocheck=" + s.NoCheck}
 	cmd := execCommand(s.Path, args...)
 	if s.UseSudo {

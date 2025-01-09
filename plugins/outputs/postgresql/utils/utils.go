@@ -12,7 +12,7 @@ import (
 	"Dana"
 )
 
-func TagListToJSON(tagList []*telegraf.Tag) []byte {
+func TagListToJSON(tagList []*Dana.Tag) []byte {
 	tags := make(map[string]string, len(tagList))
 	for _, tag := range tagList {
 		tags[tag.Key] = tag.Value
@@ -22,7 +22,7 @@ func TagListToJSON(tagList []*telegraf.Tag) []byte {
 	return bs
 }
 
-func FieldListToJSON(fieldList []*telegraf.Field) ([]byte, error) {
+func FieldListToJSON(fieldList []*Dana.Field) ([]byte, error) {
 	fields := make(map[string]interface{}, len(fieldList))
 	for _, field := range fieldList {
 		fields[field.Key] = field.Value
@@ -49,9 +49,9 @@ func FullTableName(schema, name string) pgx.Identifier {
 	return pgx.Identifier{name}
 }
 
-// PGXLogger makes telegraf.Logger compatible with pgx.Logger
+// PGXLogger makes Dana.Logger compatible with pgx.Logger
 type PGXLogger struct {
-	telegraf.Logger
+	Dana.Logger
 }
 
 func (l PGXLogger) Log(_ context.Context, level pgx.LogLevel, msg string, data map[string]interface{}) {
@@ -69,7 +69,7 @@ func (l PGXLogger) Log(_ context.Context, level pgx.LogLevel, msg string, data m
 	}
 }
 
-func GetTagID(metric telegraf.Metric) int64 {
+func GetTagID(metric Dana.Metric) int64 {
 	hash := fnv.New64a()
 	for _, tag := range metric.TagList() {
 		hash.Write([]byte(tag.Key))

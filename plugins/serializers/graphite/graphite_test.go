@@ -1181,7 +1181,7 @@ func TestSerializeBatch(t *testing.T) {
 			require.NoError(t, s.Init())
 
 			m := metric.New(tt.metricName, tt.tags, tt.fields, now)
-			actual, err := s.SerializeBatch([]telegraf.Metric{m, m})
+			actual, err := s.SerializeBatch([]Dana.Metric{m, m})
 			require.NoError(t, err)
 			require.Equal(t, tt.expected, string(actual))
 		})
@@ -1215,7 +1215,7 @@ func TestSerializeBatchWithTagsSupport(t *testing.T) {
 			require.NoError(t, s.Init())
 
 			m := metric.New(tt.metricName, tt.tags, tt.fields, now)
-			actual, err := s.SerializeBatch([]telegraf.Metric{m, m})
+			actual, err := s.SerializeBatch([]Dana.Metric{m, m})
 			require.NoError(t, err)
 			require.Equal(t, tt.expected, string(actual))
 		})

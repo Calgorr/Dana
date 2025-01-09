@@ -41,9 +41,9 @@ type RiemannSocketListener struct {
 
 	wg sync.WaitGroup
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
-	telegraf.Accumulator
+	Dana.Accumulator
 }
 type setReadBufferer interface {
 	SetReadBuffer(sizeInBytes int) error
@@ -219,7 +219,7 @@ func (rsl *riemannListener) read(conn net.Conn) {
 				"Metric": m.Metric,
 				"TTL":    m.TTL.Seconds(),
 			}
-			singleMetric := metric.New(m.Service, tags, fieldValues, m.Time, telegraf.Untyped)
+			singleMetric := metric.New(m.Service, tags, fieldValues, m.Time, Dana.Untyped)
 			rsl.AddMetric(singleMetric)
 		}
 		rsl.riemannReturnResponse(conn)
@@ -275,11 +275,11 @@ func (*RiemannSocketListener) SampleConfig() string {
 	return sampleConfig
 }
 
-func (*RiemannSocketListener) Gather(telegraf.Accumulator) error {
+func (*RiemannSocketListener) Gather(Dana.Accumulator) error {
 	return nil
 }
 
-func (rsl *RiemannSocketListener) Start(acc telegraf.Accumulator) error {
+func (rsl *RiemannSocketListener) Start(acc Dana.Accumulator) error {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	go rsl.processOsSignals(cancelFunc)
 	rsl.Accumulator = acc
@@ -357,5 +357,5 @@ func newRiemannSocketListener() *RiemannSocketListener {
 }
 
 func init() {
-	inputs.Add("riemann_listener", func() telegraf.Input { return newRiemannSocketListener() })
+	inputs.Add("riemann_listener", func() Dana.Input { return newRiemannSocketListener() })
 }

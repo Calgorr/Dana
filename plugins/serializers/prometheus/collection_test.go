@@ -13,7 +13,7 @@ import (
 )
 
 type Input struct {
-	metric  telegraf.Metric
+	metric  Dana.Metric
 	addtime time.Time
 }
 
@@ -213,7 +213,7 @@ func TestCollectionExpire(t *testing.T) {
 							"http_request_duration_seconds_count": 2,
 						},
 						time.Unix(0, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -224,7 +224,7 @@ func TestCollectionExpire(t *testing.T) {
 							"http_request_duration_seconds_bucket": 1.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -235,7 +235,7 @@ func TestCollectionExpire(t *testing.T) {
 							"http_request_duration_seconds_bucket": 1.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -248,7 +248,7 @@ func TestCollectionExpire(t *testing.T) {
 							"http_request_duration_seconds_count": 4,
 						},
 						time.Unix(0, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -259,7 +259,7 @@ func TestCollectionExpire(t *testing.T) {
 							"http_request_duration_seconds_bucket": 2.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -270,7 +270,7 @@ func TestCollectionExpire(t *testing.T) {
 							"http_request_duration_seconds_bucket": 2.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(0, 0),
 				},
@@ -316,7 +316,7 @@ func TestCollectionExpire(t *testing.T) {
 							"http_request_duration_seconds_count": 2,
 						},
 						time.Unix(0, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -327,7 +327,7 @@ func TestCollectionExpire(t *testing.T) {
 							"http_request_duration_seconds_bucket": 1.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -338,7 +338,7 @@ func TestCollectionExpire(t *testing.T) {
 							"http_request_duration_seconds_bucket": 1.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(0, 0),
 				},
@@ -358,7 +358,7 @@ func TestCollectionExpire(t *testing.T) {
 							"http_request_duration_seconds_bucket": 1.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -370,7 +370,7 @@ func TestCollectionExpire(t *testing.T) {
 							"http_request_duration_seconds_count": 2,
 						},
 						time.Unix(0, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -381,7 +381,7 @@ func TestCollectionExpire(t *testing.T) {
 							"http_request_duration_seconds_bucket": 1.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(15, 0), // More recent addtime causes entire metric to stay valid
 				},
@@ -427,7 +427,7 @@ func TestCollectionExpire(t *testing.T) {
 							"rpc_duration_seconds_count": 1,
 						},
 						time.Unix(0, 0),
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -438,7 +438,7 @@ func TestCollectionExpire(t *testing.T) {
 							"rpc_duration_seconds": 1.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -451,7 +451,7 @@ func TestCollectionExpire(t *testing.T) {
 							"rpc_duration_seconds_count": 2,
 						},
 						time.Unix(0, 0),
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -462,7 +462,7 @@ func TestCollectionExpire(t *testing.T) {
 							"rpc_duration_seconds": 2.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(0, 0),
 				},
@@ -504,7 +504,7 @@ func TestCollectionExpire(t *testing.T) {
 							"rpc_duration_seconds_count": 1,
 						},
 						time.Unix(0, 0),
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -515,7 +515,7 @@ func TestCollectionExpire(t *testing.T) {
 							"rpc_duration_seconds": 1.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(0, 0),
 				},
@@ -536,7 +536,7 @@ func TestCollectionExpire(t *testing.T) {
 							"rpc_duration_seconds_count": 1,
 						},
 						time.Unix(0, 0),
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -547,7 +547,7 @@ func TestCollectionExpire(t *testing.T) {
 							"rpc_duration_seconds": 10.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(0, 0),
 				}, {
@@ -558,7 +558,7 @@ func TestCollectionExpire(t *testing.T) {
 							"rpc_duration_seconds": 1.0,
 						},
 						time.Unix(0, 0),
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(15, 0), // Recent addtime keeps entire metric around
 				},
@@ -659,7 +659,7 @@ func TestExportTimestamps(t *testing.T) {
 							"http_request_duration_seconds_count": 2,
 						},
 						time.Unix(15, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(23, 0),
 				}, {
@@ -670,7 +670,7 @@ func TestExportTimestamps(t *testing.T) {
 							"http_request_duration_seconds_bucket": 1.0,
 						},
 						time.Unix(15, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(23, 0),
 				}, {
@@ -681,7 +681,7 @@ func TestExportTimestamps(t *testing.T) {
 							"http_request_duration_seconds_bucket": 1.0,
 						},
 						time.Unix(15, 0),
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(23, 0),
 				}, {
@@ -694,7 +694,7 @@ func TestExportTimestamps(t *testing.T) {
 							"http_request_duration_seconds_count": 4,
 						},
 						time.Unix(20, 0), // Updated timestamp
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(23, 0),
 				}, {
@@ -705,7 +705,7 @@ func TestExportTimestamps(t *testing.T) {
 							"http_request_duration_seconds_bucket": 2.0,
 						},
 						time.Unix(20, 0), // Updated timestamp
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(23, 0),
 				}, {
@@ -716,7 +716,7 @@ func TestExportTimestamps(t *testing.T) {
 							"http_request_duration_seconds_bucket": 2.0,
 						},
 						time.Unix(20, 0), // Updated timestamp
-						telegraf.Histogram,
+						Dana.Histogram,
 					),
 					addtime: time.Unix(23, 0),
 				},
@@ -763,7 +763,7 @@ func TestExportTimestamps(t *testing.T) {
 							"rpc_duration_seconds_count": 1,
 						},
 						time.Unix(15, 0),
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(23, 0),
 				}, {
@@ -774,7 +774,7 @@ func TestExportTimestamps(t *testing.T) {
 							"rpc_duration_seconds": 1.0,
 						},
 						time.Unix(15, 0),
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(23, 0),
 				}, {
@@ -787,7 +787,7 @@ func TestExportTimestamps(t *testing.T) {
 							"rpc_duration_seconds_count": 2,
 						},
 						time.Unix(20, 0), // Updated timestamp
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(23, 0),
 				}, {
@@ -798,7 +798,7 @@ func TestExportTimestamps(t *testing.T) {
 							"rpc_duration_seconds": 2.0,
 						},
 						time.Unix(20, 0), // Updated timestamp
-						telegraf.Summary,
+						Dana.Summary,
 					),
 					addtime: time.Unix(23, 0),
 				},

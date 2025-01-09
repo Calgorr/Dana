@@ -137,14 +137,14 @@ func (n *NTPQ) Init() error {
 	return nil
 }
 
-func (n *NTPQ) Gather(acc telegraf.Accumulator) error {
+func (n *NTPQ) Gather(acc Dana.Accumulator) error {
 	for _, server := range n.Servers {
 		n.gatherServer(acc, server)
 	}
 	return nil
 }
 
-func (n *NTPQ) gatherServer(acc telegraf.Accumulator, server string) {
+func (n *NTPQ) gatherServer(acc Dana.Accumulator, server string) {
 	var msgPrefix string
 	if server != "" {
 		msgPrefix = fmt.Sprintf("[%s] ", server)
@@ -306,7 +306,7 @@ func processLine(line string) (string, []string) {
 }
 
 func init() {
-	inputs.Add("ntpq", func() telegraf.Input {
+	inputs.Add("ntpq", func() Dana.Input {
 		return &NTPQ{
 			DNSLookup: true,
 		}

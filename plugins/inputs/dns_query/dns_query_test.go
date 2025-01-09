@@ -102,7 +102,7 @@ func TestGatheringRootDomain(t *testing.T) {
 	queryTime, ok := m.Fields["query_time_ms"].(float64)
 	require.True(t, ok)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"dns_query",
 			map[string]string{
@@ -142,7 +142,7 @@ func TestMetricContainsServerAndDomainAndRecordTypeTags(t *testing.T) {
 	require.True(t, ok)
 	queryTime, ok := m.Fields["query_time_ms"].(float64)
 	require.True(t, ok)
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"dns_query",
 			map[string]string{

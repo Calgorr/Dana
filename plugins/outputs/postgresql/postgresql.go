@@ -53,7 +53,7 @@ type Postgresql struct {
 	TagCacheSize               int                     `toml:"tag_cache_size"`
 	ColumnNameLenLimit         int                     `toml:"column_name_length_limit"`
 	LogLevel                   string                  `toml:"log_level"`
-	Logger                     telegraf.Logger         `toml:"-"`
+	Logger                     Dana.Logger             `toml:"-"`
 
 	dbContext       context.Context
 	dbContextCancel func()
@@ -222,7 +222,7 @@ func (p *Postgresql) Close() error {
 	return nil
 }
 
-func (p *Postgresql) Write(metrics []telegraf.Metric) error {
+func (p *Postgresql) Write(metrics []Dana.Metric) error {
 	if p.tagsCache != nil {
 		// gather at the start of write so there's less chance of any async operations ongoing
 		p.Logger.Debugf("cache: size=%d hit=%d miss=%d full=%d\n",
@@ -503,5 +503,5 @@ func newPostgresql() *Postgresql {
 }
 
 func init() {
-	outputs.Add("postgresql", func() telegraf.Output { return newPostgresql() })
+	outputs.Add("postgresql", func() Dana.Output { return newPostgresql() })
 }

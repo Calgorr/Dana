@@ -25,7 +25,7 @@ type Radius struct {
 	Secret          config.Secret   `toml:"secret"`
 	ResponseTimeout config.Duration `toml:"response_timeout"`
 	RequestIP       string          `toml:"request_ip"`
-	Log             telegraf.Logger `toml:"-"`
+	Log             Dana.Logger     `toml:"-"`
 	client          radius.Client
 }
 
@@ -55,7 +55,7 @@ func (r *Radius) Init() error {
 	return nil
 }
 
-func (r *Radius) Gather(acc telegraf.Accumulator) error {
+func (r *Radius) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	for _, server := range r.Servers {
@@ -70,7 +70,7 @@ func (r *Radius) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (r *Radius) pollServer(acc telegraf.Accumulator, server string) error {
+func (r *Radius) pollServer(acc Dana.Accumulator, server string) error {
 	// Create the fields for this metric
 	host, port, err := net.SplitHostPort(server)
 	if err != nil {
@@ -152,7 +152,7 @@ func (r *Radius) pollServer(acc telegraf.Accumulator, server string) error {
 }
 
 func init() {
-	inputs.Add("radius", func() telegraf.Input {
+	inputs.Add("radius", func() Dana.Input {
 		return &Radius{ResponseTimeout: config.Duration(time.Second * 5)}
 	})
 }

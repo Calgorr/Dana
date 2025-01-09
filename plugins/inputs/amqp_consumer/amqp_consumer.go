@@ -52,12 +52,12 @@ type AMQPConsumer struct {
 	ContentEncoding        string            `toml:"content_encoding"`
 	MaxDecompressionSize   config.Size       `toml:"max_decompression_size"`
 	Timeout                config.Duration   `toml:"timeout"`
-	Log                    telegraf.Logger   `toml:"-"`
+	Log                    Dana.Logger       `toml:"-"`
 	tls.ClientConfig
 
-	deliveries map[telegraf.TrackingID]amqp.Delivery
+	deliveries map[Dana.TrackingID]amqp.Delivery
 
-	parser  telegraf.Parser
+	parser  Dana.Parser
 	conn    *amqp.Connection
 	wg      *sync.WaitGroup
 	cancel  context.CancelFunc
@@ -112,11 +112,11 @@ func (a *AMQPConsumer) Init() error {
 	return nil
 }
 
-func (a *AMQPConsumer) SetParser(parser telegraf.Parser) {
+func (a *AMQPConsumer) SetParser(parser Dana.Parser) {
 	a.parser = parser
 }
 
-func (a *AMQPConsumer) Start(acc telegraf.Accumulator) error {
+func (a *AMQPConsumer) Start(acc Dana.Accumulator) error {
 	amqpConf, err := a.createConfig()
 	if err != nil {
 		return err
@@ -175,7 +175,7 @@ func (a *AMQPConsumer) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*AMQPConsumer) Gather(_ telegraf.Accumulator) error {
+func (*AMQPConsumer) Gather(_ Dana.Accumulator) error {
 	return nil
 }
 
@@ -401,8 +401,8 @@ func (a *AMQPConsumer) declareQueue(channel *amqp.Channel) (*amqp.Queue, error) 
 }
 
 // Read messages from queue and add them to the Accumulator
-func (a *AMQPConsumer) process(ctx context.Context, msgs <-chan amqp.Delivery, ac telegraf.Accumulator) {
-	a.deliveries = make(map[telegraf.TrackingID]amqp.Delivery)
+func (a *AMQPConsumer) process(ctx context.Context, msgs <-chan amqp.Delivery, ac Dana.Accumulator) {
+	a.deliveries = make(map[Dana.TrackingID]amqp.Delivery)
 
 	acc := ac.WithTracking(a.MaxUndeliveredMessages)
 	sem := make(semaphore, a.MaxUndeliveredMessages)
@@ -438,7 +438,7 @@ func (a *AMQPConsumer) process(ctx context.Context, msgs <-chan amqp.Delivery, a
 	}
 }
 
-func (a *AMQPConsumer) onMessage(acc telegraf.TrackingAccumulator, d amqp.Delivery) error {
+func (a *AMQPConsumer) onMessage(acc Dana.TrackingAccumulator, d amqp.Delivery) error {
 	onError := func() {
 		// Discard the message from the queue; will never be able to process it
 		if err := d.Nack(false, false); err != nil {
@@ -470,7 +470,7 @@ func (a *AMQPConsumer) onMessage(acc telegraf.TrackingAccumulator, d amqp.Delive
 	return nil
 }
 
-func (a *AMQPConsumer) onDelivery(track telegraf.DeliveryInfo) bool {
+func (a *AMQPConsumer) onDelivery(track Dana.DeliveryInfo) bool {
 	delivery, ok := a.deliveries[track.ID()]
 	if !ok {
 		// Added by a previous connection
@@ -496,7 +496,7 @@ func (a *AMQPConsumer) onDelivery(track telegraf.DeliveryInfo) bool {
 }
 
 func init() {
-	inputs.Add("amqp_consumer", func() telegraf.Input {
+	inputs.Add("amqp_consumer", func() Dana.Input {
 		return &AMQPConsumer{Timeout: config.Duration(30 * time.Second)}
 	})
 }

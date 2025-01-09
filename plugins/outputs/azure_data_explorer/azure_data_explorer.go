@@ -29,13 +29,13 @@ var sampleConfig string
 type AzureDataExplorer struct {
 	Endpoint        string          `toml:"endpoint_url"`
 	Database        string          `toml:"database"`
-	Log             telegraf.Logger `toml:"-"`
+	Log             Dana.Logger     `toml:"-"`
 	Timeout         config.Duration `toml:"timeout"`
 	MetricsGrouping string          `toml:"metrics_grouping_type"`
 	TableName       string          `toml:"table_name"`
 	CreateTables    bool            `toml:"create_tables"`
 	IngestionType   string          `toml:"ingestion_type"`
-	serializer      telegraf.Serializer
+	serializer      Dana.Serializer
 	kustoClient     *kusto.Client
 	metricIngestors map[string]ingest.Ingestor
 }
@@ -94,14 +94,14 @@ func (adx *AzureDataExplorer) Close() error {
 	return kustoerrors.GetCombinedError(errs...)
 }
 
-func (adx *AzureDataExplorer) Write(metrics []telegraf.Metric) error {
+func (adx *AzureDataExplorer) Write(metrics []Dana.Metric) error {
 	if adx.MetricsGrouping == tablePerMetric {
 		return adx.writeTablePerMetric(metrics)
 	}
 	return adx.writeSingleTable(metrics)
 }
 
-func (adx *AzureDataExplorer) writeTablePerMetric(metrics []telegraf.Metric) error {
+func (adx *AzureDataExplorer) writeTablePerMetric(metrics []Dana.Metric) error {
 	tableMetricGroups := make(map[string][]byte)
 	// Group metrics by name and serialize them
 	for _, m := range metrics {
@@ -131,7 +131,7 @@ func (adx *AzureDataExplorer) writeTablePerMetric(metrics []telegraf.Metric) err
 	return nil
 }
 
-func (adx *AzureDataExplorer) writeSingleTable(metrics []telegraf.Metric) error {
+func (adx *AzureDataExplorer) writeSingleTable(metrics []Dana.Metric) error {
 	// serialise each metric in metrics - store in byte[]
 	metricsArray := make([]byte, 0)
 	for _, m := range metrics {
@@ -246,7 +246,7 @@ func (adx *AzureDataExplorer) Init() error {
 }
 
 func init() {
-	outputs.Add("azure_data_explorer", func() telegraf.Output {
+	outputs.Add("azure_data_explorer", func() Dana.Output {
 		return &AzureDataExplorer{
 			Timeout:      config.Duration(20 * time.Second),
 			CreateTables: true,

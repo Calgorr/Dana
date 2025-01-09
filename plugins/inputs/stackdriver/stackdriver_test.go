@@ -94,7 +94,7 @@ func TestGather(t *testing.T) {
 		name       string
 		descriptor *metricpb.MetricDescriptor
 		timeseries *monitoringpb.TimeSeries
-		expected   []telegraf.Metric
+		expected   []Dana.Metric
 		wantAccErr bool
 	}{
 		{
@@ -119,7 +119,7 @@ func TestGather(t *testing.T) {
 				},
 				metricpb.MetricDescriptor_DISTRIBUTION,
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("",
 					map[string]string{
 						"project_id":    "test",
@@ -155,7 +155,7 @@ func TestGather(t *testing.T) {
 				},
 				metricpb.MetricDescriptor_INT64,
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("telegraf/cpu",
 					map[string]string{
 						"resource_type": "global",
@@ -188,7 +188,7 @@ func TestGather(t *testing.T) {
 				},
 				metricpb.MetricDescriptor_DOUBLE,
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("telegraf/cpu",
 					map[string]string{
 						"resource_type": "global",
@@ -221,7 +221,7 @@ func TestGather(t *testing.T) {
 				},
 				metricpb.MetricDescriptor_INT64,
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("telegraf/cpu",
 					map[string]string{
 						"resource_type": "global",
@@ -254,7 +254,7 @@ func TestGather(t *testing.T) {
 				},
 				metricpb.MetricDescriptor_BOOL,
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("telegraf/cpu",
 					map[string]string{
 						"resource_type": "global",
@@ -287,7 +287,7 @@ func TestGather(t *testing.T) {
 				},
 				metricpb.MetricDescriptor_STRING,
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("telegraf/cpu",
 					map[string]string{
 						"resource_type": "global",
@@ -333,7 +333,7 @@ func TestGather(t *testing.T) {
 				},
 				ValueType: metricpb.MetricDescriptor_DOUBLE,
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("telegraf/cpu",
 					map[string]string{
 						"resource_type": "instance",
@@ -384,7 +384,7 @@ func TestGather(t *testing.T) {
 				},
 				metricpb.MetricDescriptor_DISTRIBUTION,
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("telegraf/cpu",
 					map[string]string{
 						"resource_type": "global",
@@ -479,7 +479,7 @@ func TestGather(t *testing.T) {
 				},
 				metricpb.MetricDescriptor_DISTRIBUTION,
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("telegraf/cpu",
 					map[string]string{
 						"resource_type": "global",
@@ -572,7 +572,7 @@ func TestGather(t *testing.T) {
 				},
 				metricpb.MetricDescriptor_DISTRIBUTION,
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("telegraf/cpu",
 					map[string]string{
 						"resource_type": "global",
@@ -657,7 +657,7 @@ func TestGather(t *testing.T) {
 				},
 				metricpb.MetricDescriptor_DISTRIBUTION,
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("telegraf/cpu",
 					map[string]string{
 						"resource_type": "global",
@@ -750,7 +750,7 @@ func TestGather(t *testing.T) {
 			require.Equalf(t, tt.wantAccErr, len(acc.Errors) > 0,
 				"Accumulator errors. got=%v, want=%t", acc.Errors, tt.wantAccErr)
 
-			actual := make([]telegraf.Metric, 0, len(acc.Metrics))
+			actual := make([]Dana.Metric, 0, len(acc.Metrics))
 			for _, m := range acc.Metrics {
 				actual = append(actual, testutil.FromTestMetric(m))
 			}
@@ -766,7 +766,7 @@ func TestGatherAlign(t *testing.T) {
 		name       string
 		descriptor *metricpb.MetricDescriptor
 		timeseries []*monitoringpb.TimeSeries
-		expected   []telegraf.Metric
+		expected   []Dana.Metric
 	}{
 		{
 			name: "align",
@@ -821,7 +821,7 @@ func TestGatherAlign(t *testing.T) {
 					metricpb.MetricDescriptor_DOUBLE,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("telegraf/cpu",
 					map[string]string{
 						"resource_type": "global",
@@ -873,7 +873,7 @@ func TestGatherAlign(t *testing.T) {
 			err := s.Gather(&acc)
 			require.NoError(t, err)
 
-			actual := make([]telegraf.Metric, 0, len(acc.Metrics))
+			actual := make([]Dana.Metric, 0, len(acc.Metrics))
 			for _, m := range acc.Metrics {
 				actual = append(actual, testutil.FromTestMetric(m))
 			}

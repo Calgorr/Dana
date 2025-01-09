@@ -7,7 +7,7 @@ import (
 )
 
 type otelLogger struct {
-	telegraf.Logger
+	Dana.Logger
 }
 
 func (l otelLogger) Debug(msg string, kv ...interface{}) {

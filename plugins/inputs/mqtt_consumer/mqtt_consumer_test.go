@@ -61,14 +61,14 @@ func (c *fakeClient) IsConnected() bool {
 
 type fakeParser struct{}
 
-// fakeParser satisfies telegraf.Parser
-var _ telegraf.Parser = &fakeParser{}
+// fakeParser satisfies Dana.Parser
+var _ Dana.Parser = &fakeParser{}
 
-func (*fakeParser) Parse([]byte) ([]telegraf.Metric, error) {
+func (*fakeParser) Parse([]byte) ([]Dana.Metric, error) {
 	panic("not implemented")
 }
 
-func (*fakeParser) ParseLine(string) (telegraf.Metric, error) {
+func (*fakeParser) ParseLine(string) (Dana.Metric, error) {
 	panic("not implemented")
 }
 
@@ -201,7 +201,7 @@ func TestTopicTag(t *testing.T) {
 		topicTag      func() *string
 		expectedError string
 		topicParsing  []topicParsingConfig
-		expected      []telegraf.Metric
+		expected      []Dana.Metric
 	}{
 		{
 			name:  "default topic when topic tag is unset for backwards compatibility",
@@ -209,7 +209,7 @@ func TestTopicTag(t *testing.T) {
 			topicTag: func() *string {
 				return nil
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -229,7 +229,7 @@ func TestTopicTag(t *testing.T) {
 				tag := "topic_tag"
 				return &tag
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -249,7 +249,7 @@ func TestTopicTag(t *testing.T) {
 				tag := ""
 				return &tag
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -278,7 +278,7 @@ func TestTopicTag(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{
@@ -310,7 +310,7 @@ func TestTopicTag(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{
@@ -344,7 +344,7 @@ func TestTopicTag(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{
@@ -376,7 +376,7 @@ func TestTopicTag(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{
@@ -406,7 +406,7 @@ func TestTopicTag(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -439,7 +439,7 @@ func TestTopicTag(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{
@@ -472,7 +472,7 @@ func TestTopicTag(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{
@@ -506,7 +506,7 @@ func TestTopicTag(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -714,7 +714,7 @@ func TestIntegration(t *testing.T) {
 		"test,source=B value=1i 1712780301000000100",
 		"test,source=C value=2i 1712780301000000200",
 	}
-	expected := make([]telegraf.Metric, 0, len(metrics))
+	expected := make([]Dana.Metric, 0, len(metrics))
 	for _, x := range metrics {
 		metrics, err := parser.Parse([]byte(x))
 		for i := range metrics {
@@ -947,7 +947,7 @@ func TestStartupErrorBehaviorRetryIntegration(t *testing.T) {
 		"test,source=B value=1i 1712780301000000100",
 		"test,source=C value=2i 1712780301000000200",
 	}
-	expected := make([]telegraf.Metric, 0, len(metrics))
+	expected := make([]Dana.Metric, 0, len(metrics))
 	for _, x := range metrics {
 		metrics, err := parser.Parse([]byte(x))
 		for i := range metrics {

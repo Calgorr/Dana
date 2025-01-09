@@ -40,21 +40,21 @@ type PubSubPush struct {
 	WriteTimeout   config.Duration
 	MaxBodySize    config.Size
 	AddMeta        bool
-	Log            telegraf.Logger
+	Log            Dana.Logger
 
 	MaxUndeliveredMessages int `toml:"max_undelivered_messages"`
 
 	common_tls.ServerConfig
-	telegraf.Parser
+	Dana.Parser
 
 	server *http.Server
-	acc    telegraf.TrackingAccumulator
+	acc    Dana.TrackingAccumulator
 	ctx    context.Context
 	cancel context.CancelFunc
 	wg     *sync.WaitGroup
 	mu     *sync.Mutex
 
-	undelivered map[telegraf.TrackingID]chan bool
+	undelivered map[Dana.TrackingID]chan bool
 	sem         chan struct{}
 }
 
@@ -74,12 +74,12 @@ func (*PubSubPush) SampleConfig() string {
 	return sampleConfig
 }
 
-func (p *PubSubPush) SetParser(parser telegraf.Parser) {
+func (p *PubSubPush) SetParser(parser Dana.Parser) {
 	p.Parser = parser
 }
 
 // Start starts the http listener service.
-func (p *PubSubPush) Start(acc telegraf.Accumulator) error {
+func (p *PubSubPush) Start(acc Dana.Accumulator) error {
 	if p.MaxBodySize == 0 {
 		p.MaxBodySize = config.Size(defaultMaxBodySize)
 	}
@@ -107,7 +107,7 @@ func (p *PubSubPush) Start(acc telegraf.Accumulator) error {
 	p.wg = &sync.WaitGroup{}
 	p.acc = acc.WithTracking(p.MaxUndeliveredMessages)
 	p.sem = make(chan struct{}, p.MaxUndeliveredMessages)
-	p.undelivered = make(map[telegraf.TrackingID]chan bool)
+	p.undelivered = make(map[Dana.TrackingID]chan bool)
 	p.mu = &sync.Mutex{}
 
 	p.wg.Add(1)
@@ -133,7 +133,7 @@ func (p *PubSubPush) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*PubSubPush) Gather(telegraf.Accumulator) error {
+func (*PubSubPush) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -276,7 +276,7 @@ func (p *PubSubPush) authenticateIfSet(handler http.HandlerFunc, res http.Respon
 }
 
 func init() {
-	inputs.Add("cloud_pubsub_push", func() telegraf.Input {
+	inputs.Add("cloud_pubsub_push", func() Dana.Input {
 		return &PubSubPush{
 			ServiceAddress:         ":8080",
 			Path:                   "/",

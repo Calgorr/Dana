@@ -20,7 +20,7 @@ import (
 )
 
 func TestStaticFileCreation(t *testing.T) {
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"source": "localhost"},
@@ -42,7 +42,7 @@ func TestStaticFileCreation(t *testing.T) {
 		Log:               &testutil.Logger{},
 	}
 
-	plugin.SetSerializerFunc(func() (telegraf.Serializer, error) {
+	plugin.SetSerializerFunc(func() (Dana.Serializer, error) {
 		serializer := &influx.Serializer{}
 		err := serializer.Init()
 		return serializer, err
@@ -66,7 +66,7 @@ func TestStaticFileCreation(t *testing.T) {
 }
 
 func TestStaticFileAppend(t *testing.T) {
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"source": "localhost"},
@@ -97,7 +97,7 @@ func TestStaticFileAppend(t *testing.T) {
 		Log:               &testutil.Logger{},
 	}
 
-	plugin.SetSerializerFunc(func() (telegraf.Serializer, error) {
+	plugin.SetSerializerFunc(func() (Dana.Serializer, error) {
 		serializer := &influx.Serializer{}
 		err := serializer.Init()
 		return serializer, err
@@ -121,7 +121,7 @@ func TestStaticFileAppend(t *testing.T) {
 }
 
 func TestDynamicFiles(t *testing.T) {
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"source": "localhost"},
@@ -186,7 +186,7 @@ func TestDynamicFiles(t *testing.T) {
 		Log:               &testutil.Logger{},
 	}
 
-	plugin.SetSerializerFunc(func() (telegraf.Serializer, error) {
+	plugin.SetSerializerFunc(func() (Dana.Serializer, error) {
 		serializer := &influx.Serializer{}
 		err := serializer.Init()
 		return serializer, err
@@ -230,7 +230,7 @@ func TestDynamicFiles(t *testing.T) {
 }
 
 func TestCustomTemplateFunctions(t *testing.T) {
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"source": "localhost"},
@@ -254,7 +254,7 @@ func TestCustomTemplateFunctions(t *testing.T) {
 		Log:               &testutil.Logger{},
 	}
 
-	plugin.SetSerializerFunc(func() (telegraf.Serializer, error) {
+	plugin.SetSerializerFunc(func() (Dana.Serializer, error) {
 		serializer := &influx.Serializer{}
 		err := serializer.Init()
 		return serializer, err
@@ -278,7 +278,7 @@ func TestCustomTemplateFunctions(t *testing.T) {
 }
 
 func TestCSVSerialization(t *testing.T) {
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"source": "a"},
@@ -309,7 +309,7 @@ func TestCSVSerialization(t *testing.T) {
 		Log:               &testutil.Logger{},
 	}
 
-	plugin.SetSerializerFunc(func() (telegraf.Serializer, error) {
+	plugin.SetSerializerFunc(func() (Dana.Serializer, error) {
 		serializer := &csv.Serializer{Header: true}
 		err := serializer.Init()
 		return serializer, err
@@ -342,7 +342,7 @@ func TestCSVSerialization(t *testing.T) {
 }
 
 func TestForgettingFiles(t *testing.T) {
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"source": "a"},
@@ -370,7 +370,7 @@ func TestForgettingFiles(t *testing.T) {
 		Log:               &testutil.Logger{},
 	}
 
-	plugin.SetSerializerFunc(func() (telegraf.Serializer, error) {
+	plugin.SetSerializerFunc(func() (Dana.Serializer, error) {
 		serializer := &csv.Serializer{Header: true}
 		err := serializer.Init()
 		return serializer, err
@@ -397,7 +397,7 @@ func TestForgettingFiles(t *testing.T) {
 
 func TestTrackingMetrics(t *testing.T) {
 	// see issue #16045
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"source": "localhost"},
@@ -438,13 +438,13 @@ func TestTrackingMetrics(t *testing.T) {
 
 	// Create tracking metrics as inputs for the test
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)
@@ -479,7 +479,7 @@ func TestTrackingMetrics(t *testing.T) {
 		Log:               &testutil.Logger{},
 	}
 
-	plugin.SetSerializerFunc(func() (telegraf.Serializer, error) {
+	plugin.SetSerializerFunc(func() (Dana.Serializer, error) {
 		serializer := &influx.Serializer{}
 		err := serializer.Init()
 		return serializer, err

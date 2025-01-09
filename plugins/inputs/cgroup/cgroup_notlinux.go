@@ -6,6 +6,6 @@ import (
 	"Dana"
 )
 
-func (*CGroup) Gather(_ telegraf.Accumulator) error {
+func (*CGroup) Gather(_ Dana.Accumulator) error {
 	return nil
 }

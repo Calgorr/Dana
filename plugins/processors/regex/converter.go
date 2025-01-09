@@ -45,10 +45,10 @@ type converter struct {
 	filter filter.Filter
 	re     *regexp.Regexp
 	groups []string
-	apply  func(m telegraf.Metric)
+	apply  func(m Dana.Metric)
 }
 
-func (c *converter) setup(ct converterType, log telegraf.Logger) error {
+func (c *converter) setup(ct converterType, log Dana.Logger) error {
 	// Compile the pattern
 	re, err := regexp.Compile(c.Pattern)
 	if err != nil {
@@ -116,7 +116,7 @@ func (c *converter) setup(ct converterType, log telegraf.Logger) error {
 	return nil
 }
 
-func (c *converter) applyTags(m telegraf.Metric) {
+func (c *converter) applyTags(m Dana.Metric) {
 	for _, tag := range m.TagList() {
 		if !c.filter.Match(tag.Key) || !c.re.MatchString(tag.Value) {
 			continue
@@ -156,7 +156,7 @@ func (c *converter) applyTags(m telegraf.Metric) {
 	}
 }
 
-func (c *converter) applyFields(m telegraf.Metric) {
+func (c *converter) applyFields(m Dana.Metric) {
 	for _, field := range m.FieldList() {
 		if !c.filter.Match(field.Key) {
 			continue
@@ -196,7 +196,7 @@ func (c *converter) applyFields(m telegraf.Metric) {
 	}
 }
 
-func (c *converter) applyTagRename(m telegraf.Metric) {
+func (c *converter) applyTagRename(m Dana.Metric) {
 	replacements := make(map[string]string)
 	for _, tag := range m.TagList() {
 		name := tag.Key
@@ -228,7 +228,7 @@ func (c *converter) applyTagRename(m telegraf.Metric) {
 	}
 }
 
-func (c *converter) applyFieldRename(m telegraf.Metric) {
+func (c *converter) applyFieldRename(m Dana.Metric) {
 	replacements := make(map[string]string)
 	for _, field := range m.FieldList() {
 		name := field.Key
@@ -260,7 +260,7 @@ func (c *converter) applyFieldRename(m telegraf.Metric) {
 	}
 }
 
-func (c *converter) applyMetricRename(m telegraf.Metric) {
+func (c *converter) applyMetricRename(m Dana.Metric) {
 	value := m.Name()
 	if c.re.MatchString(value) {
 		newValue := c.re.ReplaceAllString(value, c.Replacement)

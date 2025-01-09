@@ -54,7 +54,7 @@ func TestCases(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	inputs.Add("temp", func() telegraf.Input {
+	inputs.Add("temp", func() Dana.Input {
 		return &Temperature{}
 	})
 
@@ -80,7 +80,7 @@ func TestCases(t *testing.T) {
 			expectedFilename := filepath.Join(testcasePath, "expected_v1.out")
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)
@@ -113,7 +113,7 @@ func TestCases(t *testing.T) {
 			expectedFilename := filepath.Join(testcasePath, "expected_v2.out")
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)
@@ -147,7 +147,7 @@ func TestRegression(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	inputs.Add("temp", func() telegraf.Input {
+	inputs.Add("temp", func() Dana.Input {
 		return &Temperature{}
 	})
 
@@ -172,7 +172,7 @@ func TestRegression(t *testing.T) {
 			actualFilename := filepath.Join(testcasePath, "expected_v1.out")
 
 			// Read the expected output if any
-			var actual []telegraf.Metric
+			var actual []Dana.Metric
 			if _, err := os.Stat(actualFilename); err == nil {
 				var err error
 				actual, err = testutil.ParseMetricsFromFile(actualFilename, parser)
@@ -209,7 +209,7 @@ func TestRegression(t *testing.T) {
 			actualFilename := filepath.Join(testcasePath, "expected_v2.out")
 
 			// Read the expected output if any
-			var actual []telegraf.Metric
+			var actual []Dana.Metric
 			if _, err := os.Stat(actualFilename); err == nil {
 				var err error
 				actual, err = testutil.ParseMetricsFromFile(actualFilename, parser)

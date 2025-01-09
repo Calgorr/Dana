@@ -64,8 +64,8 @@ func (s *Split) Init() error {
 	return nil
 }
 
-func (s *Split) Apply(in ...telegraf.Metric) []telegraf.Metric {
-	newMetrics := make([]telegraf.Metric, 0, len(in)*(len(s.Templates)+1))
+func (s *Split) Apply(in ...Dana.Metric) []Dana.Metric {
+	newMetrics := make([]Dana.Metric, 0, len(in)*(len(s.Templates)+1))
 
 	for _, point := range in {
 		if s.DropOriginal {
@@ -105,7 +105,7 @@ func (s *Split) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("split", func() telegraf.Processor {
+	processors.Add("split", func() Dana.Processor {
 		return &Split{}
 	})
 }

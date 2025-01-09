@@ -25,7 +25,7 @@ func TestIpsetEntries(t *testing.T) {
 	}
 	entries.commit(&acc)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"ipset",
 			map[string]string{
@@ -36,7 +36,7 @@ func TestIpsetEntries(t *testing.T) {
 				"ips":     3,
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 	}
 
@@ -65,7 +65,7 @@ func TestIpsetEntriesCidr(t *testing.T) {
 	}
 	entries.commit(&acc)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"ipset",
 			map[string]string{
@@ -76,7 +76,7 @@ func TestIpsetEntriesCidr(t *testing.T) {
 				"ips":     256,
 			},
 			time.Now().Add(time.Millisecond*0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		testutil.MustMetric(
 			"ipset",
@@ -88,7 +88,7 @@ func TestIpsetEntriesCidr(t *testing.T) {
 				"ips":     16777217,
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 	}
 

@@ -629,7 +629,7 @@ func Test_Gather(t *testing.T) {
 		require.NoError(t, err)
 		require.Empty(t, mockAcc.Errors)
 
-		expected := []telegraf.Metric{
+		expected := []Dana.Metric{
 			testutil.MustMetric(
 				"dpdk",
 				map[string]string{
@@ -657,7 +657,7 @@ func Test_Gather(t *testing.T) {
 		require.NoError(t, err)
 		require.Empty(t, mockAcc.Errors)
 
-		expected := []telegraf.Metric{
+		expected := []Dana.Metric{
 			testutil.MustMetric(
 				"dpdk",
 				map[string]string{
@@ -694,7 +694,7 @@ func Test_Gather(t *testing.T) {
 		require.NoError(t, err)
 		require.Empty(t, mockAcc.Errors)
 
-		expected := []telegraf.Metric{
+		expected := []Dana.Metric{
 			testutil.MustMetric(
 				"dpdk",
 				map[string]string{
@@ -731,7 +731,7 @@ func Test_Gather(t *testing.T) {
 		require.NoError(t, err)
 		require.Empty(t, mockAcc.Errors)
 
-		expected := []telegraf.Metric{
+		expected := []Dana.Metric{
 			testutil.MustMetric(
 				"dpdk",
 				map[string]string{
@@ -766,7 +766,7 @@ func Test_Gather(t *testing.T) {
 		require.NoError(t, err)
 		require.Empty(t, mockAcc.Errors)
 
-		expected := []telegraf.Metric{
+		expected := []Dana.Metric{
 			testutil.MustMetric(
 				"dpdk",
 				map[string]string{
@@ -804,7 +804,7 @@ func Test_Gather_MultiSocket(t *testing.T) {
 		require.NoError(t, err)
 		require.Empty(t, mockAcc.Errors)
 
-		expected := []telegraf.Metric{
+		expected := []Dana.Metric{
 			testutil.MustMetric(
 				"dpdk",
 				map[string]string{

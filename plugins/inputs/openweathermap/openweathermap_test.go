@@ -52,7 +52,7 @@ func TestCases(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	inputs.Add("openweathermap", func() telegraf.Input {
+	inputs.Add("openweathermap", func() Dana.Input {
 		return &OpenWeatherMap{
 			ResponseTimeout: config.Duration(5 * time.Second),
 		}
@@ -78,7 +78,7 @@ func TestCases(t *testing.T) {
 			require.NoError(t, err)
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)

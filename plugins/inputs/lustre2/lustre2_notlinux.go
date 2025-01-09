@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type Lustre2 struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*Lustre2) SampleConfig() string { return sampleConfig }
@@ -24,10 +24,10 @@ func (l *Lustre2) Init() error {
 	return nil
 }
 
-func (*Lustre2) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Lustre2) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("lustre2", func() telegraf.Input {
+	inputs.Add("lustre2", func() Dana.Input {
 		return &Lustre2{}
 	})
 }

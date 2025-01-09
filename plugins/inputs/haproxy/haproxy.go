@@ -58,7 +58,7 @@ func (*HAProxy) SampleConfig() string {
 	return sampleConfig
 }
 
-func (h *HAProxy) Gather(acc telegraf.Accumulator) error {
+func (h *HAProxy) Gather(acc Dana.Accumulator) error {
 	if len(h.Servers) == 0 {
 		return h.gatherServer("http://127.0.0.1:1936/haproxy?stats", acc)
 	}
@@ -101,7 +101,7 @@ func (h *HAProxy) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (h *HAProxy) gatherServerSocket(addr string, acc telegraf.Accumulator) error {
+func (h *HAProxy) gatherServerSocket(addr string, acc Dana.Accumulator) error {
 	var network, address string
 	if strings.HasPrefix(addr, "tcp://") {
 		network = "tcp"
@@ -124,7 +124,7 @@ func (h *HAProxy) gatherServerSocket(addr string, acc telegraf.Accumulator) erro
 	return h.importCsvResult(c, acc, address)
 }
 
-func (h *HAProxy) gatherServer(addr string, acc telegraf.Accumulator) error {
+func (h *HAProxy) gatherServer(addr string, acc Dana.Accumulator) error {
 	if !strings.HasPrefix(addr, "http") {
 		return h.gatherServerSocket(addr, acc)
 	}
@@ -195,7 +195,7 @@ func getSocketAddr(sock string) string {
 	return socketAddr[0]
 }
 
-func (h *HAProxy) importCsvResult(r io.Reader, acc telegraf.Accumulator, host string) error {
+func (h *HAProxy) importCsvResult(r io.Reader, acc Dana.Accumulator, host string) error {
 	csvr := csv.NewReader(r)
 	now := time.Now()
 
@@ -277,7 +277,7 @@ func (h *HAProxy) importCsvResult(r io.Reader, acc telegraf.Accumulator, host st
 }
 
 func init() {
-	inputs.Add("haproxy", func() telegraf.Input {
+	inputs.Add("haproxy", func() Dana.Input {
 		return &HAProxy{}
 	})
 }

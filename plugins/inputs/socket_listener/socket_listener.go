@@ -20,14 +20,14 @@ var sampleConfig string
 var once sync.Once
 
 type SocketListener struct {
-	ServiceAddress string          `toml:"service_address"`
-	TimeSource     string          `toml:"time_source"`
-	Log            telegraf.Logger `toml:"-"`
+	ServiceAddress string      `toml:"service_address"`
+	TimeSource     string      `toml:"time_source"`
+	Log            Dana.Logger `toml:"-"`
 	socket.Config
 	socket.SplitConfig
 
 	socket *socket.Socket
-	parser telegraf.Parser
+	parser Dana.Parser
 }
 
 func (*SocketListener) SampleConfig() string {
@@ -44,15 +44,15 @@ func (sl *SocketListener) Init() error {
 	return nil
 }
 
-func (*SocketListener) Gather(telegraf.Accumulator) error {
+func (*SocketListener) Gather(Dana.Accumulator) error {
 	return nil
 }
 
-func (sl *SocketListener) SetParser(parser telegraf.Parser) {
+func (sl *SocketListener) SetParser(parser Dana.Parser) {
 	sl.parser = parser
 }
 
-func (sl *SocketListener) Start(acc telegraf.Accumulator) error {
+func (sl *SocketListener) Start(acc Dana.Accumulator) error {
 	// Create the callbacks for parsing the data and recording issues
 	onData := func(_ net.Addr, data []byte, receiveTime time.Time) {
 		metrics, err := sl.parser.Parse(data)
@@ -100,7 +100,7 @@ func (sl *SocketListener) Stop() {
 }
 
 func init() {
-	inputs.Add("socket_listener", func() telegraf.Input {
+	inputs.Add("socket_listener", func() Dana.Input {
 		return &SocketListener{}
 	})
 }

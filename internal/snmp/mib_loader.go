@@ -44,7 +44,7 @@ func (*GosmiMibLoader) loadModule(path string) error {
 }
 
 // will give all found folders to gosmi and load in all modules found in the folders
-func LoadMibsFromPath(paths []string, log telegraf.Logger, loader MibLoader) error {
+func LoadMibsFromPath(paths []string, log Dana.Logger, loader MibLoader) error {
 	folders, err := walkPaths(paths, log)
 	if err != nil {
 		return err
@@ -90,7 +90,7 @@ func LoadMibsFromPath(paths []string, log telegraf.Logger, loader MibLoader) err
 }
 
 // should walk the paths given and find all folders
-func walkPaths(paths []string, log telegraf.Logger) ([]string, error) {
+func walkPaths(paths []string, log Dana.Logger) ([]string, error) {
 	once.Do(gosmi.Init)
 
 	folders := make([]string, 0)

@@ -17,11 +17,11 @@ import (
 // Parser encapsulates a OpenTSDB Parser.
 type Parser struct {
 	DefaultTags map[string]string `toml:"-"`
-	Log         telegraf.Logger   `toml:"-"`
+	Log         Dana.Logger       `toml:"-"`
 }
 
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
-	var metrics []telegraf.Metric
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
+	var metrics []Dana.Metric
 
 	scanner := bufio.NewScanner(bytes.NewReader(buf))
 	for scanner.Scan() {
@@ -51,7 +51,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 }
 
 // ParseLine performs OpenTSDB parsing of a single line.
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	// Break into fields ("put", name, timestamp, value, tag1, tag2, ..., tagN).
 	fields := strings.Fields(line)
 	if len(fields) < 4 || fields[0] != "put" {
@@ -115,7 +115,7 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 
 func init() {
 	parsers.Add("opentsdb",
-		func(string) telegraf.Parser {
+		func(string) Dana.Parser {
 			return &Parser{}
 		})
 }

@@ -8,9 +8,9 @@ import (
 	"Dana/metric"
 )
 
-func makeMetrics(p *v5Format) []telegraf.Metric {
+func makeMetrics(p *v5Format) []Dana.Metric {
 	now := time.Now()
-	metrics := make([]telegraf.Metric, 0)
+	metrics := make([]Dana.Metric, 0)
 	tags := map[string]string{
 		"agent_address": p.AgentAddress.String(),
 	}

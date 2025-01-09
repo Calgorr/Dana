@@ -14,18 +14,18 @@ import (
 var sampleConfig string
 
 type Sysstat struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (s *Sysstat) Init() error {
 	s.Log.Warn("current platform is not supported")
 	return nil
 }
-func (*Sysstat) SampleConfig() string                { return sampleConfig }
-func (*Sysstat) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Sysstat) SampleConfig() string            { return sampleConfig }
+func (*Sysstat) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("sysstat", func() telegraf.Input {
+	inputs.Add("sysstat", func() Dana.Input {
 		return &Sysstat{}
 	})
 }

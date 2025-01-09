@@ -16,11 +16,11 @@ import (
 type ArtifactoryWebhook struct {
 	Path   string
 	Secret string
-	acc    telegraf.Accumulator
-	log    telegraf.Logger
+	acc    Dana.Accumulator
+	log    Dana.Logger
 }
 
-func (awh *ArtifactoryWebhook) Register(router *mux.Router, acc telegraf.Accumulator, log telegraf.Logger) {
+func (awh *ArtifactoryWebhook) Register(router *mux.Router, acc Dana.Accumulator, log Dana.Logger) {
 	router.HandleFunc(awh.Path, awh.eventHandler).Methods("POST")
 
 	awh.log = log

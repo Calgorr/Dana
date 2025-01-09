@@ -28,10 +28,10 @@ func (a *Merge) Init() error {
 	return nil
 }
 
-func (a *Merge) Add(m telegraf.Metric) {
+func (a *Merge) Add(m Dana.Metric) {
 	gm := m
 	if a.RoundTimestamp > 0 {
-		if unwrapped, ok := m.(telegraf.UnwrappableMetric); ok {
+		if unwrapped, ok := m.(Dana.UnwrappableMetric); ok {
 			gm = unwrapped.Unwrap().Copy()
 		} else {
 			gm = m.Copy()
@@ -42,7 +42,7 @@ func (a *Merge) Add(m telegraf.Metric) {
 	a.grouper.AddMetric(gm)
 }
 
-func (a *Merge) Push(acc telegraf.Accumulator) {
+func (a *Merge) Push(acc Dana.Accumulator) {
 	// Always use nanosecond precision to avoid rounding metrics that were
 	// produced at a precision higher than the agent default.
 	acc.SetPrecision(time.Nanosecond)
@@ -57,7 +57,7 @@ func (a *Merge) Reset() {
 }
 
 func init() {
-	aggregators.Add("merge", func() telegraf.Aggregator {
+	aggregators.Add("merge", func() Dana.Aggregator {
 		return &Merge{}
 	})
 }

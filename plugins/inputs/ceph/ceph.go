@@ -44,7 +44,7 @@ type Ceph struct {
 	GatherAdminSocketStats bool   `toml:"gather_admin_socket_stats"`
 	GatherClusterStats     bool   `toml:"gather_cluster_stats"`
 
-	Log        telegraf.Logger `toml:"-"`
+	Log        Dana.Logger `toml:"-"`
 	schemaMaps map[socket]perfSchemaMap
 }
 
@@ -52,7 +52,7 @@ func (*Ceph) SampleConfig() string {
 	return sampleConfig
 }
 
-func (c *Ceph) Gather(acc telegraf.Accumulator) error {
+func (c *Ceph) Gather(acc Dana.Accumulator) error {
 	if c.GatherAdminSocketStats {
 		if err := c.gatherAdminSocketStats(acc); err != nil {
 			return err
@@ -68,7 +68,7 @@ func (c *Ceph) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (c *Ceph) gatherAdminSocketStats(acc telegraf.Accumulator) error {
+func (c *Ceph) gatherAdminSocketStats(acc Dana.Accumulator) error {
 	sockets, err := findSockets(c)
 	if err != nil {
 		return fmt.Errorf("failed to find sockets at path %q: %w", c.SocketDir, err)
@@ -104,7 +104,7 @@ func (c *Ceph) gatherAdminSocketStats(acc telegraf.Accumulator) error {
 				for name, metric := range metrics {
 					valueType := schema[tag][name]
 					switch valueType {
-					case telegraf.Counter:
+					case Dana.Counter:
 						acc.AddCounter(measurement,
 							map[string]interface{}{name: metric},
 							map[string]string{"type": s.sockType, "id": s.sockID, "collection": tag})
@@ -124,10 +124,10 @@ func (c *Ceph) gatherAdminSocketStats(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (c *Ceph) gatherClusterStats(acc telegraf.Accumulator) error {
+func (c *Ceph) gatherClusterStats(acc Dana.Accumulator) error {
 	jobs := []struct {
 		command string
-		parser  func(telegraf.Accumulator, string) error
+		parser  func(Dana.Accumulator, string) error
 	}{
 		{"status", decodeStatus},
 		{"df", decodeDf},
@@ -299,7 +299,7 @@ type rawPerfCounter struct {
 
 type rawCollection map[string]rawPerfCounter
 
-type perfSchemaMap map[string]map[string]telegraf.ValueType
+type perfSchemaMap map[string]map[string]Dana.ValueType
 
 // Parses the output of ceph perf schema into a useful format, mapping metrics
 // in collections to their Telegraf metric type.  This is made a little more
@@ -313,18 +313,18 @@ func parseSchema(rawSchema string) (perfSchemaMap, error) {
 
 	schemaMap := make(perfSchemaMap)
 	for collection, counters := range rawMap {
-		schemaMap[collection] = make(map[string]telegraf.ValueType)
+		schemaMap[collection] = make(map[string]Dana.ValueType)
 		for counter, schema := range counters {
 			if schema.TypeMask&perfCounterLongRunAvg != 0 {
-				schemaMap[collection][counter+".sum"] = telegraf.Counter
-				schemaMap[collection][counter+".avgcount"] = telegraf.Counter
+				schemaMap[collection][counter+".sum"] = Dana.Counter
+				schemaMap[collection][counter+".avgcount"] = Dana.Counter
 				if schema.TypeMask&perfCounterTime != 0 {
-					schemaMap[collection][counter+".avgtime"] = telegraf.Gauge
+					schemaMap[collection][counter+".avgtime"] = Dana.Gauge
 				}
 			} else if schema.TypeMask&perfCounterCounter != 0 {
-				schemaMap[collection][counter] = telegraf.Counter
+				schemaMap[collection][counter] = Dana.Counter
 			} else {
-				schemaMap[collection][counter] = telegraf.Gauge
+				schemaMap[collection][counter] = Dana.Gauge
 			}
 		}
 	}
@@ -473,13 +473,13 @@ type status struct {
 }
 
 // decodeStatus decodes the output of 'ceph -s'
-func decodeStatus(acc telegraf.Accumulator, input string) error {
+func decodeStatus(acc Dana.Accumulator, input string) error {
 	data := &status{}
 	if err := json.Unmarshal([]byte(input), data); err != nil {
 		return fmt.Errorf("failed to parse json: %q: %w", input, err)
 	}
 
-	decoders := []func(telegraf.Accumulator, *status) error{
+	decoders := []func(Dana.Accumulator, *status) error{
 		decodeStatusFsmap,
 		decodeStatusHealth,
 		decodeStatusMonmap,
@@ -498,7 +498,7 @@ func decodeStatus(acc telegraf.Accumulator, input string) error {
 }
 
 // decodeStatusFsmap decodes the FS map portion of the output of 'ceph -s'
-func decodeStatusFsmap(acc telegraf.Accumulator, data *status) error {
+func decodeStatusFsmap(acc Dana.Accumulator, data *status) error {
 	fields := map[string]interface{}{
 		"in":         data.FSMap.NumIn,
 		"max":        data.FSMap.NumMax,
@@ -510,7 +510,7 @@ func decodeStatusFsmap(acc telegraf.Accumulator, data *status) error {
 }
 
 // decodeStatusHealth decodes the health portion of the output of 'ceph status'
-func decodeStatusHealth(acc telegraf.Accumulator, data *status) error {
+func decodeStatusHealth(acc Dana.Accumulator, data *status) error {
 	statusCodes := map[string]float64{
 		"HEALTH_ERR":  0,
 		"HEALTH_WARN": 1,
@@ -526,7 +526,7 @@ func decodeStatusHealth(acc telegraf.Accumulator, data *status) error {
 }
 
 // decodeStatusMonmap decodes the Mon map portion of the output of 'ceph -s'
-func decodeStatusMonmap(acc telegraf.Accumulator, data *status) error {
+func decodeStatusMonmap(acc Dana.Accumulator, data *status) error {
 	fields := map[string]interface{}{
 		"num_mons": data.MonMap.NumMons,
 	}
@@ -535,7 +535,7 @@ func decodeStatusMonmap(acc telegraf.Accumulator, data *status) error {
 }
 
 // decodeStatusOsdmap decodes the OSD map portion of the output of 'ceph -s'
-func decodeStatusOsdmap(acc telegraf.Accumulator, data *status) error {
+func decodeStatusOsdmap(acc Dana.Accumulator, data *status) error {
 	fields := map[string]interface{}{
 		"epoch":            data.OSDMap.Epoch,
 		"num_in_osds":      data.OSDMap.NumInOSDs,
@@ -560,7 +560,7 @@ func decodeStatusOsdmap(acc telegraf.Accumulator, data *status) error {
 }
 
 // decodeStatusPgmap decodes the PG map portion of the output of 'ceph -s'
-func decodeStatusPgmap(acc telegraf.Accumulator, data *status) error {
+func decodeStatusPgmap(acc Dana.Accumulator, data *status) error {
 	fields := map[string]interface{}{
 		"bytes_avail":                data.PGMap.BytesAvail,
 		"bytes_total":                data.PGMap.BytesTotal,
@@ -591,7 +591,7 @@ func decodeStatusPgmap(acc telegraf.Accumulator, data *status) error {
 }
 
 // decodeStatusPgmapState decodes the PG map state portion of the output of 'ceph -s'
-func decodeStatusPgmapState(acc telegraf.Accumulator, data *status) error {
+func decodeStatusPgmapState(acc Dana.Accumulator, data *status) error {
 	for _, pgState := range data.PGMap.PGsByState {
 		tags := map[string]string{
 			"state": pgState.StateName,
@@ -634,7 +634,7 @@ type df struct {
 }
 
 // decodeDf decodes the output of 'ceph df'
-func decodeDf(acc telegraf.Accumulator, input string) error {
+func decodeDf(acc Dana.Accumulator, input string) error {
 	data := &df{}
 	if err := json.Unmarshal([]byte(input), data); err != nil {
 		return fmt.Errorf("failed to parse json: %q: %w", input, err)
@@ -713,7 +713,7 @@ type osdPoolStats []struct {
 }
 
 // decodeOsdPoolStats decodes the output of 'ceph osd pool stats'
-func decodeOsdPoolStats(acc telegraf.Accumulator, input string) error {
+func decodeOsdPoolStats(acc Dana.Accumulator, input string) error {
 	data := make(osdPoolStats, 0)
 	if err := json.Unmarshal([]byte(input), &data); err != nil {
 		return fmt.Errorf("failed to parse json: %q: %w", input, err)
@@ -747,7 +747,7 @@ func decodeOsdPoolStats(acc telegraf.Accumulator, input string) error {
 }
 
 func init() {
-	inputs.Add(measurement, func() telegraf.Input {
+	inputs.Add(measurement, func() Dana.Input {
 		return &Ceph{
 			CephBinary:             "/usr/bin/ceph",
 			OsdPrefix:              osdPrefix,

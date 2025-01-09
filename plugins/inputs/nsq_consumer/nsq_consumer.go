@@ -21,20 +21,20 @@ const (
 )
 
 type NSQConsumer struct {
-	Server                 string          `toml:"server" deprecated:"1.5.0;1.35.0;use 'nsqd' instead"`
-	Nsqd                   []string        `toml:"nsqd"`
-	Nsqlookupd             []string        `toml:"nsqlookupd"`
-	Topic                  string          `toml:"topic"`
-	Channel                string          `toml:"channel"`
-	MaxInFlight            int             `toml:"max_in_flight"`
-	MaxUndeliveredMessages int             `toml:"max_undelivered_messages"`
-	Log                    telegraf.Logger `toml:"-"`
+	Server                 string      `toml:"server" deprecated:"1.5.0;1.35.0;use 'nsqd' instead"`
+	Nsqd                   []string    `toml:"nsqd"`
+	Nsqlookupd             []string    `toml:"nsqlookupd"`
+	Topic                  string      `toml:"topic"`
+	Channel                string      `toml:"channel"`
+	MaxInFlight            int         `toml:"max_in_flight"`
+	MaxUndeliveredMessages int         `toml:"max_undelivered_messages"`
+	Log                    Dana.Logger `toml:"-"`
 
-	parser   telegraf.Parser
+	parser   Dana.Parser
 	consumer *nsq.Consumer
 
 	mu       sync.Mutex
-	messages map[telegraf.TrackingID]*nsq.Message
+	messages map[Dana.TrackingID]*nsq.Message
 	wg       sync.WaitGroup
 	cancel   context.CancelFunc
 }
@@ -45,7 +45,7 @@ type (
 )
 
 type logger struct {
-	log telegraf.Logger
+	log Dana.Logger
 }
 
 func (l *logger) Output(_ int, s string) error {
@@ -72,14 +72,14 @@ func (n *NSQConsumer) Init() error {
 }
 
 // SetParser takes the data_format from the config and finds the right parser for that format
-func (n *NSQConsumer) SetParser(parser telegraf.Parser) {
+func (n *NSQConsumer) SetParser(parser Dana.Parser) {
 	n.parser = parser
 }
 
-func (n *NSQConsumer) Start(ac telegraf.Accumulator) error {
+func (n *NSQConsumer) Start(ac Dana.Accumulator) error {
 	acc := ac.WithTracking(n.MaxUndeliveredMessages)
 	sem := make(semaphore, n.MaxUndeliveredMessages)
-	n.messages = make(map[telegraf.TrackingID]*nsq.Message, n.MaxUndeliveredMessages)
+	n.messages = make(map[Dana.TrackingID]*nsq.Message, n.MaxUndeliveredMessages)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	n.cancel = cancel
@@ -138,7 +138,7 @@ func (n *NSQConsumer) Start(ac telegraf.Accumulator) error {
 	return nil
 }
 
-func (*NSQConsumer) Gather(telegraf.Accumulator) error {
+func (*NSQConsumer) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -149,7 +149,7 @@ func (n *NSQConsumer) Stop() {
 	<-n.consumer.StopChan
 }
 
-func (n *NSQConsumer) onDelivery(ctx context.Context, acc telegraf.TrackingAccumulator, sem semaphore) {
+func (n *NSQConsumer) onDelivery(ctx context.Context, acc Dana.TrackingAccumulator, sem semaphore) {
 	for {
 		select {
 		case <-ctx.Done():
@@ -188,7 +188,7 @@ func (n *NSQConsumer) connect() error {
 }
 
 func init() {
-	inputs.Add("nsq_consumer", func() telegraf.Input {
+	inputs.Add("nsq_consumer", func() Dana.Input {
 		return &NSQConsumer{
 			MaxUndeliveredMessages: defaultMaxUndeliveredMessages,
 		}

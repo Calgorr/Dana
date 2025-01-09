@@ -45,7 +45,7 @@ type (
 		Metrics           []*metric       `toml:"metrics"`
 		RateLimit         int             `toml:"ratelimit"`
 
-		Log telegraf.Logger `toml:"-"`
+		Log Dana.Logger `toml:"-"`
 
 		client        aliyuncmsClient
 		windowStart   time.Time
@@ -200,7 +200,7 @@ func (s *AliyunCMS) Init() error {
 }
 
 // Start plugin discovery loop, metrics are gathered through Gather
-func (s *AliyunCMS) Start(telegraf.Accumulator) error {
+func (s *AliyunCMS) Start(Dana.Accumulator) error {
 	// Start periodic discovery process
 	if s.dt != nil {
 		s.dt.start()
@@ -209,7 +209,7 @@ func (s *AliyunCMS) Start(telegraf.Accumulator) error {
 	return nil
 }
 
-func (s *AliyunCMS) Gather(acc telegraf.Accumulator) error {
+func (s *AliyunCMS) Gather(acc Dana.Accumulator) error {
 	s.updateWindow(time.Now())
 
 	// limit concurrency or we can easily exhaust user connection limit
@@ -261,7 +261,7 @@ func (s *AliyunCMS) updateWindow(relativeTo time.Time) {
 }
 
 // Gather given metric and emit error
-func (s *AliyunCMS) gatherMetric(acc telegraf.Accumulator, metricName string, metric *metric) error {
+func (s *AliyunCMS) gatherMetric(acc Dana.Accumulator, metricName string, metric *metric) error {
 	for _, region := range s.Regions {
 		req := cms.CreateDescribeMetricListRequest()
 		req.Period = strconv.FormatInt(int64(time.Duration(s.Period).Seconds()), 10)
@@ -486,7 +486,7 @@ func snakeCase(s string) string {
 }
 
 func init() {
-	inputs.Add("aliyuncms", func() telegraf.Input {
+	inputs.Add("aliyuncms", func() Dana.Input {
 		return &AliyunCMS{
 			RateLimit:         200,
 			DiscoveryInterval: config.Duration(time.Minute),

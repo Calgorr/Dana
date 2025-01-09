@@ -402,7 +402,7 @@ func TestLabels(t *testing.T) {
 		},
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("jenkins",
 			map[string]string{
 				"source": "127.0.0.1",

@@ -187,7 +187,7 @@ func TestSerializeBatch(t *testing.T) {
 		},
 		time.Unix(0, 0),
 	)
-	metrics := []telegraf.Metric{m, m}
+	metrics := []Dana.Metric{m, m}
 	s := &Serializer{}
 	buf, err := s.SerializeBatch(metrics)
 	require.NoError(t, err)
@@ -228,7 +228,7 @@ func TestSerializeJSONv2FormatBatch(t *testing.T) {
 		time.Unix(0, 0),
 	)
 	s := &Serializer{Format: "jsonv2"}
-	metrics := []telegraf.Metric{m, m}
+	metrics := []Dana.Metric{m, m}
 	buf, err := s.SerializeBatch(metrics)
 	require.NoError(t, err)
 	require.JSONEq(

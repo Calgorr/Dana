@@ -801,7 +801,7 @@ func TestMetricForNode(t *testing.T) {
 		v        interface{}
 		time     time.Time
 		status   ua.StatusCode
-		expected telegraf.Metric
+		expected Dana.Metric
 	}{
 		{
 			testname: "metric build correctly",

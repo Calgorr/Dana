@@ -22,10 +22,10 @@ import (
 // needs to be defines.
 func newMetricWithOrderedFields(
 	name string,
-	tags []telegraf.Tag,
-	fields []telegraf.Field,
+	tags []Dana.Tag,
+	fields []Dana.Field,
 	timestamp time.Time,
-) telegraf.Metric {
+) Dana.Metric {
 	m := metric.New(name, map[string]string{}, map[string]interface{}{}, timestamp)
 	for _, tag := range tags {
 		m.AddTag(tag.Key, tag.Value)
@@ -129,7 +129,7 @@ func TestMetricConversionToRecordsWithTags(t *testing.T) {
 		name     string
 		plugin   *IoTDB
 		expected recordsWithTags
-		metrics  []telegraf.Metric
+		metrics  []Dana.Metric
 	}{
 		{
 			name:   "default config",
@@ -153,14 +153,14 @@ func TestMetricConversionToRecordsWithTags(t *testing.T) {
 				},
 				TimestampList: []int64{testTimestamp.UnixNano(), testTimestamp.UnixNano(), testTimestamp.UnixNano()},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				newMetricWithOrderedFields(
 					"root.computer.fan",
-					[]telegraf.Tag{
+					[]Dana.Tag{
 						{Key: "price", Value: "expensive"},
 						{Key: "owner", Value: "cpu"},
 					},
-					[]telegraf.Field{
+					[]Dana.Field{
 						{Key: "temperature", Value: float64(42.55)},
 						{Key: "counter", Value: int64(987654321)},
 					},
@@ -168,11 +168,11 @@ func TestMetricConversionToRecordsWithTags(t *testing.T) {
 				),
 				newMetricWithOrderedFields(
 					"root.computer.fan",
-					[]telegraf.Tag{ // same keys in different order
+					[]Dana.Tag{ // same keys in different order
 						{Key: "owner", Value: "gpu"},
 						{Key: "price", Value: "cheap"},
 					},
-					[]telegraf.Field{ // same keys in different order
+					[]Dana.Field{ // same keys in different order
 						{Key: "counter", Value: int64(123456789)},
 						{Key: "temperature", Value: float64(56.24)},
 					},
@@ -181,7 +181,7 @@ func TestMetricConversionToRecordsWithTags(t *testing.T) {
 				newMetricWithOrderedFields(
 					"root.computer.keyboard",
 					nil,
-					[]telegraf.Field{
+					[]Dana.Field{
 						{Key: "temperature", Value: float64(30.33)},
 						{Key: "counter", Value: int64(123456789)},
 						{Key: "unsigned_big", Value: uint64(math.MaxInt64 + 1000)},
@@ -203,11 +203,11 @@ func TestMetricConversionToRecordsWithTags(t *testing.T) {
 				DataTypesList:    [][]client.TSDataType{{client.TEXT}},
 				TimestampList:    []int64{testTimestamp.UnixNano()},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				newMetricWithOrderedFields(
 					"root.computer.uint_to_text",
 					nil,
-					[]telegraf.Field{
+					[]Dana.Field{
 						{Key: "unsigned_big", Value: uint64(math.MaxInt64 + 1000)},
 					},
 					testTimestamp,
@@ -224,11 +224,11 @@ func TestMetricConversionToRecordsWithTags(t *testing.T) {
 				DataTypesList:    [][]client.TSDataType{{client.INT64}},
 				TimestampList:    []int64{testTimestamp.UnixNano()},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				newMetricWithOrderedFields(
 					"root.computer.overflow",
 					nil,
-					[]telegraf.Field{
+					[]Dana.Field{
 						{Key: "unsigned_big", Value: uint64(math.MaxInt64 + 1000)},
 					},
 					testTimestamp,
@@ -245,11 +245,11 @@ func TestMetricConversionToRecordsWithTags(t *testing.T) {
 				DataTypesList:    [][]client.TSDataType{{client.INT64}},
 				TimestampList:    []int64{testTimestamp.Unix()},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				newMetricWithOrderedFields(
 					"root.computer.second",
 					nil,
-					[]telegraf.Field{
+					[]Dana.Field{
 						{Key: "unsigned_big", Value: uint64(math.MaxInt64 + 1000)},
 					},
 					testTimestamp,
@@ -368,7 +368,7 @@ func TestTagsHandling(t *testing.T) {
 					{client.DOUBLE, client.INT64},
 				},
 				TimestampList: []int64{testTimestamp.UnixNano()},
-				TagsList: [][]*telegraf.Tag{{
+				TagsList: [][]*Dana.Tag{{
 					{Key: "owner", Value: "cpu"},
 					{Key: "price", Value: "expensive"},
 				}},
@@ -398,7 +398,7 @@ func TestTagsHandling(t *testing.T) {
 					{client.DOUBLE, client.INT64},
 				},
 				TimestampList: []int64{testTimestamp.UnixNano()},
-				TagsList: [][]*telegraf.Tag{{
+				TagsList: [][]*Dana.Tag{{
 					{Key: "owner", Value: "cpu"},
 					{Key: "price", Value: "expensive"},
 				}},
@@ -426,7 +426,7 @@ func TestEntireMetricConversion(t *testing.T) {
 		name         string
 		plugin       *IoTDB
 		expected     recordsWithTags
-		metrics      []telegraf.Metric
+		metrics      []Dana.Metric
 		requireEqual bool
 	}{
 		{
@@ -445,14 +445,14 @@ func TestEntireMetricConversion(t *testing.T) {
 				},
 				TimestampList: []int64{testTimestamp.UnixNano()},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				newMetricWithOrderedFields(
 					"root.computer.screen",
-					[]telegraf.Tag{
+					[]Dana.Tag{
 						{Key: "brightness", Value: "high"},
 						{Key: "type", Value: "LED"},
 					},
-					[]telegraf.Field{
+					[]Dana.Field{
 						{Key: "temperature", Value: float64(30.33)},
 						{Key: "counter", Value: int64(123456789)},
 						{Key: "unsigned_big", Value: uint64(math.MaxInt64 + 1000)},
@@ -481,14 +481,14 @@ func TestEntireMetricConversion(t *testing.T) {
 				},
 				TimestampList: []int64{testTimestamp.UnixNano()},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				newMetricWithOrderedFields(
 					"root.computer.screen",
-					[]telegraf.Tag{
+					[]Dana.Tag{
 						{Key: "brightness", Value: "high"},
 						{Key: "type", Value: "LED"},
 					},
-					[]telegraf.Field{
+					[]Dana.Field{
 						{Key: "temperature", Value: float64(30.33)},
 						{Key: "counter", Value: int64(123456789)},
 						{Key: "unsigned_big", Value: uint64(math.MaxInt64 + 1000)},
@@ -517,14 +517,14 @@ func TestEntireMetricConversion(t *testing.T) {
 				},
 				TimestampList: []int64{testTimestamp.UnixNano()},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				newMetricWithOrderedFields(
 					"root.computer.screen",
-					[]telegraf.Tag{
+					[]Dana.Tag{
 						{Key: "brightness", Value: "high"},
 						{Key: "type", Value: "LED"},
 					},
-					[]telegraf.Field{
+					[]Dana.Field{
 						{Key: "temperature", Value: float64(30.33)},
 						{Key: "counter", Value: int64(123456789)},
 					},
@@ -587,22 +587,22 @@ func TestIntegrationInserts(t *testing.T) {
 	testClient.Log = &testutil.Logger{}
 
 	// generate Metrics to input
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetricWithOrderedFields(
 			"root.computer.unsigned_big",
 			nil,
-			[]telegraf.Field{
+			[]Dana.Field{
 				{Key: "unsigned_big", Value: uint64(math.MaxInt64 + 1000)},
 			},
 			time.Now(),
 		),
 		newMetricWithOrderedFields(
 			"root.computer.fan",
-			[]telegraf.Tag{
+			[]Dana.Tag{
 				{Key: "price", Value: "expensive"},
 				{Key: "owner", Value: "cpu"},
 			},
-			[]telegraf.Field{
+			[]Dana.Field{
 				{Key: "temperature", Value: float64(42.55)},
 				{Key: "counter", Value: int64(987654321)},
 			},
@@ -610,11 +610,11 @@ func TestIntegrationInserts(t *testing.T) {
 		),
 		newMetricWithOrderedFields(
 			"root.computer.fan",
-			[]telegraf.Tag{ // same keys in different order
+			[]Dana.Tag{ // same keys in different order
 				{Key: "owner", Value: "gpu"},
 				{Key: "price", Value: "cheap"},
 			},
-			[]telegraf.Field{ // same keys in different order
+			[]Dana.Field{ // same keys in different order
 				{Key: "counter", Value: int64(123456789)},
 				{Key: "temperature", Value: float64(56.24)},
 			},
@@ -623,7 +623,7 @@ func TestIntegrationInserts(t *testing.T) {
 		newMetricWithOrderedFields(
 			"root.computer.keyboard",
 			nil,
-			[]telegraf.Field{
+			[]Dana.Field{
 				{Key: "temperature", Value: float64(30.33)},
 				{Key: "counter", Value: int64(123456789)},
 				{Key: "unsigned_big", Value: uint64(math.MaxInt64 + 1000)},

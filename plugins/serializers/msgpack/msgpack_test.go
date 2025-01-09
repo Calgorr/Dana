@@ -11,7 +11,7 @@ import (
 	"Dana/testutil"
 )
 
-func toTelegrafMetric(m Metric) telegraf.Metric {
+func toTelegrafMetric(m Metric) Dana.Metric {
 	tm := metric.New(m.Name, m.Tags, m.Fields, m.Time.time)
 	return tm
 }
@@ -115,7 +115,7 @@ func TestSerializeMultipleMetric(t *testing.T) {
 func TestSerializeBatch(t *testing.T) {
 	m := testutil.TestMetric(90)
 
-	metrics := []telegraf.Metric{m, m, m, m}
+	metrics := []Dana.Metric{m, m, m, m}
 
 	s := Serializer{}
 

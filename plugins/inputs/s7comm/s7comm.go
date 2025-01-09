@@ -95,7 +95,7 @@ type S7comm struct {
 	Timeout         config.Duration    `toml:"timeout"`
 	DebugConnection bool               `toml:"debug_connection" deprecated:"1.35.0;use 'log_level' 'trace' instead"`
 	Configs         []metricDefinition `toml:"metric"`
-	Log             telegraf.Logger    `toml:"-"`
+	Log             Dana.Logger        `toml:"-"`
 
 	handler *gos7.TCPClientHandler
 	client  gos7.Client
@@ -142,7 +142,7 @@ func (s *S7comm) Init() error {
 	// Create handler for the connection
 	s.handler = gos7.NewTCPClientHandlerWithConnectType(s.Server, s.Rack, s.Slot, connectionTypeMap[s.ConnectionType])
 	s.handler.Timeout = time.Duration(s.Timeout)
-	if s.Log.Level().Includes(telegraf.Trace) || s.DebugConnection { // for backward compatibility
+	if s.Log.Level().Includes(Dana.Trace) || s.DebugConnection { // for backward compatibility
 		s.handler.Logger = log.New(&tracelogger{log: s.Log}, "", 0)
 	}
 
@@ -151,7 +151,7 @@ func (s *S7comm) Init() error {
 }
 
 // Start initializes the connection to the remote endpoint
-func (s *S7comm) Start(_ telegraf.Accumulator) error {
+func (s *S7comm) Start(_ Dana.Accumulator) error {
 	s.Log.Debugf("Connecting to %q...", s.Server)
 	if err := s.handler.Connect(); err != nil {
 		return &internal.StartupError{
@@ -173,7 +173,7 @@ func (s *S7comm) Stop() {
 }
 
 // Gather collects the data from the device
-func (s *S7comm) Gather(acc telegraf.Accumulator) error {
+func (s *S7comm) Gather(acc Dana.Accumulator) error {
 	timestamp := time.Now()
 	grouper := metric.NewSeriesGrouper()
 
@@ -418,7 +418,7 @@ func fieldID(seed maphash.Seed, def metricDefinition, field metricFieldDefinitio
 
 // Logger for tracing internal messages
 type tracelogger struct {
-	log telegraf.Logger
+	log Dana.Logger
 }
 
 func (l *tracelogger) Write(b []byte) (n int, err error) {
@@ -428,7 +428,7 @@ func (l *tracelogger) Write(b []byte) (n int, err error) {
 
 // Add this plugin to telegraf
 func init() {
-	inputs.Add("s7comm", func() telegraf.Input {
+	inputs.Add("s7comm", func() Dana.Input {
 		return &S7comm{
 			Rack:         -1,
 			Slot:         -1,

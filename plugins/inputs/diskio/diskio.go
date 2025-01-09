@@ -24,11 +24,11 @@ var (
 )
 
 type DiskIO struct {
-	Devices          []string        `toml:"devices"`
-	DeviceTags       []string        `toml:"device_tags"`
-	NameTemplates    []string        `toml:"name_templates"`
-	SkipSerialNumber bool            `toml:"skip_serial_number"`
-	Log              telegraf.Logger `toml:"-"`
+	Devices          []string    `toml:"devices"`
+	DeviceTags       []string    `toml:"device_tags"`
+	NameTemplates    []string    `toml:"name_templates"`
+	SkipSerialNumber bool        `toml:"skip_serial_number"`
+	Log              Dana.Logger `toml:"-"`
 
 	ps                system.PS
 	infoCache         map[string]diskInfoCache
@@ -62,7 +62,7 @@ func (d *DiskIO) Init() error {
 	return nil
 }
 
-func (d *DiskIO) Gather(acc telegraf.Accumulator) error {
+func (d *DiskIO) Gather(acc Dana.Accumulator) error {
 	var devices []string
 	if d.deviceFilter == nil {
 		for _, dev := range d.Devices {
@@ -219,7 +219,7 @@ func (d *DiskIO) diskTags(devName string) map[string]string {
 
 func init() {
 	ps := system.NewSystemPS()
-	inputs.Add("diskio", func() telegraf.Input {
+	inputs.Add("diskio", func() Dana.Input {
 		return &DiskIO{ps: ps, SkipSerialNumber: true}
 	})
 }

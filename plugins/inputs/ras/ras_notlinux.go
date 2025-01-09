@@ -14,20 +14,20 @@ import (
 var sampleConfig string
 
 type Ras struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (r *Ras) Init() error {
 	r.Log.Warn("current platform is not supported")
 	return nil
 }
-func (*Ras) SampleConfig() string                { return sampleConfig }
-func (*Ras) Gather(_ telegraf.Accumulator) error { return nil }
-func (*Ras) Start(_ telegraf.Accumulator) error  { return nil }
-func (*Ras) Stop()                               {}
+func (*Ras) SampleConfig() string            { return sampleConfig }
+func (*Ras) Gather(_ Dana.Accumulator) error { return nil }
+func (*Ras) Start(_ Dana.Accumulator) error  { return nil }
+func (*Ras) Stop()                           {}
 
 func init() {
-	inputs.Add("ras", func() telegraf.Input {
+	inputs.Add("ras", func() Dana.Input {
 		return &Ras{}
 	})
 }

@@ -26,7 +26,7 @@ type ValueCounter struct {
 
 // NewValueCounter create a new aggregation plugin which counts the occurrences
 // of fields and emits the count.
-func NewValueCounter() telegraf.Aggregator {
+func NewValueCounter() Dana.Aggregator {
 	vc := &ValueCounter{}
 	vc.Reset()
 	return vc
@@ -37,7 +37,7 @@ func (*ValueCounter) SampleConfig() string {
 }
 
 // Add is run on every metric which passes the plugin
-func (vc *ValueCounter) Add(in telegraf.Metric) {
+func (vc *ValueCounter) Add(in Dana.Metric) {
 	id := in.HashID()
 
 	// Check if the cache already has an entry for this metric, if not create it
@@ -63,7 +63,7 @@ func (vc *ValueCounter) Add(in telegraf.Metric) {
 }
 
 // Push emits the counters
-func (vc *ValueCounter) Push(acc telegraf.Accumulator) {
+func (vc *ValueCounter) Push(acc Dana.Accumulator) {
 	for _, agg := range vc.cache {
 		fields := make(map[string]interface{}, len(agg.fieldCount))
 		for field, count := range agg.fieldCount {
@@ -80,7 +80,7 @@ func (vc *ValueCounter) Reset() {
 }
 
 func init() {
-	aggregators.Add("valuecounter", func() telegraf.Aggregator {
+	aggregators.Add("valuecounter", func() Dana.Aggregator {
 		return NewValueCounter()
 	})
 }

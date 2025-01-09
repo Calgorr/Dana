@@ -14,18 +14,18 @@ import (
 )
 
 type filter struct {
-	Name            string          `toml:"name"`
-	PidFiles        []string        `toml:"pid_files"`
-	SystemdUnits    []string        `toml:"systemd_units"`
-	SupervisorUnits []string        `toml:"supervisor_units"`
-	WinService      []string        `toml:"win_services"`
-	CGroups         []string        `toml:"cgroups"`
-	Patterns        []string        `toml:"patterns"`
-	Users           []string        `toml:"users"`
-	Executables     []string        `toml:"executables"`
-	ProcessNames    []string        `toml:"process_names"`
-	RecursionDepth  int             `toml:"recursion_depth"`
-	Log             telegraf.Logger `toml:"-"`
+	Name            string      `toml:"name"`
+	PidFiles        []string    `toml:"pid_files"`
+	SystemdUnits    []string    `toml:"systemd_units"`
+	SupervisorUnits []string    `toml:"supervisor_units"`
+	WinService      []string    `toml:"win_services"`
+	CGroups         []string    `toml:"cgroups"`
+	Patterns        []string    `toml:"patterns"`
+	Users           []string    `toml:"users"`
+	Executables     []string    `toml:"executables"`
+	ProcessNames    []string    `toml:"process_names"`
+	RecursionDepth  int         `toml:"recursion_depth"`
+	Log             Dana.Logger `toml:"-"`
 
 	filterSupervisorUnit string
 	filterCmds           []*regexp.Regexp

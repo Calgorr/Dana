@@ -22,15 +22,15 @@ var sampleConfig string
 const defaultTimeout = 5 * time.Second
 
 type Powerdns struct {
-	UnixSockets []string        `toml:"unix_sockets"`
-	Log         telegraf.Logger `toml:"-"`
+	UnixSockets []string    `toml:"unix_sockets"`
+	Log         Dana.Logger `toml:"-"`
 }
 
 func (*Powerdns) SampleConfig() string {
 	return sampleConfig
 }
 
-func (p *Powerdns) Gather(acc telegraf.Accumulator) error {
+func (p *Powerdns) Gather(acc Dana.Accumulator) error {
 	if len(p.UnixSockets) == 0 {
 		return p.gatherServer("/var/run/pdns.controlsocket", acc)
 	}
@@ -44,7 +44,7 @@ func (p *Powerdns) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (p *Powerdns) gatherServer(address string, acc telegraf.Accumulator) error {
+func (p *Powerdns) gatherServer(address string, acc Dana.Accumulator) error {
 	conn, err := net.DialTimeout("unix", address, defaultTimeout)
 	if err != nil {
 		return err
@@ -118,7 +118,7 @@ func (p *Powerdns) parseResponse(metrics string) map[string]interface{} {
 }
 
 func init() {
-	inputs.Add("powerdns", func() telegraf.Input {
+	inputs.Add("powerdns", func() Dana.Input {
 		return &Powerdns{}
 	})
 }

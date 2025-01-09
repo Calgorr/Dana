@@ -512,7 +512,7 @@ func TestHTTP_Write(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			)
-			metrics := []telegraf.Metric{m}
+			metrics := []Dana.Metric{m}
 
 			client, err := influxdb.NewHTTPClient(tt.config)
 			require.NoError(t, err)
@@ -562,7 +562,7 @@ func TestHTTP_WritePathPrefix(t *testing.T) {
 		},
 		time.Unix(0, 0),
 	)
-	metrics := []telegraf.Metric{m}
+	metrics := []Dana.Metric{m}
 
 	cfg := influxdb.HTTPConfig{
 		URL:      u,
@@ -632,7 +632,7 @@ func TestHTTP_WriteContentEncodingGzip(t *testing.T) {
 		time.Unix(0, 0),
 	)
 	require.NoError(t, err)
-	metrics := []telegraf.Metric{m}
+	metrics := []Dana.Metric{m}
 
 	cfg := influxdb.HTTPConfig{
 		URL:             u,
@@ -774,7 +774,7 @@ func TestHTTP_WriteDatabaseTagWorksOnRetry(t *testing.T) {
 	client, err := influxdb.NewHTTPClient(cfg)
 	require.NoError(t, err)
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{
@@ -804,7 +804,7 @@ func TestDBRPTags(t *testing.T) {
 	tests := []struct {
 		name        string
 		config      influxdb.HTTPConfig
-		metrics     []telegraf.Metric
+		metrics     []Dana.Metric
 		handlerFunc func(t *testing.T, w http.ResponseWriter, r *http.Request)
 		url         string
 	}{
@@ -814,7 +814,7 @@ func TestDBRPTags(t *testing.T) {
 				URL:      u,
 				Database: "telegraf",
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -839,7 +839,7 @@ func TestDBRPTags(t *testing.T) {
 				Database:        "telegraf",
 				RetentionPolicy: "foo",
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -864,7 +864,7 @@ func TestDBRPTags(t *testing.T) {
 				RetentionPolicyTag:   "rp",
 				Log:                  testutil.Logger{},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -895,7 +895,7 @@ func TestDBRPTags(t *testing.T) {
 				RetentionPolicyTag:   "rp",
 				Log:                  testutil.Logger{},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -920,7 +920,7 @@ func TestDBRPTags(t *testing.T) {
 				RetentionPolicyTag:   "rp",
 				Log:                  testutil.Logger{},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -946,7 +946,7 @@ func TestDBRPTags(t *testing.T) {
 				ExcludeRetentionPolicyTag: true,
 				Log:                       testutil.Logger{},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -977,7 +977,7 @@ func TestDBRPTags(t *testing.T) {
 				ExcludeDatabaseTag:   true,
 				Log:                  testutil.Logger{},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -1086,7 +1086,7 @@ func TestDBRPTagsCreateDatabaseNotCalledOnRetryAfterForbidden(t *testing.T) {
 	}
 	ts.Config.Handler = handlers
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},
@@ -1179,7 +1179,7 @@ func TestDBRPTagsCreateDatabaseCalledOnDatabaseNotFound(t *testing.T) {
 	}
 	ts.Config.Handler = handlers
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},
@@ -1236,7 +1236,7 @@ func TestDBNotFoundShouldDropMetricWhenSkipDatabaseCreateIsTrue(t *testing.T) {
 
 	ts.Config.Handler = http.HandlerFunc(f)
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},

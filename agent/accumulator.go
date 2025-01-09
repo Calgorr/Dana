@@ -9,20 +9,20 @@ import (
 
 type MetricMaker interface {
 	LogName() string
-	MakeMetric(m telegraf.Metric) telegraf.Metric
-	Log() telegraf.Logger
+	MakeMetric(m Dana.Metric) Dana.Metric
+	Log() Dana.Logger
 }
 
 type accumulator struct {
 	maker     MetricMaker
-	metrics   chan<- telegraf.Metric
+	metrics   chan<- Dana.Metric
 	precision time.Duration
 }
 
 func NewAccumulator(
 	maker MetricMaker,
-	metrics chan<- telegraf.Metric,
-) telegraf.Accumulator {
+	metrics chan<- Dana.Metric,
+) Dana.Accumulator {
 	acc := accumulator{
 		maker:     maker,
 		metrics:   metrics,
@@ -37,7 +37,7 @@ func (ac *accumulator) AddFields(
 	tags map[string]string,
 	t ...time.Time,
 ) {
-	ac.addMeasurement(measurement, tags, fields, telegraf.Untyped, t...)
+	ac.addMeasurement(measurement, tags, fields, Dana.Untyped, t...)
 }
 
 func (ac *accumulator) AddGauge(
@@ -46,7 +46,7 @@ func (ac *accumulator) AddGauge(
 	tags map[string]string,
 	t ...time.Time,
 ) {
-	ac.addMeasurement(measurement, tags, fields, telegraf.Gauge, t...)
+	ac.addMeasurement(measurement, tags, fields, Dana.Gauge, t...)
 }
 
 func (ac *accumulator) AddCounter(
@@ -55,7 +55,7 @@ func (ac *accumulator) AddCounter(
 	tags map[string]string,
 	t ...time.Time,
 ) {
-	ac.addMeasurement(measurement, tags, fields, telegraf.Counter, t...)
+	ac.addMeasurement(measurement, tags, fields, Dana.Counter, t...)
 }
 
 func (ac *accumulator) AddSummary(
@@ -64,7 +64,7 @@ func (ac *accumulator) AddSummary(
 	tags map[string]string,
 	t ...time.Time,
 ) {
-	ac.addMeasurement(measurement, tags, fields, telegraf.Summary, t...)
+	ac.addMeasurement(measurement, tags, fields, Dana.Summary, t...)
 }
 
 func (ac *accumulator) AddHistogram(
@@ -73,10 +73,10 @@ func (ac *accumulator) AddHistogram(
 	tags map[string]string,
 	t ...time.Time,
 ) {
-	ac.addMeasurement(measurement, tags, fields, telegraf.Histogram, t...)
+	ac.addMeasurement(measurement, tags, fields, Dana.Histogram, t...)
 }
 
-func (ac *accumulator) AddMetric(m telegraf.Metric) {
+func (ac *accumulator) AddMetric(m Dana.Metric) {
 	m.SetTime(m.Time().Round(ac.precision))
 	if m := ac.maker.MakeMetric(m); m != nil {
 		ac.metrics <- m
@@ -87,7 +87,7 @@ func (ac *accumulator) addMeasurement(
 	measurement string,
 	tags map[string]string,
 	fields map[string]interface{},
-	tp telegraf.ValueType,
+	tp Dana.ValueType,
 	t ...time.Time,
 ) {
 	m := metric.New(measurement, tags, fields, ac.getTime(t), tp)
@@ -119,25 +119,25 @@ func (ac *accumulator) getTime(t []time.Time) time.Time {
 	return timestamp.Round(ac.precision)
 }
 
-func (ac *accumulator) WithTracking(maxTracked int) telegraf.TrackingAccumulator {
+func (ac *accumulator) WithTracking(maxTracked int) Dana.TrackingAccumulator {
 	return &trackingAccumulator{
 		Accumulator: ac,
-		delivered:   make(chan telegraf.DeliveryInfo, maxTracked),
+		delivered:   make(chan Dana.DeliveryInfo, maxTracked),
 	}
 }
 
 type trackingAccumulator struct {
-	telegraf.Accumulator
-	delivered chan telegraf.DeliveryInfo
+	Dana.Accumulator
+	delivered chan Dana.DeliveryInfo
 }
 
-func (a *trackingAccumulator) AddTrackingMetric(m telegraf.Metric) telegraf.TrackingID {
+func (a *trackingAccumulator) AddTrackingMetric(m Dana.Metric) Dana.TrackingID {
 	dm, id := metric.WithTracking(m, a.onDelivery)
 	a.AddMetric(dm)
 	return id
 }
 
-func (a *trackingAccumulator) AddTrackingMetricGroup(group []telegraf.Metric) telegraf.TrackingID {
+func (a *trackingAccumulator) AddTrackingMetricGroup(group []Dana.Metric) Dana.TrackingID {
 	db, id := metric.WithGroupTracking(group, a.onDelivery)
 	for _, m := range db {
 		a.AddMetric(m)
@@ -145,11 +145,11 @@ func (a *trackingAccumulator) AddTrackingMetricGroup(group []telegraf.Metric) te
 	return id
 }
 
-func (a *trackingAccumulator) Delivered() <-chan telegraf.DeliveryInfo {
+func (a *trackingAccumulator) Delivered() <-chan Dana.DeliveryInfo {
 	return a.delivered
 }
 
-func (a *trackingAccumulator) onDelivery(info telegraf.DeliveryInfo) {
+func (a *trackingAccumulator) onDelivery(info Dana.DeliveryInfo) {
 	select {
 	case a.delivered <- info:
 	default:

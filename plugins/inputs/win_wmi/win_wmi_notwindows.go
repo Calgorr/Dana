@@ -14,16 +14,16 @@ import (
 var sampleConfig string
 
 type Wmi struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (w *Wmi) Init() error {
 	w.Log.Warn("current platform is not supported")
 	return nil
 }
-func (*Wmi) SampleConfig() string                { return sampleConfig }
-func (*Wmi) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Wmi) SampleConfig() string            { return sampleConfig }
+func (*Wmi) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("win_wmi", func() telegraf.Input { return &Wmi{} })
+	inputs.Add("win_wmi", func() Dana.Input { return &Wmi{} })
 }

@@ -15,14 +15,14 @@ import (
 
 type entry struct {
 	timestamp  time.Time
-	level      telegraf.LogLevel
+	level      Dana.LogLevel
 	prefix     string
 	attributes map[string]interface{}
 	args       []interface{}
 }
 
 type handler struct {
-	level    telegraf.LogLevel
+	level    Dana.LogLevel
 	timezone *time.Location
 
 	impl      sink
@@ -33,7 +33,7 @@ type handler struct {
 
 func defaultHandler() *handler {
 	return &handler{
-		level:     telegraf.Info,
+		level:     Dana.Info,
 		timezone:  time.UTC,
 		earlysink: log.New(os.Stderr, "", 0),
 		earlylogs: list.New(),
@@ -50,7 +50,7 @@ func redirectHandler(w io.Writer) *handler {
 	}
 }
 
-func (h *handler) switchSink(impl sink, level telegraf.LogLevel, tz *time.Location, skipEarlyLogs bool) {
+func (h *handler) switchSink(impl sink, level Dana.LogLevel, tz *time.Location, skipEarlyLogs bool) {
 	// Setup the new sink etc
 	h.impl = impl
 	h.level = level
@@ -71,7 +71,7 @@ func (h *handler) switchSink(impl sink, level telegraf.LogLevel, tz *time.Locati
 	h.Unlock()
 }
 
-func (h *handler) add(level telegraf.LogLevel, ts time.Time, prefix string, attr map[string]interface{}, args ...interface{}) *entry {
+func (h *handler) add(level Dana.LogLevel, ts time.Time, prefix string, attr map[string]interface{}, args ...interface{}) *entry {
 	e := &entry{
 		timestamp:  ts,
 		level:      level,
@@ -112,7 +112,7 @@ type redirectLogger struct {
 	writer io.Writer
 }
 
-func (l *redirectLogger) Print(level telegraf.LogLevel, ts time.Time, prefix string, attr map[string]interface{}, args ...interface{}) {
+func (l *redirectLogger) Print(level Dana.LogLevel, ts time.Time, prefix string, attr map[string]interface{}, args ...interface{}) {
 	var attrMsg string
 	if len(attr) > 0 {
 		var parts []string

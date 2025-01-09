@@ -17,10 +17,10 @@ import (
 var sampleConfig string
 
 type Disk struct {
-	MountPoints     []string        `toml:"mount_points"`
-	IgnoreFS        []string        `toml:"ignore_fs"`
-	IgnoreMountOpts []string        `toml:"ignore_mount_opts"`
-	Log             telegraf.Logger `toml:"-"`
+	MountPoints     []string    `toml:"mount_points"`
+	IgnoreFS        []string    `toml:"ignore_fs"`
+	IgnoreMountOpts []string    `toml:"ignore_mount_opts"`
+	Log             Dana.Logger `toml:"-"`
 
 	ps system.PS
 }
@@ -37,7 +37,7 @@ func (ds *Disk) Init() error {
 	return nil
 }
 
-func (ds *Disk) Gather(acc telegraf.Accumulator) error {
+func (ds *Disk) Gather(acc Dana.Accumulator) error {
 	disks, partitions, err := ds.ps.DiskUsage(ds.MountPoints, ds.IgnoreMountOpts, ds.IgnoreFS)
 	if err != nil {
 		return fmt.Errorf("error getting disk usage info: %w", err)
@@ -111,7 +111,7 @@ func (opts mountOptions) exists(opt string) bool {
 }
 
 func init() {
-	inputs.Add("disk", func() telegraf.Input {
+	inputs.Add("disk", func() Dana.Input {
 		return &Disk{}
 	})
 }

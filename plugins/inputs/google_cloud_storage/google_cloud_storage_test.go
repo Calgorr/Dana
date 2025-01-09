@@ -179,7 +179,7 @@ func TestRunGatherIterationWithPages(t *testing.T) {
 	require.Empty(t, emptyAcc.Metrics)
 }
 
-func createParser() telegraf.Parser {
+func createParser() Dana.Parser {
 	p := &parsers_json.Parser{
 		MetricName: "cpu",
 		Query:      "metrics",

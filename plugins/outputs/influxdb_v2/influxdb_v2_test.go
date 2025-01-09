@@ -193,7 +193,7 @@ func TestWrite(t *testing.T) {
 	defer plugin.Close()
 
 	// Test writing
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{
@@ -262,7 +262,7 @@ func TestWriteBucketTagWorksOnRetry(t *testing.T) {
 	defer plugin.Close()
 
 	// Send the metrics which should be succeed if sent twice
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{
@@ -327,7 +327,7 @@ func TestTooLargeWriteRetry(t *testing.T) {
 	defer plugin.Close()
 
 	// Together the metric batch size is too big, split up, we get success
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		metric.New(
 			"cpu",
 			map[string]string{
@@ -352,7 +352,7 @@ func TestTooLargeWriteRetry(t *testing.T) {
 	require.NoError(t, plugin.Write(metrics))
 
 	// These metrics are too big, even after splitting in half, expect error
-	hugeMetrics := []telegraf.Metric{
+	hugeMetrics := []Dana.Metric{
 		metric.New(
 			"reallyLargeMetric",
 			map[string]string{
@@ -423,7 +423,7 @@ func TestRateLimit(t *testing.T) {
 	defer plugin.Close()
 
 	// Together the metric batch size is too big, split up, we get success
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		metric.New(
 			"cpu",
 			map[string]string{},

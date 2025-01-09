@@ -36,7 +36,7 @@ func TestGeo(t *testing.T) {
 		time.Unix(1578603600, 0),
 	)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"mta",
 			map[string]string{
@@ -57,27 +57,27 @@ func TestGeo(t *testing.T) {
 }
 
 func TestTracking(t *testing.T) {
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"lat": 40.878738, "lon": 72.517572}, time.Unix(0, 0)),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"lat": 42.842451, "lon": 74.211361}, time.Unix(0, 0)),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"lat": 32.300963, "lon": 14.123442}, time.Unix(0, 0)),
 	}
 
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"foo",
 			map[string]string{"s2_cell_id": "3"},

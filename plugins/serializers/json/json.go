@@ -54,7 +54,7 @@ func (s *Serializer) Init() error {
 	return nil
 }
 
-func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
+func (s *Serializer) Serialize(metric Dana.Metric) ([]byte, error) {
 	var obj interface{}
 	obj = s.createObject(metric)
 
@@ -77,7 +77,7 @@ func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
 	return serialized, nil
 }
 
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	objects := make([]interface{}, 0, len(metrics))
 	for _, metric := range metrics {
 		m := s.createObject(metric)
@@ -108,7 +108,7 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
 	return serialized, nil
 }
 
-func (s *Serializer) createObject(metric telegraf.Metric) map[string]interface{} {
+func (s *Serializer) createObject(metric Dana.Metric) map[string]interface{} {
 	m := make(map[string]interface{}, 4)
 
 	tags := make(map[string]string, len(metric.TagList()))
@@ -162,7 +162,7 @@ func (s *Serializer) transform(obj interface{}) (interface{}, error) {
 
 func init() {
 	serializers.Add("json",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

@@ -21,8 +21,8 @@ type Common struct {
 	Script    string                 `toml:"script"`
 	Constants map[string]interface{} `toml:"constants"`
 
-	Log              telegraf.Logger `toml:"-"`
-	StarlarkLoadFunc func(module string, logger telegraf.Logger) (starlark.StringDict, error)
+	Log              Dana.Logger `toml:"-"`
+	StarlarkLoadFunc func(module string, logger Dana.Logger) (starlark.StringDict, error)
 
 	thread     *starlark.Thread
 	builtins   starlark.StringDict
@@ -258,7 +258,7 @@ func (s *Common) LogError(err error) {
 	}
 }
 
-func LoadFunc(module string, logger telegraf.Logger) (starlark.StringDict, error) {
+func LoadFunc(module string, logger Dana.Logger) (starlark.StringDict, error) {
 	switch module {
 	case "json.star":
 		return starlark.StringDict{

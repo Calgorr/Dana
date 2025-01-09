@@ -38,7 +38,7 @@ func (s *Serializer) Init() error {
 	return nil
 }
 
-func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
+func (s *Serializer) Serialize(metric Dana.Metric) ([]byte, error) {
 	serialized := make([]byte, 0)
 
 	for _, entry := range s.Entries {
@@ -83,7 +83,7 @@ func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
 	return serialized, nil
 }
 
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	serialized := make([]byte, 0)
 
 	for _, metric := range metrics {
@@ -101,7 +101,7 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
 
 func init() {
 	serializers.Add("binary",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

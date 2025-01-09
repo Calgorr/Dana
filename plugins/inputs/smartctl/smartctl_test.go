@@ -24,7 +24,7 @@ func TestCasesScan(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	inputs.Add("smartctl", func() telegraf.Input {
+	inputs.Add("smartctl", func() Dana.Input {
 		return &Smartctl{}
 	})
 
@@ -102,7 +102,7 @@ func TestCasesDevices(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	inputs.Add("smartctl", func() telegraf.Input {
+	inputs.Add("smartctl", func() Dana.Input {
 		return &Smartctl{}
 	})
 
@@ -120,7 +120,7 @@ func TestCasesDevices(t *testing.T) {
 			require.NoError(t, parser.Init())
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)

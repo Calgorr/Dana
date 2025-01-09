@@ -31,11 +31,11 @@ const (
 )
 
 type P4runtime struct {
-	Endpoint            string          `toml:"endpoint"`
-	DeviceID            uint64          `toml:"device_id"`
-	CounterNamesInclude []string        `toml:"counter_names_include"`
-	Log                 telegraf.Logger `toml:"-"`
-	EnableTLS           bool            `toml:"enable_tls"`
+	Endpoint            string      `toml:"endpoint"`
+	DeviceID            uint64      `toml:"device_id"`
+	CounterNamesInclude []string    `toml:"counter_names_include"`
+	Log                 Dana.Logger `toml:"-"`
+	EnableTLS           bool        `toml:"enable_tls"`
 	common_tls.ClientConfig
 
 	conn   *grpc.ClientConn
@@ -56,7 +56,7 @@ func (p *P4runtime) Init() error {
 	return p.newP4RuntimeClient()
 }
 
-func (p *P4runtime) Gather(acc telegraf.Accumulator) error {
+func (p *P4runtime) Gather(acc Dana.Accumulator) error {
 	p4Info, err := p.getP4Info()
 	if err != nil {
 		return err
@@ -223,7 +223,7 @@ func (p *P4runtime) readAllEntries(counterID uint32) ([]*p4.Entity, error) {
 }
 
 func init() {
-	inputs.Add("p4runtime", func() telegraf.Input {
+	inputs.Add("p4runtime", func() Dana.Input {
 		p4runtime := &P4runtime{
 			DeviceID: defaultDeviceID,
 		}

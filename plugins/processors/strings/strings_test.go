@@ -13,7 +13,7 @@ import (
 	"Dana/testutil"
 )
 
-func newM1() telegraf.Metric {
+func newM1() Dana.Metric {
 	m1 := metric.New("IIS_log",
 		map[string]string{
 			"verb":           "GET",
@@ -28,7 +28,7 @@ func newM1() telegraf.Metric {
 	return m1
 }
 
-func newM2() telegraf.Metric {
+func newM2() Dana.Metric {
 	m1 := metric.New("IIS_log",
 		map[string]string{
 			"verb":           "GET",
@@ -48,7 +48,7 @@ func TestFieldConversions(t *testing.T) {
 	tests := []struct {
 		name   string
 		plugin *Strings
-		check  func(t *testing.T, actual telegraf.Metric)
+		check  func(t *testing.T, actual Dana.Metric)
 	}{
 		{
 			name: "Should change existing field to lowercase",
@@ -59,7 +59,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("request")
 				require.True(t, ok)
 				require.Equal(t, "/mixed/case/path/?from=-1d&to=now", fv)
@@ -74,7 +74,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("request")
 				require.True(t, ok)
 				require.Equal(t, "/MIXED/CASE/PATH/?FROM=-1D&TO=NOW", fv)
@@ -89,7 +89,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("request")
 				require.True(t, ok)
 				require.Equal(t, "/Mixed/CASE/PaTH/?From=-1D&To=Now", fv)
@@ -105,7 +105,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("request")
 				require.True(t, ok)
 				require.Equal(t, "/mixed/CASE/paTH/?from=-1D&to=now", fv)
@@ -125,7 +125,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("request")
 				require.True(t, ok)
 				require.Equal(t, "mixed/CASE/paTH/?from=-1D&to=no", fv)
@@ -146,7 +146,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("request")
 				require.True(t, ok)
 				require.Equal(t, "mixed/case/path/?from=-1d&to=no", fv)
@@ -162,7 +162,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("request")
 				require.True(t, ok)
 				require.Equal(t, "mixed/CASE/paTH/?from=-1D&to=now", fv)
@@ -178,7 +178,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("request")
 				require.True(t, ok)
 				require.Equal(t, "/mixed/CASE/paTH/?from=-1D&to=no", fv)
@@ -194,7 +194,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("request")
 				require.True(t, ok)
 				require.Equal(t, "/CASE/paTH/?from=-1D&to=now", fv)
@@ -210,7 +210,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("request")
 				require.True(t, ok)
 				require.Equal(t, "/mixed/CASE/paTH/?from=", fv)
@@ -225,7 +225,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("whitespace")
 				require.True(t, ok)
 				require.Equal(t, "whitespace", fv)
@@ -240,7 +240,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("whitespace")
 				require.True(t, ok)
 				require.Equal(t, "whitespace\t", fv)
@@ -255,7 +255,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("whitespace")
 				require.True(t, ok)
 				require.Equal(t, "  whitespace", fv)
@@ -271,7 +271,7 @@ func TestFieldConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("request")
 				require.True(t, ok)
 				require.Equal(t, "/mixed/CASE/paTH/?from=-1D&to=now", fv)
@@ -291,7 +291,7 @@ func TestFieldKeyConversions(t *testing.T) {
 	tests := []struct {
 		name   string
 		plugin *Strings
-		check  func(t *testing.T, actual telegraf.Metric)
+		check  func(t *testing.T, actual Dana.Metric)
 	}{
 		{
 			name: "Should change existing field key to lowercase",
@@ -302,7 +302,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("request")
 				require.True(t, ok)
 				require.Equal(t, "/mixed/CASE/paTH/?from=-1D&to=now", fv)
@@ -317,7 +317,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("Request")
 				require.False(t, ok)
 				require.Nil(t, fv)
@@ -337,7 +337,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("quest")
 				require.True(t, ok)
 				require.Equal(t, "/mixed/CASE/paTH/?from=-1D&to=now", fv)
@@ -368,7 +368,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("requ")
 				require.True(t, ok)
 				require.Equal(t, "/mixed/CASE/paTH/?from=-1D&to=now", fv)
@@ -384,7 +384,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("sec")
 				require.True(t, ok)
 				require.Equal(t, int64(5), fv)
@@ -400,7 +400,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("req/sec")
 				require.True(t, ok)
 				require.Equal(t, int64(5), fv)
@@ -416,7 +416,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("sec")
 				require.True(t, ok)
 				require.Equal(t, int64(5), fv)
@@ -432,7 +432,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("req")
 				require.True(t, ok)
 				require.Equal(t, int64(5), fv)
@@ -447,7 +447,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("whitespace")
 				require.True(t, ok)
 				require.Equal(t, "  whitespace\t", fv)
@@ -462,7 +462,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("whitespace ")
 				require.True(t, ok)
 				require.Equal(t, "  whitespace\t", fv)
@@ -477,7 +477,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField(" whitespace")
 				require.True(t, ok)
 				require.Equal(t, "  whitespace\t", fv)
@@ -493,7 +493,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("Request")
 				require.True(t, ok)
 				require.Equal(t, "/mixed/CASE/paTH/?from=-1D&to=now", fv)
@@ -509,7 +509,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("Request")
 				require.True(t, ok)
 				require.Equal(t, "/mixed", fv)
@@ -525,7 +525,7 @@ func TestFieldKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				fv, ok := actual.GetField("Request")
 				require.True(t, ok)
 				require.Equal(t, "/mixed/CASE/paTH/?from=-1D&to=now", fv)
@@ -545,7 +545,7 @@ func TestTagConversions(t *testing.T) {
 	tests := []struct {
 		name   string
 		plugin *Strings
-		check  func(t *testing.T, actual telegraf.Metric)
+		check  func(t *testing.T, actual Dana.Metric)
 	}{
 		{
 			name: "Should change existing tag to lowercase",
@@ -556,7 +556,7 @@ func TestTagConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				tv, ok := actual.GetTag("verb")
 				require.True(t, ok)
 				require.Equal(t, "GET", tv)
@@ -576,7 +576,7 @@ func TestTagConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				tv, ok := actual.GetTag("verb")
 				require.True(t, ok)
 				require.Equal(t, "GET", tv)
@@ -600,7 +600,7 @@ func TestTagConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				tv, ok := actual.GetTag("verb")
 				require.True(t, ok)
 				require.Equal(t, "GET", tv)
@@ -624,7 +624,7 @@ func TestTagConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				tv, ok := actual.GetTag("verb")
 				require.True(t, ok)
 				require.Equal(t, "GET", tv)
@@ -653,7 +653,7 @@ func TestTagKeyConversions(t *testing.T) {
 	tests := []struct {
 		name   string
 		plugin *Strings
-		check  func(t *testing.T, actual telegraf.Metric)
+		check  func(t *testing.T, actual Dana.Metric)
 	}{
 		{
 			name: "Should change existing tag key to lowercase",
@@ -665,7 +665,7 @@ func TestTagKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				tv, ok := actual.GetTag("verb")
 				require.True(t, ok)
 				require.Equal(t, "GET", tv)
@@ -684,7 +684,7 @@ func TestTagKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				tv, ok := actual.GetTag("verb")
 				require.True(t, ok)
 				require.Equal(t, "GET", tv)
@@ -706,7 +706,7 @@ func TestTagKeyConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				tv, ok := actual.GetTag("verb")
 				require.True(t, ok)
 				require.Equal(t, "GET", tv)
@@ -734,7 +734,7 @@ func TestMeasurementConversions(t *testing.T) {
 	tests := []struct {
 		name   string
 		plugin *Strings
-		check  func(t *testing.T, actual telegraf.Metric)
+		check  func(t *testing.T, actual Dana.Metric)
 	}{
 		{
 			name: "lowercase measurement",
@@ -745,7 +745,7 @@ func TestMeasurementConversions(t *testing.T) {
 					},
 				},
 			},
-			check: func(t *testing.T, actual telegraf.Metric) {
+			check: func(t *testing.T, actual Dana.Metric) {
 				name := actual.Name()
 				require.Equal(t, "iis_log", name)
 			},
@@ -895,7 +895,7 @@ func TestReadmeExample(t *testing.T) {
 	require.Equal(t, expectedTags, processed[0].Tags())
 }
 
-func newMetric(name string) telegraf.Metric {
+func newMetric(name string) Dana.Metric {
 	tags := map[string]string{}
 	fields := map[string]interface{}{}
 	m := metric.New(name, tags, fields, time.Now())
@@ -912,7 +912,7 @@ func TestMeasurementReplace(t *testing.T) {
 			},
 		},
 	}
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric("foo:some_value:bar"),
 		newMetric("average:cpu:usage"),
 		newMetric("average_cpu_usage"),
@@ -933,7 +933,7 @@ func TestMeasurementCharDeletion(t *testing.T) {
 			},
 		},
 	}
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric("foo:bar:baz"),
 		newMetric("foofoofoo"),
 		newMetric("barbarbar"),
@@ -948,8 +948,8 @@ func TestBase64Decode(t *testing.T) {
 	tests := []struct {
 		name     string
 		plugin   *Strings
-		metric   []telegraf.Metric
-		expected []telegraf.Metric
+		metric   []Dana.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "base64decode success",
@@ -960,7 +960,7 @@ func TestBase64Decode(t *testing.T) {
 					},
 				},
 			},
-			metric: []telegraf.Metric{
+			metric: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -970,7 +970,7 @@ func TestBase64Decode(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -990,7 +990,7 @@ func TestBase64Decode(t *testing.T) {
 					},
 				},
 			},
-			metric: []telegraf.Metric{
+			metric: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -1000,7 +1000,7 @@ func TestBase64Decode(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -1020,7 +1020,7 @@ func TestBase64Decode(t *testing.T) {
 					},
 				},
 			},
-			metric: []telegraf.Metric{
+			metric: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -1030,7 +1030,7 @@ func TestBase64Decode(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -1055,8 +1055,8 @@ func TestValidUTF8(t *testing.T) {
 	tests := []struct {
 		name     string
 		plugin   *Strings
-		metric   []telegraf.Metric
-		expected []telegraf.Metric
+		metric   []Dana.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "valid utf-8 keeps original string",
@@ -1068,7 +1068,7 @@ func TestValidUTF8(t *testing.T) {
 					},
 				},
 			},
-			metric: []telegraf.Metric{
+			metric: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -1078,7 +1078,7 @@ func TestValidUTF8(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -1099,7 +1099,7 @@ func TestValidUTF8(t *testing.T) {
 					},
 				},
 			},
-			metric: []telegraf.Metric{
+			metric: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -1109,7 +1109,7 @@ func TestValidUTF8(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -1130,7 +1130,7 @@ func TestValidUTF8(t *testing.T) {
 					},
 				},
 			},
-			metric: []telegraf.Metric{
+			metric: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -1140,7 +1140,7 @@ func TestValidUTF8(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -1163,14 +1163,14 @@ func TestValidUTF8(t *testing.T) {
 
 func TestTrackedMetricNotLost(t *testing.T) {
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, 3)
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, 3)
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
-	input := make([]telegraf.Metric, 0, 3)
-	expected := make([]telegraf.Metric, 0, 6)
+	input := make([]Dana.Metric, 0, 3)
+	expected := make([]Dana.Metric, 0, 6)
 	for i := 0; i < 3; i++ {
 		strI := strconv.Itoa(i)
 

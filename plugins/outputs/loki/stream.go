@@ -23,7 +23,7 @@ type (
 	}
 )
 
-func (s Streams) insertLog(ts []*telegraf.Tag, l Log) {
+func (s Streams) insertLog(ts []*Dana.Tag, l Log) {
 	key := uniqKeyFromTagList(ts)
 
 	if _, ok := s[key]; !ok {
@@ -45,7 +45,7 @@ func (s Streams) MarshalJSON() ([]byte, error) {
 	return json.Marshal(r)
 }
 
-func uniqKeyFromTagList(ts []*telegraf.Tag) (k string) {
+func uniqKeyFromTagList(ts []*Dana.Tag) (k string) {
 	for _, t := range ts {
 		k += fmt.Sprintf("%s-%s-",
 			strings.ReplaceAll(t.Key, "-", "--"),
@@ -56,7 +56,7 @@ func uniqKeyFromTagList(ts []*telegraf.Tag) (k string) {
 	return k
 }
 
-func newStream(ts []*telegraf.Tag) *Stream {
+func newStream(ts []*Dana.Tag) *Stream {
 	s := &Stream{
 		Logs:   make([]Log, 0),
 		Labels: make(map[string]string, len(ts)),

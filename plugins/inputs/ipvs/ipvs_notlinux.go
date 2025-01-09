@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type Ipvs struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*Ipvs) SampleConfig() string { return sampleConfig }
@@ -24,10 +24,10 @@ func (i *Ipvs) Init() error {
 	return nil
 }
 
-func (*Ipvs) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Ipvs) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("ipvs", func() telegraf.Input {
+	inputs.Add("ipvs", func() Dana.Input {
 		return &Ipvs{}
 	})
 }

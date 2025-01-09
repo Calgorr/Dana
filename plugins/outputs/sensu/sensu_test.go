@@ -197,7 +197,7 @@ func TestConnectAndWrite(t *testing.T) {
 			}
 			w.WriteHeader(http.StatusCreated)
 		})
-		err := plugin.Write([]telegraf.Metric{testutil.TestMetric(expectedPointValue, expectedPointName)})
+		err := plugin.Write([]Dana.Metric{testutil.TestMetric(expectedPointValue, expectedPointName)})
 		require.NoError(t, err)
 	})
 }

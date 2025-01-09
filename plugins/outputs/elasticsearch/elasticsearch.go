@@ -51,7 +51,7 @@ type Elasticsearch struct {
 	URLs                []string               `toml:"urls"`
 	UsePipeline         string                 `toml:"use_pipeline"`
 	Headers             map[string]string      `toml:"headers"`
-	Log                 telegraf.Logger        `toml:"-"`
+	Log                 Dana.Logger            `toml:"-"`
 	majorReleaseNumber  int
 	pipelineName        string
 	pipelineTagKeys     []string
@@ -252,7 +252,7 @@ func (a *Elasticsearch) Connect() error {
 }
 
 // GetPointID generates a unique ID for a Metric Point
-func GetPointID(m telegraf.Metric) string {
+func GetPointID(m Dana.Metric) string {
 	var buffer bytes.Buffer
 	// Timestamp(ns),measurement name and Series Hash for compute the final SHA256 based hash ID
 
@@ -263,7 +263,7 @@ func GetPointID(m telegraf.Metric) string {
 	return fmt.Sprintf("%x", sha256.Sum256(buffer.Bytes()))
 }
 
-func (a *Elasticsearch) Write(metrics []telegraf.Metric) error {
+func (a *Elasticsearch) Write(metrics []Dana.Metric) error {
 	if len(metrics) == 0 {
 		return nil
 	}
@@ -536,7 +536,7 @@ func (a *Elasticsearch) getAuthOptions() ([]elastic.ClientOptionFunc, error) {
 }
 
 func init() {
-	outputs.Add("elasticsearch", func() telegraf.Output {
+	outputs.Add("elasticsearch", func() Dana.Output {
 		return &Elasticsearch{
 			Timeout:             config.Duration(time.Second * 5),
 			HealthCheckInterval: config.Duration(time.Second * 10),

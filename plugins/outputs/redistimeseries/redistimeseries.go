@@ -28,7 +28,7 @@ type RedisTimeSeries struct {
 	Database            int             `toml:"database"`
 	ConvertStringFields bool            `toml:"convert_string_fields"`
 	Timeout             config.Duration `toml:"timeout"`
-	Log                 telegraf.Logger `toml:"-"`
+	Log                 Dana.Logger     `toml:"-"`
 	tls.ClientConfig
 	client *redis.Client
 }
@@ -72,7 +72,7 @@ func (r *RedisTimeSeries) Description() string {
 func (r *RedisTimeSeries) SampleConfig() string {
 	return sampleConfig
 }
-func (r *RedisTimeSeries) Write(metrics []telegraf.Metric) error {
+func (r *RedisTimeSeries) Write(metrics []Dana.Metric) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(r.Timeout))
 	defer cancel()
 
@@ -114,7 +114,7 @@ func (r *RedisTimeSeries) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("redistimeseries", func() telegraf.Output {
+	outputs.Add("redistimeseries", func() Dana.Output {
 		return &RedisTimeSeries{
 			ConvertStringFields: true,
 			Timeout:             config.Duration(10 * time.Second),

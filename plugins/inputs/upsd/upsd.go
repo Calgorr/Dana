@@ -54,14 +54,14 @@ var defaultFieldSet = map[string]string{
 }
 
 type Upsd struct {
-	Server     string          `toml:"server"`
-	Port       int             `toml:"port"`
-	Username   string          `toml:"username"`
-	Password   string          `toml:"password"`
-	ForceFloat bool            `toml:"force_float"`
-	Additional []string        `toml:"additional_fields"`
-	DumpRaw    bool            `toml:"dump_raw_variables" deprecated:"1.35.0;use 'log_level' 'trace' instead"`
-	Log        telegraf.Logger `toml:"-"`
+	Server     string      `toml:"server"`
+	Port       int         `toml:"port"`
+	Username   string      `toml:"username"`
+	Password   string      `toml:"password"`
+	ForceFloat bool        `toml:"force_float"`
+	Additional []string    `toml:"additional_fields"`
+	DumpRaw    bool        `toml:"dump_raw_variables" deprecated:"1.35.0;use 'log_level' 'trace' instead"`
+	Log        Dana.Logger `toml:"-"`
 
 	filter filter.Filter
 	dumped map[string]bool
@@ -84,12 +84,12 @@ func (u *Upsd) Init() error {
 	return nil
 }
 
-func (u *Upsd) Gather(acc telegraf.Accumulator) error {
+func (u *Upsd) Gather(acc Dana.Accumulator) error {
 	upsList, err := u.fetchVariables(u.Server, u.Port)
 	if err != nil {
 		return err
 	}
-	if u.Log.Level().Includes(telegraf.Trace) || u.DumpRaw { // for backward compatibility
+	if u.Log.Level().Includes(Dana.Trace) || u.DumpRaw { // for backward compatibility
 		for name, variables := range upsList {
 			// Only dump the information once per UPS
 			if u.dumped[name] {
@@ -110,7 +110,7 @@ func (u *Upsd) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (u *Upsd) gatherUps(acc telegraf.Accumulator, upsname string, variables []nut.Variable) {
+func (u *Upsd) gatherUps(acc Dana.Accumulator, upsname string, variables []nut.Variable) {
 	metrics := make(map[string]interface{})
 	for _, variable := range variables {
 		name := variable.Name
@@ -273,7 +273,7 @@ func (u *Upsd) fetchVariables(server string, port int) (map[string][]nut.Variabl
 }
 
 func init() {
-	inputs.Add("upsd", func() telegraf.Input {
+	inputs.Add("upsd", func() Dana.Input {
 		return &Upsd{
 			Server: defaultAddress,
 			Port:   defaultPort,

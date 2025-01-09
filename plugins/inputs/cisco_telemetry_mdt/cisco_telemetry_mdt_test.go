@@ -143,7 +143,7 @@ func TestIncludeDeleteField(t *testing.T) {
 
 	testCases := []struct {
 		telemetry *telemetry.Telemetry
-		expected  []telegraf.Metric
+		expected  []Dana.Metric
 	}{{
 		telemetry: &telemetry.Telemetry{
 			MsgTimestamp: 1543236572000,
@@ -200,7 +200,7 @@ func TestIncludeDeleteField(t *testing.T) {
 				},
 			},
 		},
-		expected: []telegraf.Metric{
+		expected: []Dana.Metric{
 			metric.New(
 				"deleted",
 				map[string]string{
@@ -252,7 +252,7 @@ func TestIncludeDeleteField(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"deleted",
 					map[string]string{

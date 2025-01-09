@@ -38,7 +38,7 @@ type Parser struct {
 	FieldSeparator   string            `toml:"avro_field_separator"`
 	UnionMode        string            `toml:"avro_union_mode"`
 	DefaultTags      map[string]string `toml:"tags"`
-	Log              telegraf.Logger   `toml:"-"`
+	Log              Dana.Logger       `toml:"-"`
 	registryObj      *schemaRegistry
 }
 
@@ -82,7 +82,7 @@ func (p *Parser) Init() error {
 	return nil
 }
 
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 	var schema string
 	var codec *goavro.Codec
 	var err error
@@ -141,10 +141,10 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 		return nil, err
 	}
 
-	return []telegraf.Metric{m}, nil
+	return []Dana.Metric{m}, nil
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line))
 	if err != nil {
 		return nil, err
@@ -215,7 +215,7 @@ func (p *Parser) flattenItem(fld string, fldVal interface{}) (map[string]interfa
 	return flat, nil
 }
 
-func (p *Parser) createMetric(data map[string]interface{}, schema string) (telegraf.Metric, error) {
+func (p *Parser) createMetric(data map[string]interface{}, schema string) (Dana.Metric, error) {
 	// Tags differ from fields, in that tags are inherently strings.
 	// fields can be of any type.
 	fields := make(map[string]interface{})
@@ -334,7 +334,7 @@ func (p *Parser) createMetric(data map[string]interface{}, schema string) (teleg
 
 func init() {
 	parsers.Add("avro",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{MetricName: defaultMetricName}
 		})
 }

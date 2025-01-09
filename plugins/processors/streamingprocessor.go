@@ -7,7 +7,7 @@ import (
 
 // NewStreamingProcessorFromProcessor is a converter that turns a standard
 // processor into a streaming processor
-func NewStreamingProcessorFromProcessor(p telegraf.Processor) telegraf.StreamingProcessor {
+func NewStreamingProcessorFromProcessor(p Dana.Processor) Dana.StreamingProcessor {
 	sp := &streamingProcessor{
 		processor: p,
 	}
@@ -15,21 +15,21 @@ func NewStreamingProcessorFromProcessor(p telegraf.Processor) telegraf.Streaming
 }
 
 type streamingProcessor struct {
-	processor telegraf.Processor
-	acc       telegraf.Accumulator
-	Log       telegraf.Logger
+	processor Dana.Processor
+	acc       Dana.Accumulator
+	Log       Dana.Logger
 }
 
 func (sp *streamingProcessor) SampleConfig() string {
 	return sp.processor.SampleConfig()
 }
 
-func (sp *streamingProcessor) Start(acc telegraf.Accumulator) error {
+func (sp *streamingProcessor) Start(acc Dana.Accumulator) error {
 	sp.acc = acc
 	return nil
 }
 
-func (sp *streamingProcessor) Add(m telegraf.Metric, acc telegraf.Accumulator) error {
+func (sp *streamingProcessor) Add(m Dana.Metric, acc Dana.Accumulator) error {
 	for _, m := range sp.processor.Apply(m) {
 		acc.AddMetric(m)
 	}
@@ -44,7 +44,7 @@ func (sp *streamingProcessor) Stop() {
 // needed
 func (sp *streamingProcessor) Init() error {
 	models.SetLoggerOnPlugin(sp.processor, sp.Log)
-	if p, ok := sp.processor.(telegraf.Initializer); ok {
+	if p, ok := sp.processor.(Dana.Initializer); ok {
 		err := p.Init()
 		if err != nil {
 			return err
@@ -53,9 +53,9 @@ func (sp *streamingProcessor) Init() error {
 	return nil
 }
 
-// Unwrap lets you retrieve the original telegraf.Processor from the
+// Unwrap lets you retrieve the original Dana.Processor from the
 // StreamingProcessor. This is necessary because the toml Unmarshaller won't
 // look inside composed types.
-func (sp *streamingProcessor) Unwrap() telegraf.Processor {
+func (sp *streamingProcessor) Unwrap() Dana.Processor {
 	return sp.processor
 }

@@ -28,28 +28,28 @@ const replacementByte = "\ufffd"
 const commaByte = "\u002C"
 
 type Parser struct {
-	ColumnNames        []string        `toml:"csv_column_names"`
-	ColumnTypes        []string        `toml:"csv_column_types"`
-	Comment            string          `toml:"csv_comment"`
-	Delimiter          string          `toml:"csv_delimiter"`
-	HeaderRowCount     int             `toml:"csv_header_row_count"`
-	MeasurementColumn  string          `toml:"csv_measurement_column"`
-	MetricName         string          `toml:"metric_name"`
-	SkipColumns        int             `toml:"csv_skip_columns"`
-	SkipRows           int             `toml:"csv_skip_rows"`
-	TagColumns         []string        `toml:"csv_tag_columns"`
-	TagOverwrite       bool            `toml:"csv_tag_overwrite"`
-	TimestampColumn    string          `toml:"csv_timestamp_column"`
-	TimestampFormat    string          `toml:"csv_timestamp_format"`
-	Timezone           string          `toml:"csv_timezone"`
-	TrimSpace          bool            `toml:"csv_trim_space"`
-	SkipValues         []string        `toml:"csv_skip_values"`
-	SkipErrors         bool            `toml:"csv_skip_errors"`
-	MetadataRows       int             `toml:"csv_metadata_rows"`
-	MetadataSeparators []string        `toml:"csv_metadata_separators"`
-	MetadataTrimSet    string          `toml:"csv_metadata_trim_set"`
-	ResetMode          string          `toml:"csv_reset_mode"`
-	Log                telegraf.Logger `toml:"-"`
+	ColumnNames        []string    `toml:"csv_column_names"`
+	ColumnTypes        []string    `toml:"csv_column_types"`
+	Comment            string      `toml:"csv_comment"`
+	Delimiter          string      `toml:"csv_delimiter"`
+	HeaderRowCount     int         `toml:"csv_header_row_count"`
+	MeasurementColumn  string      `toml:"csv_measurement_column"`
+	MetricName         string      `toml:"metric_name"`
+	SkipColumns        int         `toml:"csv_skip_columns"`
+	SkipRows           int         `toml:"csv_skip_rows"`
+	TagColumns         []string    `toml:"csv_tag_columns"`
+	TagOverwrite       bool        `toml:"csv_tag_overwrite"`
+	TimestampColumn    string      `toml:"csv_timestamp_column"`
+	TimestampFormat    string      `toml:"csv_timestamp_format"`
+	Timezone           string      `toml:"csv_timezone"`
+	TrimSpace          bool        `toml:"csv_trim_space"`
+	SkipValues         []string    `toml:"csv_skip_values"`
+	SkipErrors         bool        `toml:"csv_skip_errors"`
+	MetadataRows       int         `toml:"csv_metadata_rows"`
+	MetadataSeparators []string    `toml:"csv_metadata_separators"`
+	MetadataTrimSet    string      `toml:"csv_metadata_trim_set"`
+	ResetMode          string      `toml:"csv_reset_mode"`
+	Log                Dana.Logger `toml:"-"`
 
 	metadataSeparatorList metadataPattern
 	location              *time.Location
@@ -218,7 +218,7 @@ func validDelim(r rune) bool {
 	return r != 0 && r != '"' && r != '\r' && r != '\n' && utf8.ValidRune(r) && r != utf8.RuneError
 }
 
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 	// Reset the parser according to the specified mode
 	if p.ResetMode == "always" {
 		p.Reset()
@@ -237,7 +237,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 	return metrics, err
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	if len(line) == 0 {
 		if p.remainingSkipRows > 0 {
 			p.remainingSkipRows--
@@ -265,7 +265,7 @@ func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
 	return nil, nil
 }
 
-func parseCSV(p *Parser, r io.Reader) ([]telegraf.Metric, error) {
+func parseCSV(p *Parser, r io.Reader) ([]Dana.Metric, error) {
 	lineReader := bufio.NewReader(r)
 	// skip first rows
 	for p.remainingSkipRows > 0 {
@@ -326,7 +326,7 @@ func parseCSV(p *Parser, r io.Reader) ([]telegraf.Metric, error) {
 		return nil, err
 	}
 
-	metrics := make([]telegraf.Metric, 0)
+	metrics := make([]Dana.Metric, 0)
 	for _, record := range table {
 		m, err := p.parseRecord(record)
 		if err != nil {
@@ -341,7 +341,7 @@ func parseCSV(p *Parser, r io.Reader) ([]telegraf.Metric, error) {
 	return metrics, nil
 }
 
-func (p *Parser) parseRecord(record []string) (telegraf.Metric, error) {
+func (p *Parser) parseRecord(record []string) (Dana.Metric, error) {
 	recordFields := make(map[string]interface{})
 	tags := make(map[string]string)
 
@@ -501,7 +501,7 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 
 func init() {
 	parsers.Add("csv",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{MetricName: defaultMetricName}
 		})
 }

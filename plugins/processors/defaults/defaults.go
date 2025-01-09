@@ -27,7 +27,7 @@ func (*Defaults) SampleConfig() string {
 // If the field in the pair does not exist on the metric, the associated default is added.
 // If the field was found, then, if its value is the empty string or one or more spaces, it is replaced
 // by the associated default.
-func (def *Defaults) Apply(inputMetrics ...telegraf.Metric) []telegraf.Metric {
+func (def *Defaults) Apply(inputMetrics ...Dana.Metric) []Dana.Metric {
 	for _, metric := range inputMetrics {
 		for defField, defValue := range def.DefaultFieldsSets {
 			if maybeCurrent, isSet := metric.GetField(defField); !isSet {
@@ -50,7 +50,7 @@ func maybeTrimmedString(v interface{}) (string, bool) {
 }
 
 func init() {
-	processors.Add("defaults", func() telegraf.Processor {
+	processors.Add("defaults", func() Dana.Processor {
 		return &Defaults{}
 	})
 }

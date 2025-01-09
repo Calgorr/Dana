@@ -24,7 +24,7 @@ type SyslogMapper struct {
 }
 
 // MapMetricToSyslogMessage maps metrics tags/fields to syslog messages
-func (sm *SyslogMapper) MapMetricToSyslogMessage(metric telegraf.Metric) (*rfc5424.SyslogMessage, error) {
+func (sm *SyslogMapper) MapMetricToSyslogMessage(metric Dana.Metric) (*rfc5424.SyslogMessage, error) {
 	msg := &rfc5424.SyslogMessage{}
 
 	sm.mapPriority(metric, msg)
@@ -43,7 +43,7 @@ func (sm *SyslogMapper) MapMetricToSyslogMessage(metric telegraf.Metric) (*rfc54
 	return msg, nil
 }
 
-func (sm *SyslogMapper) mapStructuredData(metric telegraf.Metric, msg *rfc5424.SyslogMessage) {
+func (sm *SyslogMapper) mapStructuredData(metric Dana.Metric, msg *rfc5424.SyslogMessage) {
 	for _, tag := range metric.TagList() {
 		sm.mapStructuredDataItem(tag.Key, tag.Value, msg)
 	}
@@ -74,7 +74,7 @@ func (sm *SyslogMapper) mapStructuredDataItem(key, value string, msg *rfc5424.Sy
 	msg.SetParameter(sm.DefaultSdid, k, value)
 }
 
-func (sm *SyslogMapper) mapAppname(metric telegraf.Metric, msg *rfc5424.SyslogMessage) {
+func (sm *SyslogMapper) mapAppname(metric Dana.Metric, msg *rfc5424.SyslogMessage) {
 	if value, ok := metric.GetTag("appname"); ok {
 		msg.SetAppname(formatValue(value))
 	} else {
@@ -83,7 +83,7 @@ func (sm *SyslogMapper) mapAppname(metric telegraf.Metric, msg *rfc5424.SyslogMe
 	}
 }
 
-func mapMsgID(metric telegraf.Metric, msg *rfc5424.SyslogMessage) {
+func mapMsgID(metric Dana.Metric, msg *rfc5424.SyslogMessage) {
 	if value, ok := metric.GetField("msgid"); ok {
 		msg.SetMsgID(formatValue(value))
 	} else {
@@ -92,7 +92,7 @@ func mapMsgID(metric telegraf.Metric, msg *rfc5424.SyslogMessage) {
 	}
 }
 
-func mapVersion(metric telegraf.Metric, msg *rfc5424.SyslogMessage) {
+func mapVersion(metric Dana.Metric, msg *rfc5424.SyslogMessage) {
 	if value, ok := metric.GetField("version"); ok {
 		if v, ok := value.(uint64); ok {
 			msg.SetVersion(uint16(v))
@@ -102,19 +102,19 @@ func mapVersion(metric telegraf.Metric, msg *rfc5424.SyslogMessage) {
 	msg.SetVersion(1)
 }
 
-func mapMsg(metric telegraf.Metric, msg *rfc5424.SyslogMessage) {
+func mapMsg(metric Dana.Metric, msg *rfc5424.SyslogMessage) {
 	if value, ok := metric.GetField("msg"); ok {
 		msg.SetMessage(formatValue(value))
 	}
 }
 
-func mapProcID(metric telegraf.Metric, msg *rfc5424.SyslogMessage) {
+func mapProcID(metric Dana.Metric, msg *rfc5424.SyslogMessage) {
 	if value, ok := metric.GetField("procid"); ok {
 		msg.SetProcID(formatValue(value))
 	}
 }
 
-func (sm *SyslogMapper) mapPriority(metric telegraf.Metric, msg *rfc5424.SyslogMessage) {
+func (sm *SyslogMapper) mapPriority(metric Dana.Metric, msg *rfc5424.SyslogMessage) {
 	severityCode := sm.DefaultSeverityCode
 	facilityCode := sm.DefaultFacilityCode
 
@@ -130,7 +130,7 @@ func (sm *SyslogMapper) mapPriority(metric telegraf.Metric, msg *rfc5424.SyslogM
 	msg.SetPriority(priority)
 }
 
-func mapHostname(metric telegraf.Metric, msg *rfc5424.SyslogMessage) {
+func mapHostname(metric Dana.Metric, msg *rfc5424.SyslogMessage) {
 	// Try with hostname, then with source, then with host tags, then take OS Hostname
 	if value, ok := metric.GetTag("hostname"); ok {
 		msg.SetHostname(formatValue(value))
@@ -143,7 +143,7 @@ func mapHostname(metric telegraf.Metric, msg *rfc5424.SyslogMessage) {
 	}
 }
 
-func mapTimestamp(metric telegraf.Metric, msg *rfc5424.SyslogMessage) {
+func mapTimestamp(metric Dana.Metric, msg *rfc5424.SyslogMessage) {
 	timestamp := metric.Time()
 
 	if value, ok := metric.GetField("timestamp"); ok {
@@ -181,7 +181,7 @@ func formatValue(value interface{}) string {
 	return ""
 }
 
-func getFieldCode(metric telegraf.Metric, fieldKey string) (*uint8, bool) {
+func getFieldCode(metric Dana.Metric, fieldKey string) (*uint8, bool) {
 	if value, ok := metric.GetField(fieldKey); ok {
 		if v, err := strconv.ParseUint(formatValue(value), 10, 8); err == nil {
 			r := uint8(v)

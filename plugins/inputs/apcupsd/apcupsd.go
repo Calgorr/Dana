@@ -32,7 +32,7 @@ func (*ApcUpsd) SampleConfig() string {
 	return sampleConfig
 }
 
-func (h *ApcUpsd) Gather(acc telegraf.Accumulator) error {
+func (h *ApcUpsd) Gather(acc Dana.Accumulator) error {
 	ctx := context.Background()
 
 	for _, server := range h.Servers {
@@ -108,7 +108,7 @@ func fetchStatus(ctx context.Context, addr *url.URL) (*apcupsd.Status, error) {
 }
 
 func init() {
-	inputs.Add("apcupsd", func() telegraf.Input {
+	inputs.Add("apcupsd", func() Dana.Input {
 		return &ApcUpsd{
 			Servers: []string{defaultAddress},
 			Timeout: defaultTimeout,

@@ -58,7 +58,7 @@ func (*Teamspeak) SampleConfig() string {
 	return sampleConfig
 }
 
-func (ts *Teamspeak) Gather(acc telegraf.Accumulator) error {
+func (ts *Teamspeak) Gather(acc Dana.Accumulator) error {
 	var err error
 
 	if !ts.connected {
@@ -110,7 +110,7 @@ func (ts *Teamspeak) Gather(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("teamspeak", func() telegraf.Input {
+	inputs.Add("teamspeak", func() Dana.Input {
 		return &Teamspeak{
 			Server:         "127.0.0.1:10011",
 			VirtualServers: []int{1},

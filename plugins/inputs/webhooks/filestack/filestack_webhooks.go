@@ -14,12 +14,12 @@ import (
 
 type FilestackWebhook struct {
 	Path string
-	acc  telegraf.Accumulator
-	log  telegraf.Logger
+	acc  Dana.Accumulator
+	log  Dana.Logger
 	auth.BasicAuth
 }
 
-func (fs *FilestackWebhook) Register(router *mux.Router, acc telegraf.Accumulator, log telegraf.Logger) {
+func (fs *FilestackWebhook) Register(router *mux.Router, acc Dana.Accumulator, log Dana.Logger) {
 	router.HandleFunc(fs.Path, fs.eventHandler).Methods("POST")
 
 	fs.log = log

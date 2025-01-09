@@ -85,7 +85,7 @@ func (nr *NewRelic) Close() error {
 }
 
 // Write takes in group of points to be written to the Output
-func (nr *NewRelic) Write(metrics []telegraf.Metric) error {
+func (nr *NewRelic) Write(metrics []Dana.Metric) error {
 	nr.errorCount = 0
 	nr.savedErrors = make(map[int]interface{})
 
@@ -124,7 +124,7 @@ func (nr *NewRelic) Write(metrics []telegraf.Metric) error {
 			}
 
 			switch metric.Type() {
-			case telegraf.Counter:
+			case Dana.Counter:
 				if counter, ok := nr.dc.CountMetric(mname, tags, mvalue, metric.Time()); ok {
 					nr.harvestor.RecordMetric(counter)
 				}
@@ -150,7 +150,7 @@ func (nr *NewRelic) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("newrelic", func() telegraf.Output {
+	outputs.Add("newrelic", func() Dana.Output {
 		return &NewRelic{
 			Timeout: config.Duration(time.Second * 15),
 		}

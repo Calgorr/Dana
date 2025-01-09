@@ -30,7 +30,7 @@ func TestCases(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	inputs.Add("zfs", func() telegraf.Input { return &Zfs{} })
+	inputs.Add("zfs", func() Dana.Input { return &Zfs{} })
 
 	for _, f := range folders {
 		// Only handle folders

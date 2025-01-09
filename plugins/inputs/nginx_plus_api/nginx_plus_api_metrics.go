@@ -19,7 +19,7 @@ var (
 	errNotFound = errors.New("not found")
 )
 
-func (n *NginxPlusAPI) gatherMetrics(addr *url.URL, acc telegraf.Accumulator) {
+func (n *NginxPlusAPI) gatherMetrics(addr *url.URL, acc Dana.Accumulator) {
 	addError(acc, n.gatherProcessesMetrics(addr, acc))
 	addError(acc, n.gatherConnectionsMetrics(addr, acc))
 	addError(acc, n.gatherSlabsMetrics(addr, acc))
@@ -40,7 +40,7 @@ func (n *NginxPlusAPI) gatherMetrics(addr *url.URL, acc telegraf.Accumulator) {
 	}
 }
 
-func addError(acc telegraf.Accumulator, err error) {
+func addError(acc Dana.Accumulator, err error) {
 	// This plugin has hardcoded API resource paths it checks that may not
 	// be in the nginx.conf.  Currently, this is to prevent logging of
 	// paths that are not configured.
@@ -85,7 +85,7 @@ func (n *NginxPlusAPI) gatherURL(addr *url.URL, path string) ([]byte, error) {
 	}
 }
 
-func (n *NginxPlusAPI) gatherProcessesMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherProcessesMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, processesPath)
 	if err != nil {
 		return err
@@ -108,7 +108,7 @@ func (n *NginxPlusAPI) gatherProcessesMetrics(addr *url.URL, acc telegraf.Accumu
 	return nil
 }
 
-func (n *NginxPlusAPI) gatherConnectionsMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherConnectionsMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, connectionsPath)
 	if err != nil {
 		return err
@@ -134,7 +134,7 @@ func (n *NginxPlusAPI) gatherConnectionsMetrics(addr *url.URL, acc telegraf.Accu
 	return nil
 }
 
-func (n *NginxPlusAPI) gatherSlabsMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherSlabsMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, slabsPath)
 	if err != nil {
 		return err
@@ -187,7 +187,7 @@ func (n *NginxPlusAPI) gatherSlabsMetrics(addr *url.URL, acc telegraf.Accumulato
 	return nil
 }
 
-func (n *NginxPlusAPI) gatherSslMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherSslMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, sslPath)
 	if err != nil {
 		return err
@@ -212,7 +212,7 @@ func (n *NginxPlusAPI) gatherSslMetrics(addr *url.URL, acc telegraf.Accumulator)
 	return nil
 }
 
-func (n *NginxPlusAPI) gatherHTTPRequestsMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherHTTPRequestsMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, httpRequestsPath)
 	if err != nil {
 		return err
@@ -236,7 +236,7 @@ func (n *NginxPlusAPI) gatherHTTPRequestsMetrics(addr *url.URL, acc telegraf.Acc
 	return nil
 }
 
-func (n *NginxPlusAPI) gatherHTTPServerZonesMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherHTTPServerZonesMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, httpServerZonesPath)
 	if err != nil {
 		return err
@@ -283,7 +283,7 @@ func (n *NginxPlusAPI) gatherHTTPServerZonesMetrics(addr *url.URL, acc telegraf.
 }
 
 // Added in 5 API version
-func (n *NginxPlusAPI) gatherHTTPLocationZonesMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherHTTPLocationZonesMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, httpLocationZonesPath)
 	if err != nil {
 		return err
@@ -329,7 +329,7 @@ func (n *NginxPlusAPI) gatherHTTPLocationZonesMetrics(addr *url.URL, acc telegra
 	return nil
 }
 
-func (n *NginxPlusAPI) gatherHTTPUpstreamsMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherHTTPUpstreamsMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, httpUpstreamsPath)
 	if err != nil {
 		return err
@@ -413,7 +413,7 @@ func (n *NginxPlusAPI) gatherHTTPUpstreamsMetrics(addr *url.URL, acc telegraf.Ac
 	return nil
 }
 
-func (n *NginxPlusAPI) gatherHTTPCachesMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherHTTPCachesMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, httpCachesPath)
 	if err != nil {
 		return err
@@ -467,7 +467,7 @@ func (n *NginxPlusAPI) gatherHTTPCachesMetrics(addr *url.URL, acc telegraf.Accum
 	return nil
 }
 
-func (n *NginxPlusAPI) gatherStreamServerZonesMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherStreamServerZonesMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, streamServerZonesPath)
 	if err != nil {
 		return err
@@ -503,7 +503,7 @@ func (n *NginxPlusAPI) gatherStreamServerZonesMetrics(addr *url.URL, acc telegra
 }
 
 // Added in 5 API version
-func (n *NginxPlusAPI) gatherResolverZonesMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherResolverZonesMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, resolverZonesPath)
 	if err != nil {
 		return err
@@ -546,7 +546,7 @@ func (n *NginxPlusAPI) gatherResolverZonesMetrics(addr *url.URL, acc telegraf.Ac
 	return nil
 }
 
-func (n *NginxPlusAPI) gatherStreamUpstreamsMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherStreamUpstreamsMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, streamUpstreamsPath)
 	if err != nil {
 		return err
@@ -616,7 +616,7 @@ func (n *NginxPlusAPI) gatherStreamUpstreamsMetrics(addr *url.URL, acc telegraf.
 }
 
 // Added in 6 API version
-func (n *NginxPlusAPI) gatherHTTPLimitReqsMetrics(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) gatherHTTPLimitReqsMetrics(addr *url.URL, acc Dana.Accumulator) error {
 	body, err := n.gatherURL(addr, httpLimitReqsPath)
 	if err != nil {
 		return err

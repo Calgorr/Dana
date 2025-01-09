@@ -13,8 +13,8 @@ var sampleConfig string
 
 // Wireless is used to store configuration values.
 type Wireless struct {
-	HostProc string          `toml:"host_proc"`
-	Log      telegraf.Logger `toml:"-"`
+	HostProc string      `toml:"host_proc"`
+	Log      Dana.Logger `toml:"-"`
 }
 
 func (*Wireless) SampleConfig() string {
@@ -22,7 +22,7 @@ func (*Wireless) SampleConfig() string {
 }
 
 func init() {
-	inputs.Add("wireless", func() telegraf.Input {
+	inputs.Add("wireless", func() Dana.Input {
 		return &Wireless{}
 	})
 }

@@ -89,7 +89,7 @@ func (*testInput) SampleConfig() string {
 	return ""
 }
 
-func (i *testInput) Gather(acc telegraf.Accumulator) error {
+func (i *testInput) Gather(acc Dana.Accumulator) error {
 	acc.AddFields("measurement",
 		map[string]interface{}{
 			"field": 1,
@@ -101,7 +101,7 @@ func (i *testInput) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*testInput) Start(telegraf.Accumulator) error {
+func (*testInput) Start(Dana.Accumulator) error {
 	return nil
 }
 
@@ -112,7 +112,7 @@ func TestLoadConfig(t *testing.T) {
 	t.Setenv("SECRET_TOKEN", "xxxxxxxxxx")
 	t.Setenv("SECRET_VALUE", `test"\test`)
 
-	inputs.Add("test", func() telegraf.Input {
+	inputs.Add("test", func() Dana.Input {
 		return &serviceInput{}
 	})
 
@@ -137,7 +137,7 @@ func (*serviceInput) SampleConfig() string {
 	return ""
 }
 
-func (*serviceInput) Gather(acc telegraf.Accumulator) error {
+func (*serviceInput) Gather(acc Dana.Accumulator) error {
 	acc.AddFields("measurement",
 		map[string]interface{}{
 			"field": 1,
@@ -149,7 +149,7 @@ func (*serviceInput) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*serviceInput) Start(telegraf.Accumulator) error {
+func (*serviceInput) Start(Dana.Accumulator) error {
 	return nil
 }
 

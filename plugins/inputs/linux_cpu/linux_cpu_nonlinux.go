@@ -13,7 +13,7 @@ import (
 var sampleConfig string
 
 type LinuxCPU struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*LinuxCPU) SampleConfig() string { return sampleConfig }
@@ -23,10 +23,10 @@ func (l *LinuxCPU) Init() error {
 	return nil
 }
 
-func (*LinuxCPU) Gather(_ telegraf.Accumulator) error { return nil }
+func (*LinuxCPU) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("linux_cpu", func() telegraf.Input {
+	inputs.Add("linux_cpu", func() Dana.Input {
 		return &LinuxCPU{}
 	})
 }

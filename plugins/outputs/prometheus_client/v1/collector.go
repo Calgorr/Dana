@@ -45,7 +45,7 @@ type MetricFamily struct {
 	Samples map[SampleID]*Sample
 	// Need the telegraf ValueType because there isn't a Prometheus ValueType
 	// representing Histogram or Summary
-	TelegrafValueType telegraf.ValueType
+	TelegrafValueType Dana.ValueType
 	// LabelSet is the label counts for all Samples.
 	LabelSet map[string]int
 }
@@ -55,14 +55,14 @@ type Collector struct {
 	StringAsLabel      bool
 	ExportTimestamp    bool
 	TypeMapping        serializers_prometheus.MetricTypes
-	Log                telegraf.Logger
+	Log                Dana.Logger
 
 	sync.Mutex
 	fam          map[string]*MetricFamily
 	expireTicker *time.Ticker
 }
 
-func NewCollector(expire time.Duration, stringsAsLabel, exportTimestamp bool, typeMapping serializers_prometheus.MetricTypes, log telegraf.Logger) *Collector {
+func NewCollector(expire time.Duration, stringsAsLabel, exportTimestamp bool, typeMapping serializers_prometheus.MetricTypes, log Dana.Logger) *Collector {
 	c := &Collector{
 		ExpirationInterval: expire,
 		StringAsLabel:      stringsAsLabel,
@@ -121,9 +121,9 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 			var metric prometheus.Metric
 			var err error
 			switch family.TelegrafValueType {
-			case telegraf.Summary:
+			case Dana.Summary:
 				metric, err = prometheus.NewConstSummary(desc, sample.Count, sample.Sum, sample.SummaryValue, labels...)
-			case telegraf.Histogram:
+			case Dana.Histogram:
 				metric, err = prometheus.NewConstHistogram(desc, sample.Count, sample.Sum, sample.HistogramValue, labels...)
 			default:
 				metric, err = prometheus.NewConstMetric(desc, getPromValueType(family.TelegrafValueType), sample.Value, labels...)
@@ -151,18 +151,18 @@ func isValidTagName(tag string) bool {
 	return validNameCharRE.MatchString(tag)
 }
 
-func getPromValueType(tt telegraf.ValueType) prometheus.ValueType {
+func getPromValueType(tt Dana.ValueType) prometheus.ValueType {
 	switch tt {
-	case telegraf.Counter:
+	case Dana.Counter:
 		return prometheus.CounterValue
-	case telegraf.Gauge:
+	case Dana.Gauge:
 		return prometheus.GaugeValue
 	default:
 		return prometheus.UntypedValue
 	}
 }
 
-// CreateSampleID creates a SampleID based on the tags of a telegraf.Metric.
+// CreateSampleID creates a SampleID based on the tags of a Dana.Metric.
 func CreateSampleID(tags map[string]string) SampleID {
 	pairs := make([]string, 0, len(tags))
 	for k, v := range tags {
@@ -180,7 +180,7 @@ func addSample(fam *MetricFamily, sample *Sample, sampleID SampleID) {
 	fam.Samples[sampleID] = sample
 }
 
-func (c *Collector) addMetricFamily(point telegraf.Metric, sample *Sample, mname string, sampleID SampleID) {
+func (c *Collector) addMetricFamily(point Dana.Metric, sample *Sample, mname string, sampleID SampleID) {
 	var fam *MetricFamily
 	var ok bool
 	if fam, ok = c.fam[mname]; !ok {
@@ -199,8 +199,8 @@ func (c *Collector) addMetricFamily(point telegraf.Metric, sample *Sample, mname
 // Sorted returns a copy of the metrics in time ascending order.  A copy is
 // made to avoid modifying the input metric slice since doing so is not
 // allowed.
-func sorted(metrics []telegraf.Metric) []telegraf.Metric {
-	batch := make([]telegraf.Metric, 0, len(metrics))
+func sorted(metrics []Dana.Metric) []Dana.Metric {
+	batch := make([]Dana.Metric, 0, len(metrics))
 	for i := len(metrics) - 1; i >= 0; i-- {
 		batch = append(batch, metrics[i])
 	}
@@ -210,7 +210,7 @@ func sorted(metrics []telegraf.Metric) []telegraf.Metric {
 	return batch
 }
 
-func (c *Collector) Add(metrics []telegraf.Metric) error {
+func (c *Collector) Add(metrics []Dana.Metric) error {
 	c.addMetrics(metrics)
 
 	// Expire metrics, doing this on Add ensure metrics are removed even if no
@@ -222,7 +222,7 @@ func (c *Collector) Add(metrics []telegraf.Metric) error {
 	return nil
 }
 
-func (c *Collector) addMetrics(metrics []telegraf.Metric) {
+func (c *Collector) addMetrics(metrics []Dana.Metric) {
 	c.Lock()
 	defer c.Unlock()
 
@@ -259,7 +259,7 @@ func (c *Collector) addMetrics(metrics []telegraf.Metric) {
 		}
 
 		switch point.Type() {
-		case telegraf.Summary:
+		case Dana.Summary:
 			var mname string
 			var sum float64
 			var count uint64
@@ -305,7 +305,7 @@ func (c *Collector) addMetrics(metrics []telegraf.Metric) {
 
 			c.addMetricFamily(point, sample, mname, sampleID)
 
-		case telegraf.Histogram:
+		case Dana.Histogram:
 			var mname string
 			var sum float64
 			var count uint64
@@ -377,11 +377,11 @@ func (c *Collector) addMetrics(metrics []telegraf.Metric) {
 				// the prometheus input.
 				var mname string
 				switch point.Type() {
-				case telegraf.Counter:
+				case Dana.Counter:
 					if fn == "counter" {
 						mname = sanitize(point.Name())
 					}
-				case telegraf.Gauge:
+				case Dana.Gauge:
 					if fn == "gauge" {
 						mname = sanitize(point.Name())
 					}

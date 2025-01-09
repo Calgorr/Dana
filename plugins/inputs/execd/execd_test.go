@@ -59,7 +59,7 @@ func TestExternalInputWorks(t *testing.T) {
 	}
 	e.SetParser(influxParser)
 
-	metrics := make(chan telegraf.Metric, 10)
+	metrics := make(chan Dana.Metric, 10)
 	defer close(metrics)
 	acc := agent.NewAccumulator(&TestMetricMaker{}, metrics)
 
@@ -81,7 +81,7 @@ func TestParsesLinesContainingNewline(t *testing.T) {
 	parser := models.NewRunningParser(&influx.Parser{}, &models.ParserConfig{})
 	require.NoError(t, parser.Init())
 
-	metrics := make(chan telegraf.Metric, 10)
+	metrics := make(chan Dana.Metric, 10)
 	defer close(metrics)
 	acc := agent.NewAccumulator(&TestMetricMaker{}, metrics)
 
@@ -126,7 +126,7 @@ func TestParsesPrometheus(t *testing.T) {
 	parser := models.NewRunningParser(&prometheus.Parser{}, &models.ParserConfig{})
 	require.NoError(t, parser.Init())
 
-	metrics := make(chan telegraf.Metric, 10)
+	metrics := make(chan Dana.Metric, 10)
 	defer close(metrics)
 
 	var acc testutil.Accumulator
@@ -143,7 +143,7 @@ func TestParsesPrometheus(t *testing.T) {
 # TYPE test summary
 test{handler="execd",quantile="0.5"} 42.0
 `
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"prometheus",
 			map[string]string{"handler": "execd", "quantile": "0.5"},
@@ -251,7 +251,7 @@ func TestLoggingNoPrefix(t *testing.T) {
 	}, 3*time.Second, 100*time.Millisecond)
 
 	// Check the metric
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New("test", map[string]string{}, map[string]interface{}{"value": int64(0)}, time.Unix(0, 0)),
 	}
 	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
@@ -323,7 +323,7 @@ func TestLoggingWithPrefix(t *testing.T) {
 			}, 3*time.Second, 100*time.Millisecond)
 
 			// Check the metric
-			expected := []telegraf.Metric{
+			expected := []Dana.Metric{
 				metric.New("test", map[string]string{}, map[string]interface{}{"value": int64(0)}, time.Unix(0, 0)),
 			}
 			testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
@@ -348,7 +348,7 @@ func TestLoggingWithPrefix(t *testing.T) {
 	}
 }
 
-func readChanWithTimeout(t *testing.T, metrics chan telegraf.Metric, timeout time.Duration) telegraf.Metric {
+func readChanWithTimeout(t *testing.T, metrics chan Dana.Metric, timeout time.Duration) Dana.Metric {
 	to := time.NewTimer(timeout)
 	defer to.Stop()
 	select {
@@ -370,11 +370,11 @@ func (tm *TestMetricMaker) LogName() string {
 	return tm.Name()
 }
 
-func (*TestMetricMaker) MakeMetric(aMetric telegraf.Metric) telegraf.Metric {
+func (*TestMetricMaker) MakeMetric(aMetric Dana.Metric) Dana.Metric {
 	return aMetric
 }
 
-func (*TestMetricMaker) Log() telegraf.Logger {
+func (*TestMetricMaker) Log() Dana.Logger {
 	return logger.New("TestPlugin", "test", "")
 }
 

@@ -40,7 +40,7 @@ func (s *Serializer) Init() error {
 	return nil
 }
 
-func (s *Serializer) Serialize(metric telegraf.Metric) (out []byte, err error) {
+func (s *Serializer) Serialize(metric Dana.Metric) (out []byte, err error) {
 	m := s.createObject(metric)
 
 	if s.Format == "jsonv2" {
@@ -50,7 +50,7 @@ func (s *Serializer) Serialize(metric telegraf.Metric) (out []byte, err error) {
 	return json.Marshal(m)
 }
 
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) (out []byte, err error) {
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) (out []byte, err error) {
 	objects := make([]OIMetric, 0)
 	for _, metric := range metrics {
 		objects = append(objects, s.createObject(metric)...)
@@ -64,7 +64,7 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) (out []byte, err 
 	return json.Marshal(objects)
 }
 
-func (s *Serializer) createObject(metric telegraf.Metric) OIMetrics {
+func (s *Serializer) createObject(metric Dana.Metric) OIMetrics {
 	/*  ServiceNow Operational Intelligence supports an array of JSON objects.
 	** Following elements accepted in the request body:
 		 ** metric_type: 	The name of the metric
@@ -130,7 +130,7 @@ func verifyValue(v interface{}) bool {
 
 func init() {
 	serializers.Add("nowmetric",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

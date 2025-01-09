@@ -15,9 +15,9 @@ import (
 
 type metricDiff struct {
 	Measurement string
-	Tags        []*telegraf.Tag
-	Fields      []*telegraf.Field
-	Type        telegraf.ValueType
+	Tags        []*Dana.Tag
+	Fields      []*Dana.Field
+	Type        Dana.ValueType
 	Time        time.Time
 }
 
@@ -96,7 +96,7 @@ func lessFunc(lhs, rhs *metricDiff) bool {
 	return false
 }
 
-func newMetricDiff(telegrafMetric telegraf.Metric) *metricDiff {
+func newMetricDiff(telegrafMetric Dana.Metric) *metricDiff {
 	if telegrafMetric == nil {
 		return nil
 	}
@@ -119,7 +119,7 @@ func newMetricDiff(telegrafMetric telegraf.Metric) *metricDiff {
 	return m
 }
 
-func newMetricStructureDiff(telegrafMetric telegraf.Metric) *metricDiff {
+func newMetricStructureDiff(telegrafMetric Dana.Metric) *metricDiff {
 	if telegrafMetric == nil {
 		return nil
 	}
@@ -133,7 +133,7 @@ func newMetricStructureDiff(telegrafMetric telegraf.Metric) *metricDiff {
 	})
 
 	for _, f := range telegrafMetric.FieldList() {
-		sf := &telegraf.Field{
+		sf := &Dana.Field{
 			Key:   f.Key,
 			Value: reflect.Zero(reflect.TypeOf(f.Value)).Interface(),
 		}
@@ -162,7 +162,7 @@ func IgnoreTime() cmp.Option {
 // The field-names are case-sensitive!
 func IgnoreFields(names ...string) cmp.Option {
 	return cmpopts.IgnoreSliceElements(
-		func(f *telegraf.Field) bool {
+		func(f *Dana.Field) bool {
 			for _, n := range names {
 				if f.Key == n {
 					return true
@@ -177,7 +177,7 @@ func IgnoreFields(names ...string) cmp.Option {
 // The tag-names are case-sensitive!
 func IgnoreTags(names ...string) cmp.Option {
 	return cmpopts.IgnoreSliceElements(
-		func(f *telegraf.Tag) bool {
+		func(f *Dana.Tag) bool {
 			for _, n := range names {
 				if f.Key == n {
 					return true
@@ -189,7 +189,7 @@ func IgnoreTags(names ...string) cmp.Option {
 }
 
 // MetricEqual returns true if the metrics are equal.
-func MetricEqual(expected, actual telegraf.Metric, opts ...cmp.Option) bool {
+func MetricEqual(expected, actual Dana.Metric, opts ...cmp.Option) bool {
 	var lhs, rhs *metricDiff
 	if expected != nil {
 		lhs = newMetricDiff(expected)
@@ -204,7 +204,7 @@ func MetricEqual(expected, actual telegraf.Metric, opts ...cmp.Option) bool {
 
 // RequireMetricEqual halts the test with an error if the metrics are not
 // equal.
-func RequireMetricEqual(t testing.TB, expected, actual telegraf.Metric, opts ...cmp.Option) {
+func RequireMetricEqual(t testing.TB, expected, actual Dana.Metric, opts ...cmp.Option) {
 	if x, ok := t.(helper); ok {
 		x.Helper()
 	}
@@ -225,7 +225,7 @@ func RequireMetricEqual(t testing.TB, expected, actual telegraf.Metric, opts ...
 
 // RequireMetricsEqual halts the test with an error if the array of metrics
 // are not equal.
-func RequireMetricsEqual(t testing.TB, expected, actual []telegraf.Metric, opts ...cmp.Option) {
+func RequireMetricsEqual(t testing.TB, expected, actual []Dana.Metric, opts ...cmp.Option) {
 	if x, ok := t.(helper); ok {
 		x.Helper()
 	}
@@ -247,7 +247,7 @@ func RequireMetricsEqual(t testing.TB, expected, actual []telegraf.Metric, opts 
 
 // RequireMetricsSubset halts the test with an error if the expected array
 // of metrics is not a subset of the actual metrics.
-func RequireMetricsSubset(t testing.TB, expected, actual []telegraf.Metric, opts ...cmp.Option) {
+func RequireMetricsSubset(t testing.TB, expected, actual []Dana.Metric, opts ...cmp.Option) {
 	if x, ok := t.(helper); ok {
 		x.Helper()
 	}
@@ -292,7 +292,7 @@ func RequireMetricsSubset(t testing.TB, expected, actual []telegraf.Metric, opts
 // metrics is structural different. Structure means that the metric differs
 // in either name, tag key/values, time (if not ignored) or fields. For fields
 // ONLY the name and type are compared NOT the value.
-func RequireMetricsStructureEqual(t testing.TB, expected, actual []telegraf.Metric, opts ...cmp.Option) {
+func RequireMetricsStructureEqual(t testing.TB, expected, actual []Dana.Metric, opts ...cmp.Option) {
 	if x, ok := t.(helper); ok {
 		x.Helper()
 	}
@@ -316,7 +316,7 @@ func RequireMetricsStructureEqual(t testing.TB, expected, actual []telegraf.Metr
 // array of metrics is not a subset of the actual metrics. The equality here
 // is only based on the structure (i.e. key name and value types) and NOT on
 // the actual value.
-func RequireMetricsStructureSubset(t testing.TB, expected, actual []telegraf.Metric, opts ...cmp.Option) {
+func RequireMetricsStructureSubset(t testing.TB, expected, actual []Dana.Metric, opts ...cmp.Option) {
 	if x, ok := t.(helper); ok {
 		x.Helper()
 	}
@@ -363,18 +363,18 @@ func MustMetric(
 	tags map[string]string,
 	fields map[string]interface{},
 	tm time.Time,
-	tp ...telegraf.ValueType,
-) telegraf.Metric {
+	tp ...Dana.ValueType,
+) Dana.Metric {
 	m := metric.New(name, tags, fields, tm, tp...)
 	return m
 }
 
-func FromTestMetric(met *Metric) telegraf.Metric {
+func FromTestMetric(met *Metric) Dana.Metric {
 	m := metric.New(met.Measurement, met.Tags, met.Fields, met.Time, met.Type)
 	return m
 }
 
-func ToTestMetric(tm telegraf.Metric) *Metric {
+func ToTestMetric(tm Dana.Metric) *Metric {
 	tags := make(map[string]string, len(tm.TagList()))
 	for _, t := range tm.TagList() {
 		tags[t.Key] = t.Value

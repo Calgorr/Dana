@@ -208,7 +208,7 @@ func (m *Monit) Init() error {
 	return nil
 }
 
-func (m *Monit) Gather(acc telegraf.Accumulator) error {
+func (m *Monit) Gather(acc Dana.Accumulator) error {
 	req, err := http.NewRequest("GET", m.Address+"/_status?format=xml", nil)
 	if err != nil {
 		return err
@@ -378,7 +378,7 @@ func monitoringStatus(s service) string {
 }
 
 func init() {
-	inputs.Add("monit", func() telegraf.Input {
+	inputs.Add("monit", func() Dana.Input {
 		return &Monit{}
 	})
 }

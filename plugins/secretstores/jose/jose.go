@@ -99,7 +99,7 @@ func (j *Jose) List() ([]string, error) {
 }
 
 // GetResolver returns a function to resolve the given key.
-func (j *Jose) GetResolver(key string) (telegraf.ResolveFunc, error) {
+func (j *Jose) GetResolver(key string) (Dana.ResolveFunc, error) {
 	resolver := func() ([]byte, bool, error) {
 		s, err := j.Get(key)
 		return s, false, err
@@ -109,7 +109,7 @@ func (j *Jose) GetResolver(key string) (telegraf.ResolveFunc, error) {
 
 // Register the secret-store on load.
 func init() {
-	secretstores.Add("jose", func(id string) telegraf.SecretStore {
+	secretstores.Add("jose", func(id string) Dana.SecretStore {
 		return &Jose{ID: id}
 	})
 }

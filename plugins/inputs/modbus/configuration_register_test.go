@@ -186,7 +186,7 @@ func TestRegisterCoils(t *testing.T) {
 				},
 			}
 
-			expected := []telegraf.Metric{
+			expected := []Dana.Metric{
 				testutil.MustMetric(
 					"modbus",
 					map[string]string{
@@ -913,7 +913,7 @@ func TestRegisterHoldingRegisters(t *testing.T) {
 				},
 			}
 
-			expected := []telegraf.Metric{
+			expected := []Dana.Metric{
 				testutil.MustMetric(
 					"modbus",
 					map[string]string{
@@ -1000,7 +1000,7 @@ func TestRegisterReadMultipleCoilWithHole(t *testing.T) {
 	modbus.SlaveID = 1
 	modbus.Coils = fcs
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"modbus",
 			map[string]string{
@@ -1059,7 +1059,7 @@ func TestRegisterReadMultipleCoilLimit(t *testing.T) {
 	modbus.SlaveID = 1
 	modbus.Coils = fcs
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"modbus",
 			map[string]string{
@@ -1133,7 +1133,7 @@ func TestRegisterReadMultipleHoldingRegisterWithHole(t *testing.T) {
 	modbus.SlaveID = 1
 	modbus.HoldingRegisters = fcs
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"modbus",
 			map[string]string{
@@ -1190,7 +1190,7 @@ func TestRegisterReadMultipleHoldingRegisterLimit(t *testing.T) {
 	modbus.SlaveID = 1
 	modbus.HoldingRegisters = fcs
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"modbus",
 			map[string]string{
@@ -1258,7 +1258,7 @@ func TestRegisterHighAddresses(t *testing.T) {
 		},
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"modbus",
 			map[string]string{

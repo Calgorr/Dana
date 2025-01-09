@@ -128,7 +128,7 @@ func (f *Filter) Compile() error {
 // Select returns true if the metric matches according to the
 // namepass/namedrop, tagpass/tagdrop and metric filters.
 // The metric is not modified.
-func (f *Filter) Select(metric telegraf.Metric) (bool, error) {
+func (f *Filter) Select(metric Dana.Metric) (bool, error) {
 	if !f.selectActive {
 		return true, nil
 	}
@@ -162,7 +162,7 @@ func (f *Filter) Select(metric telegraf.Metric) (bool, error) {
 
 // Modify removes any tags and fields from the metric according to the
 // fieldinclude/fieldexclude and taginclude/tagexclude filters.
-func (f *Filter) Modify(metric telegraf.Metric) {
+func (f *Filter) Modify(metric Dana.Metric) {
 	if !f.modifyActive {
 		return
 	}
@@ -200,12 +200,12 @@ func (f *Filter) shouldNamePass(key string) bool {
 
 // shouldTagsPass returns true if the metric should pass, false if it should drop
 // based on the tagdrop/tagpass filter parameters
-func (f *Filter) shouldTagsPass(tags []*telegraf.Tag) bool {
+func (f *Filter) shouldTagsPass(tags []*Dana.Tag) bool {
 	return ShouldTagsPass(f.TagPassFilters, f.TagDropFilters, tags)
 }
 
 // filterFields removes fields according to fieldinclude/fieldexclude.
-func (f *Filter) filterFields(metric telegraf.Metric) {
+func (f *Filter) filterFields(metric Dana.Metric) {
 	filterKeys := make([]string, 0, len(metric.FieldList()))
 	for _, field := range metric.FieldList() {
 		if !ShouldPassFilters(f.fieldIncludeFilter, f.fieldExcludeFilter, field.Key) {
@@ -219,7 +219,7 @@ func (f *Filter) filterFields(metric telegraf.Metric) {
 }
 
 // filterTags removes tags according to taginclude/tagexclude.
-func (f *Filter) filterTags(metric telegraf.Metric) {
+func (f *Filter) filterTags(metric Dana.Metric) {
 	filterKeys := make([]string, 0, len(metric.TagList()))
 	for _, tag := range metric.TagList() {
 		if !ShouldPassFilters(f.tagIncludeFilter, f.tagExcludeFilter, tag.Key) {
@@ -295,7 +295,7 @@ func ShouldPassFilters(include, exclude filter.Filter, key string) bool {
 	return true
 }
 
-func ShouldTagsPass(passFilters, dropFilters []TagFilter, tags []*telegraf.Tag) bool {
+func ShouldTagsPass(passFilters, dropFilters []TagFilter, tags []*Dana.Tag) bool {
 	pass := func(tpf []TagFilter) bool {
 		for _, pat := range tpf {
 			if pat.filter == nil {

@@ -109,7 +109,7 @@ func TestRedisSentinelMasters(t *testing.T) {
 		"has_quorum":              true,
 	}
 
-	expectedMetrics := []telegraf.Metric{
+	expectedMetrics := []Dana.Metric{
 		testutil.MustMetric(measurementMasters, expectedTags, expectedFields, now),
 	}
 
@@ -139,7 +139,7 @@ func TestRedisSentinelMasters(t *testing.T) {
 	sentinelTags, sentinelFields, sentinelErr := convertSentinelMastersOutput(globalTags, sentinelMastersOutput, nil)
 	require.NoErrorf(t, sentinelErr, "failed converting output: %v", sentinelErr)
 
-	actualMetrics := []telegraf.Metric{
+	actualMetrics := []Dana.Metric{
 		testutil.MustMetric(measurementMasters, sentinelTags, sentinelFields, now),
 	}
 
@@ -170,7 +170,7 @@ func TestRedisSentinels(t *testing.T) {
 		"voted_leader_epoch":      0,
 	}
 
-	expectedMetrics := []telegraf.Metric{
+	expectedMetrics := []Dana.Metric{
 		testutil.MustMetric(measurementSentinels, expectedTags, expectedFields, now),
 	}
 
@@ -194,7 +194,7 @@ func TestRedisSentinels(t *testing.T) {
 	sentinelTags, sentinelFields, sentinelErr := convertSentinelSentinelsOutput(globalTags, masterName, sentinelsOutput)
 	require.NoErrorf(t, sentinelErr, "failed converting output: %v", sentinelErr)
 
-	actualMetrics := []telegraf.Metric{
+	actualMetrics := []Dana.Metric{
 		testutil.MustMetric(measurementSentinels, sentinelTags, sentinelFields, now),
 	}
 
@@ -231,7 +231,7 @@ func TestRedisSentinelReplicas(t *testing.T) {
 		"slave_repl_offset":       1392400,
 	}
 
-	expectedMetrics := []telegraf.Metric{
+	expectedMetrics := []Dana.Metric{
 		testutil.MustMetric(measurementReplicas, expectedTags, expectedFields, now),
 	}
 
@@ -261,7 +261,7 @@ func TestRedisSentinelReplicas(t *testing.T) {
 	sentinelTags, sentinelFields, sentinelErr := convertSentinelReplicaOutput(globalTags, masterName, replicasOutput)
 	require.NoErrorf(t, sentinelErr, "failed converting output: %v", sentinelErr)
 
-	actualMetrics := []telegraf.Metric{
+	actualMetrics := []Dana.Metric{
 		testutil.MustMetric(measurementReplicas, sentinelTags, sentinelFields, now),
 	}
 
@@ -330,7 +330,7 @@ func TestRedisSentinelInfoAll(t *testing.T) {
 		"sentinel_tilt":                   int64(0),
 	}
 
-	expectedMetrics := []telegraf.Metric{
+	expectedMetrics := []Dana.Metric{
 		testutil.MustMetric(measurementSentinel, expectedTags, expectedFields, now),
 	}
 
@@ -342,7 +342,7 @@ func TestRedisSentinelInfoAll(t *testing.T) {
 	sentinelTags, sentinelFields, sentinelErr := convertSentinelInfoOutput(globalTags, rdr)
 	require.NoErrorf(t, sentinelErr, "failed converting output: %v", sentinelErr)
 
-	actualMetrics := []telegraf.Metric{
+	actualMetrics := []Dana.Metric{
 		testutil.MustMetric(measurementSentinel, sentinelTags, sentinelFields, now),
 	}
 

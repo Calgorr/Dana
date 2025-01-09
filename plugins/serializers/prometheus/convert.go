@@ -105,9 +105,9 @@ func SanitizeLabelName(name string) (string, bool) {
 }
 
 // MetricName returns the Prometheus metric name.
-func MetricName(measurement, fieldKey string, valueType telegraf.ValueType) string {
+func MetricName(measurement, fieldKey string, valueType Dana.ValueType) string {
 	switch valueType {
-	case telegraf.Histogram, telegraf.Summary:
+	case Dana.Histogram, Dana.Summary:
 		switch {
 		case strings.HasSuffix(fieldKey, "_bucket"):
 			fieldKey = strings.TrimSuffix(fieldKey, "_bucket")
@@ -124,17 +124,17 @@ func MetricName(measurement, fieldKey string, valueType telegraf.ValueType) stri
 	return measurement + "_" + fieldKey
 }
 
-func MetricType(valueType telegraf.ValueType) *dto.MetricType {
+func MetricType(valueType Dana.ValueType) *dto.MetricType {
 	switch valueType {
-	case telegraf.Counter:
+	case Dana.Counter:
 		return dto.MetricType_COUNTER.Enum()
-	case telegraf.Gauge:
+	case Dana.Gauge:
 		return dto.MetricType_GAUGE.Enum()
-	case telegraf.Summary:
+	case Dana.Summary:
 		return dto.MetricType_SUMMARY.Enum()
-	case telegraf.Untyped:
+	case Dana.Untyped:
 		return dto.MetricType_UNTYPED.Enum()
-	case telegraf.Histogram:
+	case Dana.Histogram:
 		return dto.MetricType_HISTOGRAM.Enum()
 	default:
 		panic("unknown telegraf.ValueType")

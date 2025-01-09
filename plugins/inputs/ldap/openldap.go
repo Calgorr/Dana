@@ -38,7 +38,7 @@ func (l *LDAP) newOpenLDAPConfig() []request {
 	return []request{{req, l.convertOpenLDAP}}
 }
 
-func (l *LDAP) convertOpenLDAP(result *ldap.SearchResult, ts time.Time) []telegraf.Metric {
+func (l *LDAP) convertOpenLDAP(result *ldap.SearchResult, ts time.Time) []Dana.Metric {
 	tags := map[string]string{
 		"server": l.host,
 		"port":   l.port,
@@ -58,7 +58,7 @@ func (l *LDAP) convertOpenLDAP(result *ldap.SearchResult, ts time.Time) []telegr
 	}
 
 	m := metric.New("openldap", tags, fields, ts)
-	return []telegraf.Metric{m}
+	return []Dana.Metric{m}
 }
 
 // Convert a DN to a field prefix, eg cn=Read,cn=Waiters,cn=Monitor becomes waiters_read

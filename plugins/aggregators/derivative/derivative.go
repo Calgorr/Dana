@@ -14,10 +14,10 @@ import (
 var sampleConfig string
 
 type Derivative struct {
-	Variable    string          `toml:"variable"`
-	Suffix      string          `toml:"suffix"`
-	MaxRollOver uint            `toml:"max_roll_over"`
-	Log         telegraf.Logger `toml:"-"`
+	Variable    string      `toml:"variable"`
+	Suffix      string      `toml:"suffix"`
+	MaxRollOver uint        `toml:"max_roll_over"`
+	Log         Dana.Logger `toml:"-"`
 	cache       map[uint64]*aggregate
 }
 
@@ -47,7 +47,7 @@ func (*Derivative) SampleConfig() string {
 	return sampleConfig
 }
 
-func (d *Derivative) Add(in telegraf.Metric) {
+func (d *Derivative) Add(in Dana.Metric) {
 	id := in.HashID()
 	current, ok := d.cache[id]
 	if !ok {
@@ -71,7 +71,7 @@ func (d *Derivative) Add(in telegraf.Metric) {
 	}
 }
 
-func newAggregate(in telegraf.Metric) *aggregate {
+func newAggregate(in Dana.Metric) *aggregate {
 	event := newEvent(in)
 	return &aggregate{
 		name:     in.Name(),
@@ -82,14 +82,14 @@ func newAggregate(in telegraf.Metric) *aggregate {
 	}
 }
 
-func newEvent(in telegraf.Metric) *event {
+func newEvent(in Dana.Metric) *event {
 	return &event{
 		fields: extractConvertedFields(in),
 		time:   in.Time(),
 	}
 }
 
-func extractConvertedFields(in telegraf.Metric) map[string]float64 {
+func extractConvertedFields(in Dana.Metric) map[string]float64 {
 	fields := make(map[string]float64, len(in.Fields()))
 	upsertConvertedFields(in.Fields(), fields)
 	return fields
@@ -115,7 +115,7 @@ func convert(in interface{}) (float64, bool) {
 	return 0, false
 }
 
-func (d *Derivative) Push(acc telegraf.Accumulator) {
+func (d *Derivative) Push(acc Dana.Accumulator) {
 	for _, aggregate := range d.cache {
 		if aggregate.first == aggregate.last {
 			d.Log.Debugf("Same first and last event for %q, skipping.", aggregate.name)
@@ -177,7 +177,7 @@ func (d *Derivative) Init() error {
 }
 
 func init() {
-	aggregators.Add("derivative", func() telegraf.Aggregator {
+	aggregators.Add("derivative", func() Dana.Aggregator {
 		return NewDerivative()
 	})
 }

@@ -34,7 +34,7 @@ func TestNetStats(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, (&NetStat{ps: &mps}).Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"netstat",
 			map[string]string{},

@@ -24,15 +24,15 @@ import (
 var sampleConfig string
 
 type Quix struct {
-	APIURL    string          `toml:"url"`
-	Workspace string          `toml:"workspace"`
-	Topic     string          `toml:"topic"`
-	Token     config.Secret   `toml:"token"`
-	Log       telegraf.Logger `toml:"-"`
+	APIURL    string        `toml:"url"`
+	Workspace string        `toml:"workspace"`
+	Topic     string        `toml:"topic"`
+	Token     config.Secret `toml:"token"`
+	Log       Dana.Logger   `toml:"-"`
 	common_http.HTTPClientConfig
 
 	producer   sarama.SyncProducer
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 	kakfaTopic string
 }
 
@@ -132,7 +132,7 @@ func (q *Quix) Connect() error {
 	return nil
 }
 
-func (q *Quix) Write(metrics []telegraf.Metric) error {
+func (q *Quix) Write(metrics []Dana.Metric) error {
 	for _, m := range metrics {
 		serialized, err := q.serializer.Serialize(m)
 		if err != nil {
@@ -164,5 +164,5 @@ func (q *Quix) Close() error {
 }
 
 func init() {
-	outputs.Add("quix", func() telegraf.Output { return &Quix{} })
+	outputs.Add("quix", func() Dana.Output { return &Quix{} })
 }

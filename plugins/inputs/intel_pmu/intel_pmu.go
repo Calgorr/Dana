@@ -31,7 +31,7 @@ type IntelPMU struct {
 	CoreEntities   []*coreEventEntity   `toml:"core_events"`
 	UncoreEntities []*uncoreEventEntity `toml:"uncore_events"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	fileInfo       fileInfoProvider
 	entitiesReader entitiesValuesReader
@@ -137,13 +137,13 @@ func (i *IntelPMU) Init() error {
 	return i.initialization(parser, resolver, activator)
 }
 
-// Start is required for IntelPMU to implement the telegraf.ServiceInput interface.
+// Start is required for IntelPMU to implement the Dana.ServiceInput interface.
 // Necessary initialization and config checking are done in Init.
-func (*IntelPMU) Start(_ telegraf.Accumulator) error {
+func (*IntelPMU) Start(_ Dana.Accumulator) error {
 	return nil
 }
 
-func (i *IntelPMU) Gather(acc telegraf.Accumulator) error {
+func (i *IntelPMU) Gather(acc Dana.Accumulator) error {
 	if i.entitiesReader == nil {
 		return errors.New("entities reader is nil")
 	}
@@ -268,7 +268,7 @@ func (i *IntelPMU) checkFileDescriptors() error {
 	return nil
 }
 
-func newReader(log telegraf.Logger, files []string) (*ia.JSONFilesReader, error) {
+func newReader(log Dana.Logger, files []string) (*ia.JSONFilesReader, error) {
 	reader := ia.NewFilesReader()
 	for _, file := range files {
 		err := reader.AddFiles(file)
@@ -380,7 +380,7 @@ func checkFiles(paths []string, fileInfo fileInfoProvider) error {
 	return nil
 }
 
-func publishCoreMeasurements(metrics []coreMetric, acc telegraf.Accumulator) {
+func publishCoreMeasurements(metrics []coreMetric, acc Dana.Accumulator) {
 	for _, m := range metrics {
 		fields := make(map[string]interface{})
 		tags := make(map[string]string)
@@ -400,7 +400,7 @@ func publishCoreMeasurements(metrics []coreMetric, acc telegraf.Accumulator) {
 	}
 }
 
-func publishUncoreMeasurements(metrics []uncoreMetric, acc telegraf.Accumulator) {
+func publishUncoreMeasurements(metrics []uncoreMetric, acc Dana.Accumulator) {
 	for _, m := range metrics {
 		fields := make(map[string]interface{})
 		tags := make(map[string]string)
@@ -425,7 +425,7 @@ func publishUncoreMeasurements(metrics []uncoreMetric, acc telegraf.Accumulator)
 }
 
 func init() {
-	inputs.Add("intel_pmu", func() telegraf.Input {
+	inputs.Add("intel_pmu", func() Dana.Input {
 		pmu := IntelPMU{
 			fileInfo: &fileHelper{},
 		}

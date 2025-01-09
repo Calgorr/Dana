@@ -15,13 +15,13 @@ import (
 )
 
 type Parser struct {
-	AllowNoMatch bool            `toml:"allow_no_match"`
-	Endianess    string          `toml:"endianess" deprecated:"1.27.4;1.35.0;use 'endianness' instead"`
-	Endianness   string          `toml:"endianness"`
-	Configs      []Config        `toml:"binary"`
-	HexEncoding  bool            `toml:"hex_encoding" deprecated:"1.30.0;1.35.0;use 'binary_encoding' instead"`
-	Encoding     string          `toml:"binary_encoding"`
-	Log          telegraf.Logger `toml:"-"`
+	AllowNoMatch bool        `toml:"allow_no_match"`
+	Endianess    string      `toml:"endianess" deprecated:"1.27.4;1.35.0;use 'endianness' instead"`
+	Endianness   string      `toml:"endianness"`
+	Configs      []Config    `toml:"binary"`
+	HexEncoding  bool        `toml:"hex_encoding" deprecated:"1.30.0;1.35.0;use 'binary_encoding' instead"`
+	Encoding     string      `toml:"binary_encoding"`
+	Log          Dana.Logger `toml:"-"`
 
 	metricName  string
 	defaultTags map[string]string
@@ -71,7 +71,7 @@ func (p *Parser) Init() error {
 	return nil
 }
 
-func (p *Parser) Parse(data []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(data []byte) ([]Dana.Metric, error) {
 	t := time.Now()
 
 	// If the data is encoded in HEX, we need to decode it first
@@ -98,7 +98,7 @@ func (p *Parser) Parse(data []byte) ([]telegraf.Metric, error) {
 	}
 
 	matches := 0
-	metrics := make([]telegraf.Metric, 0)
+	metrics := make([]Dana.Metric, 0)
 	for i, cfg := range p.Configs {
 		// Apply the filter and see if we should match this
 		if !cfg.matches(buf) {
@@ -121,7 +121,7 @@ func (p *Parser) Parse(data []byte) ([]telegraf.Metric, error) {
 	return metrics, nil
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line))
 	if err != nil {
 		return nil, err
@@ -144,7 +144,7 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 func init() {
 	// Register all variants
 	parsers.Add("binary",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{metricName: defaultMetricName}
 		},
 	)

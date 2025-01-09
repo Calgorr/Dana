@@ -15,7 +15,7 @@ var sampleConfig string
 
 type BasicStats struct {
 	Stats []string `toml:"stats"`
-	Log   telegraf.Logger
+	Log   Dana.Logger
 
 	cache       map[uint64]aggregate
 	statsConfig *configuredStats
@@ -71,7 +71,7 @@ func (*BasicStats) SampleConfig() string {
 	return sampleConfig
 }
 
-func (b *BasicStats) Add(in telegraf.Metric) {
+func (b *BasicStats) Add(in Dana.Metric) {
 	id := in.HashID()
 	if _, ok := b.cache[id]; !ok {
 		// hit an uncached metric, create caches for first time:
@@ -163,7 +163,7 @@ func (b *BasicStats) Add(in telegraf.Metric) {
 	}
 }
 
-func (b *BasicStats) Push(acc telegraf.Accumulator) {
+func (b *BasicStats) Push(acc Dana.Accumulator) {
 	for _, aggregate := range b.cache {
 		fields := make(map[string]interface{})
 		for k, v := range aggregate.fields {
@@ -319,7 +319,7 @@ func (b *BasicStats) Init() error {
 }
 
 func init() {
-	aggregators.Add("basicstats", func() telegraf.Aggregator {
+	aggregators.Add("basicstats", func() Dana.Aggregator {
 		return NewBasicStats()
 	})
 }

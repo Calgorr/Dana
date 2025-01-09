@@ -6,7 +6,7 @@ import (
 	"Dana"
 )
 
-func (*DMCache) Gather(_ telegraf.Accumulator) error {
+func (*DMCache) Gather(_ Dana.Accumulator) error {
 	return nil
 }
 

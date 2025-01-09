@@ -24,7 +24,7 @@ func TestCases(t *testing.T) {
 	require.NotEmpty(t, folders)
 
 	// Set up for file inputs
-	inputs.Add("file", func() telegraf.Input {
+	inputs.Add("file", func() Dana.Input {
 		return &file.File{}
 	})
 
@@ -40,7 +40,7 @@ func TestCases(t *testing.T) {
 			testdataParser := &influx.Parser{}
 			require.NoError(t, testdataParser.Init())
 
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, testdataParser)
@@ -60,7 +60,7 @@ func TestCases(t *testing.T) {
 			// Set up error catching
 			var acc testutil.Accumulator
 			var actualErrors []string
-			var actual []telegraf.Metric
+			var actual []Dana.Metric
 
 			// Configure the plugin
 			cfg := config.NewConfig()

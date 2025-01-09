@@ -20,7 +20,7 @@ type Server struct {
 	serverStatus serverStatus
 }
 
-func (s *Server) gatherData(acc telegraf.Accumulator) error {
+func (s *Server) gatherData(acc Dana.Accumulator) error {
 	if err := s.getServerStatus(); err != nil {
 		return fmt.Errorf("failed to get server_status: %w", err)
 	}
@@ -112,7 +112,7 @@ var ClusterTracking = []string{
 	"written_docs_per_sec",
 }
 
-func (s *Server) addClusterStats(acc telegraf.Accumulator) error {
+func (s *Server) addClusterStats(acc Dana.Accumulator) error {
 	cursor, err := gorethink.DB("rethinkdb").Table("stats").Get([]string{"cluster"}).Run(s.session)
 	if err != nil {
 		return fmt.Errorf("cluster stats query error: %w", err)
@@ -140,7 +140,7 @@ var MemberTracking = []string{
 	"total_writes",
 }
 
-func (s *Server) addMemberStats(acc telegraf.Accumulator) error {
+func (s *Server) addMemberStats(acc Dana.Accumulator) error {
 	cursor, err := gorethink.DB("rethinkdb").Table("stats").Get([]string{"server", s.serverStatus.ID}).Run(s.session)
 	if err != nil {
 		return fmt.Errorf("member stats query error: %w", err)
@@ -164,7 +164,7 @@ var TableTracking = []string{
 	"total_writes",
 }
 
-func (s *Server) addTablesStats(acc telegraf.Accumulator) error {
+func (s *Server) addTablesStats(acc Dana.Accumulator) error {
 	tablesCursor, err := gorethink.DB("rethinkdb").Table("table_status").Run(s.session)
 	if err != nil {
 		return fmt.Errorf("table stats query error: %w", err)
@@ -185,7 +185,7 @@ func (s *Server) addTablesStats(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (s *Server) addTableStats(acc telegraf.Accumulator, table tableStatus) error {
+func (s *Server) addTableStats(acc Dana.Accumulator, table tableStatus) error {
 	cursor, err := gorethink.DB("rethinkdb").Table("stats").
 		Get([]string{"table_server", table.ID, s.serverStatus.ID}).
 		Run(s.session)

@@ -26,14 +26,14 @@ const (
 )
 
 type Noise struct {
-	Scale         float64         `toml:"scale"`
-	Min           float64         `toml:"min"`
-	Max           float64         `toml:"max"`
-	Mu            float64         `toml:"mu"`
-	IncludeFields []string        `toml:"include_fields"`
-	ExcludeFields []string        `toml:"exclude_fields"`
-	NoiseType     string          `toml:"type"`
-	Log           telegraf.Logger `toml:"-"`
+	Scale         float64     `toml:"scale"`
+	Min           float64     `toml:"min"`
+	Max           float64     `toml:"max"`
+	Mu            float64     `toml:"mu"`
+	IncludeFields []string    `toml:"include_fields"`
+	ExcludeFields []string    `toml:"exclude_fields"`
+	NoiseType     string      `toml:"type"`
+	Log           Dana.Logger `toml:"-"`
 	generator     distuv.Rander
 	fieldFilter   filter.Filter
 }
@@ -111,7 +111,7 @@ func (p *Noise) Init() error {
 	return nil
 }
 
-func (p *Noise) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
+func (p *Noise) Apply(metrics ...Dana.Metric) []Dana.Metric {
 	for _, metric := range metrics {
 		for _, field := range metric.FieldList() {
 			if !p.fieldFilter.Match(field.Key) {
@@ -124,7 +124,7 @@ func (p *Noise) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("noise", func() telegraf.Processor {
+	processors.Add("noise", func() Dana.Processor {
 		return &Noise{
 			NoiseType: defaultNoiseType,
 			Mu:        defaultMu,

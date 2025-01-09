@@ -8,19 +8,19 @@ import (
 
 type Unordered struct {
 	wg      sync.WaitGroup
-	acc     telegraf.Accumulator
-	fn      func(telegraf.Metric) []telegraf.Metric
-	inQueue chan telegraf.Metric
+	acc     Dana.Accumulator
+	fn      func(Dana.Metric) []Dana.Metric
+	inQueue chan Dana.Metric
 }
 
 func NewUnordered(
-	acc telegraf.Accumulator,
-	fn func(telegraf.Metric) []telegraf.Metric,
+	acc Dana.Accumulator,
+	fn func(Dana.Metric) []Dana.Metric,
 	workerCount int,
 ) *Unordered {
 	p := &Unordered{
 		acc:     acc,
-		inQueue: make(chan telegraf.Metric, workerCount),
+		inQueue: make(chan Dana.Metric, workerCount),
 		fn:      fn,
 	}
 
@@ -55,6 +55,6 @@ func (p *Unordered) Stop() {
 	p.wg.Wait()
 }
 
-func (p *Unordered) Enqueue(m telegraf.Metric) {
+func (p *Unordered) Enqueue(m Dana.Metric) {
 	p.inQueue <- m
 }

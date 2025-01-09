@@ -67,7 +67,7 @@ func TestExternalOutputWorks(t *testing.T) {
 	)
 
 	require.NoError(t, e.Connect())
-	require.NoError(t, e.Write([]telegraf.Metric{m}))
+	require.NoError(t, e.Write([]Dana.Metric{m}))
 	require.NoError(t, e.Close())
 	wg.Wait()
 }
@@ -122,7 +122,7 @@ func TestBatchOutputWorks(t *testing.T) {
 	)
 
 	require.NoError(t, e.Connect())
-	require.NoError(t, e.Write([]telegraf.Metric{m, m2}))
+	require.NoError(t, e.Write([]Dana.Metric{m, m2}))
 	require.NoError(t, e.Close())
 	wg.Wait()
 }
@@ -160,7 +160,7 @@ func TestPartiallyUnserializableThrowError(t *testing.T) {
 	)
 
 	require.NoError(t, e.Connect())
-	require.Error(t, e.Write([]telegraf.Metric{m1, m2}))
+	require.Error(t, e.Write([]Dana.Metric{m1, m2}))
 	require.NoError(t, e.Close())
 }
 
@@ -197,7 +197,7 @@ func TestPartiallyUnserializableCanBeSkipped(t *testing.T) {
 	)
 
 	require.NoError(t, e.Connect())
-	require.NoError(t, e.Write([]telegraf.Metric{m1, m2}))
+	require.NoError(t, e.Write([]Dana.Metric{m1, m2}))
 	require.NoError(t, e.Close())
 }
 

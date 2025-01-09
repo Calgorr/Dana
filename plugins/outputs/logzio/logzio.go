@@ -29,7 +29,7 @@ type Logzio struct {
 	URL     string          `toml:"url"`
 	Token   config.Secret   `toml:"token"`
 	Timeout config.Duration `toml:"timeout"`
-	Log     telegraf.Logger `toml:"-"`
+	Log     Dana.Logger     `toml:"-"`
 
 	tls.ClientConfig
 	client *http.Client
@@ -86,7 +86,7 @@ func (l *Logzio) Close() error {
 }
 
 // Write takes in group of points to be written to the Output
-func (l *Logzio) Write(metrics []telegraf.Metric) error {
+func (l *Logzio) Write(metrics []Dana.Metric) error {
 	if len(metrics) == 0 {
 		return nil
 	}
@@ -151,7 +151,7 @@ func (l *Logzio) authURL() (string, error) {
 	return fmt.Sprintf("%s/?token=%s", l.URL, token.TemporaryString()), nil
 }
 
-func (l *Logzio) parseMetric(metric telegraf.Metric) *Metric {
+func (l *Logzio) parseMetric(metric Dana.Metric) *Metric {
 	return &Metric{
 		Metric: map[string]interface{}{
 			metric.Name(): metric.Fields(),
@@ -163,7 +163,7 @@ func (l *Logzio) parseMetric(metric telegraf.Metric) *Metric {
 }
 
 func init() {
-	outputs.Add("logzio", func() telegraf.Output {
+	outputs.Add("logzio", func() Dana.Output {
 		return &Logzio{
 			URL:     defaultLogzioURL,
 			Timeout: config.Duration(time.Second * 5),

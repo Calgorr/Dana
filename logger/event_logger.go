@@ -27,9 +27,9 @@ func (l *eventLogger) Close() error {
 	return l.eventlog.Close()
 }
 
-func (l *eventLogger) Print(level telegraf.LogLevel, _ time.Time, prefix string, _ map[string]interface{}, args ...interface{}) {
+func (l *eventLogger) Print(level Dana.LogLevel, _ time.Time, prefix string, _ map[string]interface{}, args ...interface{}) {
 	// Skip debug and beyond as they cannot be logged
-	if level >= telegraf.Debug {
+	if level >= Dana.Debug {
 		return
 	}
 
@@ -37,11 +37,11 @@ func (l *eventLogger) Print(level telegraf.LogLevel, _ time.Time, prefix string,
 
 	var err error
 	switch level {
-	case telegraf.Error:
+	case Dana.Error:
 		err = l.eventlog.Error(eidError, msg)
-	case telegraf.Warn:
+	case Dana.Warn:
 		err = l.eventlog.Warning(eidWarning, msg)
-	case telegraf.Info:
+	case Dana.Info:
 		err = l.eventlog.Info(eidInfo, msg)
 	}
 	if err != nil {

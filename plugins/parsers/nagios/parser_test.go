@@ -72,14 +72,14 @@ func (b *metricBuilder) f(k string, v interface{}) *metricBuilder {
 	return b
 }
 
-func (b *metricBuilder) b() telegraf.Metric {
+func (b *metricBuilder) b() Dana.Metric {
 	m := metric.New(b.name, b.tags, b.fields, b.timestamp)
 	return m
 }
 
 // assertEqual asserts two slices to be equal. Note, that the order
 // of the entries matters.
-func assertEqual(t *testing.T, exp, actual []telegraf.Metric) {
+func assertEqual(t *testing.T, exp, actual []Dana.Metric) {
 	require.Equal(t, len(exp), len(actual))
 	for i := 0; i < len(exp); i++ {
 		ok := testutil.MetricEqual(exp[i], actual[i])
@@ -92,15 +92,15 @@ func TestTryAddState(t *testing.T) {
 		name          string
 		runErrF       func() error
 		runErrMessage []byte
-		metrics       []telegraf.Metric
-		assertF       func(*testing.T, []telegraf.Metric)
+		metrics       []Dana.Metric
+		assertF       func(*testing.T, []Dana.Metric)
 	}{
 		{
 			name: "should append state=0 field to existing metric",
 			runErrF: func() error {
 				return nil
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				mb().
 					n("nagios").
 					f("perfdata", 0).b(),
@@ -108,8 +108,8 @@ func TestTryAddState(t *testing.T) {
 					n("nagios_state").
 					f("service_output", "OK: system working").b(),
 			},
-			assertF: func(t *testing.T, metrics []telegraf.Metric) {
-				exp := []telegraf.Metric{
+			assertF: func(t *testing.T, metrics []Dana.Metric) {
+				exp := []Dana.Metric{
 					mb().
 						n("nagios").
 						f("perfdata", 0).b(),
@@ -126,13 +126,13 @@ func TestTryAddState(t *testing.T) {
 			runErrF: func() error {
 				return nil
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				mb().
 					n("nagios").
 					f("perfdata", 0).b(),
 			},
-			assertF: func(t *testing.T, metrics []telegraf.Metric) {
-				exp := []telegraf.Metric{
+			assertF: func(t *testing.T, metrics []Dana.Metric) {
+				exp := []Dana.Metric{
 					mb().
 						n("nagios").
 						f("perfdata", 0).b(),
@@ -148,8 +148,8 @@ func TestTryAddState(t *testing.T) {
 			runErrF: func() error {
 				return nil
 			},
-			metrics: make([]telegraf.Metric, 0),
-			assertF: func(t *testing.T, metrics []telegraf.Metric) {
+			metrics: make([]Dana.Metric, 0),
+			assertF: func(t *testing.T, metrics []Dana.Metric) {
 				require.Len(t, metrics, 1)
 				m := metrics[0]
 				require.Equal(t, "nagios_state", m.Name())
@@ -164,12 +164,12 @@ func TestTryAddState(t *testing.T) {
 			runErrF: func() error {
 				return errors.New("non parsable error")
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				mb().
 					n("nagios_state").b(),
 			},
-			assertF: func(t *testing.T, metrics []telegraf.Metric) {
-				exp := []telegraf.Metric{
+			assertF: func(t *testing.T, metrics []Dana.Metric) {
+				exp := []Dana.Metric{
 					mb().
 						n("nagios_state").
 						f("state", 3).
@@ -185,12 +185,12 @@ func TestTryAddState(t *testing.T) {
 				return errors.New("")
 			},
 			runErrMessage: []byte("some error message"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				mb().
 					n("nagios_state").b(),
 			},
-			assertF: func(t *testing.T, metrics []telegraf.Metric) {
-				exp := []telegraf.Metric{
+			assertF: func(t *testing.T, metrics []Dana.Metric) {
+				exp := []Dana.Metric{
 					mb().
 						n("nagios_state").
 						f("state", 3).
@@ -209,7 +209,7 @@ func TestTryAddState(t *testing.T) {
 	}
 }
 
-func assertNagiosState(t *testing.T, m telegraf.Metric, f map[string]interface{}) {
+func assertNagiosState(t *testing.T, m Dana.Metric, f map[string]interface{}) {
 	require.Equal(t, map[string]string{}, m.Tags())
 	require.Equal(t, f, m.Fields())
 }
@@ -222,7 +222,7 @@ func TestParse(t *testing.T) {
 	tests := []struct {
 		name    string
 		input   string
-		assertF func(*testing.T, []telegraf.Metric, error)
+		assertF func(*testing.T, []Dana.Metric, error)
 	}{
 		{
 			name: "valid output 1",
@@ -230,7 +230,7 @@ func TestParse(t *testing.T) {
 This is a long output
 with three lines
 `,
-			assertF: func(t *testing.T, metrics []telegraf.Metric, err error) {
+			assertF: func(t *testing.T, metrics []Dana.Metric, err error) {
 				require.NoError(t, err)
 				require.Len(t, metrics, 3)
 				// rta
@@ -271,7 +271,7 @@ with three lines
 		{
 			name:  "valid output 2",
 			input: "TCP OK - 0.008 second response time on port 80|time=0.008457s;;;0.000000;10.000000",
-			assertF: func(t *testing.T, metrics []telegraf.Metric, err error) {
+			assertF: func(t *testing.T, metrics []Dana.Metric, err error) {
 				require.NoError(t, err)
 				require.Len(t, metrics, 2)
 				// time
@@ -293,7 +293,7 @@ with three lines
 		{
 			name:  "valid output 3",
 			input: "TCP OK - 0.008 second response time on port 80|time=0.008457",
-			assertF: func(t *testing.T, metrics []telegraf.Metric, err error) {
+			assertF: func(t *testing.T, metrics []Dana.Metric, err error) {
 				require.NoError(t, err)
 				require.Len(t, metrics, 2)
 				// time
@@ -312,7 +312,7 @@ with three lines
 		{
 			name:  "valid output 4",
 			input: "OK: Load average: 0.00, 0.01, 0.05 | 'load1'=0.00;~:4;@0:6;0; 'load5'=0.01;3;0:5;0; 'load15'=0.05;0:2;0:4;0;",
-			assertF: func(t *testing.T, metrics []telegraf.Metric, err error) {
+			assertF: func(t *testing.T, metrics []Dana.Metric, err error) {
 				require.NoError(t, err)
 				require.Len(t, metrics, 4)
 				// load1
@@ -362,7 +362,7 @@ with three lines
 		{
 			name:  "no perf data",
 			input: "PING OK - Packet loss = 0%, RTA = 0.30 ms",
-			assertF: func(t *testing.T, metrics []telegraf.Metric, err error) {
+			assertF: func(t *testing.T, metrics []Dana.Metric, err error) {
 				require.NoError(t, err)
 				require.Len(t, metrics, 1)
 
@@ -374,7 +374,7 @@ with three lines
 		{
 			name:  "malformed perf data",
 			input: "PING OK - Packet loss = 0%, RTA = 0.30 ms| =3;;;; dgasdg =;;;; sff=;;;;",
-			assertF: func(t *testing.T, metrics []telegraf.Metric, err error) {
+			assertF: func(t *testing.T, metrics []Dana.Metric, err error) {
 				require.NoError(t, err)
 				require.Len(t, metrics, 1)
 
@@ -393,7 +393,7 @@ with three lines
 /home=69357MB;253404;253409;0;253414
 /var/log=818MB;970;975;0;980
 `,
-			assertF: func(t *testing.T, metrics []telegraf.Metric, err error) {
+			assertF: func(t *testing.T, metrics []Dana.Metric, err error) {
 				require.NoError(t, err)
 				require.Len(t, metrics, 5)
 				// /=2643MB;5948;5958;0;5968
@@ -533,7 +533,7 @@ const benchmarkData = `DISK OK - free space: / 3326 MB (56%); | /=2643MB;5948;59
 func TestBenchmarkData(t *testing.T) {
 	plugin := &Parser{}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"nagios",
 			map[string]string{

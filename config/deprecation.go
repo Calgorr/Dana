@@ -23,12 +23,12 @@ type DeprecationInfo struct {
 	// Name of the plugin or plugin option
 	Name string
 	// LogLevel is the level of deprecation which currently corresponds to a log-level
-	logLevel telegraf.LogLevel
-	info     telegraf.DeprecationInfo
+	logLevel Dana.LogLevel
+	info     Dana.DeprecationInfo
 }
 
 func (di *DeprecationInfo) determineEscalation() error {
-	di.logLevel = telegraf.None
+	di.logLevel = Dana.None
 	if di.info.Since == "" {
 		return nil
 	}
@@ -57,9 +57,9 @@ func (di *DeprecationInfo) determineEscalation() error {
 		Patch: telegrafVersion.Patch,
 	}
 	if !version.LessThan(*removal) {
-		di.logLevel = telegraf.Error
+		di.logLevel = Dana.Error
 	} else if !version.LessThan(*since) {
-		di.logLevel = telegraf.Warn
+		di.logLevel = Dana.Warn
 	}
 	return nil
 }
@@ -92,7 +92,7 @@ func (c *Config) collectDeprecationInfo(category, name string, plugin interface{
 	info := PluginDeprecationInfo{
 		DeprecationInfo: DeprecationInfo{
 			Name:     category + "." + name,
-			logLevel: telegraf.None,
+			logLevel: Dana.None,
 		},
 	}
 
@@ -118,7 +118,7 @@ func (c *Config) collectDeprecationInfo(category, name string, plugin interface{
 	if err := info.determineEscalation(); err != nil {
 		panic(fmt.Errorf("plugin %q: %w", info.Name, err))
 	}
-	if info.logLevel != telegraf.None {
+	if info.logLevel != Dana.None {
 		c.incrementPluginDeprecations(category)
 	}
 
@@ -151,7 +151,7 @@ func (c *Config) collectDeprecationInfo(category, name string, plugin interface{
 			panic(fmt.Errorf("plugin %q option %q: %w", info.Name, field.Name, err))
 		}
 
-		if optionInfo.logLevel != telegraf.None {
+		if optionInfo.logLevel != Dana.None {
 			c.incrementPluginOptionDeprecations(category)
 		}
 
@@ -170,7 +170,7 @@ func (c *Config) printUserDeprecation(category, name string, plugin interface{})
 	info := c.collectDeprecationInfo(category, name, plugin, false)
 	printPluginDeprecationNotice(info.logLevel, info.Name, info.info)
 
-	if info.logLevel == telegraf.Error {
+	if info.logLevel == Dana.Error {
 		return errors.New("plugin deprecated")
 	}
 
@@ -178,7 +178,7 @@ func (c *Config) printUserDeprecation(category, name string, plugin interface{})
 	deprecatedOptions := make([]string, 0)
 	for _, option := range info.Options {
 		PrintOptionDeprecationNotice(info.Name, option.Name, option.info)
-		if option.logLevel == telegraf.Error {
+		if option.logLevel == Dana.Error {
 			deprecatedOptions = append(deprecatedOptions, option.Name)
 		}
 	}
@@ -202,7 +202,7 @@ func (c *Config) CollectDeprecationInfos(inFilter, outFilter, aggFilter, procFil
 		plugin := creator()
 		info := c.collectDeprecationInfo("inputs", name, plugin, true)
 
-		if info.logLevel != telegraf.None || len(info.Options) > 0 {
+		if info.logLevel != Dana.None || len(info.Options) > 0 {
 			infos["inputs"] = append(infos["inputs"], info)
 		}
 	}
@@ -216,7 +216,7 @@ func (c *Config) CollectDeprecationInfos(inFilter, outFilter, aggFilter, procFil
 		plugin := creator()
 		info := c.collectDeprecationInfo("outputs", name, plugin, true)
 
-		if info.logLevel != telegraf.None || len(info.Options) > 0 {
+		if info.logLevel != Dana.None || len(info.Options) > 0 {
 			infos["outputs"] = append(infos["outputs"], info)
 		}
 	}
@@ -230,7 +230,7 @@ func (c *Config) CollectDeprecationInfos(inFilter, outFilter, aggFilter, procFil
 		plugin := creator()
 		info := c.collectDeprecationInfo("processors", name, plugin, true)
 
-		if info.logLevel != telegraf.None || len(info.Options) > 0 {
+		if info.logLevel != Dana.None || len(info.Options) > 0 {
 			infos["processors"] = append(infos["processors"], info)
 		}
 	}
@@ -244,7 +244,7 @@ func (c *Config) CollectDeprecationInfos(inFilter, outFilter, aggFilter, procFil
 		plugin := creator()
 		info := c.collectDeprecationInfo("aggregators", name, plugin, true)
 
-		if info.logLevel != telegraf.None || len(info.Options) > 0 {
+		if info.logLevel != Dana.None || len(info.Options) > 0 {
 			infos["aggregators"] = append(infos["aggregators"], info)
 		}
 	}
@@ -257,7 +257,7 @@ func (c *Config) PrintDeprecationList(plugins []PluginDeprecationInfo) {
 
 	for _, plugin := range plugins {
 		switch plugin.logLevel {
-		case telegraf.Warn, telegraf.Error:
+		case Dana.Warn, Dana.Error:
 			fmt.Printf(
 				"  %-40s %-5s since %-5s removal in %-5s %s\n",
 				plugin.Name, plugin.logLevel, plugin.info.Since, plugin.info.RemovalIn, plugin.info.Notice,
@@ -277,7 +277,7 @@ func (c *Config) PrintDeprecationList(plugins []PluginDeprecationInfo) {
 	}
 }
 
-func printHistoricPluginDeprecationNotice(category, name string, info telegraf.DeprecationInfo) {
+func printHistoricPluginDeprecationNotice(category, name string, info Dana.DeprecationInfo) {
 	prefix := "E! " + color.RedString("DeprecationError")
 	log.Printf(
 		"%s: Plugin %q deprecated since version %s and removed: %s",
@@ -329,19 +329,19 @@ func walkPluginStruct(value reflect.Value, fn func(f reflect.StructField, fv ref
 	}
 }
 
-func deprecationPrefix(level telegraf.LogLevel) string {
+func deprecationPrefix(level Dana.LogLevel) string {
 	switch level {
-	case telegraf.Warn:
+	case Dana.Warn:
 		return "W! " + color.YellowString("DeprecationWarning")
-	case telegraf.Error:
+	case Dana.Error:
 		return "E! " + color.RedString("DeprecationError")
 	}
 	return ""
 }
 
-func printPluginDeprecationNotice(level telegraf.LogLevel, name string, info telegraf.DeprecationInfo) {
+func printPluginDeprecationNotice(level Dana.LogLevel, name string, info Dana.DeprecationInfo) {
 	switch level {
-	case telegraf.Warn, telegraf.Error:
+	case Dana.Warn, Dana.Error:
 		prefix := deprecationPrefix(level)
 		log.Printf(
 			"%s: Plugin %q deprecated since version %s and will be removed in %s: %s",
@@ -350,7 +350,7 @@ func printPluginDeprecationNotice(level telegraf.LogLevel, name string, info tel
 	}
 }
 
-func PrintOptionDeprecationNotice(plugin, option string, info telegraf.DeprecationInfo) {
+func PrintOptionDeprecationNotice(plugin, option string, info Dana.DeprecationInfo) {
 	// Determine the log-level
 	di := &DeprecationInfo{
 		Name: plugin,
@@ -362,7 +362,7 @@ func PrintOptionDeprecationNotice(plugin, option string, info telegraf.Deprecati
 	}
 
 	switch di.logLevel {
-	case telegraf.Warn, telegraf.Error:
+	case Dana.Warn, Dana.Error:
 		prefix := deprecationPrefix(di.logLevel)
 		log.Printf(
 			"%s: Option %q of plugin %q deprecated since version %s and will be removed in %s: %s",
@@ -371,7 +371,7 @@ func PrintOptionDeprecationNotice(plugin, option string, info telegraf.Deprecati
 	}
 }
 
-func PrintOptionValueDeprecationNotice(plugin, option string, value interface{}, info telegraf.DeprecationInfo) {
+func PrintOptionValueDeprecationNotice(plugin, option string, value interface{}, info Dana.DeprecationInfo) {
 	// Determine the log-level
 	di := &DeprecationInfo{
 		Name: plugin,
@@ -383,7 +383,7 @@ func PrintOptionValueDeprecationNotice(plugin, option string, value interface{},
 	}
 
 	switch di.logLevel {
-	case telegraf.Warn, telegraf.Error:
+	case Dana.Warn, Dana.Error:
 		prefix := deprecationPrefix(di.logLevel)
 		log.Printf(
 			`%s: Value "%+v" for option %q of plugin %q deprecated since version %s and will be removed in %s: %s`,

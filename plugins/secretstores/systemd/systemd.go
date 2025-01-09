@@ -27,9 +27,9 @@ var getSystemdVersion = getSystemdMajorVersion
 var sampleConfig string
 
 type Systemd struct {
-	Path   string          `toml:"path"`
-	Prefix string          `toml:"prefix"`
-	Log    telegraf.Logger `toml:"-"`
+	Path   string      `toml:"path"`
+	Prefix string      `toml:"prefix"`
+	Log    Dana.Logger `toml:"-"`
 }
 
 func (*Systemd) SampleConfig() string {
@@ -106,7 +106,7 @@ func (s *Systemd) Set(_, _ string) error {
 }
 
 // GetResolver returns a function to resolve the given key.
-func (s *Systemd) GetResolver(key string) (telegraf.ResolveFunc, error) {
+func (s *Systemd) GetResolver(key string) (Dana.ResolveFunc, error) {
 	resolver := func() ([]byte, bool, error) {
 		s, err := s.Get(key)
 		return s, false, err
@@ -132,7 +132,7 @@ func getSystemdMajorVersion() (int, error) {
 
 // Register the secret-store on load.
 func init() {
-	secretstores.Add("systemd", func(_ string) telegraf.SecretStore {
+	secretstores.Add("systemd", func(_ string) Dana.SecretStore {
 		return &Systemd{Prefix: "telegraf."}
 	})
 }

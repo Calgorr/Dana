@@ -29,7 +29,7 @@ type openTSDBHttp struct {
 	Path      string
 	Debug     bool
 
-	log telegraf.Logger
+	log Dana.Logger
 
 	metricCounter int
 	body          requestBody

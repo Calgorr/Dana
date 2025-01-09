@@ -35,7 +35,7 @@ type Server struct {
 	DashboardRepo    repository.DashboardRepo
 	FolderRepo       repository.FolderRepo
 	NotificationRepo repository.NotificationRepo
-	InputDstChan     chan<- telegraf.Metric
+	InputDstChan     chan<- Dana.Metric
 	StartTime        time.Time
 }
 
@@ -72,7 +72,7 @@ func NewServer(cfg *config.Config) *Server {
 	a.DashboardRepo = dashboardRepo
 	a.FolderRepo = folderRepo
 	a.NotificationRepo = notificationRepo
-	
+
 	return a
 }
 
@@ -88,7 +88,7 @@ func NewServer(cfg *config.Config) *Server {
 // │ Input │───┘
 // └───────┘
 type inputUnit struct {
-	dst    chan<- telegraf.Metric
+	dst    chan<- Dana.Metric
 	inputs []*models.RunningInput
 }
 
@@ -97,8 +97,8 @@ type inputUnit struct {
 //             └───────────┘
 
 type processorUnit struct {
-	src       <-chan telegraf.Metric
-	dst       chan<- telegraf.Metric
+	src       <-chan Dana.Metric
+	dst       chan<- Dana.Metric
 	processor *models.RunningProcessor
 }
 
@@ -119,9 +119,9 @@ type processorUnit struct {
 //            └────────────────────────▶ ()_____)
 
 type aggregatorUnit struct {
-	src         <-chan telegraf.Metric
-	aggC        chan<- telegraf.Metric
-	outputC     chan<- telegraf.Metric
+	src         <-chan Dana.Metric
+	aggC        chan<- Dana.Metric
+	outputC     chan<- Dana.Metric
 	aggregators []*models.RunningAggregator
 }
 
@@ -139,7 +139,7 @@ type aggregatorUnit struct {
 //                            └────────┘
 
 type outputUnit struct {
-	src     <-chan telegraf.Metric
+	src     <-chan Dana.Metric
 	outputs []*models.RunningOutput
 }
 
@@ -345,7 +345,7 @@ func (a *Server) initPersister() error {
 	}
 
 	for _, input := range a.Config.Inputs {
-		plugin, ok := input.Input.(telegraf.StatefulPlugin)
+		plugin, ok := input.Input.(Dana.StatefulPlugin)
 		if !ok {
 			continue
 		}
@@ -358,14 +358,14 @@ func (a *Server) initPersister() error {
 	}
 
 	for _, processor := range a.Config.Processors {
-		var plugin telegraf.StatefulPlugin
+		var plugin Dana.StatefulPlugin
 		if p, ok := processor.Processor.(processors.HasUnwrap); ok {
-			plugin, ok = p.Unwrap().(telegraf.StatefulPlugin)
+			plugin, ok = p.Unwrap().(Dana.StatefulPlugin)
 			if !ok {
 				continue
 			}
 		} else {
-			plugin, ok = processor.Processor.(telegraf.StatefulPlugin)
+			plugin, ok = processor.Processor.(Dana.StatefulPlugin)
 			if !ok {
 				continue
 			}
@@ -379,7 +379,7 @@ func (a *Server) initPersister() error {
 	}
 
 	for _, aggregator := range a.Config.Aggregators {
-		plugin, ok := aggregator.Aggregator.(telegraf.StatefulPlugin)
+		plugin, ok := aggregator.Aggregator.(Dana.StatefulPlugin)
 		if !ok {
 			continue
 		}
@@ -392,7 +392,7 @@ func (a *Server) initPersister() error {
 	}
 
 	for _, processor := range a.Config.AggProcessors {
-		plugin, ok := processor.Processor.(telegraf.StatefulPlugin)
+		plugin, ok := processor.Processor.(Dana.StatefulPlugin)
 		if !ok {
 			continue
 		}
@@ -405,7 +405,7 @@ func (a *Server) initPersister() error {
 	}
 
 	for _, output := range a.Config.Outputs {
-		plugin, ok := output.Output.(telegraf.StatefulPlugin)
+		plugin, ok := output.Output.(Dana.StatefulPlugin)
 		if !ok {
 			continue
 		}
@@ -421,7 +421,7 @@ func (a *Server) initPersister() error {
 }
 
 func (a *Server) startInputs(
-	dst chan<- telegraf.Metric,
+	dst chan<- Dana.Metric,
 	inputs []*models.RunningInput,
 ) (*inputUnit, error) {
 	log.Printf("D! [agent] Starting service inputs")
@@ -531,7 +531,7 @@ func (a *Server) runInputs(
 // mode. It differs by logging Start errors and returning only plugins
 // successfully started.
 func (a *Server) testStartInputs(
-	dst chan<- telegraf.Metric,
+	dst chan<- Dana.Metric,
 	inputs []*models.RunningInput,
 ) *inputUnit {
 	log.Printf("D! [agent] Starting service inputs")
@@ -568,7 +568,7 @@ func (a *Server) testRunInputs(
 ) {
 	var wg sync.WaitGroup
 
-	nul := make(chan telegraf.Metric)
+	nul := make(chan Dana.Metric)
 	go func() {
 		//nolint:revive // empty block needed here
 		for range nul {
@@ -644,7 +644,7 @@ func stopRunningOutputs(outputs []*models.RunningOutput) {
 // done.
 func (a *Server) gatherLoop(
 	ctx context.Context,
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	input *models.RunningInput,
 	ticker Ticker,
 	interval time.Duration,
@@ -665,7 +665,7 @@ func (a *Server) gatherLoop(
 // gatherOnce runs the input's Gather function once, logging a warning each
 // interval it fails to complete before.
 func (a *Server) gatherOnce(
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	input *models.RunningInput,
 	ticker Ticker,
 	interval time.Duration,
@@ -700,10 +700,10 @@ func (a *Server) gatherOnce(
 // startProcessors sets up the processor chain and calls Start on all
 // processors.  If an error occurs any started processors are Stopped.
 func (a *Server) startProcessors(
-	dst chan<- telegraf.Metric,
+	dst chan<- Dana.Metric,
 	runningProcessors models.RunningProcessors,
-) (chan<- telegraf.Metric, []*processorUnit, error) {
-	var src chan telegraf.Metric
+) (chan<- Dana.Metric, []*processorUnit, error) {
+	var src chan Dana.Metric
 	units := make([]*processorUnit, 0, len(runningProcessors))
 	// The processor chain is constructed from the output side starting from
 	// the output(s) and walking the way back to the input(s). However, the
@@ -713,7 +713,7 @@ func (a *Server) startProcessors(
 	for i := len(runningProcessors) - 1; i >= 0; i-- {
 		processor := runningProcessors[i]
 
-		src = make(chan telegraf.Metric, 100)
+		src = make(chan Dana.Metric, 100)
 		acc := NewAccumulator(processor, dst)
 
 		err := processor.Start(acc)
@@ -764,8 +764,8 @@ func (a *Server) runProcessors(
 }
 
 // startAggregators sets up the aggregator unit and returns the source channel.
-func (a *Server) startAggregators(aggC, outputC chan<- telegraf.Metric, aggregators []*models.RunningAggregator) (chan<- telegraf.Metric, *aggregatorUnit) {
-	src := make(chan telegraf.Metric, 100)
+func (a *Server) startAggregators(aggC, outputC chan<- Dana.Metric, aggregators []*models.RunningAggregator) (chan<- Dana.Metric, *aggregatorUnit) {
+	src := make(chan Dana.Metric, 100)
 	unit := &aggregatorUnit{
 		src:         src,
 		aggC:        aggC,
@@ -854,7 +854,7 @@ func updateWindow(start time.Time, roundInterval bool, period time.Duration) (ti
 func (a *Server) push(
 	ctx context.Context,
 	aggregator *models.RunningAggregator,
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 ) {
 	for {
 		// Ensures that Push will be called for each period, even if it has
@@ -878,8 +878,8 @@ func (a *Server) push(
 func (a *Server) startOutputs(
 	ctx context.Context,
 	outputs []*models.RunningOutput,
-) (chan<- telegraf.Metric, *outputUnit, error) {
-	src := make(chan telegraf.Metric, 100)
+) (chan<- Dana.Metric, *outputUnit, error) {
+	src := make(chan Dana.Metric, 100)
 	unit := &outputUnit{src: src}
 	for _, output := range outputs {
 		if err := a.connectOutput(ctx, output); err != nil {
@@ -1057,7 +1057,7 @@ func (a *Server) flushBatch(
 // Test runs the inputs, processors and aggregators for a single gather and
 // writes the metrics to stdout.
 func (a *Server) Test(ctx context.Context, wait time.Duration) error {
-	src := make(chan telegraf.Metric, 100)
+	src := make(chan Dana.Metric, 100)
 
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -1089,7 +1089,7 @@ func (a *Server) Test(ctx context.Context, wait time.Duration) error {
 // runTest runs the agent and performs a single gather sending output to the
 // outputC. After gathering pauses for the wait duration to allow service
 // inputs to run.
-func (a *Server) runTest(ctx context.Context, wait time.Duration, outputC chan<- telegraf.Metric) error {
+func (a *Server) runTest(ctx context.Context, wait time.Duration, outputC chan<- Dana.Metric) error {
 	// Set the default for processor skipping
 	if a.Config.Agent.SkipProcessorsAfterAggregators == nil {
 		msg := `The default value of 'skip_processors_after_aggregators' will change to 'true' with Telegraf v1.40.0! `

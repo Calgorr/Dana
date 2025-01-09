@@ -46,16 +46,16 @@ type MQTTConsumer struct {
 	PersistentSession      bool                 `toml:"persistent_session"`
 	ClientTrace            bool                 `toml:"client_trace"`
 	ClientID               string               `toml:"client_id"`
-	Log                    telegraf.Logger      `toml:"-"`
+	Log                    Dana.Logger          `toml:"-"`
 	tls.ClientConfig
 
-	parser        telegraf.Parser
+	parser        Dana.Parser
 	clientFactory clientFactory
 	client        client
 	opts          *mqtt.ClientOptions
-	acc           telegraf.TrackingAccumulator
+	acc           Dana.TrackingAccumulator
 	sem           semaphore
-	messages      map[telegraf.TrackingID]mqtt.Message
+	messages      map[Dana.TrackingID]mqtt.Message
 	messagesMutex sync.Mutex
 	topicTagParse string
 	topicParsers  []*topicParser
@@ -109,7 +109,7 @@ func (m *MQTTConsumer) Init() error {
 		return err
 	}
 	m.opts = opts
-	m.messages = make(map[telegraf.TrackingID]mqtt.Message)
+	m.messages = make(map[Dana.TrackingID]mqtt.Message)
 
 	m.topicParsers = make([]*topicParser, 0, len(m.TopicParserConfig))
 	for _, cfg := range m.TopicParserConfig {
@@ -125,11 +125,11 @@ func (m *MQTTConsumer) Init() error {
 	return nil
 }
 
-func (m *MQTTConsumer) SetParser(parser telegraf.Parser) {
+func (m *MQTTConsumer) SetParser(parser Dana.Parser) {
 	m.parser = parser
 }
 
-func (m *MQTTConsumer) Start(acc telegraf.Accumulator) error {
+func (m *MQTTConsumer) Start(acc Dana.Accumulator) error {
 	m.acc = acc.WithTracking(m.MaxUndeliveredMessages)
 	m.sem = make(semaphore, m.MaxUndeliveredMessages)
 	m.ctx, m.cancel = context.WithCancel(context.Background())
@@ -150,7 +150,7 @@ func (m *MQTTConsumer) Start(acc telegraf.Accumulator) error {
 	return m.connect()
 }
 
-func (m *MQTTConsumer) Gather(_ telegraf.Accumulator) error {
+func (m *MQTTConsumer) Gather(_ Dana.Accumulator) error {
 	if !m.client.IsConnected() {
 		m.Log.Debugf("Connecting %v", m.Servers)
 		return m.connect()
@@ -224,7 +224,7 @@ func (m *MQTTConsumer) onConnectionLost(_ mqtt.Client, err error) {
 	m.Log.Debugf("Disconnected %v", m.Servers)
 }
 
-func (m *MQTTConsumer) onDelivered(track telegraf.DeliveryInfo) {
+func (m *MQTTConsumer) onDelivered(track Dana.DeliveryInfo) {
 	<-m.sem
 
 	m.messagesMutex.Lock()
@@ -358,7 +358,7 @@ func newMQTTConsumer(factory clientFactory) *MQTTConsumer {
 	}
 }
 func init() {
-	inputs.Add("mqtt_consumer", func() telegraf.Input {
+	inputs.Add("mqtt_consumer", func() Dana.Input {
 		return newMQTTConsumer(func(o *mqtt.ClientOptions) client {
 			return mqtt.NewClient(o)
 		})

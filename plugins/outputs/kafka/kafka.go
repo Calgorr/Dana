@@ -30,16 +30,16 @@ var ValidTopicSuffixMethods = []string{
 var zeroTime = time.Unix(0, 0)
 
 type Kafka struct {
-	Brokers           []string        `toml:"brokers"`
-	Topic             string          `toml:"topic"`
-	TopicTag          string          `toml:"topic_tag"`
-	ExcludeTopicTag   bool            `toml:"exclude_topic_tag"`
-	TopicSuffix       TopicSuffix     `toml:"topic_suffix"`
-	RoutingTag        string          `toml:"routing_tag"`
-	RoutingKey        string          `toml:"routing_key"`
-	ProducerTimestamp string          `toml:"producer_timestamp"`
-	MetricNameHeader  string          `toml:"metric_name_header"`
-	Log               telegraf.Logger `toml:"-"`
+	Brokers           []string    `toml:"brokers"`
+	Topic             string      `toml:"topic"`
+	TopicTag          string      `toml:"topic_tag"`
+	ExcludeTopicTag   bool        `toml:"exclude_topic_tag"`
+	TopicSuffix       TopicSuffix `toml:"topic_suffix"`
+	RoutingTag        string      `toml:"routing_tag"`
+	RoutingKey        string      `toml:"routing_key"`
+	ProducerTimestamp string      `toml:"producer_timestamp"`
+	MetricNameHeader  string      `toml:"metric_name_header"`
+	Log               Dana.Logger `toml:"-"`
 	proxy.Socks5ProxyConfig
 	kafka.WriteConfig
 
@@ -55,7 +55,7 @@ type Kafka struct {
 	producerFunc func(addrs []string, config *sarama.Config) (sarama.SyncProducer, error)
 	producer     sarama.SyncProducer
 
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 }
 
 type TopicSuffix struct {
@@ -77,7 +77,7 @@ func (*Kafka) SampleConfig() string {
 	return sampleConfig
 }
 
-func (k *Kafka) GetTopicName(metric telegraf.Metric) (telegraf.Metric, string) {
+func (k *Kafka) GetTopicName(metric Dana.Metric) (Dana.Metric, string) {
 	topic := k.Topic
 	if k.TopicTag != "" {
 		if t, ok := metric.GetTag(k.TopicTag); ok {
@@ -113,7 +113,7 @@ func (k *Kafka) GetTopicName(metric telegraf.Metric) (telegraf.Metric, string) {
 	return metric, topicName
 }
 
-func (k *Kafka) SetSerializer(serializer telegraf.Serializer) {
+func (k *Kafka) SetSerializer(serializer Dana.Serializer) {
 	k.serializer = serializer
 }
 
@@ -174,7 +174,7 @@ func (k *Kafka) Close() error {
 	return k.producer.Close()
 }
 
-func (k *Kafka) routingKey(metric telegraf.Metric) (string, error) {
+func (k *Kafka) routingKey(metric Dana.Metric) (string, error) {
 	if k.RoutingTag != "" {
 		key, ok := metric.GetTag(k.RoutingTag)
 		if ok {
@@ -193,7 +193,7 @@ func (k *Kafka) routingKey(metric telegraf.Metric) (string, error) {
 	return k.RoutingKey, nil
 }
 
-func (k *Kafka) Write(metrics []telegraf.Metric) error {
+func (k *Kafka) Write(metrics []Dana.Metric) error {
 	msgs := make([]*sarama.ProducerMessage, 0, len(metrics))
 	for _, metric := range metrics {
 		metric, topic := k.GetTopicName(metric)
@@ -261,7 +261,7 @@ func (k *Kafka) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("kafka", func() telegraf.Output {
+	outputs.Add("kafka", func() Dana.Output {
 		return &Kafka{
 			WriteConfig: kafka.WriteConfig{
 				MaxRetry:     3,

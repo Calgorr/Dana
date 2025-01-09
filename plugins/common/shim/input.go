@@ -13,9 +13,9 @@ import (
 )
 
 // AddInput adds the input to the shim. Later calls to Run() will run this input.
-func (s *Shim) AddInput(input telegraf.Input) error {
+func (s *Shim) AddInput(input Dana.Input) error {
 	models.SetLoggerOnPlugin(input, s.Log())
-	if p, ok := input.(telegraf.Initializer); ok {
+	if p, ok := input.(Dana.Initializer); ok {
 		err := p.Init()
 		if err != nil {
 			return fmt.Errorf("failed to init input: %w", err)
@@ -37,7 +37,7 @@ func (s *Shim) RunInput(pollInterval time.Duration) error {
 	acc := agent.NewAccumulator(s, s.metricCh)
 	acc.SetPrecision(time.Nanosecond)
 
-	if serviceInput, ok := s.Input.(telegraf.ServiceInput); ok {
+	if serviceInput, ok := s.Input.(Dana.ServiceInput); ok {
 		if err := serviceInput.Start(acc); err != nil {
 			return fmt.Errorf("failed to start input: %w", err)
 		}
@@ -45,7 +45,7 @@ func (s *Shim) RunInput(pollInterval time.Duration) error {
 	s.gatherPromptCh = make(chan empty, 1)
 	go func() {
 		s.startGathering(ctx, s.Input, acc, pollInterval)
-		if serviceInput, ok := s.Input.(telegraf.ServiceInput); ok {
+		if serviceInput, ok := s.Input.(Dana.ServiceInput); ok {
 			serviceInput.Stop()
 		}
 		// closing the metric channel gracefully stops writing to stdout
@@ -76,7 +76,7 @@ func (s *Shim) RunInput(pollInterval time.Duration) error {
 	return nil
 }
 
-func (s *Shim) startGathering(ctx context.Context, input telegraf.Input, acc telegraf.Accumulator, pollInterval time.Duration) {
+func (s *Shim) startGathering(ctx context.Context, input Dana.Input, acc Dana.Accumulator, pollInterval time.Duration) {
 	if pollInterval == PollIntervalDisabled {
 		pollInterval = forever
 	}

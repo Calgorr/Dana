@@ -190,7 +190,7 @@ func TestSerializeBatch(t *testing.T) {
 		},
 		time.Unix(0, 0),
 	)
-	metrics := []telegraf.Metric{m, m}
+	metrics := []Dana.Metric{m, m}
 
 	s := Serializer{}
 	require.NoError(t, s.Init())
@@ -204,7 +204,7 @@ func TestSerializeBatch(t *testing.T) {
 }
 
 func TestSerializeBatchSkipInf(t *testing.T) {
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},
@@ -224,7 +224,7 @@ func TestSerializeBatchSkipInf(t *testing.T) {
 }
 
 func TestSerializeBatchSkipInfAllFields(t *testing.T) {
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},
@@ -338,7 +338,7 @@ func TestSerializeTransformationBatch(t *testing.T) {
 }
 
 func TestSerializeTransformationIssue12734(t *testing.T) {
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"data",
 			map[string]string{"key": "a"},

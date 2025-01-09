@@ -67,7 +67,7 @@ type App interface {
 
 	// Secret store commands
 	ListSecretStores() ([]string, error)
-	GetSecretStore(string) (telegraf.SecretStore, error)
+	GetSecretStore(string) (Dana.SecretStore, error)
 }
 
 type Telegraf struct {
@@ -120,7 +120,7 @@ func (t *Telegraf) ListSecretStores() ([]string, error) {
 	return ids, nil
 }
 
-func (t *Telegraf) GetSecretStore(id string) (telegraf.SecretStore, error) {
+func (t *Telegraf) GetSecretStore(id string) (Dana.SecretStore, error) {
 	t.quiet = true
 	c, err := t.loadConfiguration()
 	if err != nil {

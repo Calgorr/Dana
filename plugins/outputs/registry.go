@@ -4,7 +4,7 @@ import (
 	"Dana"
 )
 
-type Creator func() telegraf.Output
+type Creator func() Dana.Output
 
 var Outputs = make(map[string]Creator)
 

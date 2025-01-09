@@ -12,12 +12,12 @@ func (k *Synproxy) Init() error {
 	return nil
 }
 
-func (*Synproxy) Gather(_ telegraf.Accumulator) error {
+func (*Synproxy) Gather(_ Dana.Accumulator) error {
 	return nil
 }
 
 func init() {
-	inputs.Add("synproxy", func() telegraf.Input {
+	inputs.Add("synproxy", func() Dana.Input {
 		return &Synproxy{}
 	})
 }

@@ -8,7 +8,7 @@ import (
 	"Dana"
 )
 
-func collectStatefulSets(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory) {
+func collectStatefulSets(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory) {
 	list, err := ki.client.getStatefulSets(ctx)
 	if err != nil {
 		acc.AddError(err)
@@ -19,7 +19,7 @@ func collectStatefulSets(ctx context.Context, acc telegraf.Accumulator, ki *Kube
 	}
 }
 
-func (ki *KubernetesInventory) gatherStatefulSet(s *v1.StatefulSet, acc telegraf.Accumulator) {
+func (ki *KubernetesInventory) gatherStatefulSet(s *v1.StatefulSet, acc Dana.Accumulator) {
 	status := s.Status
 	fields := map[string]interface{}{
 		"created":             s.GetCreationTimestamp().UnixNano(),

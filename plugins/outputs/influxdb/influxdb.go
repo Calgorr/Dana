@@ -30,7 +30,7 @@ var (
 )
 
 type Client interface {
-	Write(context.Context, []telegraf.Metric) error
+	Write(context.Context, []Dana.Metric) error
 	CreateDatabase(ctx context.Context, database string) error
 	Database() string
 	URL() string
@@ -60,7 +60,7 @@ type InfluxDB struct {
 	InfluxUintSupport         bool              `toml:"influx_uint_support"`
 	OmitTimestamp             bool              `toml:"influx_omit_timestamp"`
 	Precision                 string            `toml:"precision" deprecated:"1.0.0;1.35.0;option is ignored"`
-	Log                       telegraf.Logger   `toml:"-"`
+	Log                       Dana.Logger       `toml:"-"`
 	tls.ClientConfig
 
 	clients []Client
@@ -164,7 +164,7 @@ func (i *InfluxDB) Close() error {
 
 // Write sends metrics to one of the configured servers, logging each
 // unsuccessful. If all servers fail, return an error.
-func (i *InfluxDB) Write(metrics []telegraf.Metric) error {
+func (i *InfluxDB) Write(metrics []Dana.Metric) error {
 	ctx := context.Background()
 
 	allErrorsAreDatabaseNotFoundErrors := true
@@ -281,7 +281,7 @@ func (i *InfluxDB) httpClient(ctx context.Context, address *url.URL, localAddr *
 }
 
 func init() {
-	outputs.Add("influxdb", func() telegraf.Output {
+	outputs.Add("influxdb", func() Dana.Output {
 		return &InfluxDB{
 			Timeout: config.Duration(time.Second * 5),
 			CreateHTTPClientF: func(config *HTTPConfig) (Client, error) {

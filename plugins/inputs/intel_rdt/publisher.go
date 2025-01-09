@@ -26,15 +26,15 @@ type parsedProcessMeasurement struct {
 
 // publisher for publish new RDT metrics to telegraf accumulator
 type publisher struct {
-	acc               telegraf.Accumulator
-	log               telegraf.Logger
+	acc               Dana.Accumulator
+	log               Dana.Logger
 	shortenedMetrics  bool
 	bufferChanProcess chan processMeasurement
 	bufferChanCores   chan string
 	errChan           chan error
 }
 
-func newPublisher(acc telegraf.Accumulator, log telegraf.Logger, shortenedMetrics bool) publisher {
+func newPublisher(acc Dana.Accumulator, log Dana.Logger, shortenedMetrics bool) publisher {
 	return publisher{
 		acc:               acc,
 		log:               log,

@@ -26,7 +26,7 @@ func (*SysctlFS) SampleConfig() string {
 	return sampleConfig
 }
 
-func (sfs *SysctlFS) Gather(acc telegraf.Accumulator) error {
+func (sfs *SysctlFS) Gather(acc Dana.Accumulator) error {
 	fields := make(map[string]interface{})
 
 	for _, n := range []string{"aio-nr", "aio-max-nr", "dquot-nr", "dquot-max", "super-nr", "super-max"} {
@@ -101,7 +101,7 @@ func (sfs *SysctlFS) gatherOne(name string, fields map[string]interface{}) error
 }
 
 func init() {
-	inputs.Add("linux_sysctl_fs", func() telegraf.Input {
+	inputs.Add("linux_sysctl_fs", func() Dana.Input {
 		return &SysctlFS{
 			path: path.Join(internal.GetProcPath(), "/sys/fs"),
 		}

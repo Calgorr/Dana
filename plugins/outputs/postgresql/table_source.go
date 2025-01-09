@@ -45,7 +45,7 @@ func (cl *columnList) Remove(name string) bool {
 // TableSource satisfies pgx.CopyFromSource
 type TableSource struct {
 	postgresql   *Postgresql
-	metrics      []telegraf.Metric
+	metrics      []Dana.Metric
 	cursor       int
 	cursorValues []interface{}
 	cursorError  error
@@ -57,14 +57,14 @@ type TableSource struct {
 	// tagSets is the list of tag IDs to tag values in use within the TableSource. The position of each value in the list
 	// corresponds to the key name in the tagColumns list.
 	// This data is used to build out the foreign tag table when enabled.
-	tagSets map[int64][]*telegraf.Tag
+	tagSets map[int64][]*Dana.Tag
 
 	fieldColumns *columnList
 
 	droppedTagColumns []string
 }
 
-func NewTableSources(p *Postgresql, metrics []telegraf.Metric) map[string]*TableSource {
+func NewTableSources(p *Postgresql, metrics []Dana.Metric) map[string]*TableSource {
 	tableSources := make(map[string]*TableSource)
 
 	for _, m := range metrics {
@@ -86,7 +86,7 @@ func NewTableSource(postgresql *Postgresql, name string) *TableSource {
 	tsrc := &TableSource{
 		postgresql:  postgresql,
 		cursor:      -1,
-		tagSets:     make(map[int64][]*telegraf.Tag),
+		tagSets:     make(map[int64][]*Dana.Tag),
 		tagHashSalt: int64(h.Sum64()),
 	}
 	if !postgresql.TagsAsJsonb {
@@ -98,7 +98,7 @@ func NewTableSource(postgresql *Postgresql, name string) *TableSource {
 	return tsrc
 }
 
-func (tsrc *TableSource) AddMetric(metric telegraf.Metric) {
+func (tsrc *TableSource) AddMetric(metric Dana.Metric) {
 	if tsrc.postgresql.TagsAsForeignKeys {
 		tagID := utils.GetTagID(metric)
 		if _, ok := tsrc.tagSets[tagID]; !ok {

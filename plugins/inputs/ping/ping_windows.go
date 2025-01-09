@@ -25,7 +25,7 @@ type statistics struct {
 	roundTripTimeStats
 }
 
-func (p *Ping) pingToURL(host string, acc telegraf.Accumulator) {
+func (p *Ping) pingToURL(host string, acc Dana.Accumulator) {
 	tags := map[string]string{"url": host}
 	fields := map[string]interface{}{"result_code": 0}
 

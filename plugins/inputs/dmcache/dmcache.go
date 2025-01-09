@@ -22,7 +22,7 @@ func (*DMCache) SampleConfig() string {
 }
 
 func init() {
-	inputs.Add("dmcache", func() telegraf.Input {
+	inputs.Add("dmcache", func() Dana.Input {
 		return &DMCache{
 			PerDevice:        true,
 			getCurrentStatus: dmSetupStatus,

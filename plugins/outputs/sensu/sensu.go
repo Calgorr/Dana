@@ -101,7 +101,7 @@ type Sensu struct {
 	EndpointURL string
 	OutEntity   *outputEntity
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	tls.ClientConfig
 	client *http.Client
@@ -153,7 +153,7 @@ func (s *Sensu) Close() error {
 	return nil
 }
 
-func (s *Sensu) Write(metrics []telegraf.Metric) error {
+func (s *Sensu) Write(metrics []Dana.Metric) error {
 	var points []*outputMetric
 	for _, metric := range metrics {
 		// Add tags from config to each metric point
@@ -307,7 +307,7 @@ func (s *Sensu) Init() error {
 }
 
 func init() {
-	outputs.Add("sensu", func() telegraf.Output {
+	outputs.Add("sensu", func() Dana.Output {
 		// Default configuration values
 
 		// make a string from the defaultURL const

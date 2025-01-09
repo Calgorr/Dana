@@ -12,11 +12,11 @@ type TSCache struct {
 	ttl   time.Duration
 	table map[string]time.Time
 	mux   sync.RWMutex
-	log   telegraf.Logger
+	log   Dana.Logger
 }
 
 // NewTSCache creates a new TSCache with a specified time-to-live after which timestamps are discarded.
-func NewTSCache(ttl time.Duration, log telegraf.Logger) *TSCache {
+func NewTSCache(ttl time.Duration, log Dana.Logger) *TSCache {
 	return &TSCache{
 		ttl:   ttl,
 		table: make(map[string]time.Time),

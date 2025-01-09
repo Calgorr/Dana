@@ -34,7 +34,7 @@ type wirelessInterface struct {
 }
 
 // Gather collects the wireless information.
-func (w *Wireless) Gather(acc telegraf.Accumulator) error {
+func (w *Wireless) Gather(acc Dana.Accumulator) error {
 	// load proc path, get default value if config value and env variable are empty
 	if w.HostProc == "" {
 		w.HostProc = internal.GetProcPath()
@@ -115,7 +115,7 @@ func (w *Wireless) loadWirelessTable(table []byte) ([]*wirelessInterface, error)
 }
 
 func init() {
-	inputs.Add("wireless", func() telegraf.Input {
+	inputs.Add("wireless", func() Dana.Input {
 		return &Wireless{}
 	})
 }

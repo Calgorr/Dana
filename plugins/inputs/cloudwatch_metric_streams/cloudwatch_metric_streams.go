@@ -47,12 +47,12 @@ type CloudWatchMetricStreams struct {
 	ageMax           selfstat.Stat
 	ageMin           selfstat.Stat
 
-	Log telegraf.Logger
+	Log Dana.Logger
 	common_tls.ServerConfig
 	wg       sync.WaitGroup
 	close    chan struct{}
 	listener net.Listener
-	acc      telegraf.Accumulator
+	acc      Dana.Accumulator
 }
 
 type request struct {
@@ -115,7 +115,7 @@ func (cms *CloudWatchMetricStreams) Init() error {
 }
 
 // Start starts the http listener service.
-func (cms *CloudWatchMetricStreams) Start(acc telegraf.Accumulator) error {
+func (cms *CloudWatchMetricStreams) Start(acc Dana.Accumulator) error {
 	cms.acc = acc
 	server := cms.createHTTPServer()
 
@@ -149,7 +149,7 @@ func (cms *CloudWatchMetricStreams) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*CloudWatchMetricStreams) Gather(telegraf.Accumulator) error {
+func (*CloudWatchMetricStreams) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -415,7 +415,7 @@ func (cms *CloudWatchMetricStreams) authenticateIfSet(handler http.HandlerFunc, 
 }
 
 func init() {
-	inputs.Add("cloudwatch_metric_streams", func() telegraf.Input {
+	inputs.Add("cloudwatch_metric_streams", func() Dana.Input {
 		return &CloudWatchMetricStreams{
 			ServiceAddress: ":443",
 			Paths:          []string{"/telegraf"},

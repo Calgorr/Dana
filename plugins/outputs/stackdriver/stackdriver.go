@@ -43,7 +43,7 @@ type Stackdriver struct {
 	MetricCounter        []string          `toml:"metric_counter"`
 	MetricGauge          []string          `toml:"metric_gauge"`
 	MetricHistogram      []string          `toml:"metric_histogram"`
-	Log                  telegraf.Logger   `toml:"-"`
+	Log                  Dana.Logger       `toml:"-"`
 
 	client          *monitoring.MetricClient
 	counterCache    *counterCache
@@ -151,8 +151,8 @@ func (s *Stackdriver) Connect() error {
 // Sorted returns a copy of the metrics in time ascending order.  A copy is
 // made to avoid modifying the input metric slice since doing so is not
 // allowed.
-func sorted(metrics []telegraf.Metric) []telegraf.Metric {
-	batch := make([]telegraf.Metric, 0, len(metrics))
+func sorted(metrics []Dana.Metric) []Dana.Metric {
+	batch := make([]Dana.Metric, 0, len(metrics))
 	for i := len(metrics) - 1; i >= 0; i-- {
 		batch = append(batch, metrics[i])
 	}
@@ -164,7 +164,7 @@ func sorted(metrics []telegraf.Metric) []telegraf.Metric {
 
 type timeSeriesBuckets map[uint64][]*monitoringpb.TimeSeries
 
-func (tsb timeSeriesBuckets) Add(m telegraf.Metric, f []*telegraf.Field, ts *monitoringpb.TimeSeries) {
+func (tsb timeSeriesBuckets) Add(m Dana.Metric, f []*Dana.Field, ts *monitoringpb.TimeSeries) {
 	h := fnv.New64a()
 	h.Write([]byte(m.Name()))
 	h.Write([]byte{'\n'})
@@ -186,15 +186,15 @@ func (tsb timeSeriesBuckets) Add(m telegraf.Metric, f []*telegraf.Field, ts *mon
 }
 
 // Split metrics up by timestamp and send to Google Cloud Stackdriver
-func (s *Stackdriver) Write(metrics []telegraf.Metric) error {
-	metricBatch := make(map[int64][]telegraf.Metric)
+func (s *Stackdriver) Write(metrics []Dana.Metric) error {
+	metricBatch := make(map[int64][]Dana.Metric)
 	timestamps := make([]int64, 0, len(metrics))
 	for _, metric := range sorted(metrics) {
 		timestamp := metric.Time().UnixNano()
 		if existingSlice, ok := metricBatch[timestamp]; ok {
 			metricBatch[timestamp] = append(existingSlice, metric)
 		} else {
-			metricBatch[timestamp] = []telegraf.Metric{metric}
+			metricBatch[timestamp] = []Dana.Metric{metric}
 			timestamps = append(timestamps, timestamp)
 		}
 	}
@@ -214,7 +214,7 @@ func (s *Stackdriver) Write(metrics []telegraf.Metric) error {
 }
 
 // Write the metrics to Google Cloud Stackdriver.
-func (s *Stackdriver) sendBatch(batch []telegraf.Metric) error {
+func (s *Stackdriver) sendBatch(batch []Dana.Metric) error {
 	ctx := context.Background()
 
 	buckets := make(timeSeriesBuckets)
@@ -222,13 +222,13 @@ func (s *Stackdriver) sendBatch(batch []telegraf.Metric) error {
 		// Set metric types based on user-provided filter
 		metricType := m.Type()
 		if s.filterCounter != nil && s.filterCounter.Match(m.Name()) {
-			metricType = telegraf.Counter
+			metricType = Dana.Counter
 		}
 		if s.filterGauge != nil && s.filterGauge.Match(m.Name()) {
-			metricType = telegraf.Gauge
+			metricType = Dana.Gauge
 		}
 		if s.filterHistogram != nil && s.filterHistogram.Match(m.Name()) {
-			metricType = telegraf.Histogram
+			metricType = Dana.Histogram
 		}
 
 		metricKind, err := getStackdriverMetricKind(metricType)
@@ -250,7 +250,7 @@ func (s *Stackdriver) sendBatch(batch []telegraf.Metric) error {
 			}
 		}
 
-		if m.Type() == telegraf.Histogram {
+		if m.Type() == Dana.Histogram {
 			value, err := s.buildHistogram(m)
 			if err != nil {
 				s.Log.Errorf("Unable to build distribution from metric %s: %s", m, err)
@@ -329,7 +329,7 @@ func (s *Stackdriver) sendBatch(batch []telegraf.Metric) error {
 				},
 			}
 
-			buckets.Add(m, []*telegraf.Field{f}, timeSeries)
+			buckets.Add(m, []*Dana.Field{f}, timeSeries)
 
 			// If the metric is untyped, it will end with unknown. We will also
 			// send another metric with the unknown:counter suffix. Google will
@@ -362,7 +362,7 @@ func (s *Stackdriver) sendBatch(batch []telegraf.Metric) error {
 						dataPoint,
 					},
 				}
-				buckets.Add(m, []*telegraf.Field{f}, counterTimeSeries)
+				buckets.Add(m, []*Dana.Field{f}, counterTimeSeries)
 			}
 		}
 	}
@@ -416,7 +416,7 @@ func (s *Stackdriver) sendBatch(batch []telegraf.Metric) error {
 	return nil
 }
 
-func (s *Stackdriver) generateMetricName(m telegraf.Metric, metricType telegraf.ValueType, key string) string {
+func (s *Stackdriver) generateMetricName(m Dana.Metric, metricType Dana.ValueType, key string) string {
 	if s.MetricNameFormat == "path" {
 		return path.Join(s.MetricTypePrefix, s.Namespace, m.Name(), key)
 	}
@@ -428,13 +428,13 @@ func (s *Stackdriver) generateMetricName(m telegraf.Metric, metricType telegraf.
 
 	var kind string
 	switch metricType {
-	case telegraf.Gauge:
+	case Dana.Gauge:
 		kind = "gauge"
-	case telegraf.Untyped:
+	case Dana.Untyped:
 		kind = "unknown"
-	case telegraf.Counter:
+	case Dana.Counter:
 		kind = "counter"
-	case telegraf.Histogram:
+	case Dana.Histogram:
 		kind = "histogram"
 	default:
 		kind = ""
@@ -443,7 +443,7 @@ func (s *Stackdriver) generateMetricName(m telegraf.Metric, metricType telegraf.
 	return path.Join(s.MetricTypePrefix, name, kind)
 }
 
-func (s *Stackdriver) generateHistogramName(m telegraf.Metric) string {
+func (s *Stackdriver) generateHistogramName(m Dana.Metric) string {
 	if s.MetricNameFormat == "path" {
 		return path.Join(s.MetricTypePrefix, s.Namespace, m.Name())
 	}
@@ -459,8 +459,8 @@ func (s *Stackdriver) generateHistogramName(m telegraf.Metric) string {
 func getStackdriverIntervalEndpoints(
 	kind metricpb.MetricDescriptor_MetricKind,
 	value *monitoringpb.TypedValue,
-	m telegraf.Metric,
-	f *telegraf.Field,
+	m Dana.Metric,
+	f *Dana.Field,
 	cc *counterCache,
 ) (*timestamppb.Timestamp, *timestamppb.Timestamp) {
 	endTime := timestamppb.New(m.Time())
@@ -492,17 +492,17 @@ func getStackdriverTimeInterval(m metricpb.MetricDescriptor_MetricKind, startTim
 	}
 }
 
-func getStackdriverMetricKind(vt telegraf.ValueType) (metricpb.MetricDescriptor_MetricKind, error) {
+func getStackdriverMetricKind(vt Dana.ValueType) (metricpb.MetricDescriptor_MetricKind, error) {
 	switch vt {
-	case telegraf.Untyped:
+	case Dana.Untyped:
 		return metricpb.MetricDescriptor_GAUGE, nil
-	case telegraf.Gauge:
+	case Dana.Gauge:
 		return metricpb.MetricDescriptor_GAUGE, nil
-	case telegraf.Counter:
+	case Dana.Counter:
 		return metricpb.MetricDescriptor_CUMULATIVE, nil
-	case telegraf.Histogram:
+	case Dana.Histogram:
 		return metricpb.MetricDescriptor_CUMULATIVE, nil
-	case telegraf.Summary:
+	case Dana.Summary:
 		fallthrough
 	default:
 		return metricpb.MetricDescriptor_METRIC_KIND_UNSPECIFIED, fmt.Errorf("unsupported telegraf value type: %T", vt)
@@ -563,7 +563,7 @@ func (s *Stackdriver) getStackdriverTypedValue(value interface{}) (*monitoringpb
 	}
 }
 
-func (s *Stackdriver) buildHistogram(m telegraf.Metric) (*monitoringpb.TypedValue, error) {
+func (s *Stackdriver) buildHistogram(m Dana.Metric) (*monitoringpb.TypedValue, error) {
 	sumInter, ok := m.GetField("sum")
 	if !ok {
 		return nil, errors.New("no sum field present")
@@ -646,7 +646,7 @@ func (s *Stackdriver) buildHistogram(m telegraf.Metric) (*monitoringpb.TypedValu
 	return v, nil
 }
 
-func (s *Stackdriver) getStackdriverLabels(tags []*telegraf.Tag) map[string]string {
+func (s *Stackdriver) getStackdriverLabels(tags []*Dana.Tag) map[string]string {
 	labels := make(map[string]string)
 	for _, t := range tags {
 		labels[t.Key] = t.Value
@@ -688,7 +688,7 @@ func newStackdriver() *Stackdriver {
 }
 
 func init() {
-	outputs.Add("stackdriver", func() telegraf.Output {
+	outputs.Add("stackdriver", func() Dana.Output {
 		return newStackdriver()
 	})
 }

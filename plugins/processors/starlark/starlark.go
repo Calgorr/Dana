@@ -19,7 +19,7 @@ var sampleConfig string
 type Starlark struct {
 	common.Common
 
-	results []telegraf.Metric
+	results []Dana.Metric
 }
 
 func (*Starlark) SampleConfig() string {
@@ -37,16 +37,16 @@ func (s *Starlark) Init() error {
 	}
 
 	// Preallocate a slice for return values.
-	s.results = make([]telegraf.Metric, 0, 10)
+	s.results = make([]Dana.Metric, 0, 10)
 
 	return nil
 }
 
-func (s *Starlark) Start(_ telegraf.Accumulator) error {
+func (s *Starlark) Start(_ Dana.Accumulator) error {
 	return nil
 }
 
-func (s *Starlark) Add(origMetric telegraf.Metric, acc telegraf.Accumulator) error {
+func (s *Starlark) Add(origMetric Dana.Metric, acc Dana.Accumulator) error {
 	parameters, found := s.GetParameters("apply")
 	if !found {
 		return errors.New("the parameters of the apply function could not be found")
@@ -122,7 +122,7 @@ func (s *Starlark) Add(origMetric telegraf.Metric, acc telegraf.Accumulator) err
 
 func (s *Starlark) Stop() {}
 
-func containsMetric(metrics []telegraf.Metric, target telegraf.Metric) bool {
+func containsMetric(metrics []Dana.Metric, target Dana.Metric) bool {
 	for _, m := range metrics {
 		if m == target {
 			return true
@@ -132,7 +132,7 @@ func containsMetric(metrics []telegraf.Metric, target telegraf.Metric) bool {
 }
 
 func init() {
-	processors.AddStreaming("starlark", func() telegraf.StreamingProcessor {
+	processors.AddStreaming("starlark", func() Dana.StreamingProcessor {
 		return &Starlark{
 			Common: common.Common{
 				StarlarkLoadFunc: common.LoadFunc,

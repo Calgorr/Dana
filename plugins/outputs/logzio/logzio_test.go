@@ -132,5 +132,5 @@ func TestWrite(t *testing.T) {
 		Log:   testutil.Logger{},
 	}
 	require.NoError(t, l.Connect())
-	require.NoError(t, l.Write([]telegraf.Metric{tm}))
+	require.NoError(t, l.Write([]Dana.Metric{tm}))
 }

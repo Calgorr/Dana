@@ -58,7 +58,7 @@ func deepcopy(_ *starlark.Thread, _ *starlark.Builtin, args starlark.Tuple, kwar
 	// In case we copy a tracking metric but do not want to track the result,
 	// we have to strip the tracking information. This can be done by unwrapping
 	// the metric.
-	if tm, ok := sm.metric.(telegraf.TrackingMetric); ok && !track {
+	if tm, ok := sm.metric.(Dana.TrackingMetric); ok && !track {
 		return &Metric{metric: tm.Unwrap().Copy()}, nil
 	}
 

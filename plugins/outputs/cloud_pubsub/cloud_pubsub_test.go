@@ -189,11 +189,11 @@ func TestPubSub_WriteGzipAndBase64Single(t *testing.T) {
 	}
 }
 
-func verifyRawMetricPublished(t *testing.T, m telegraf.Metric, published map[string]*pubsub.Message) *pubsub.Message {
+func verifyRawMetricPublished(t *testing.T, m Dana.Metric, published map[string]*pubsub.Message) *pubsub.Message {
 	return verifyMetricPublished(t, m, published, false, false)
 }
 
-func verifyMetricPublished(t *testing.T, m telegraf.Metric, published map[string]*pubsub.Message, base64Encoded, gzipEncoded bool) *pubsub.Message {
+func verifyMetricPublished(t *testing.T, m Dana.Metric, published map[string]*pubsub.Message, base64Encoded, gzipEncoded bool) *pubsub.Message {
 	p := influx.Parser{}
 	require.NoError(t, p.Init())
 

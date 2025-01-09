@@ -62,7 +62,7 @@ func TestOnMessage(t *testing.T) {
 	tests := []struct {
 		name            string
 		encoding        string
-		records         map[telegraf.TrackingID]string
+		records         map[Dana.TrackingID]string
 		args            *consumer.Record
 		expectedNumber  int
 		expectedContent string
@@ -70,7 +70,7 @@ func TestOnMessage(t *testing.T) {
 		{
 			name:     "test no compression",
 			encoding: "none",
-			records:  make(map[telegraf.TrackingID]string),
+			records:  make(map[Dana.TrackingID]string),
 			args: &consumer.Record{
 				Record: types.Record{
 					Data:           notZippedBytes,
@@ -82,7 +82,7 @@ func TestOnMessage(t *testing.T) {
 		},
 		{
 			name:    "test no compression via empty string for ContentEncoding",
-			records: make(map[telegraf.TrackingID]string),
+			records: make(map[Dana.TrackingID]string),
 			args: &consumer.Record{
 				Record: types.Record{
 					Data:           notZippedBytes,
@@ -95,7 +95,7 @@ func TestOnMessage(t *testing.T) {
 		{
 			name:     "test no compression via identity ContentEncoding",
 			encoding: "identity",
-			records:  make(map[telegraf.TrackingID]string),
+			records:  make(map[Dana.TrackingID]string),
 			args: &consumer.Record{
 				Record: types.Record{
 					Data:           notZippedBytes,
@@ -107,7 +107,7 @@ func TestOnMessage(t *testing.T) {
 		},
 		{
 			name:    "test no compression via no ContentEncoding",
-			records: make(map[telegraf.TrackingID]string),
+			records: make(map[Dana.TrackingID]string),
 			args: &consumer.Record{
 				Record: types.Record{
 					Data:           notZippedBytes,
@@ -120,7 +120,7 @@ func TestOnMessage(t *testing.T) {
 		{
 			name:     "test gzip compression",
 			encoding: "gzip",
-			records:  make(map[telegraf.TrackingID]string),
+			records:  make(map[Dana.TrackingID]string),
 			args: &consumer.Record{
 				Record: types.Record{
 					Data:           gzippedBytes,
@@ -133,7 +133,7 @@ func TestOnMessage(t *testing.T) {
 		{
 			name:     "test zlib compression",
 			encoding: "zlib",
-			records:  make(map[telegraf.TrackingID]string),
+			records:  make(map[Dana.TrackingID]string),
 			args: &consumer.Record{
 				Record: types.Record{
 					Data:           zlibBytpes,

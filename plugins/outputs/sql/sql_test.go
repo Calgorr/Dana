@@ -51,11 +51,11 @@ func pwgen(n int) string {
 
 func stableMetric(
 	name string,
-	tags []telegraf.Tag,
-	fields []telegraf.Field,
+	tags []Dana.Tag,
+	fields []Dana.Field,
 	tm time.Time,
-	tp ...telegraf.ValueType,
-) telegraf.Metric {
+	tp ...Dana.ValueType,
+) Dana.Metric {
 	// We want to compare the output of this plugin with expected
 	// output. Maps don't preserve order so comparison fails. There's
 	// no metric constructor that takes a slice of tag and slice of
@@ -78,10 +78,10 @@ var (
 	// or 2021-05-17T16:04:45-06:00
 	ts = time.Unix(1621289085, 0).UTC()
 
-	testMetrics = []telegraf.Metric{
+	testMetrics = []Dana.Metric{
 		stableMetric(
 			"metric_one",
-			[]telegraf.Tag{
+			[]Dana.Tag{
 				{
 					Key:   "tag_one",
 					Value: "tag1",
@@ -91,7 +91,7 @@ var (
 					Value: "tag2",
 				},
 			},
-			[]telegraf.Field{
+			[]Dana.Field{
 				{
 					Key:   "int64_one",
 					Value: int64(1234),
@@ -121,13 +121,13 @@ var (
 		),
 		stableMetric(
 			"metric_two",
-			[]telegraf.Tag{
+			[]Dana.Tag{
 				{
 					Key:   "tag_three",
 					Value: "tag3",
 				},
 			},
-			[]telegraf.Field{
+			[]Dana.Field{
 				{
 					Key:   "string_one",
 					Value: "string1",
@@ -137,13 +137,13 @@ var (
 		),
 		stableMetric( // test spaces in metric, tag, and field names
 			"metric three",
-			[]telegraf.Tag{
+			[]Dana.Tag{
 				{
 					Key:   "tag four",
 					Value: "tag4",
 				},
 			},
-			[]telegraf.Field{
+			[]Dana.Field{
 				{
 					Key:   "string two",
 					Value: "string2",

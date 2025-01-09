@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type Kernel struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*Kernel) SampleConfig() string { return sampleConfig }
@@ -24,10 +24,10 @@ func (k *Kernel) Init() error {
 	return nil
 }
 
-func (*Kernel) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Kernel) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("kernel", func() telegraf.Input {
+	inputs.Add("kernel", func() Dana.Input {
 		return &Kernel{}
 	})
 }

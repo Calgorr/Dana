@@ -479,7 +479,7 @@ func TestDLB_processCommandResult(t *testing.T) {
 		err := dlb.gatherMetricsFromSocket(mockAcc)
 		require.NoError(t, err)
 
-		expected := []telegraf.Metric{
+		expected := []Dana.Metric{
 			testutil.MustMetric(
 				"intel_dlb",
 				map[string]string{
@@ -1035,7 +1035,7 @@ TOTAL_ERR_NONFATAL 9`
 )
 
 var (
-	expectedRasMetrics = []telegraf.Metric{
+	expectedRasMetrics = []Dana.Metric{
 		testutil.MustMetric(
 			"intel_dlb_ras",
 			map[string]string{
@@ -1115,7 +1115,7 @@ var (
 		),
 	}
 
-	expectedTelegrafMetrics = []telegraf.Metric{
+	expectedTelegrafMetrics = []Dana.Metric{
 		testutil.MustMetric(
 			"intel_dlb",
 			map[string]string{

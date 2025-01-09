@@ -12,7 +12,7 @@ import (
 )
 
 // Gather PSI metrics
-func (k *Kernel) gatherPressure(acc telegraf.Accumulator) error {
+func (k *Kernel) gatherPressure(acc Dana.Accumulator) error {
 	for _, resource := range []string{"cpu", "memory", "io"} {
 		now := time.Now()
 		psiStats, err := k.procfs.PSIStatsForResource(resource)

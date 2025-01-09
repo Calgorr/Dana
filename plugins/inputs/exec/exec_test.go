@@ -345,7 +345,7 @@ func TestCSVBehavior(t *testing.T) {
 	plugin.SetParser(parser)
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"exec",
 			map[string]string{},
@@ -406,7 +406,7 @@ func TestCSVBehavior(t *testing.T) {
 
 func TestCases(t *testing.T) {
 	// Register the plugin
-	inputs.Add("exec", func() telegraf.Input {
+	inputs.Add("exec", func() Dana.Input {
 		return newExec()
 	})
 
@@ -422,7 +422,7 @@ func TestCases(t *testing.T) {
 	plugin := cfg.Inputs[0]
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"exec",
 			map[string]string{},

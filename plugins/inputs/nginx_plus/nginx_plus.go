@@ -36,7 +36,7 @@ func (*NginxPlus) SampleConfig() string {
 	return sampleConfig
 }
 
-func (n *NginxPlus) Gather(acc telegraf.Accumulator) error {
+func (n *NginxPlus) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	// Create an HTTP client that is re-used for each
@@ -88,7 +88,7 @@ func (n *NginxPlus) createHTTPClient() (*http.Client, error) {
 	return client, nil
 }
 
-func (n *NginxPlus) gatherURL(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxPlus) gatherURL(addr *url.URL, acc Dana.Accumulator) error {
 	resp, err := n.client.Get(addr.String())
 
 	if err != nil {
@@ -270,7 +270,7 @@ type status struct {
 	} `json:"stream"`
 }
 
-func gatherStatusURL(r *bufio.Reader, tags map[string]string, acc telegraf.Accumulator) error {
+func gatherStatusURL(r *bufio.Reader, tags map[string]string, acc Dana.Accumulator) error {
 	dec := json.NewDecoder(r)
 	status := &status{}
 	if err := dec.Decode(status); err != nil {
@@ -280,7 +280,7 @@ func gatherStatusURL(r *bufio.Reader, tags map[string]string, acc telegraf.Accum
 	return nil
 }
 
-func (s *status) gather(tags map[string]string, acc telegraf.Accumulator) {
+func (s *status) gather(tags map[string]string, acc Dana.Accumulator) {
 	s.gatherProcessesMetrics(tags, acc)
 	s.gatherConnectionsMetrics(tags, acc)
 	s.gatherSslMetrics(tags, acc)
@@ -291,7 +291,7 @@ func (s *status) gather(tags map[string]string, acc telegraf.Accumulator) {
 	s.gatherStreamMetrics(tags, acc)
 }
 
-func (s *status) gatherProcessesMetrics(tags map[string]string, acc telegraf.Accumulator) {
+func (s *status) gatherProcessesMetrics(tags map[string]string, acc Dana.Accumulator) {
 	var respawned int
 
 	if s.Processes.Respawned != nil {
@@ -307,7 +307,7 @@ func (s *status) gatherProcessesMetrics(tags map[string]string, acc telegraf.Acc
 	)
 }
 
-func (s *status) gatherConnectionsMetrics(tags map[string]string, acc telegraf.Accumulator) {
+func (s *status) gatherConnectionsMetrics(tags map[string]string, acc Dana.Accumulator) {
 	acc.AddFields(
 		"nginx_plus_connections",
 		map[string]interface{}{
@@ -320,7 +320,7 @@ func (s *status) gatherConnectionsMetrics(tags map[string]string, acc telegraf.A
 	)
 }
 
-func (s *status) gatherSslMetrics(tags map[string]string, acc telegraf.Accumulator) {
+func (s *status) gatherSslMetrics(tags map[string]string, acc Dana.Accumulator) {
 	acc.AddFields(
 		"nginx_plus_ssl",
 		map[string]interface{}{
@@ -332,7 +332,7 @@ func (s *status) gatherSslMetrics(tags map[string]string, acc telegraf.Accumulat
 	)
 }
 
-func (s *status) gatherRequestMetrics(tags map[string]string, acc telegraf.Accumulator) {
+func (s *status) gatherRequestMetrics(tags map[string]string, acc Dana.Accumulator) {
 	acc.AddFields(
 		"nginx_plus_requests",
 		map[string]interface{}{
@@ -343,7 +343,7 @@ func (s *status) gatherRequestMetrics(tags map[string]string, acc telegraf.Accum
 	)
 }
 
-func (s *status) gatherZoneMetrics(tags map[string]string, acc telegraf.Accumulator) {
+func (s *status) gatherZoneMetrics(tags map[string]string, acc Dana.Accumulator) {
 	for zoneName, zone := range s.ServerZones {
 		zoneTags := make(map[string]string, len(tags)+1)
 		for k, v := range tags {
@@ -375,7 +375,7 @@ func (s *status) gatherZoneMetrics(tags map[string]string, acc telegraf.Accumula
 	}
 }
 
-func (s *status) gatherUpstreamMetrics(tags map[string]string, acc telegraf.Accumulator) {
+func (s *status) gatherUpstreamMetrics(tags map[string]string, acc Dana.Accumulator) {
 	for upstreamName, upstream := range s.Upstreams {
 		upstreamTags := make(map[string]string, len(tags)+1)
 		for k, v := range tags {
@@ -451,7 +451,7 @@ func (s *status) gatherUpstreamMetrics(tags map[string]string, acc telegraf.Accu
 	}
 }
 
-func (s *status) gatherCacheMetrics(tags map[string]string, acc telegraf.Accumulator) {
+func (s *status) gatherCacheMetrics(tags map[string]string, acc Dana.Accumulator) {
 	for cacheName, cache := range s.Caches {
 		cacheTags := make(map[string]string, len(tags)+1)
 		for k, v := range tags {
@@ -490,7 +490,7 @@ func (s *status) gatherCacheMetrics(tags map[string]string, acc telegraf.Accumul
 	}
 }
 
-func (s *status) gatherStreamMetrics(tags map[string]string, acc telegraf.Accumulator) {
+func (s *status) gatherStreamMetrics(tags map[string]string, acc Dana.Accumulator) {
 	for zoneName, zone := range s.Stream.ServerZones {
 		zoneTags := make(map[string]string, len(tags)+1)
 		for k, v := range tags {
@@ -563,7 +563,7 @@ func (s *status) gatherStreamMetrics(tags map[string]string, acc telegraf.Accumu
 }
 
 func init() {
-	inputs.Add("nginx_plus", func() telegraf.Input {
+	inputs.Add("nginx_plus", func() Dana.Input {
 		return &NginxPlus{}
 	})
 }

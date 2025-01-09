@@ -29,7 +29,7 @@ type subscribeClient struct {
 	sub                *opcua.Subscription
 	monitoredItemsReqs []*ua.MonitoredItemCreateRequest
 	dataNotifications  chan *opcua.PublishNotificationData
-	metrics            chan telegraf.Metric
+	metrics            chan Dana.Metric
 
 	ctx    context.Context
 	cancel context.CancelFunc
@@ -81,7 +81,7 @@ func assignConfigValuesToRequest(req *ua.MonitoredItemCreateRequest, monParams *
 	return nil
 }
 
-func (sc *subscribeClientConfig) createSubscribeClient(log telegraf.Logger) (*subscribeClient, error) {
+func (sc *subscribeClientConfig) createSubscribeClient(log Dana.Logger) (*subscribeClient, error) {
 	client, err := sc.InputClientConfig.CreateInputClient(log)
 	if err != nil {
 		return nil, err
@@ -100,7 +100,7 @@ func (sc *subscribeClientConfig) createSubscribeClient(log telegraf.Logger) (*su
 		// The channel size should be increased if reports come in on Telegraf blocking when many changes come in at
 		// the same time. It could be made dependent on the number of nodes subscribed to and the subscription interval.
 		dataNotifications: make(chan *opcua.PublishNotificationData, 100),
-		metrics:           make(chan telegraf.Metric, 100),
+		metrics:           make(chan Dana.Metric, 100),
 		ctx:               processingCtx,
 		cancel:            processingCancel,
 	}
@@ -152,7 +152,7 @@ func (o *subscribeClient) stop(ctx context.Context) <-chan struct{} {
 	return closing
 }
 
-func (o *subscribeClient) startStreamValues(ctx context.Context) (<-chan telegraf.Metric, error) {
+func (o *subscribeClient) startStreamValues(ctx context.Context) (<-chan Dana.Metric, error) {
 	err := o.connect()
 	if err != nil {
 		switch o.Config.ConnectFailBehavior {

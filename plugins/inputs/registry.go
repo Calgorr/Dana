@@ -2,7 +2,7 @@ package inputs
 
 import "Dana"
 
-type Creator func() telegraf.Input
+type Creator func() Dana.Input
 
 var Inputs = make(map[string]Creator)
 

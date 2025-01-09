@@ -50,7 +50,7 @@ type OpenConfigTelemetry struct {
 	KeepAlivePeriod config.Duration `toml:"keep_alive_period"`
 	common_tls.ClientConfig
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	sensorsConfig   []sensorConfig
 	grpcClientConns []grpcConnection
@@ -88,7 +88,7 @@ func (m *OpenConfigTelemetry) Init() error {
 	return nil
 }
 
-func (m *OpenConfigTelemetry) Start(acc telegraf.Accumulator) error {
+func (m *OpenConfigTelemetry) Start(acc Dana.Accumulator) error {
 	// Build sensors config
 	if m.splitSensorConfig() == 0 {
 		return errors.New("no valid sensor configuration available")
@@ -172,7 +172,7 @@ func (m *OpenConfigTelemetry) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*OpenConfigTelemetry) Gather(telegraf.Accumulator) error {
+func (*OpenConfigTelemetry) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -338,7 +338,7 @@ func (m *OpenConfigTelemetry) collectData(
 	ctx context.Context,
 	grpcServer string,
 	grpcClientConn *grpc.ClientConn,
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 ) {
 	c := telemetry.NewOpenConfigTelemetryClient(grpcClientConn)
 	for _, sensor := range m.sensorsConfig {
@@ -450,7 +450,7 @@ func (m *OpenConfigTelemetry) authenticate(ctx context.Context, server string, g
 }
 
 func init() {
-	inputs.Add("jti_openconfig_telemetry", func() telegraf.Input {
+	inputs.Add("jti_openconfig_telemetry", func() Dana.Input {
 		return &OpenConfigTelemetry{
 			RetryDelay:      config.Duration(time.Second),
 			KeepAlivePeriod: config.Duration(10 * time.Second),

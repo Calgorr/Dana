@@ -25,7 +25,7 @@ func TestHealth(t *testing.T) {
 	tests := []struct {
 		name         string
 		options      Options
-		metrics      []telegraf.Metric
+		metrics      []Dana.Metric
 		expectedCode int
 	}{
 		{
@@ -42,7 +42,7 @@ func TestHealth(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -63,7 +63,7 @@ func TestHealth(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -89,7 +89,7 @@ func TestHealth(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},

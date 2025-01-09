@@ -27,7 +27,7 @@ type Consul struct {
 	Datacenter    string `toml:"datacenter"`
 	TagDelimiter  string `toml:"tag_delimiter"`
 	MetricVersion int    `toml:"metric_version"`
-	Log           telegraf.Logger
+	Log           Dana.Logger
 	tls.ClientConfig
 
 	// client used to connect to Consul agent
@@ -41,7 +41,7 @@ func (*Consul) SampleConfig() string {
 func (c *Consul) Init() error {
 	if c.MetricVersion != 2 {
 		telegraf_config.PrintOptionValueDeprecationNotice("inputs.consul", "metric_version", 1,
-			telegraf.DeprecationInfo{
+			Dana.DeprecationInfo{
 				Since:     "1.16.0",
 				RemovalIn: "1.40.0",
 				Notice:    `please update to 'metric_version = 2'`,
@@ -91,7 +91,7 @@ func (c *Consul) Init() error {
 	return err
 }
 
-func (c *Consul) Gather(acc telegraf.Accumulator) error {
+func (c *Consul) Gather(acc Dana.Accumulator) error {
 	checks, _, err := c.client.Health().State("any", nil)
 
 	if err != nil {
@@ -103,7 +103,7 @@ func (c *Consul) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (c *Consul) gatherHealthCheck(acc telegraf.Accumulator, checks []*api.HealthCheck) {
+func (c *Consul) gatherHealthCheck(acc Dana.Accumulator, checks []*api.HealthCheck) {
 	for _, check := range checks {
 		record := make(map[string]interface{})
 		tags := make(map[string]string)
@@ -145,7 +145,7 @@ func (c *Consul) gatherHealthCheck(acc telegraf.Accumulator, checks []*api.Healt
 }
 
 func init() {
-	inputs.Add("consul", func() telegraf.Input {
+	inputs.Add("consul", func() Dana.Input {
 		return &Consul{}
 	})
 }

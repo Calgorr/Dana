@@ -337,7 +337,7 @@ func TestWrite(t *testing.T) {
 	tests := []struct {
 		name                 string
 		logStreamName        string
-		metrics              []telegraf.Metric
+		metrics              []Dana.Metric
 		expectedMetricsOrder map[int]int // map[<index of pushed log event>]<index of corresponding metric>
 		expectedMetricsCount int
 	}{
@@ -346,7 +346,7 @@ func TestWrite(t *testing.T) {
 			logStreamName:        "deadbeef",
 			expectedMetricsOrder: map[int]int{0: 0, 1: 1},
 			expectedMetricsCount: 2,
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
@@ -384,7 +384,7 @@ func TestWrite(t *testing.T) {
 			logStreamName:        "deadbeef",
 			expectedMetricsOrder: map[int]int{0: 1, 1: 0},
 			expectedMetricsCount: 2,
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
@@ -421,7 +421,7 @@ func TestWrite(t *testing.T) {
 			name:                 "Too old log entry & log entry in the future",
 			logStreamName:        "deadbeef",
 			expectedMetricsCount: 0,
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
@@ -458,7 +458,7 @@ func TestWrite(t *testing.T) {
 			name:                 "Oversized log entry",
 			logStreamName:        "deadbeef",
 			expectedMetricsCount: 0,
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
@@ -482,7 +482,7 @@ func TestWrite(t *testing.T) {
 			logStreamName:        "deadbeef",
 			expectedMetricsOrder: map[int]int{0: 0, 1: 1, 2: 2, 3: 3, 4: 4},
 			expectedMetricsCount: 5,
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{

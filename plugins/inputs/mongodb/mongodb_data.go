@@ -425,7 +425,7 @@ func (d *mongodbData) add(key string, val interface{}) {
 	d.Fields[key] = val
 }
 
-func (d *mongodbData) flush(acc telegraf.Accumulator) {
+func (d *mongodbData) flush(acc Dana.Accumulator) {
 	acc.AddFields(
 		"mongodb",
 		d.Fields,

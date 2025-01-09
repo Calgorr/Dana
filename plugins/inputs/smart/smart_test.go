@@ -482,7 +482,7 @@ func Test_integerOverflow(t *testing.T) {
 }
 
 var (
-	testOverflowAttributes = []telegraf.Metric{
+	testOverflowAttributes = []Dana.Metric{
 		testutil.MustMetric(
 			"smart_attribute",
 			map[string]string{
@@ -517,7 +517,7 @@ var (
 		),
 	}
 
-	testHtsasAtributtes = []telegraf.Metric{
+	testHtsasAtributtes = []Dana.Metric{
 		testutil.MustMetric(
 			"smart_attribute",
 			map[string]string{
@@ -826,7 +826,7 @@ var (
 	mockModel  = "INTEL SSDPEDABCDEFG"
 	mockSerial = "CVFT5123456789ABCD"
 
-	testSmartctlDeviceTypeTag = []telegraf.Metric{
+	testSmartctlDeviceTypeTag = []Dana.Metric{
 		testutil.MustMetric(
 			"smart_device",
 			map[string]string{
@@ -865,7 +865,7 @@ var (
 		),
 	}
 
-	testSmartctlNVMeAttributes = []telegraf.Metric{
+	testSmartctlNVMeAttributes = []Dana.Metric{
 		testutil.MustMetric("smart_device",
 			map[string]string{
 				"device":    "nvme0",
@@ -1231,7 +1231,7 @@ var (
 		),
 	}
 
-	testSmartctlNVMeWindowsAttributes = []telegraf.Metric{
+	testSmartctlNVMeWindowsAttributes = []Dana.Metric{
 		testutil.MustMetric("smart_device",
 			map[string]string{
 				"device":    "nvme0",
@@ -1524,7 +1524,7 @@ var (
 		},
 	}
 
-	testIntelNVMeAttributes = []telegraf.Metric{
+	testIntelNVMeAttributes = []Dana.Metric{
 		testutil.MustMetric("smart_attribute",
 			map[string]string{
 				"device":    "nvme0",
@@ -1719,7 +1719,7 @@ var (
 		),
 	}
 
-	testIntelNVMeNewFormatAttributes = []telegraf.Metric{
+	testIntelNVMeNewFormatAttributes = []Dana.Metric{
 		testutil.MustMetric("smart_attribute",
 			map[string]string{
 				"device":    "nvme0",

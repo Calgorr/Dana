@@ -44,7 +44,7 @@ type discoveryTool struct {
 	interval time.Duration               // Discovery interval
 	done     chan bool                   // Done channel to stop primary discovery goroutine
 	dataChan chan map[string]interface{} // Discovery data
-	lg       telegraf.Logger             // Telegraf logger (should be provided)
+	lg       Dana.Logger                 // Telegraf logger (should be provided)
 }
 
 type parsedDResp struct {
@@ -91,7 +91,7 @@ func getRPCReqFromDiscoveryRequest(req discoveryRequest) (*requests.RpcRequest, 
 func newDiscoveryTool(
 	regions []string,
 	project string,
-	lg telegraf.Logger,
+	lg Dana.Logger,
 	credential auth.Credential,
 	rateLimit int,
 	discoveryInterval time.Duration,

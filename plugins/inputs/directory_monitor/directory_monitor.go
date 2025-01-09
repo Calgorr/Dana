@@ -51,21 +51,21 @@ type DirectoryMonitor struct {
 	FilesToIgnore              []string        `toml:"files_to_ignore"`
 	MaxBufferedMetrics         int             `toml:"max_buffered_metrics"`
 	DirectoryDurationThreshold config.Duration `toml:"directory_duration_threshold"`
-	Log                        telegraf.Logger `toml:"-"`
+	Log                        Dana.Logger     `toml:"-"`
 	FileQueueSize              int             `toml:"file_queue_size"`
 	ParseMethod                string          `toml:"parse_method"`
 
 	filesInUse          sync.Map
 	cancel              context.CancelFunc
 	context             context.Context
-	parserFunc          telegraf.ParserFunc
+	parserFunc          Dana.ParserFunc
 	filesProcessed      selfstat.Stat
 	filesProcessedDir   selfstat.Stat
 	filesDropped        selfstat.Stat
 	filesDroppedDir     selfstat.Stat
 	filesQueuedDir      selfstat.Stat
 	waitGroup           *sync.WaitGroup
-	acc                 telegraf.TrackingAccumulator
+	acc                 Dana.TrackingAccumulator
 	sem                 *semaphore.Weighted
 	fileRegexesToMatch  []*regexp.Regexp
 	fileRegexesToIgnore []*regexp.Regexp
@@ -76,7 +76,7 @@ func (*DirectoryMonitor) SampleConfig() string {
 	return sampleConfig
 }
 
-func (monitor *DirectoryMonitor) SetParserFunc(fn telegraf.ParserFunc) {
+func (monitor *DirectoryMonitor) SetParserFunc(fn Dana.ParserFunc) {
 	monitor.parserFunc = fn
 }
 
@@ -145,7 +145,7 @@ func (monitor *DirectoryMonitor) Init() error {
 	return nil
 }
 
-func (monitor *DirectoryMonitor) Start(acc telegraf.Accumulator) error {
+func (monitor *DirectoryMonitor) Start(acc Dana.Accumulator) error {
 	// Use tracking to determine when more metrics can be added without overflowing the outputs.
 	monitor.acc = acc.WithTracking(monitor.MaxBufferedMetrics)
 	go func() {
@@ -164,7 +164,7 @@ func (monitor *DirectoryMonitor) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (monitor *DirectoryMonitor) Gather(_ telegraf.Accumulator) error {
+func (monitor *DirectoryMonitor) Gather(_ Dana.Accumulator) error {
 	processFile := func(path string) error {
 		// We've been cancelled via Stop().
 		if monitor.context.Err() != nil {
@@ -323,7 +323,7 @@ func (monitor *DirectoryMonitor) ingestFile(filePath string) error {
 	return monitor.parseFile(parser, reader, file.Name())
 }
 
-func (monitor *DirectoryMonitor) parseFile(parser telegraf.Parser, reader io.Reader, fileName string) error {
+func (monitor *DirectoryMonitor) parseFile(parser Dana.Parser, reader io.Reader, fileName string) error {
 	var splitter bufio.SplitFunc
 
 	// Decide on how to split the file
@@ -353,7 +353,7 @@ func (monitor *DirectoryMonitor) parseFile(parser telegraf.Parser, reader io.Rea
 	return scanner.Err()
 }
 
-func (monitor *DirectoryMonitor) parseAtOnce(parser telegraf.Parser, reader io.Reader, fileName string) error {
+func (monitor *DirectoryMonitor) parseAtOnce(parser Dana.Parser, reader io.Reader, fileName string) error {
 	bytes, err := io.ReadAll(reader)
 	if err != nil {
 		return err
@@ -367,7 +367,7 @@ func (monitor *DirectoryMonitor) parseAtOnce(parser telegraf.Parser, reader io.R
 	return monitor.sendMetrics(metrics)
 }
 
-func (monitor *DirectoryMonitor) parseMetrics(parser telegraf.Parser, line []byte, fileName string) (metrics []telegraf.Metric, err error) {
+func (monitor *DirectoryMonitor) parseMetrics(parser Dana.Parser, line []byte, fileName string) (metrics []Dana.Metric, err error) {
 	metrics, err = parser.Parse(line)
 	if err != nil {
 		if errors.Is(err, parsers.ErrEOF) {
@@ -391,14 +391,14 @@ func (monitor *DirectoryMonitor) parseMetrics(parser telegraf.Parser, line []byt
 	return metrics, err
 }
 
-func (monitor *DirectoryMonitor) sendMetrics(metrics []telegraf.Metric) error {
+func (monitor *DirectoryMonitor) sendMetrics(metrics []Dana.Metric) error {
 	// Report the metrics for the file.
 	for _, m := range metrics {
 		// Block until metric can be written.
 		if err := monitor.sem.Acquire(monitor.context, 1); err != nil {
 			return err
 		}
-		monitor.acc.AddTrackingMetricGroup([]telegraf.Metric{m})
+		monitor.acc.AddTrackingMetricGroup([]Dana.Metric{m})
 	}
 	return nil
 }
@@ -468,7 +468,7 @@ func (monitor *DirectoryMonitor) isIgnoredFile(fileName string) bool {
 }
 
 func init() {
-	inputs.Add("directory_monitor", func() telegraf.Input {
+	inputs.Add("directory_monitor", func() Dana.Input {
 		return &DirectoryMonitor{
 			MaxBufferedMetrics:         defaultMaxBufferedMetrics,
 			DirectoryDurationThreshold: defaultDirectoryDurationThreshold,

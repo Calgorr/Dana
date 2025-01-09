@@ -59,20 +59,20 @@ var (
 
 type OpenStack struct {
 	// Configuration variables
-	IdentityEndpoint string          `toml:"authentication_endpoint"`
-	Domain           string          `toml:"domain"`
-	Project          string          `toml:"project"`
-	Username         string          `toml:"username"`
-	Password         string          `toml:"password"`
-	EnabledServices  []string        `toml:"enabled_services"`
-	ServerDiagnotics bool            `toml:"server_diagnotics" deprecated:"1.32.0;1.40.0;add 'serverdiagnostics' to 'enabled_services' instead"`
-	OutputSecrets    bool            `toml:"output_secrets"`
-	TagPrefix        string          `toml:"tag_prefix"`
-	TagValue         string          `toml:"tag_value"`
-	HumanReadableTS  bool            `toml:"human_readable_timestamps"`
-	MeasureRequest   bool            `toml:"measure_openstack_requests"`
-	AllTenants       bool            `toml:"query_all_tenants"`
-	Log              telegraf.Logger `toml:"-"`
+	IdentityEndpoint string      `toml:"authentication_endpoint"`
+	Domain           string      `toml:"domain"`
+	Project          string      `toml:"project"`
+	Username         string      `toml:"username"`
+	Password         string      `toml:"password"`
+	EnabledServices  []string    `toml:"enabled_services"`
+	ServerDiagnotics bool        `toml:"server_diagnotics" deprecated:"1.32.0;1.40.0;add 'serverdiagnostics' to 'enabled_services' instead"`
+	OutputSecrets    bool        `toml:"output_secrets"`
+	TagPrefix        string      `toml:"tag_prefix"`
+	TagValue         string      `toml:"tag_value"`
+	HumanReadableTS  bool        `toml:"human_readable_timestamps"`
+	MeasureRequest   bool        `toml:"measure_openstack_requests"`
+	AllTenants       bool        `toml:"query_all_tenants"`
+	Log              Dana.Logger `toml:"-"`
 	common_http.HTTPClientConfig
 
 	client *http.Client
@@ -130,7 +130,7 @@ func (o *OpenStack) Init() error {
 	return nil
 }
 
-func (o *OpenStack) Start(telegraf.Accumulator) error {
+func (o *OpenStack) Start(Dana.Accumulator) error {
 	// Authenticate against Keystone and get a token provider
 	provider, err := openstack.NewClient(o.IdentityEndpoint)
 	if err != nil {
@@ -256,7 +256,7 @@ func (o *OpenStack) Start(telegraf.Accumulator) error {
 	return nil
 }
 
-func (o *OpenStack) Gather(acc telegraf.Accumulator) error {
+func (o *OpenStack) Gather(acc Dana.Accumulator) error {
 	ctx := context.Background()
 	callDuration := make(map[string]interface{}, len(o.services))
 
@@ -383,7 +383,7 @@ func (o *OpenStack) availableServices(ctx context.Context) error {
 }
 
 // gatherStacks collects and accumulates stacks data from the OpenStack API.
-func (o *OpenStack) gatherStacks(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherStacks(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := stacks.List(o.stack, nil).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list stacks: %w", err)
@@ -414,7 +414,7 @@ func (o *OpenStack) gatherStacks(ctx context.Context, acc telegraf.Accumulator) 
 }
 
 // gatherNovaServices collects and accumulates nova_services data from the OpenStack API.
-func (o *OpenStack) gatherNovaServices(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherNovaServices(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := nova_services.List(o.compute, nil).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list nova_services: %w", err)
@@ -444,7 +444,7 @@ func (o *OpenStack) gatherNovaServices(ctx context.Context, acc telegraf.Accumul
 }
 
 // gatherCinderServices collects and accumulates cinder_services data from the OpenStack API.
-func (o *OpenStack) gatherCinderServices(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherCinderServices(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := cinder_services.List(o.volume, nil).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list cinder_services: %w", err)
@@ -476,7 +476,7 @@ func (o *OpenStack) gatherCinderServices(ctx context.Context, acc telegraf.Accum
 }
 
 // gatherSubnets collects and accumulates subnets data from the OpenStack API.
-func (o *OpenStack) gatherSubnets(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherSubnets(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := subnets.List(o.network, nil).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list subnets: %w", err)
@@ -518,7 +518,7 @@ func (o *OpenStack) gatherSubnets(ctx context.Context, acc telegraf.Accumulator)
 }
 
 // gatherPorts collects and accumulates ports data from the OpenStack API.
-func (o *OpenStack) gatherPorts(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherPorts(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := ports.List(o.network, nil).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list ports: %w", err)
@@ -563,7 +563,7 @@ func (o *OpenStack) gatherPorts(ctx context.Context, acc telegraf.Accumulator) e
 }
 
 // gatherNetworks collects and accumulates networks data from the OpenStack API.
-func (o *OpenStack) gatherNetworks(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherNetworks(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := networks.List(o.network, nil).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list networks: %w", err)
@@ -605,7 +605,7 @@ func (o *OpenStack) gatherNetworks(ctx context.Context, acc telegraf.Accumulator
 }
 
 // gatherAgents collects and accumulates agents data from the OpenStack API.
-func (o *OpenStack) gatherAgents(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherAgents(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := agents.List(o.network, nil).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list neutron agents: %w", err)
@@ -638,7 +638,7 @@ func (o *OpenStack) gatherAgents(ctx context.Context, acc telegraf.Accumulator) 
 }
 
 // gatherAggregates collects and accumulates aggregates data from the OpenStack API.
-func (o *OpenStack) gatherAggregates(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherAggregates(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := aggregates.List(o.compute).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list aggregates: %w", err)
@@ -673,7 +673,7 @@ func (o *OpenStack) gatherAggregates(ctx context.Context, acc telegraf.Accumulat
 }
 
 // gatherProjects collects and accumulates projects data from the OpenStack API.
-func (o *OpenStack) gatherProjects(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherProjects(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := projects.List(o.identity, nil).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list projects: %w", err)
@@ -705,7 +705,7 @@ func (o *OpenStack) gatherProjects(ctx context.Context, acc telegraf.Accumulator
 }
 
 // gatherHypervisors collects and accumulates hypervisors data from the OpenStack API.
-func (o *OpenStack) gatherHypervisors(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherHypervisors(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := hypervisors.List(o.compute, nil).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list hypervisors: %w", err)
@@ -757,7 +757,7 @@ func (o *OpenStack) gatherHypervisors(ctx context.Context, acc telegraf.Accumula
 }
 
 // gatherFlavors collects and accumulates flavors data from the OpenStack API.
-func (o *OpenStack) gatherFlavors(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherFlavors(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := flavors.ListDetail(o.compute, nil).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list flavors: %w", err)
@@ -787,7 +787,7 @@ func (o *OpenStack) gatherFlavors(ctx context.Context, acc telegraf.Accumulator)
 }
 
 // gatherVolumes collects and accumulates volumes data from the OpenStack API.
-func (o *OpenStack) gatherVolumes(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherVolumes(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := volumes.List(o.volume, &volumes.ListOpts{AllTenants: o.AllTenants}).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list volumes: %w", err)
@@ -842,7 +842,7 @@ func (o *OpenStack) gatherVolumes(ctx context.Context, acc telegraf.Accumulator)
 }
 
 // gatherStoragePools collects and accumulates storage pools data from the OpenStack API.
-func (o *OpenStack) gatherStoragePools(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherStoragePools(ctx context.Context, acc Dana.Accumulator) error {
 	results, err := schedulerstats.List(o.volume, &schedulerstats.ListOpts{Detail: true}).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list storage pools: %w", err)
@@ -868,7 +868,7 @@ func (o *OpenStack) gatherStoragePools(ctx context.Context, acc telegraf.Accumul
 	return nil
 }
 
-func (o *OpenStack) gatherServers(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherServers(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := servers.List(o.compute, &servers.ListOpts{AllTenants: o.AllTenants}).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list servers: %w", err)
@@ -960,7 +960,7 @@ func (o *OpenStack) gatherServers(ctx context.Context, acc telegraf.Accumulator)
 	return nil
 }
 
-func (o *OpenStack) gatherServerDiagnostics(ctx context.Context, acc telegraf.Accumulator) error {
+func (o *OpenStack) gatherServerDiagnostics(ctx context.Context, acc Dana.Accumulator) error {
 	page, err := servers.List(o.compute, &servers.ListOpts{AllTenants: o.AllTenants}).AllPages(ctx)
 	if err != nil {
 		return fmt.Errorf("unable to list servers: %w", err)
@@ -1064,7 +1064,7 @@ func (o *OpenStack) convertTimeFormat(t time.Time) interface{} {
 }
 
 func init() {
-	inputs.Add("openstack", func() telegraf.Input {
+	inputs.Add("openstack", func() Dana.Input {
 		return &OpenStack{
 			Domain:     "default",
 			Project:    "admin",

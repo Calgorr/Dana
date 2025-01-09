@@ -44,7 +44,7 @@ func (p *Parser) Init() error {
 	return nil
 }
 
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 	reader := bytes.NewReader(buf)
 	parquetReader, err := file.NewParquetReader(reader)
 	if err != nil {
@@ -53,7 +53,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 	metadata := parquetReader.MetaData()
 
 	now := time.Now()
-	metrics := make([]telegraf.Metric, 0, metadata.NumRows)
+	metrics := make([]Dana.Metric, 0, metadata.NumRows)
 	for i := 0; i < parquetReader.NumRowGroups(); i++ {
 		rowGroup := parquetReader.RowGroup(i)
 		scanners := make([]*columnParser, metadata.Schema.NumColumns())
@@ -67,7 +67,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 		}
 
 		rowIndex := 0
-		rowGroupMetrics := make([]telegraf.Metric, rowGroup.NumRows())
+		rowGroupMetrics := make([]Dana.Metric, rowGroup.NumRows())
 		for _, s := range scanners {
 			for s.HasNext() {
 				if rowIndex%int(rowGroup.NumRows()) == 0 {
@@ -120,7 +120,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 	return metrics, nil
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line))
 	if err != nil {
 		return nil, err
@@ -142,7 +142,7 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 
 func init() {
 	parsers.Add("parquet",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{metricName: defaultMetricName}
 		},
 	)

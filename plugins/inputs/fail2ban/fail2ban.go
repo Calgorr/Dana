@@ -63,7 +63,7 @@ func (f *Fail2ban) Init() error {
 	return nil
 }
 
-func (f *Fail2ban) Gather(acc telegraf.Accumulator) error {
+func (f *Fail2ban) Gather(acc Dana.Accumulator) error {
 	if len(f.path) == 0 {
 		return errors.New("fail2ban-client not found: verify that fail2ban is installed and that fail2ban-client is in your PATH")
 	}
@@ -140,7 +140,7 @@ func extractCount(line string) (string, int) {
 }
 
 func init() {
-	inputs.Add("fail2ban", func() telegraf.Input {
+	inputs.Add("fail2ban", func() Dana.Input {
 		return &Fail2ban{}
 	})
 }

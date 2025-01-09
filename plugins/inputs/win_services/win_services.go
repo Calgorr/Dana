@@ -98,9 +98,9 @@ func (rmr *mgProvider) Connect() (WinServiceManager, error) {
 	return &winSvcMgr{scmgr}, nil
 }
 
-// WinServices is an implementation if telegraf.Input interface, providing info about Windows Services
+// WinServices is an implementation if Dana.Input interface, providing info about Windows Services
 type WinServices struct {
-	Log telegraf.Logger
+	Log Dana.Logger
 
 	ServiceNames         []string `toml:"service_names"`
 	ServiceNamesExcluded []string `toml:"excluded_service_names"`
@@ -141,7 +141,7 @@ func (m *WinServices) Init() error {
 	return nil
 }
 
-func (m *WinServices) Gather(acc telegraf.Accumulator) error {
+func (m *WinServices) Gather(acc Dana.Accumulator) error {
 	scmgr, err := m.mgrProvider.Connect()
 	if err != nil {
 		return fmt.Errorf("could not open service manager: %w", err)
@@ -241,7 +241,7 @@ func collectServiceInfo(scmgr WinServiceManager, serviceName string) (*serviceIn
 }
 
 func init() {
-	inputs.Add("win_services", func() telegraf.Input {
+	inputs.Add("win_services", func() Dana.Input {
 		return &WinServices{
 			mgrProvider: &mgProvider{},
 		}

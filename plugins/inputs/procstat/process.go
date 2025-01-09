@@ -20,7 +20,7 @@ type process interface {
 	MemoryMaps(bool) (*[]gopsprocess.MemoryMapsStat, error)
 	pid() pid
 	setTag(string, string)
-	metrics(string, *collectionConfig, time.Time) ([]telegraf.Metric, error)
+	metrics(string, *collectionConfig, time.Time) ([]Dana.Metric, error)
 }
 
 type pidFinder interface {
@@ -69,7 +69,7 @@ func (p *proc) percent(_ time.Duration) (float64, error) {
 }
 
 // Add metrics a single process
-func (p *proc) metrics(prefix string, cfg *collectionConfig, t time.Time) ([]telegraf.Metric, error) {
+func (p *proc) metrics(prefix string, cfg *collectionConfig, t time.Time) ([]Dana.Metric, error) {
 	if prefix != "" {
 		prefix += "_"
 	}
@@ -248,7 +248,7 @@ func (p *proc) metrics(prefix string, cfg *collectionConfig, t time.Time) ([]tel
 		}
 	}
 
-	metrics := []telegraf.Metric{metric.New("procstat", p.tags, fields, t)}
+	metrics := []Dana.Metric{metric.New("procstat", p.tags, fields, t)}
 
 	// Collect the socket statistics if requested
 	if cfg.features["sockets"] {

@@ -73,7 +73,7 @@ func (t *Timestamp) Init() error {
 	return nil
 }
 
-func (t *Timestamp) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (t *Timestamp) Apply(in ...Dana.Metric) []Dana.Metric {
 	for _, point := range in {
 		if field, ok := point.GetField(t.Field); ok {
 			timestamp, err := internal.ParseTimestamp(t.SourceFormat, field, t.sourceLocation)
@@ -101,7 +101,7 @@ func (t *Timestamp) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("timestamp", func() telegraf.Processor {
+	processors.Add("timestamp", func() Dana.Processor {
 		return &Timestamp{}
 	})
 }

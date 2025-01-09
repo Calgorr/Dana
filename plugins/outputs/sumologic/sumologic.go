@@ -53,10 +53,10 @@ type SumoLogic struct {
 	SourceCategory string `toml:"source_category"`
 	Dimensions     string `toml:"dimensions"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	client     *http.Client
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 
 	headers map[string]string
 }
@@ -65,7 +65,7 @@ func (*SumoLogic) SampleConfig() string {
 	return sampleConfig
 }
 
-func (s *SumoLogic) SetSerializer(serializer telegraf.Serializer) {
+func (s *SumoLogic) SetSerializer(serializer Dana.Serializer) {
 	s.serializer = serializer
 }
 
@@ -81,7 +81,7 @@ func (s *SumoLogic) createClient() *http.Client {
 func (s *SumoLogic) Connect() error {
 	s.headers = make(map[string]string)
 
-	var serializer telegraf.Serializer
+	var serializer Dana.Serializer
 	if unwrapped, ok := s.serializer.(*models.RunningSerializer); ok {
 		serializer = unwrapped.Serializer
 	} else {
@@ -112,7 +112,7 @@ func (s *SumoLogic) Close() error {
 	return nil
 }
 
-func (s *SumoLogic) Write(metrics []telegraf.Metric) error {
+func (s *SumoLogic) Write(metrics []Dana.Metric) error {
 	if s.serializer == nil {
 		return errors.New("sumologic: serializer unset")
 	}
@@ -197,7 +197,7 @@ func (s *SumoLogic) writeRequestChunk(reqBody []byte) error {
 // even a single metric cannot fit.
 // In such a situation metrics will be sent one by one with a warning being logged
 // for every request sent even though they don't fit in s.MaxRequestBodySize bytes.
-func (s *SumoLogic) splitIntoChunks(metrics []telegraf.Metric) ([][]byte, error) {
+func (s *SumoLogic) splitIntoChunks(metrics []Dana.Metric) ([][]byte, error) {
 	var (
 		numMetrics = len(metrics)
 		chunks     = make([][]byte, 0)
@@ -269,7 +269,7 @@ func Default() *SumoLogic {
 }
 
 func init() {
-	outputs.Add("sumologic", func() telegraf.Output {
+	outputs.Add("sumologic", func() Dana.Output {
 		return Default()
 	})
 }

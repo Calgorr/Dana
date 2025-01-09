@@ -71,7 +71,7 @@ type CloudWatchLogs struct {
 
 	svc cloudWatchLogs // cloudwatch logs service
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	common_aws.CredentialConfig
 }
@@ -217,7 +217,7 @@ func (c *CloudWatchLogs) Close() error {
 }
 
 // Write perform metrics write to receiver of metrics
-func (c *CloudWatchLogs) Write(metrics []telegraf.Metric) error {
+func (c *CloudWatchLogs) Write(metrics []Dana.Metric) error {
 	minTime := time.Now()
 	if c.lg.RetentionInDays != nil {
 		minTime = minTime.Add(-time.Hour * 24 * time.Duration(*c.lg.RetentionInDays))
@@ -399,7 +399,7 @@ func (c *CloudWatchLogs) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("cloudwatch_logs", func() telegraf.Output {
+	outputs.Add("cloudwatch_logs", func() Dana.Output {
 		return &CloudWatchLogs{}
 	})
 }

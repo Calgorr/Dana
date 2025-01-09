@@ -15,7 +15,7 @@ var (
 	// grouped tracking metrics means that ID->Data association is not one to one,
 	// many metrics could be associated with one tracking ID so we cannot just
 	// clear this every time in FromBytes.
-	trackingStore = make(map[telegraf.TrackingID]telegraf.TrackingData)
+	trackingStore = make(map[Dana.TrackingID]Dana.TrackingData)
 	mu            = sync.Mutex{}
 
 	// ErrSkipTracking indicates that tracking information could not be found after
@@ -25,19 +25,19 @@ var (
 )
 
 type serializedMetric struct {
-	M   telegraf.Metric
-	TID telegraf.TrackingID
+	M   Dana.Metric
+	TID Dana.TrackingID
 }
 
-func ToBytes(m telegraf.Metric) ([]byte, error) {
+func ToBytes(m Dana.Metric) ([]byte, error) {
 	var sm serializedMetric
-	if um, ok := m.(telegraf.UnwrappableMetric); ok {
+	if um, ok := m.(Dana.UnwrappableMetric); ok {
 		sm.M = um.Unwrap()
 	} else {
 		sm.M = m
 	}
 
-	if tm, ok := m.(telegraf.TrackingMetric); ok {
+	if tm, ok := m.(Dana.TrackingMetric); ok {
 		sm.TID = tm.TrackingID()
 
 		mu.Lock()
@@ -53,7 +53,7 @@ func ToBytes(m telegraf.Metric) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func FromBytes(b []byte) (telegraf.Metric, error) {
+func FromBytes(b []byte) (Dana.Metric, error) {
 	buf := bytes.NewBuffer(b)
 	decoder := gob.NewDecoder(buf)
 

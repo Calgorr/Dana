@@ -36,7 +36,7 @@ func (t *Temperature) Init() error {
 	return nil
 }
 
-func (t *Temperature) Gather(acc telegraf.Accumulator) error {
+func (t *Temperature) Gather(acc Dana.Accumulator) error {
 	// Get all sensors and honor the HOST_SYS environment variable
 	path := internal.GetSysPath()
 
@@ -64,7 +64,7 @@ func (t *Temperature) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (t *Temperature) createMetricsV1(acc telegraf.Accumulator, temperatures []TemperatureStat) {
+func (t *Temperature) createMetricsV1(acc Dana.Accumulator, temperatures []TemperatureStat) {
 	for _, temp := range temperatures {
 		sensor := temp.Name
 		if temp.Label != "" {
@@ -89,7 +89,7 @@ func (t *Temperature) createMetricsV1(acc telegraf.Accumulator, temperatures []T
 	}
 }
 
-func (t *Temperature) createMetricsV2(acc telegraf.Accumulator, temperatures []TemperatureStat) {
+func (t *Temperature) createMetricsV2(acc Dana.Accumulator, temperatures []TemperatureStat) {
 	for _, temp := range temperatures {
 		sensor := temp.Name
 		if temp.Label != "" {

@@ -22,7 +22,7 @@ type Quantile struct {
 	cache    map[uint64]aggregate
 	suffixes []string
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 type aggregate struct {
@@ -37,7 +37,7 @@ func (*Quantile) SampleConfig() string {
 	return sampleConfig
 }
 
-func (q *Quantile) Add(in telegraf.Metric) {
+func (q *Quantile) Add(in Dana.Metric) {
 	id := in.HashID()
 	if cached, ok := q.cache[id]; ok {
 		fields := in.Fields()
@@ -76,7 +76,7 @@ func (q *Quantile) Add(in telegraf.Metric) {
 	q.cache[id] = a
 }
 
-func (q *Quantile) Push(acc telegraf.Accumulator) {
+func (q *Quantile) Push(acc Dana.Accumulator) {
 	for _, aggregate := range q.cache {
 		fields := make(map[string]interface{}, len(aggregate.fields)*len(q.Quantiles))
 		for k, algo := range aggregate.fields {
@@ -143,7 +143,7 @@ func (q *Quantile) Init() error {
 }
 
 func init() {
-	aggregators.Add("quantile", func() telegraf.Aggregator {
+	aggregators.Add("quantile", func() Dana.Aggregator {
 		return &Quantile{Compression: 100}
 	})
 }

@@ -52,7 +52,7 @@ func TestGatherActivity(t *testing.T) {
 	server.Shutdown()
 
 	// Do the comparison
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"chrony_activity",
 			map[string]string{"source": addr},
@@ -119,7 +119,7 @@ func TestGatherTracking(t *testing.T) {
 	server.Shutdown()
 
 	// Do the comparison
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"chrony",
 			map[string]string{
@@ -186,7 +186,7 @@ func TestGatherServerStats(t *testing.T) {
 	server.Shutdown()
 
 	// Do the comparison
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"chrony_serverstats",
 			map[string]string{"source": addr},
@@ -247,7 +247,7 @@ func TestGatherServerStats2(t *testing.T) {
 	server.Shutdown()
 
 	// Do the comparison
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"chrony_serverstats",
 			map[string]string{"source": addr},
@@ -314,7 +314,7 @@ func TestGatherServerStats3(t *testing.T) {
 	server.Shutdown()
 
 	// Do the comparison
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"chrony_serverstats",
 			map[string]string{"source": addr},
@@ -421,7 +421,7 @@ func TestGatherSources(t *testing.T) {
 	server.Shutdown()
 
 	// Do the comparison
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"chrony_sources",
 			map[string]string{
@@ -570,7 +570,7 @@ func TestGatherSourceStats(t *testing.T) {
 	server.Shutdown()
 
 	// Do the comparison
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"chrony_sourcestats",
 			map[string]string{
@@ -681,7 +681,7 @@ func TestIntegration(t *testing.T) {
 	require.NoError(t, plugin.Gather(&acc))
 
 	// Setup the expectations
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"chrony",
 			map[string]string{

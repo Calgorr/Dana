@@ -66,7 +66,7 @@ func (m *MockTelegraf) ListSecretStores() ([]string, error) {
 	return ids, nil
 }
 
-func (m *MockTelegraf) GetSecretStore(id string) (telegraf.SecretStore, error) {
+func (m *MockTelegraf) GetSecretStore(id string) (Dana.SecretStore, error) {
 	v, found := secrets[id]
 	if !found {
 		return nil, errors.New("unknown secret store")
@@ -110,7 +110,7 @@ func (s *MockSecretStore) List() ([]string, error) {
 	return keys, nil
 }
 
-func (s *MockSecretStore) GetResolver(key string) (telegraf.ResolveFunc, error) {
+func (s *MockSecretStore) GetResolver(key string) (Dana.ResolveFunc, error) {
 	return func() ([]byte, bool, error) {
 		v, err := s.Get(key)
 		return v, false, err
@@ -204,7 +204,7 @@ func TestInputListFlag(t *testing.T) {
 	args = append(args, "--input-list")
 	temp := inputs.Inputs
 	inputs.Inputs = map[string]inputs.Creator{
-		"test": func() telegraf.Input { return nil },
+		"test": func() Dana.Input { return nil },
 	}
 	err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockTelegraf())
 	require.NoError(t, err)
@@ -222,7 +222,7 @@ func TestOutputListFlag(t *testing.T) {
 	args = append(args, "--output-list")
 	temp := outputs.Outputs
 	outputs.Outputs = map[string]outputs.Creator{
-		"test": func() telegraf.Output { return nil },
+		"test": func() Dana.Output { return nil },
 	}
 	err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockTelegraf())
 	require.NoError(t, err)

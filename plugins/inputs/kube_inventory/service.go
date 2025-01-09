@@ -8,7 +8,7 @@ import (
 	"Dana"
 )
 
-func collectServices(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory) {
+func collectServices(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory) {
 	list, err := ki.client.getServices(ctx)
 	if err != nil {
 		acc.AddError(err)
@@ -19,7 +19,7 @@ func collectServices(ctx context.Context, acc telegraf.Accumulator, ki *Kubernet
 	}
 }
 
-func (ki *KubernetesInventory) gatherService(s *corev1.Service, acc telegraf.Accumulator) {
+func (ki *KubernetesInventory) gatherService(s *corev1.Service, acc Dana.Accumulator) {
 	creationTs := s.GetCreationTimestamp()
 	if creationTs.IsZero() {
 		return

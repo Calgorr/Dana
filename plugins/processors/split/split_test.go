@@ -22,7 +22,7 @@ func TestCases(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, folders)
 
-	processors.Add("split", func() telegraf.Processor {
+	processors.Add("split", func() Dana.Processor {
 		return &Split{}
 	})
 
@@ -46,7 +46,7 @@ func TestCases(t *testing.T) {
 			input, err := testutil.ParseMetricsFromFile(inputFilename, parser)
 			require.NoError(t, err)
 
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)
@@ -74,19 +74,19 @@ func TestTrackingMetrics(t *testing.T) {
 	type testcase struct {
 		name         string
 		dropOriginal bool
-		input        []telegraf.Metric
-		expected     []telegraf.Metric
+		input        []Dana.Metric
+		expected     []Dana.Metric
 	}
 	testcases := []testcase{
 		{
 			name:         "keep all",
 			dropOriginal: false,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
 				metric.New("bar", map[string]string{}, map[string]interface{}{"value": 99}, time.Unix(0, 0)),
 				metric.New("baz", map[string]string{}, map[string]interface{}{"value": 1}, time.Unix(0, 0)),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
 				metric.New("bar", map[string]string{}, map[string]interface{}{"value": 99}, time.Unix(0, 0)),
 				metric.New("baz", map[string]string{}, map[string]interface{}{"value": 1}, time.Unix(0, 0)),
@@ -98,12 +98,12 @@ func TestTrackingMetrics(t *testing.T) {
 		{
 			name:         "drop original",
 			dropOriginal: true,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
 				metric.New("bar", map[string]string{}, map[string]interface{}{"value": 99}, time.Unix(0, 0)),
 				metric.New("baz", map[string]string{}, map[string]interface{}{"value": 1}, time.Unix(0, 0)),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New("new", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
 				metric.New("new", map[string]string{}, map[string]interface{}{"value": 99}, time.Unix(0, 0)),
 				metric.New("new", map[string]string{}, map[string]interface{}{"value": 1}, time.Unix(0, 0)),
@@ -112,14 +112,14 @@ func TestTrackingMetrics(t *testing.T) {
 	}
 	for _, tc := range testcases {
 		var mu sync.Mutex
-		delivered := make([]telegraf.DeliveryInfo, 0, len(tc.input))
-		notify := func(di telegraf.DeliveryInfo) {
+		delivered := make([]Dana.DeliveryInfo, 0, len(tc.input))
+		notify := func(di Dana.DeliveryInfo) {
 			mu.Lock()
 			defer mu.Unlock()
 			delivered = append(delivered, di)
 		}
 
-		input := make([]telegraf.Metric, 0, len(tc.input))
+		input := make([]Dana.Metric, 0, len(tc.input))
 		for _, m := range tc.input {
 			tm, _ := metric.WithTracking(m, notify)
 			input = append(input, tm)

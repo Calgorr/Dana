@@ -45,7 +45,7 @@ func (px *Proxmox) Init() error {
 	return nil
 }
 
-func (px *Proxmox) Gather(acc telegraf.Accumulator) error {
+func (px *Proxmox) Gather(acc Dana.Accumulator) error {
 	err := getNodeSearchDomain(px)
 	if err != nil {
 		return err
@@ -99,15 +99,15 @@ func performRequest(px *Proxmox, apiURL, method string, data url.Values) ([]byte
 	return responseBody, nil
 }
 
-func gatherLxcData(px *Proxmox, acc telegraf.Accumulator) {
+func gatherLxcData(px *Proxmox, acc Dana.Accumulator) {
 	gatherVMData(px, acc, lxc)
 }
 
-func gatherQemuData(px *Proxmox, acc telegraf.Accumulator) {
+func gatherQemuData(px *Proxmox, acc Dana.Accumulator) {
 	gatherVMData(px, acc, qemu)
 }
 
-func gatherVMData(px *Proxmox, acc telegraf.Accumulator, rt resourceType) {
+func gatherVMData(px *Proxmox, acc Dana.Accumulator, rt resourceType) {
 	vmStats, err := getVMStats(px, rt)
 	if err != nil {
 		px.Log.Errorf("Error getting VM stats: %v", err)
@@ -268,7 +268,7 @@ func getTags(px *Proxmox, name string, vmConfig vmConfig, rt resourceType) map[s
 }
 
 func init() {
-	inputs.Add("proxmox", func() telegraf.Input {
+	inputs.Add("proxmox", func() Dana.Input {
 		return &Proxmox{
 			requestFunction: performRequest,
 		}

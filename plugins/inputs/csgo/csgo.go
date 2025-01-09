@@ -36,7 +36,7 @@ func (s *CSGO) Init() error {
 	return nil
 }
 
-func (s *CSGO) Gather(acc telegraf.Accumulator) error {
+func (s *CSGO) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	// Loop through each server and collect metrics
@@ -74,7 +74,7 @@ func (s *CSGO) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func parseResponse(addr, response string, t time.Time) (telegraf.Metric, error) {
+func parseResponse(addr, response string, t time.Time) (Dana.Metric, error) {
 	rows := strings.Split(response, "\n")
 	if len(rows) < 2 {
 		return nil, errors.New("bad response")
@@ -141,11 +141,11 @@ func parseResponse(addr, response string, t time.Time) (telegraf.Metric, error) 
 		"variance_ms":    msVar,
 		"tick_ms":        tick,
 	}
-	return metric.New("csgo", tags, fields, t, telegraf.Gauge), nil
+	return metric.New("csgo", tags, fields, t, Dana.Gauge), nil
 }
 
 func init() {
-	inputs.Add("csgo", func() telegraf.Input {
+	inputs.Add("csgo", func() Dana.Input {
 		return &CSGO{}
 	})
 }

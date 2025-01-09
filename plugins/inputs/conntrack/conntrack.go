@@ -60,7 +60,7 @@ func (c *Conntrack) Init() error {
 	return nil
 }
 
-func (c *Conntrack) Gather(acc telegraf.Accumulator) error {
+func (c *Conntrack) Gather(acc Dana.Accumulator) error {
 	var metricKey string
 	fields := make(map[string]interface{})
 
@@ -156,7 +156,7 @@ func (c *Conntrack) setDefaults() {
 }
 
 func init() {
-	inputs.Add(inputName, func() telegraf.Input {
+	inputs.Add(inputName, func() Dana.Input {
 		return &Conntrack{
 			ps: system.NewSystemPS(),
 		}

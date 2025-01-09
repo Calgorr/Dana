@@ -214,7 +214,7 @@ func TestTacacsLocal(t *testing.T) {
 
 			if tt.errContains == "" {
 				require.Empty(t, acc.Errors)
-				expected := []telegraf.Metric{
+				expected := []Dana.Metric{
 					metric.New(
 						"tacacs",
 						map[string]string{"source": srvLocal},
@@ -284,7 +284,7 @@ func TestTacacsLocalTimeout(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"tacacs",
 			map[string]string{"source": "unreachable.test:49"},
@@ -368,7 +368,7 @@ func TestTacacsIntegration(t *testing.T) {
 			require.NoError(t, plugin.Gather(&acc))
 
 			require.NoError(t, acc.FirstError())
-			expected := []telegraf.Metric{
+			expected := []Dana.Metric{
 				metric.New(
 					"tacacs",
 					map[string]string{"source": container.Address + ":" + port},

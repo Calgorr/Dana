@@ -183,7 +183,7 @@ func TestBenchmarkData(t *testing.T) {
 		TagKeys:    []string{"tags_host", "tags_platform", "tags_sdkver"},
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"benchmark",
 			map[string]string{

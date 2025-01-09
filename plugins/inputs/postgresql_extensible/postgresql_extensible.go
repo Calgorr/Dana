@@ -24,10 +24,10 @@ var sampleConfig string
 var ignoredColumns = map[string]bool{"stats_reset": true}
 
 type Postgresql struct {
-	Databases          []string        `deprecated:"1.22.4;use the sqlquery option to specify database to use"`
-	Query              []query         `toml:"query"`
-	PreparedStatements bool            `toml:"prepared_statements"`
-	Log                telegraf.Logger `toml:"-"`
+	Databases          []string    `deprecated:"1.22.4;use the sqlquery option to specify database to use"`
+	Query              []query     `toml:"query"`
+	PreparedStatements bool        `toml:"prepared_statements"`
+	Log                Dana.Logger `toml:"-"`
 	postgresql.Config
 
 	service *postgresql.Service
@@ -102,11 +102,11 @@ func (p *Postgresql) Init() error {
 	return nil
 }
 
-func (p *Postgresql) Start(_ telegraf.Accumulator) error {
+func (p *Postgresql) Start(_ Dana.Accumulator) error {
 	return p.service.Start()
 }
 
-func (p *Postgresql) Gather(acc telegraf.Accumulator) error {
+func (p *Postgresql) Gather(acc Dana.Accumulator) error {
 	// Retrieving the database version
 	query := `SELECT setting::integer / 100 AS version FROM pg_settings WHERE name = 'server_version_num'`
 	var dbVersion int
@@ -132,7 +132,7 @@ func (p *Postgresql) Stop() {
 	p.service.Stop()
 }
 
-func (p *Postgresql) gatherMetricsFromQuery(acc telegraf.Accumulator, q query, timestamp time.Time) error {
+func (p *Postgresql) gatherMetricsFromQuery(acc Dana.Accumulator, q query, timestamp time.Time) error {
 	rows, err := p.service.DB.Query(q.Sqlquery)
 	if err != nil {
 		return err
@@ -154,7 +154,7 @@ func (p *Postgresql) gatherMetricsFromQuery(acc telegraf.Accumulator, q query, t
 	return nil
 }
 
-func (p *Postgresql) accRow(acc telegraf.Accumulator, row scanner, columns []string, q query, timestamp time.Time) error {
+func (p *Postgresql) accRow(acc Dana.Accumulator, row scanner, columns []string, q query, timestamp time.Time) error {
 	// this is where we'll store the column name with its *interface{}
 	columnMap := make(map[string]*interface{})
 
@@ -228,7 +228,7 @@ func (p *Postgresql) accRow(acc telegraf.Accumulator, row scanner, columns []str
 }
 
 func init() {
-	inputs.Add("postgresql_extensible", func() telegraf.Input {
+	inputs.Add("postgresql_extensible", func() Dana.Input {
 		return &Postgresql{
 			Config: postgresql.Config{
 				MaxIdle: 1,

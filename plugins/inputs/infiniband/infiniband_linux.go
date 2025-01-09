@@ -12,7 +12,7 @@ import (
 )
 
 // Gather statistics from our infiniband cards
-func (*Infiniband) Gather(acc telegraf.Accumulator) error {
+func (*Infiniband) Gather(acc Dana.Accumulator) error {
 	rdmaDevices := rdmamap.GetRdmaDeviceList()
 
 	if len(rdmaDevices) == 0 {
@@ -40,7 +40,7 @@ func (*Infiniband) Gather(acc telegraf.Accumulator) error {
 }
 
 // Add the statistics to the accumulator
-func addStats(dev, port string, stats []rdmamap.RdmaStatEntry, acc telegraf.Accumulator) {
+func addStats(dev, port string, stats []rdmamap.RdmaStatEntry, acc Dana.Accumulator) {
 	// Allow users to filter by card and port
 	tags := map[string]string{"device": dev, "port": port}
 	fields := make(map[string]interface{})

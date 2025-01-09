@@ -137,7 +137,7 @@ func TestLibvirt_Gather(t *testing.T) {
 		allDomains      interface{}
 		excludeDomains  []string
 		statsForDomains interface{}
-		expectedMetrics []telegraf.Metric
+		expectedMetrics []Dana.Metric
 		vcpuMapping     []vcpuAffinity
 	}{
 		{"successfully gather from host that has domains", domains, nil, domainStats, append(expectedMetrics, expectedVcpuAffinityMetrics...), vcpusMapping},
@@ -188,7 +188,7 @@ func TestLibvirt_GatherMetrics(t *testing.T) {
 		allDomains      interface{}
 		excludeDomains  []string
 		statsForDomains interface{}
-		expectedMetrics []telegraf.Metric
+		expectedMetrics []Dana.Metric
 		vcpuMapping     []vcpuAffinity
 	}{
 		{"successfully gather memory metrics from host that has domains", domains, nil, memoryStats, expectedMemoryMetrics, nil},
@@ -561,7 +561,7 @@ var (
 		{"1", "1,2,3,4", 1},
 	}
 
-	expectedMetrics = []telegraf.Metric{
+	expectedMetrics = []Dana.Metric{
 		testutil.MustMetric("libvirt_state",
 			map[string]string{"domain_name": "Droplet-844329"},
 			map[string]interface{}{
@@ -578,7 +578,7 @@ var (
 			time.Now()),
 	}
 
-	expectedMemoryMetrics = []telegraf.Metric{
+	expectedMemoryMetrics = []Dana.Metric{
 		testutil.MustMetric("libvirt_memory_bandwidth_monitor_total",
 			map[string]string{"domain_name": "Droplet-844329"},
 			map[string]interface{}{
@@ -635,7 +635,7 @@ var (
 			time.Now()),
 	}
 
-	expectedCPUMetrics = []telegraf.Metric{
+	expectedCPUMetrics = []Dana.Metric{
 		testutil.MustMetric("libvirt_cpu",
 			map[string]string{"domain_name": "Droplet-844329"},
 			map[string]interface{}{
@@ -698,7 +698,7 @@ var (
 			time.Now()),
 	}
 
-	expectedVcpuAffinityMetrics = []telegraf.Metric{
+	expectedVcpuAffinityMetrics = []Dana.Metric{
 		testutil.MustMetric("libvirt_cpu_affinity",
 			map[string]string{
 				"domain_name": "Droplet-844329",
@@ -733,7 +733,7 @@ var (
 			time.Now()),
 	}
 
-	expectedBalloonMetrics = []telegraf.Metric{
+	expectedBalloonMetrics = []Dana.Metric{
 		testutil.MustMetric("libvirt_balloon",
 			map[string]string{
 				"domain_name": "Droplet-844329",
@@ -757,7 +757,7 @@ var (
 			time.Now()),
 	}
 
-	expectedPerfMetrics = []telegraf.Metric{
+	expectedPerfMetrics = []Dana.Metric{
 		testutil.MustMetric("libvirt_perf",
 			map[string]string{
 				"domain_name": "Droplet-844329",
@@ -789,7 +789,7 @@ var (
 			time.Now()),
 	}
 
-	expectedInterfaceMetrics = []telegraf.Metric{
+	expectedInterfaceMetrics = []Dana.Metric{
 		testutil.MustMetric("libvirt_net_total",
 			map[string]string{
 				"domain_name": "Droplet-844329",
@@ -817,7 +817,7 @@ var (
 			time.Now()),
 	}
 
-	expectedBlockMetrics = []telegraf.Metric{
+	expectedBlockMetrics = []Dana.Metric{
 		testutil.MustMetric("libvirt_block_total",
 			map[string]string{
 				"domain_name": "Droplet-844329",
@@ -876,7 +876,7 @@ var (
 			time.Now()),
 	}
 
-	expectedIOThreadMetrics = []telegraf.Metric{
+	expectedIOThreadMetrics = []Dana.Metric{
 		testutil.MustMetric("libvirt_iothread_total",
 			map[string]string{
 				"domain_name": "Droplet-844329",
@@ -909,7 +909,7 @@ var (
 			time.Now()),
 	}
 
-	expectedDirtyrateMetrics = []telegraf.Metric{
+	expectedDirtyrateMetrics = []Dana.Metric{
 		testutil.MustMetric("libvirt_dirtyrate",
 			map[string]string{
 				"domain_name": "Droplet-844329",
@@ -942,7 +942,7 @@ var (
 			time.Now()),
 	}
 
-	expectedVCPUMetrics = []telegraf.Metric{
+	expectedVCPUMetrics = []Dana.Metric{
 		testutil.MustMetric("libvirt_vcpu_total",
 			map[string]string{
 				"domain_name": "Droplet-844329",
@@ -994,7 +994,7 @@ var (
 			time.Now()),
 	}
 
-	expectedExtendedVCPUMetrics = []telegraf.Metric{
+	expectedExtendedVCPUMetrics = []Dana.Metric{
 		testutil.MustMetric("libvirt_cpu_affinity",
 			map[string]string{
 				"domain_name": "Droplet-844329",

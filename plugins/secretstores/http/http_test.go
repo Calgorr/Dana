@@ -28,7 +28,7 @@ func TestCases(t *testing.T) {
 	require.NotEmpty(t, folders)
 
 	// Set up for file inputs
-	secretstores.Add("http", func(string) telegraf.SecretStore {
+	secretstores.Add("http", func(string) Dana.SecretStore {
 		return &HTTP{Log: testutil.Logger{}}
 	})
 
@@ -76,7 +76,7 @@ func TestCases(t *testing.T) {
 			require.NoError(t, err)
 
 			var id string
-			var plugin telegraf.SecretStore
+			var plugin Dana.SecretStore
 			actual := make(map[string]string, len(expected))
 			for id, plugin = range cfg.SecretStores {
 				// Setup dummy server and redirect the plugin's URL to that dummy

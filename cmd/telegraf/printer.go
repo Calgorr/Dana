@@ -260,7 +260,7 @@ func printFilteredInputs(inputFilters []string, commented bool, outputBuffer io.
 	sort.Strings(pnames)
 
 	// cache service inputs to print them at the end
-	servInputs := make(map[string]telegraf.ServiceInput)
+	servInputs := make(map[string]Dana.ServiceInput)
 	// for alphabetical looping:
 	servInputNames := make([]string, 0, len(pnames))
 
@@ -274,7 +274,7 @@ func printFilteredInputs(inputFilters []string, commented bool, outputBuffer io.
 		creator := inputs.Inputs[pname]
 		input := creator()
 
-		if p, ok := input.(telegraf.ServiceInput); ok {
+		if p, ok := input.(Dana.ServiceInput); ok {
 			servInputs[pname] = p
 			servInputNames = append(servInputNames, pname)
 			continue
@@ -354,7 +354,7 @@ func printFilteredGlobalSections(sectionFilters []string, outputBuffer io.Writer
 	}
 }
 
-func printConfig(name string, p telegraf.PluginDescriber, op string, commented bool, di telegraf.DeprecationInfo, outputBuffer io.Writer) {
+func printConfig(name string, p Dana.PluginDescriber, op string, commented bool, di Dana.DeprecationInfo, outputBuffer io.Writer) {
 	comment := ""
 	if commented {
 		comment = "# "

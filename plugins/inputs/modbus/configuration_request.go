@@ -42,7 +42,7 @@ type configurationPerRequest struct {
 
 	workarounds         workarounds
 	excludeRegisterType bool
-	logger              telegraf.Logger
+	logger              Dana.Logger
 }
 
 func (*configurationPerRequest) sampleConfigPart() string {
@@ -86,7 +86,7 @@ func (c *configurationPerRequest) check() error {
 				"inputs.modbus",
 				"optimization",
 				"aggressive",
-				telegraf.DeprecationInfo{
+				Dana.DeprecationInfo{
 					Since:     "1.28.2",
 					RemovalIn: "1.30.0",
 					Notice:    `use "max_insert" instead`,

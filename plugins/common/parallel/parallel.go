@@ -3,6 +3,6 @@ package parallel
 import "Dana"
 
 type Parallel interface {
-	Enqueue(telegraf.Metric)
+	Enqueue(Dana.Metric)
 	Stop()
 }

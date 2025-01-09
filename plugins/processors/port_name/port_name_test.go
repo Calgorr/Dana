@@ -37,15 +37,15 @@ func TestTable(t *testing.T) {
 		prot      string
 		protField string
 		protTag   string
-		input     []telegraf.Metric
-		expected  []telegraf.Metric
+		input     []Dana.Metric
+		expected  []Dana.Metric
 	}{
 		{
 			name: "ordinary tcp default",
 			tag:  "port",
 			dest: "service",
 			prot: "tcp",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -55,7 +55,7 @@ func TestTable(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -72,7 +72,7 @@ func TestTable(t *testing.T) {
 			tag:  "port",
 			dest: "service",
 			prot: "udp",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -82,7 +82,7 @@ func TestTable(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -99,7 +99,7 @@ func TestTable(t *testing.T) {
 			tag:  "port",
 			dest: "service",
 			prot: "foobar",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -109,7 +109,7 @@ func TestTable(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -126,7 +126,7 @@ func TestTable(t *testing.T) {
 			tag:  "port",
 			dest: "service",
 			prot: "tcp",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -144,7 +144,7 @@ func TestTable(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -170,7 +170,7 @@ func TestTable(t *testing.T) {
 			tag:  "foo",
 			dest: "bar",
 			prot: "tcp",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -180,7 +180,7 @@ func TestTable(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -197,7 +197,7 @@ func TestTable(t *testing.T) {
 			tag:  "port",
 			dest: "service",
 			prot: "tcp",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -207,7 +207,7 @@ func TestTable(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -223,7 +223,7 @@ func TestTable(t *testing.T) {
 			tag:  "port",
 			dest: "service",
 			prot: "udp",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -233,7 +233,7 @@ func TestTable(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -249,7 +249,7 @@ func TestTable(t *testing.T) {
 			field: "foo",
 			dest:  "bar",
 			prot:  "tcp",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{},
@@ -259,7 +259,7 @@ func TestTable(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{},
@@ -277,7 +277,7 @@ func TestTable(t *testing.T) {
 			dest:      "bar",
 			prot:      "udp",
 			protField: "proto",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{},
@@ -288,7 +288,7 @@ func TestTable(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{},
@@ -307,7 +307,7 @@ func TestTable(t *testing.T) {
 			dest:    "bar",
 			prot:    "udp",
 			protTag: "proto",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -318,7 +318,7 @@ func TestTable(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"meas",
 					map[string]string{
@@ -357,7 +357,7 @@ func TestTable(t *testing.T) {
 
 func TestTracking(t *testing.T) {
 	// Setup raw input and expected output
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{
@@ -384,7 +384,7 @@ func TestTracking(t *testing.T) {
 		),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{
@@ -416,15 +416,15 @@ func TestTracking(t *testing.T) {
 
 	// Create fake notification for testing
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
 	// Convert raw input to tracking metric
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)

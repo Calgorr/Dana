@@ -26,7 +26,7 @@ func (*Rename) SampleConfig() string {
 	return sampleConfig
 }
 
-func (r *Rename) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (r *Rename) Apply(in ...Dana.Metric) []Dana.Metric {
 	for _, point := range in {
 		for _, replace := range r.Replaces {
 			if replace.Dest == "" {
@@ -62,7 +62,7 @@ func (r *Rename) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("rename", func() telegraf.Processor {
+	processors.Add("rename", func() Dana.Processor {
 		return &Rename{}
 	})
 }

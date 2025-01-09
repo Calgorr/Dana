@@ -15,9 +15,9 @@ import (
 var sampleConfig string
 
 type TemplateProcessor struct {
-	Tag      string          `toml:"tag"`
-	Template string          `toml:"template"`
-	Log      telegraf.Logger `toml:"-"`
+	Tag      string      `toml:"tag"`
+	Template string      `toml:"template"`
+	Log      Dana.Logger `toml:"-"`
 
 	tmplTag   *template.Template
 	tmplValue *template.Template
@@ -27,14 +27,14 @@ func (*TemplateProcessor) SampleConfig() string {
 	return sampleConfig
 }
 
-func (r *TemplateProcessor) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (r *TemplateProcessor) Apply(in ...Dana.Metric) []Dana.Metric {
 	// for each metric in "in" array
 	for _, raw := range in {
 		m := raw
-		if wm, ok := raw.(telegraf.UnwrappableMetric); ok {
+		if wm, ok := raw.(Dana.UnwrappableMetric); ok {
 			m = wm.Unwrap()
 		}
-		tm, ok := m.(telegraf.TemplateMetric)
+		tm, ok := m.(Dana.TemplateMetric)
 		if !ok {
 			r.Log.Errorf("metric of type %T is not a template metric", raw)
 			continue
@@ -77,7 +77,7 @@ func (r *TemplateProcessor) Init() error {
 }
 
 func init() {
-	processors.Add("template", func() telegraf.Processor {
+	processors.Add("template", func() Dana.Processor {
 		return &TemplateProcessor{}
 	})
 }

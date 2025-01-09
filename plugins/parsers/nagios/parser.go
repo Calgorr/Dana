@@ -43,7 +43,7 @@ func getExitCode(err error) (int, error) {
 // AddState adds a state derived from the runErr. Unknown state will be set as fallback.
 // If any error occurs, it is guaranteed to be added to the service output.
 // An updated slice of metrics will be returned.
-func AddState(runErr error, errMessage []byte, metrics []telegraf.Metric) []telegraf.Metric {
+func AddState(runErr error, errMessage []byte, metrics []Dana.Metric) []Dana.Metric {
 	state, exitErr := getExitCode(runErr)
 	// This will ensure that in every error case the valid nagios state 'unknown' will be returned.
 	// No error needs to be thrown because the output will contain the error information.
@@ -88,7 +88,7 @@ func AddState(runErr error, errMessage []byte, metrics []telegraf.Metric) []tele
 
 type Parser struct {
 	DefaultTags map[string]string `toml:"-"`
-	Log         telegraf.Logger   `toml:"-"`
+	Log         Dana.Logger       `toml:"-"`
 
 	metricName string
 }
@@ -102,7 +102,7 @@ var (
 	)
 )
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line))
 	return metrics[0], err
 }
@@ -111,7 +111,7 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 	p.DefaultTags = tags
 }
 
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 	ts := time.Now().UTC()
 
 	s := bufio.NewScanner(bytes.NewReader(buf))
@@ -119,7 +119,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 	var msg bytes.Buffer
 	var longmsg bytes.Buffer
 
-	metrics := make([]telegraf.Metric, 0)
+	metrics := make([]Dana.Metric, 0)
 
 	// Scan the first line.
 	if !s.Scan() && s.Err() != nil {
@@ -189,8 +189,8 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 	return metrics, nil
 }
 
-func parsePerfData(perfdatas string, timestamp time.Time) ([]telegraf.Metric, error) {
-	metrics := make([]telegraf.Metric, 0)
+func parsePerfData(perfdatas string, timestamp time.Time) ([]Dana.Metric, error) {
+	metrics := make([]Dana.Metric, 0)
 
 	for _, unParsedPerf := range perfSplitRegExp.FindAllString(perfdatas, -1) {
 		trimmedPerf := strings.TrimSpace(unParsedPerf)
@@ -316,7 +316,7 @@ func parseThreshold(threshold string) (vmin, vmax float64, err error) {
 func init() {
 	// Register parser
 	parsers.Add("nagios",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{metricName: defaultMetricName}
 		},
 	)

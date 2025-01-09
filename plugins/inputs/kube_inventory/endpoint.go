@@ -8,7 +8,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-func collectEndpoints(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory) {
+func collectEndpoints(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory) {
 	list, err := ki.client.getEndpoints(ctx)
 	if err != nil {
 		acc.AddError(err)
@@ -19,7 +19,7 @@ func collectEndpoints(ctx context.Context, acc telegraf.Accumulator, ki *Kuberne
 	}
 }
 
-func gatherEndpoint(e corev1.Endpoints, acc telegraf.Accumulator) {
+func gatherEndpoint(e corev1.Endpoints, acc Dana.Accumulator) {
 	creationTs := e.GetCreationTimestamp()
 	if creationTs.IsZero() {
 		return

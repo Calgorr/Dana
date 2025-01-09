@@ -5,7 +5,7 @@ import (
 )
 
 // Creator is the function to create a new parser
-type Creator func(defaultMetricName string) telegraf.Parser
+type Creator func(defaultMetricName string) Dana.Parser
 
 // Parsers contains the registry of all known parsers (following the new style)
 var Parsers = make(map[string]Creator)

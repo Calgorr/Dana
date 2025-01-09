@@ -43,7 +43,7 @@ const (
 type Collector interface {
 	Describe(ch chan<- *prometheus.Desc)
 	Collect(ch chan<- prometheus.Metric)
-	Add(metrics []telegraf.Metric) error
+	Add(metrics []Dana.Metric) error
 }
 
 type PrometheusClient struct {
@@ -60,7 +60,7 @@ type PrometheusClient struct {
 	StringAsLabel      bool                               `toml:"string_as_label"`
 	ExportTimestamp    bool                               `toml:"export_timestamp"`
 	TypeMappings       serializers_prometheus.MetricTypes `toml:"metric_types"`
-	Log                telegraf.Logger                    `toml:"-"`
+	Log                Dana.Logger                        `toml:"-"`
 
 	common_tls.ServerConfig
 
@@ -283,12 +283,12 @@ func (p *PrometheusClient) Close() error {
 	return err
 }
 
-func (p *PrometheusClient) Write(metrics []telegraf.Metric) error {
+func (p *PrometheusClient) Write(metrics []Dana.Metric) error {
 	return p.collector.Add(metrics)
 }
 
 func init() {
-	outputs.Add("prometheus_client", func() telegraf.Output {
+	outputs.Add("prometheus_client", func() Dana.Output {
 		return &PrometheusClient{
 			Listen:             defaultListen,
 			Path:               defaultPath,

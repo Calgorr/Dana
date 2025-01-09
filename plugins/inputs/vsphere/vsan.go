@@ -39,7 +39,7 @@ var (
 )
 
 // collectVsan is the entry point for vsan metrics collection
-func (e *Endpoint) collectVsan(ctx context.Context, acc telegraf.Accumulator) error {
+func (e *Endpoint) collectVsan(ctx context.Context, acc Dana.Accumulator) error {
 	lower := versionLowerThan(e.apiVersion, 5, 5)
 	if lower {
 		return fmt.Errorf("a minimum API version of 5.5 is required for vSAN. Found: %s. Skipping vCenter: %s", e.apiVersion, e.URL.Host)
@@ -69,7 +69,7 @@ func (e *Endpoint) collectVsan(ctx context.Context, acc telegraf.Accumulator) er
 
 // collectVsanPerCluster is called by goroutines in collectVsan function.
 func (e *Endpoint) collectVsanPerCluster(ctx context.Context, clusterRef *objectRef, vimClient *vim25.Client, vsanClient *soap.Client,
-	metrics map[string]string, acc telegraf.Accumulator) {
+	metrics map[string]string, acc Dana.Accumulator) {
 	// Construct a map for cmmds
 	cluster := object.NewClusterComputeResource(vimClient, clusterRef.ref)
 	if !vsanEnabled(ctx, cluster) {
@@ -200,7 +200,7 @@ func getCmmdsMap(ctx context.Context, client *vim25.Client, clusterObj *object.C
 
 // queryPerformance adds performance metrics to telegraf accumulator
 func (e *Endpoint) queryPerformance(ctx context.Context, vsanClient *soap.Client, clusterRef *objectRef, metrics map[string]string,
-	cmmds map[string]CmmdsEntity, acc telegraf.Accumulator) error {
+	cmmds map[string]CmmdsEntity, acc Dana.Accumulator) error {
 	end := time.Now().UTC()
 
 	// We're using a fake metric key, since we only store one highwater mark per resource
@@ -309,7 +309,7 @@ func (e *Endpoint) queryPerformance(ctx context.Context, vsanClient *soap.Client
 }
 
 // queryDiskUsage adds 'FreeCapacityB' and 'TotalCapacityB' metrics to telegraf accumulator
-func (e *Endpoint) queryDiskUsage(ctx context.Context, vsanClient *soap.Client, clusterRef *objectRef, acc telegraf.Accumulator) error {
+func (e *Endpoint) queryDiskUsage(ctx context.Context, vsanClient *soap.Client, clusterRef *objectRef, acc Dana.Accumulator) error {
 	spaceManagerRef := types.ManagedObjectReference{
 		Type:  "VsanSpaceReportSystem",
 		Value: "vsan-cluster-space-report-system",
@@ -332,7 +332,7 @@ func (e *Endpoint) queryDiskUsage(ctx context.Context, vsanClient *soap.Client, 
 }
 
 // queryDiskUsage adds 'OverallHealth' metric to telegraf accumulator
-func (e *Endpoint) queryHealthSummary(ctx context.Context, vsanClient *soap.Client, clusterRef *objectRef, acc telegraf.Accumulator) error {
+func (e *Endpoint) queryHealthSummary(ctx context.Context, vsanClient *soap.Client, clusterRef *objectRef, acc Dana.Accumulator) error {
 	healthSystemRef := types.ManagedObjectReference{
 		Type:  "VsanVcClusterHealthSystem",
 		Value: "vsan-cluster-health-system",
@@ -361,7 +361,7 @@ func (e *Endpoint) queryHealthSummary(ctx context.Context, vsanClient *soap.Clie
 
 // queryResyncSummary adds resync information to accumulator
 func (e *Endpoint) queryResyncSummary(ctx context.Context, vsanClient *soap.Client, clusterObj *object.ClusterComputeResource,
-	clusterRef *objectRef, acc telegraf.Accumulator) error {
+	clusterRef *objectRef, acc Dana.Accumulator) error {
 	if lower := versionLowerThan(e.apiVersion, 6, 7); lower {
 		e.Parent.Log.Infof("I! [inputs.vsphere][vSAN] Minimum API Version 6.7 required for resync summary. Found: %s. Skipping VCenter: %s",
 			e.apiVersion, e.URL.Host)

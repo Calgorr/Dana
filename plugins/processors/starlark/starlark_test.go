@@ -95,8 +95,8 @@ func TestApply(t *testing.T) {
 	var applyTests = []struct {
 		name             string
 		source           string
-		input            []telegraf.Metric
-		expected         []telegraf.Metric
+		input            []Dana.Metric
+		expected         []Dana.Metric
 		expectedErrorStr string
 	}{
 		{
@@ -105,7 +105,7 @@ func TestApply(t *testing.T) {
 def apply(metric):
 	return None
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
@@ -119,14 +119,14 @@ def apply(metric):
 def apply(metric):
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
@@ -146,7 +146,7 @@ def apply(metric):
 	metric.name = names[metric.name]
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -155,7 +155,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu2",
 					map[string]string{},
 					map[string]interface{}{
@@ -174,7 +174,7 @@ def apply(metric):
 	cache.append(deepcopy(metric))
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -192,7 +192,7 @@ def apply(metric):
 	# Should be return [metric, deepcopy(metric)]
 	return [metric, metric]
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -201,7 +201,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -245,8 +245,8 @@ func TestMetric(t *testing.T) {
 		name             string
 		source           string
 		constants        map[string]interface{}
-		input            []telegraf.Metric
-		expected         []telegraf.Metric
+		input            []Dana.Metric
+		expected         []Dana.Metric
 		expectedErrorStr string
 	}{
 		{
@@ -258,7 +258,7 @@ def apply(metric):
 	m.time = 0
 	return m
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -267,7 +267,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -283,7 +283,7 @@ def apply(metric):
 def apply(metric):
 	return [metric, deepcopy(metric)]
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -292,7 +292,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -316,14 +316,14 @@ def apply(metric):
 	metric.name = "howdy"
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42.0},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("howdy",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42.0},
@@ -338,7 +338,7 @@ def apply(metric):
 	metric.name = 42
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42.0},
@@ -354,14 +354,14 @@ def apply(metric):
 	metric.tags['measurement'] = metric.name
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42.0},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"measurement": "cpu",
@@ -378,7 +378,7 @@ def apply(metric):
 	metric.tags
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -388,7 +388,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -406,7 +406,7 @@ def apply(metric):
 	metric.tags = {}
 	return metric
 		`,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
@@ -423,7 +423,7 @@ def apply(metric):
 		return metric
 	return None
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -432,7 +432,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -450,7 +450,7 @@ def apply(metric):
 		return metric
 	return None
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -461,7 +461,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -481,7 +481,7 @@ def apply(metric):
 		return
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -490,7 +490,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -507,7 +507,7 @@ def apply(metric):
 	metric.tags['result'] = metric.tags['host']
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -516,7 +516,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host":   "example.org",
@@ -534,7 +534,7 @@ def apply(metric):
 	metric.tags['foo']
 	return metric
 		`,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
@@ -550,7 +550,7 @@ def apply(metric):
 	metric.tags['result'] = metric.tags.get('host')
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -559,7 +559,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host":   "example.org",
@@ -577,14 +577,14 @@ def apply(metric):
 	metric.tags['result'] = metric.tags.get('foo', 'example.org')
 	return metric
 		`,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"result": "example.org",
@@ -602,14 +602,14 @@ def apply(metric):
 		return
 	return metric
 		`,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
@@ -624,14 +624,14 @@ def apply(metric):
 	metric.tags['host'] = 'example.org'
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42.0},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -648,7 +648,7 @@ def apply(metric):
 	metric.tags['host'] = 42
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42.0},
@@ -664,7 +664,7 @@ def apply(metric):
 	metric.tags['host2'] = metric.tags.pop('host')
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -673,7 +673,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host2": "example.org",
@@ -690,7 +690,7 @@ def apply(metric):
 	metric.tags['host2'] = metric.tags.pop('url', 'foo.org')
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -707,7 +707,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host":  "example.org",
@@ -733,7 +733,7 @@ def apply(metric):
 	metric.tags['result'] = '='.join(metric.tags.popitem())
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -742,7 +742,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"result": "host=example.org",
@@ -759,7 +759,7 @@ def apply(metric):
 	metric.tags.popitem()
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 0},
@@ -775,14 +775,14 @@ def apply(metric):
 	metric.tags.setdefault('a', 'b')
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 0},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -799,7 +799,7 @@ def apply(metric):
 	metric.tags.setdefault('a', 'c')
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -808,7 +808,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -825,7 +825,7 @@ def apply(metric):
 	metric.tags.update([('b', 'y'), ('c', 'z')])
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "x",
@@ -834,7 +834,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "x",
@@ -853,7 +853,7 @@ def apply(metric):
 	metric.tags.update(b='y', c='z')
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "x",
@@ -862,7 +862,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "x",
@@ -881,7 +881,7 @@ def apply(metric):
 	metric.tags.update({'b': 'y', 'c': 'z'})
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "x",
@@ -890,7 +890,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "x",
@@ -909,7 +909,7 @@ def apply(metric):
 	metric.tags.update([('b', 'y'), ('c', 'z')], d='zz')
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "x",
@@ -918,7 +918,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "x",
@@ -939,7 +939,7 @@ def apply(metric):
 		pass
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -950,7 +950,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -970,7 +970,7 @@ def apply(metric):
 		metric.fields[k] = k
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -980,7 +980,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1003,7 +1003,7 @@ def apply(metric):
 		pass
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1014,7 +1014,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1034,7 +1034,7 @@ def apply(metric):
 		metric.fields[k] = k
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1044,7 +1044,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1067,7 +1067,7 @@ def apply(metric):
 		pass
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1077,7 +1077,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1096,7 +1096,7 @@ def apply(metric):
 		metric.fields[k] = v
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1106,7 +1106,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1129,7 +1129,7 @@ def apply(metric):
 		pass
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1139,7 +1139,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1158,7 +1158,7 @@ def apply(metric):
 		metric.fields[v] = v
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1168,7 +1168,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -1190,7 +1190,7 @@ def apply(metric):
 	metric.tags.clear()
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -1202,7 +1202,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 0},
@@ -1218,7 +1218,7 @@ def apply(metric):
 		metric.tags.pop(k)
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -1240,7 +1240,7 @@ def apply(metric):
 		metric.tags.popitem()
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -1262,7 +1262,7 @@ def apply(metric):
 		metric.tags.clear()
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -1284,7 +1284,7 @@ def apply(metric):
 		metric.tags['i'] = 'j'
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -1307,7 +1307,7 @@ def apply(metric):
 	metric.tags.clear()
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -1316,7 +1316,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 0},
@@ -1331,7 +1331,7 @@ def apply(metric):
 	metric.fields
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -1341,7 +1341,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -1359,7 +1359,7 @@ def apply(metric):
 	metric.fields = {}
 	return metric
 		`,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
@@ -1377,14 +1377,14 @@ def apply(metric):
 		return metric
 	return None
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
@@ -1400,14 +1400,14 @@ def apply(metric):
 		return metric
 	return None
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42.0},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42.0},
@@ -1423,14 +1423,14 @@ def apply(metric):
 		return
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42.0},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42.0},
@@ -1447,14 +1447,14 @@ def apply(metric):
 		return
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": "xyzzy"},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": "xyzzy"},
@@ -1471,14 +1471,14 @@ def apply(metric):
 		return
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": 42},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": 42},
@@ -1495,14 +1495,14 @@ def apply(metric):
 		return
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": uint64(42)},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": uint64(42)},
@@ -1519,14 +1519,14 @@ def apply(metric):
 		return
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": true},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": true},
@@ -1543,14 +1543,14 @@ def apply(metric):
 		return
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": 42.0},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": 42.0},
@@ -1565,7 +1565,7 @@ def apply(metric):
 	metric.fields['foo']
 	return metric
 		`,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
@@ -1581,14 +1581,14 @@ def apply(metric):
 	metric.fields['result'] = metric.fields.get('time_idle')
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42.0},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -1606,14 +1606,14 @@ def apply(metric):
 	metric.fields['result'] = metric.fields.get('foo', 'example.org')
 	return metric
 		`,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -1632,14 +1632,14 @@ def apply(metric):
 		return
 	return metric
 		`,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42},
@@ -1654,14 +1654,14 @@ def apply(metric):
 	metric.fields['host'] = 'example.org'
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -1678,14 +1678,14 @@ def apply(metric):
 	metric.fields['time_idle'] = 42
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -1702,14 +1702,14 @@ def apply(metric):
 	metric.fields['time_idle'] = 42.0
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -1726,14 +1726,14 @@ def apply(metric):
 	metric.fields['time_idle'] = True
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -1750,7 +1750,7 @@ def apply(metric):
 	metric.fields['time_idle'] = {}
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
@@ -1768,7 +1768,7 @@ def apply(metric):
 		return
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -1778,7 +1778,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_guest": 0},
@@ -1793,7 +1793,7 @@ def apply(metric):
 	metric.fields['idle_count'] = metric.fields.pop('count', 10)
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -1812,7 +1812,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -1843,14 +1843,14 @@ def apply(metric):
 	metric.fields['time_guest'] = 0
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 0},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_guest": 0},
@@ -1865,7 +1865,7 @@ def apply(metric):
 	metric.fields.popitem()
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
@@ -1881,14 +1881,14 @@ def apply(metric):
 	metric.fields.setdefault('a', 'b')
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"a": "b"},
@@ -1903,14 +1903,14 @@ def apply(metric):
 	metric.fields.setdefault('a', 'c')
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"a": "b"},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"a": "b"},
@@ -1925,14 +1925,14 @@ def apply(metric):
 	metric.fields.update([('a', 'b'), ('c', 'd')])
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -1950,14 +1950,14 @@ def apply(metric):
 	metric.fields.update(a='b', c='d')
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -1975,14 +1975,14 @@ def apply(metric):
 	metric.fields.update({'a': 'b', 'c': 'd'})
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2000,14 +2000,14 @@ def apply(metric):
 	metric.fields.update([('a', 'b'), ('c', 'd')], e='f')
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2027,7 +2027,7 @@ def apply(metric):
 		pass
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2038,7 +2038,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2058,7 +2058,7 @@ def apply(metric):
 		pass
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2069,7 +2069,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2089,7 +2089,7 @@ def apply(metric):
 		metric.tags[k] = k
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2100,7 +2100,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"time_guest":  "time_guest",
@@ -2124,7 +2124,7 @@ def apply(metric):
 		pass
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2135,7 +2135,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2155,7 +2155,7 @@ def apply(metric):
 		metric.tags[k] = str(v)
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2166,7 +2166,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"time_guest":  "1.1",
@@ -2190,7 +2190,7 @@ def apply(metric):
 		pass
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2201,7 +2201,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2221,7 +2221,7 @@ def apply(metric):
 		metric.tags[str(v)] = str(v)
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2232,7 +2232,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"b": "b",
@@ -2256,7 +2256,7 @@ def apply(metric):
 	metric.fields['notempty'] = 0
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2268,7 +2268,7 @@ def apply(metric):
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2286,7 +2286,7 @@ def apply(metric):
 		metric.fields.pop(k)
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 0},
@@ -2303,7 +2303,7 @@ def apply(metric):
 		metric.fields.popitem()
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 0},
@@ -2320,7 +2320,7 @@ def apply(metric):
 		metric.fields.clear()
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 0},
@@ -2337,7 +2337,7 @@ def apply(metric):
 		metric.fields['time_guest'] = 0
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 0},
@@ -2356,14 +2356,14 @@ def apply(metric):
 	metric.fields['notempty'] = 0
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 0},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2380,7 +2380,7 @@ def apply(metric):
 	metric.time = 42
 	return metric
 			`,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2389,7 +2389,7 @@ def apply(metric):
 					time.Unix(0, 0).UTC(),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2406,7 +2406,7 @@ def apply(metric):
 	metric.time = 'howdy'
 	return metric
 			`,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2424,7 +2424,7 @@ def apply(metric):
 	metric.time -= metric.time % 100000000
 	return metric
 			`,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -2434,7 +2434,7 @@ def apply(metric):
 					time.Unix(42, 11).UTC(),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -2465,14 +2465,14 @@ def process(metric):
     # Should never be called
     metric.fields["msg"] = "value4"
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": "non-json-content", "msg": "value3"},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{"tags1": "value2"},
 					map[string]interface{}{
@@ -2510,14 +2510,14 @@ def apply(metric):
 					"3": "three",
 				},
 			},
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2568,8 +2568,8 @@ func TestConfig(t *testing.T) {
 	var tests = []struct {
 		name     string
 		config   string
-		input    []telegraf.Metric
-		expected []telegraf.Metric
+		input    []Dana.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "support constants from configuration",
@@ -2595,14 +2595,14 @@ def apply(metric):
 	supported_values = ["2", "3"]
 	supported_entries = { "2" = "two", "3" = "three" }
            `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2666,14 +2666,14 @@ func TestScript(t *testing.T) {
 	var tests = []struct {
 		name             string
 		plugin           *Starlark
-		input            []telegraf.Metric
-		expected         []telegraf.Metric
+		input            []Dana.Metric
+		expected         []Dana.Metric
 		expectedErrorStr string
 	}{
 		{
 			name:   "rename",
 			plugin: newStarlarkFromScript("testdata/rename.star"),
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"lower": "0",
@@ -2683,7 +2683,7 @@ func TestScript(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"min": "0",
@@ -2697,7 +2697,7 @@ func TestScript(t *testing.T) {
 		{
 			name:   "drop fields by type",
 			plugin: newStarlarkFromScript("testdata/drop_string_fields.star"),
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("device",
 					map[string]string{},
 					map[string]interface{}{
@@ -2710,7 +2710,7 @@ func TestScript(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("device",
 					map[string]string{},
 					map[string]interface{}{
@@ -2725,7 +2725,7 @@ func TestScript(t *testing.T) {
 		{
 			name:   "drop fields with unexpected type",
 			plugin: newStarlarkFromScript("testdata/drop_fields_with_unexpected_type.star"),
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("device",
 					map[string]string{},
 					map[string]interface{}{
@@ -2739,7 +2739,7 @@ func TestScript(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("device",
 					map[string]string{},
 					map[string]interface{}{
@@ -2756,14 +2756,14 @@ func TestScript(t *testing.T) {
 		{
 			name:   "scale",
 			plugin: newStarlarkFromScript("testdata/scale.star"),
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 10.0},
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 100.0},
@@ -2774,7 +2774,7 @@ func TestScript(t *testing.T) {
 		{
 			name:   "ratio",
 			plugin: newStarlarkFromScript("testdata/ratio.star"),
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("mem",
 					map[string]string{},
 					map[string]interface{}{
@@ -2784,7 +2784,7 @@ func TestScript(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("mem",
 					map[string]string{},
 					map[string]interface{}{
@@ -2799,7 +2799,7 @@ func TestScript(t *testing.T) {
 		{
 			name:   "logging",
 			plugin: newStarlarkFromScript("testdata/logging.star"),
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("log",
 					map[string]string{},
 					map[string]interface{}{
@@ -2808,7 +2808,7 @@ func TestScript(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("log",
 					map[string]string{},
 					map[string]interface{}{
@@ -2821,7 +2821,7 @@ func TestScript(t *testing.T) {
 		{
 			name:   "multiple_metrics",
 			plugin: newStarlarkFromScript("testdata/multiple_metrics.star"),
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("mm",
 					map[string]string{},
 					map[string]interface{}{
@@ -2830,7 +2830,7 @@ func TestScript(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("mm2",
 					map[string]string{},
 					map[string]interface{}{
@@ -2850,7 +2850,7 @@ func TestScript(t *testing.T) {
 		{
 			name:   "multiple_metrics_with_json",
 			plugin: newStarlarkFromScript("testdata/multiple_metrics_with_json.star"),
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("json",
 					map[string]string{},
 					map[string]interface{}{
@@ -2859,7 +2859,7 @@ func TestScript(t *testing.T) {
 					time.Unix(1618488000, 999),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("json",
 					map[string]string{},
 					map[string]interface{}{
@@ -2879,7 +2879,7 @@ func TestScript(t *testing.T) {
 		{
 			name:   "fail",
 			plugin: newStarlarkFromScript("testdata/fail.star"),
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("fail",
 					map[string]string{},
 					map[string]interface{}{
@@ -2923,7 +2923,7 @@ func Benchmark(b *testing.B) {
 	var tests = []struct {
 		name   string
 		source string
-		input  []telegraf.Metric
+		input  []Dana.Metric
 	}{
 		{
 			name: "passthrough",
@@ -2931,7 +2931,7 @@ func Benchmark(b *testing.B) {
 def apply(metric):
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2950,7 +2950,7 @@ def apply(metric):
 	m.time = 0
 	return m
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -2967,7 +2967,7 @@ def apply(metric):
 	metric.name = "cpu"
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"time_idle": 42.0},
@@ -2982,7 +2982,7 @@ def apply(metric):
 	metric.tags['host'] = 'example.org'
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"host": "example.org",
@@ -3000,7 +3000,7 @@ def apply(metric):
 		return metric
 	return None
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -3020,7 +3020,7 @@ def apply(metric):
 		pass
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -3042,7 +3042,7 @@ def apply(metric):
 		v = metric.tags[k]
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -3063,7 +3063,7 @@ def apply(metric):
 		pass
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"a": "b",
@@ -3083,7 +3083,7 @@ def apply(metric):
 	metric.fields['host'] = 'example.org'
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -3101,7 +3101,7 @@ def apply(metric):
 		pass
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -3123,7 +3123,7 @@ def apply(metric):
 		v = metric.fields[k]
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -3144,7 +3144,7 @@ def apply(metric):
 		pass
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -3164,7 +3164,7 @@ def apply(metric):
 	metric.tags["result"] = '_'.join(metric.tags.values())
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"tag_1": "a",
@@ -3182,7 +3182,7 @@ def apply(metric):
 	metric.tags["result"] = '_'.join(metric.tags.values())
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"tag_1": "a",
@@ -3202,7 +3202,7 @@ def apply(metric):
 	metric.tags["result"] = '_'.join(metric.tags.values())
 	return metric
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"tag_1": "a",
@@ -3229,7 +3229,7 @@ def apply(metric):
 		return metric
 	return None
 `,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"tag_1": "foo",
@@ -3284,7 +3284,7 @@ func TestAllScriptTestData(t *testing.T) {
 				lines := strings.Split(string(b), "\n")
 				inputMetrics := parseMetricsFrom(t, lines, "Example Input:")
 				expectedErrorStr := parseErrorMessage(t, lines, "Example Output Error:")
-				var outputMetrics []telegraf.Metric
+				var outputMetrics []Dana.Metric
 				if expectedErrorStr == "" {
 					outputMetrics = parseMetricsFrom(t, lines, "Example Output:")
 				}
@@ -3422,8 +3422,8 @@ def apply(metric):
 		t.Run(tt.name, func(t *testing.T) {
 			// Create a tracking metric and tap the delivery information
 			var mu sync.Mutex
-			delivered := make([]telegraf.DeliveryInfo, 0, 1)
-			notify := func(di telegraf.DeliveryInfo) {
+			delivered := make([]Dana.DeliveryInfo, 0, 1)
+			notify := func(di Dana.DeliveryInfo) {
 				mu.Lock()
 				defer mu.Unlock()
 				delivered = append(delivered, di)
@@ -3498,8 +3498,8 @@ def apply(metric):
 		t.Run(tt.name, func(t *testing.T) {
 			// Create a tracking metric and tap the delivery information
 			var mu sync.Mutex
-			delivered := make([]telegraf.TrackingID, 0, tt.delivery)
-			notify := func(di telegraf.DeliveryInfo) {
+			delivered := make([]Dana.TrackingID, 0, tt.delivery)
+			notify := func(di Dana.DeliveryInfo) {
 				mu.Lock()
 				defer mu.Unlock()
 				delivered = append(delivered, di.ID())
@@ -3512,7 +3512,7 @@ def apply(metric):
 			require.NoError(t, plugin.Start(acc))
 
 			// Do the requested number of loops
-			expected := make([]telegraf.TrackingID, 0, tt.loops)
+			expected := make([]Dana.TrackingID, 0, tt.loops)
 			for i := 0; i < tt.loops; i++ {
 				// Process expected metrics and compare with resulting metrics
 				input, tid := metric.WithTracking(testutil.TestMetric(i), notify)
@@ -3555,7 +3555,7 @@ def apply(metric):
   return metric
 `
 	// Define the metrics
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{},
@@ -3574,7 +3574,7 @@ def apply(metric):
 			map[string]interface{}{"value": 42},
 			time.Unix(1713188113, 30),
 		)}
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{},
@@ -3632,7 +3632,7 @@ def apply(metric):
   return metric
 `
 	// Define the metrics
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{},
@@ -3651,7 +3651,7 @@ def apply(metric):
 			map[string]interface{}{"value": 42},
 			time.Unix(1713188113, 30),
 		)}
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"instance": "myhost"},
@@ -3683,7 +3683,7 @@ def apply(metric):
 	require.NoError(t, plugin.Init())
 
 	// Setup the "persisted" state
-	var pi telegraf.StatefulPlugin = plugin
+	var pi Dana.StatefulPlugin = plugin
 	var buf bytes.Buffer
 	require.NoError(t, gob.NewEncoder(&buf).Encode(map[string]interface{}{"instance": "myhost"}))
 	require.NoError(t, pi.SetState(buf.Bytes()))
@@ -3729,7 +3729,7 @@ def apply(metric):
 }
 
 // parses metric lines out of line protocol following a header, with a trailing blank line
-func parseMetricsFrom(t *testing.T, lines []string, header string) (metrics []telegraf.Metric) {
+func parseMetricsFrom(t *testing.T, lines []string, header string) (metrics []Dana.Metric) {
 	parser := &influx.Parser{}
 	require.NoError(t, parser.Init())
 
@@ -3775,7 +3775,7 @@ func parseErrorMessage(t *testing.T, lines []string, header string) string {
 	return strings.TrimLeft(lines[startIdx], "# ")
 }
 
-func testLoadFunc(module string, logger telegraf.Logger) (starlark.StringDict, error) {
+func testLoadFunc(module string, logger Dana.Logger) (starlark.StringDict, error) {
 	result, err := common.LoadFunc(module, logger)
 	if err != nil {
 		return nil, err

@@ -44,7 +44,7 @@ type Phpfpm struct {
 	Format  string          `toml:"format"`
 	Timeout config.Duration `toml:"timeout"`
 	Urls    []string        `toml:"urls"`
-	Log     telegraf.Logger `toml:"-"`
+	Log     Dana.Logger     `toml:"-"`
 	tls.ClientConfig
 
 	client *http.Client
@@ -117,7 +117,7 @@ func (p *Phpfpm) Init() error {
 	return nil
 }
 
-func (p *Phpfpm) Gather(acc telegraf.Accumulator) error {
+func (p *Phpfpm) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	for _, serv := range expandUrls(acc, p.Urls) {
 		wg.Add(1)
@@ -133,7 +133,7 @@ func (p *Phpfpm) Gather(acc telegraf.Accumulator) error {
 }
 
 // Request status page to get stat raw data and import it
-func (p *Phpfpm) gatherServer(addr string, acc telegraf.Accumulator) error {
+func (p *Phpfpm) gatherServer(addr string, acc Dana.Accumulator) error {
 	if strings.HasPrefix(addr, "http://") || strings.HasPrefix(addr, "https://") {
 		return p.gatherHTTP(addr, acc)
 	}
@@ -184,7 +184,7 @@ func (p *Phpfpm) gatherServer(addr string, acc telegraf.Accumulator) error {
 }
 
 // Gather stat using fcgi protocol
-func (p *Phpfpm) gatherFcgi(fcgi *conn, statusPath string, acc telegraf.Accumulator, addr string) error {
+func (p *Phpfpm) gatherFcgi(fcgi *conn, statusPath string, acc Dana.Accumulator, addr string) error {
 	fpmOutput, fpmErr, err := fcgi.request(map[string]string{
 		"SCRIPT_NAME":     "/" + statusPath,
 		"SCRIPT_FILENAME": statusPath,
@@ -203,7 +203,7 @@ func (p *Phpfpm) gatherFcgi(fcgi *conn, statusPath string, acc telegraf.Accumula
 }
 
 // Gather stat using http protocol
-func (p *Phpfpm) gatherHTTP(addr string, acc telegraf.Accumulator) error {
+func (p *Phpfpm) gatherHTTP(addr string, acc Dana.Accumulator) error {
 	u, err := url.Parse(addr)
 	if err != nil {
 		return fmt.Errorf("unable parse server address %q: %w", addr, err)
@@ -229,7 +229,7 @@ func (p *Phpfpm) gatherHTTP(addr string, acc telegraf.Accumulator) error {
 }
 
 // Import stat data into Telegraf system
-func (p *Phpfpm) importMetric(r io.Reader, acc telegraf.Accumulator, addr string) {
+func (p *Phpfpm) importMetric(r io.Reader, acc Dana.Accumulator, addr string) {
 	if p.Format == "json" {
 		p.parseJSON(r, acc, addr)
 	} else {
@@ -237,7 +237,7 @@ func (p *Phpfpm) importMetric(r io.Reader, acc telegraf.Accumulator, addr string
 	}
 }
 
-func parseLines(r io.Reader, acc telegraf.Accumulator, addr string) {
+func parseLines(r io.Reader, acc Dana.Accumulator, addr string) {
 	stats := make(poolStat)
 	var currentPool string
 
@@ -291,7 +291,7 @@ func parseLines(r io.Reader, acc telegraf.Accumulator, addr string) {
 	}
 }
 
-func (p *Phpfpm) parseJSON(r io.Reader, acc telegraf.Accumulator, addr string) {
+func (p *Phpfpm) parseJSON(r io.Reader, acc Dana.Accumulator, addr string) {
 	var metrics jsonMetrics
 	if err := json.NewDecoder(r).Decode(&metrics); err != nil {
 		p.Log.Errorf("Unable to decode JSON response: %s", err)
@@ -341,7 +341,7 @@ func (p *Phpfpm) parseJSON(r io.Reader, acc telegraf.Accumulator, addr string) {
 	}
 }
 
-func expandUrls(acc telegraf.Accumulator, urls []string) []string {
+func expandUrls(acc Dana.Accumulator, urls []string) []string {
 	addrs := make([]string, 0, len(urls))
 	for _, address := range urls {
 		if isNetworkURL(address) {
@@ -398,7 +398,7 @@ func isNetworkURL(addr string) bool {
 }
 
 func init() {
-	inputs.Add("phpfpm", func() telegraf.Input {
+	inputs.Add("phpfpm", func() Dana.Input {
 		return &Phpfpm{}
 	})
 }

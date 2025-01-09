@@ -12,12 +12,12 @@ func (w *Wireless) Init() error {
 	return nil
 }
 
-func (*Wireless) Gather(_ telegraf.Accumulator) error {
+func (*Wireless) Gather(_ Dana.Accumulator) error {
 	return nil
 }
 
 func init() {
-	inputs.Add("wireless", func() telegraf.Input {
+	inputs.Add("wireless", func() Dana.Input {
 		return &Wireless{}
 	})
 }

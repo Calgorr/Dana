@@ -37,7 +37,7 @@ func TestCases(t *testing.T) {
 	folders, err := os.ReadDir("testcases")
 	require.NoError(t, err)
 
-	inputs.Add("dummy", func() telegraf.Input { return &MockupInputPlugin{} })
+	inputs.Add("dummy", func() Dana.Input { return &MockupInputPlugin{} })
 
 	for _, f := range folders {
 		// Only handle folders
@@ -91,6 +91,6 @@ type MockupInputPlugin struct {
 func (m *MockupInputPlugin) SampleConfig() string {
 	return "Mockup test input plugin"
 }
-func (m *MockupInputPlugin) Gather(_ telegraf.Accumulator) error {
+func (m *MockupInputPlugin) Gather(_ Dana.Accumulator) error {
 	return nil
 }

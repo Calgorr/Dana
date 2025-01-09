@@ -45,7 +45,7 @@ type OpenTSDB struct {
 
 	Separator string `toml:"separator"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func ToLineFormat(tags map[string]string) string {
@@ -84,7 +84,7 @@ func (o *OpenTSDB) Connect() error {
 	return nil
 }
 
-func (o *OpenTSDB) Write(metrics []telegraf.Metric) error {
+func (o *OpenTSDB) Write(metrics []Dana.Metric) error {
 	if len(metrics) == 0 {
 		return nil
 	}
@@ -102,7 +102,7 @@ func (o *OpenTSDB) Write(metrics []telegraf.Metric) error {
 	return errors.New("unknown scheme in host parameter")
 }
 
-func (o *OpenTSDB) WriteHTTP(metrics []telegraf.Metric, u *url.URL) error {
+func (o *OpenTSDB) WriteHTTP(metrics []Dana.Metric, u *url.URL) error {
 	http := openTSDBHttp{
 		Host:      u.Host,
 		Port:      o.Port,
@@ -149,7 +149,7 @@ func (o *OpenTSDB) WriteHTTP(metrics []telegraf.Metric, u *url.URL) error {
 	return http.flush()
 }
 
-func (o *OpenTSDB) WriteTelnet(metrics []telegraf.Metric, u *url.URL) error {
+func (o *OpenTSDB) WriteTelnet(metrics []Dana.Metric, u *url.URL) error {
 	// Send Data with telnet / socket communication
 	uri := fmt.Sprintf("%s:%d", u.Host, o.Port)
 	tcpAddr, err := net.ResolveTCPAddr("tcp", uri)
@@ -250,7 +250,7 @@ func sanitize(value string) string {
 }
 
 func init() {
-	outputs.Add("opentsdb", func() telegraf.Output {
+	outputs.Add("opentsdb", func() Dana.Output {
 		return &OpenTSDB{
 			HTTPPath:  defaultHTTPPath,
 			Separator: defaultSeparator,

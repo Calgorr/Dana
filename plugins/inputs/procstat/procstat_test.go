@@ -139,7 +139,7 @@ func (*testProc) MemoryMaps(bool) (*[]gopsprocess.MemoryMapsStat, error) {
 	return &stats, nil
 }
 
-func (p *testProc) metrics(prefix string, cfg *collectionConfig, t time.Time) ([]telegraf.Metric, error) {
+func (p *testProc) metrics(prefix string, cfg *collectionConfig, t time.Time) ([]Dana.Metric, error) {
 	if prefix != "" {
 		prefix += "_"
 	}
@@ -209,7 +209,7 @@ func (p *testProc) metrics(prefix string, cfg *collectionConfig, t time.Time) ([
 		fields[prefix+"user"] = "testuser"
 	}
 
-	return []telegraf.Metric{metric.New("procstat", tags, fields, t)}, nil
+	return []Dana.Metric{metric.New("procstat", tags, fields, t)}, nil
 }
 
 var processID = pid(42)
@@ -250,7 +250,7 @@ func TestInitMissingPidMethod(t *testing.T) {
 }
 
 func TestGather_CreateProcessErrorOk(t *testing.T) {
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"procstat_lookup",
 			map[string]string{
@@ -264,7 +264,7 @@ func TestGather_CreateProcessErrorOk(t *testing.T) {
 				"running":     int64(0),
 			},
 			time.Unix(0, 0),
-			telegraf.Untyped,
+			Dana.Untyped,
 		),
 	}
 
@@ -286,7 +286,7 @@ func TestGather_CreateProcessErrorOk(t *testing.T) {
 }
 
 func TestGather_ProcessName(t *testing.T) {
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"procstat",
 			map[string]string{
@@ -321,7 +321,7 @@ func TestGather_ProcessName(t *testing.T) {
 				"write_count":                  uint64(0),
 			},
 			time.Unix(0, 0),
-			telegraf.Untyped,
+			Dana.Untyped,
 		),
 		testutil.MustMetric(
 			"procstat_lookup",
@@ -336,7 +336,7 @@ func TestGather_ProcessName(t *testing.T) {
 				"running":     int64(1),
 			},
 			time.Unix(0, 0),
-			telegraf.Untyped,
+			Dana.Untyped,
 		),
 	}
 

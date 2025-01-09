@@ -64,7 +64,7 @@ func (*NeptuneApex) SampleConfig() string {
 	return sampleConfig
 }
 
-func (n *NeptuneApex) Gather(acc telegraf.Accumulator) error {
+func (n *NeptuneApex) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	for _, server := range n.Servers {
 		wg.Add(1)
@@ -78,7 +78,7 @@ func (n *NeptuneApex) Gather(acc telegraf.Accumulator) error {
 }
 
 func (n *NeptuneApex) gatherServer(
-	acc telegraf.Accumulator, server string) error {
+	acc Dana.Accumulator, server string) error {
 	resp, err := n.sendRequest(server)
 	if err != nil {
 		return err
@@ -88,7 +88,7 @@ func (n *NeptuneApex) gatherServer(
 
 // parseXML is strict on the input and does not do best-effort parsing.
 // This is because of the life-support nature of the Neptune Apex.
-func parseXML(acc telegraf.Accumulator, data []byte) error {
+func parseXML(acc Dana.Accumulator, data []byte) error {
 	r := xmlReply{}
 	err := xml.Unmarshal(data, &r)
 	if err != nil {
@@ -261,7 +261,7 @@ func (n *NeptuneApex) sendRequest(server string) ([]byte, error) {
 }
 
 func init() {
-	inputs.Add("neptune_apex", func() telegraf.Input {
+	inputs.Add("neptune_apex", func() Dana.Input {
 		return &NeptuneApex{
 			httpClient: &http.Client{
 				Timeout: 5 * time.Second,

@@ -53,7 +53,7 @@ func (r *rule) init() error {
 	return nil
 }
 
-func (r *rule) apply(m telegraf.Metric) (pass, applies bool) {
+func (r *rule) apply(m Dana.Metric) (pass, applies bool) {
 	// Check the metric name
 	if r.nameFilter != nil {
 		if !r.nameFilter.Match(m.Name()) {

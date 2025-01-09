@@ -16,7 +16,7 @@ func TestParse(t *testing.T) {
 		name        string
 		measurement string
 		bytes       []byte
-		want        []telegraf.Metric
+		want        []Dana.Metric
 		wantErr     bool
 	}{
 		{
@@ -26,7 +26,7 @@ func TestParse(t *testing.T) {
 			name:        "test without trailing end",
 			bytes:       []byte("foo=\"bar\""),
 			measurement: "testlog",
-			want: []telegraf.Metric{
+			want: []Dana.Metric{
 				testutil.MustMetric(
 					"testlog",
 					map[string]string{},
@@ -41,7 +41,7 @@ func TestParse(t *testing.T) {
 			name:        "test with trailing end",
 			bytes:       []byte("foo=\"bar\"\n"),
 			measurement: "testlog",
-			want: []telegraf.Metric{
+			want: []Dana.Metric{
 				testutil.MustMetric(
 					"testlog",
 					map[string]string{},
@@ -56,7 +56,7 @@ func TestParse(t *testing.T) {
 			name:        "logfmt parser returns all the fields",
 			bytes:       []byte(`ts=2018-07-24T19:43:40.275Z lvl=info msg="http request" method=POST`),
 			measurement: "testlog",
-			want: []telegraf.Metric{
+			want: []Dana.Metric{
 				testutil.MustMetric(
 					"testlog",
 					map[string]string{},
@@ -76,7 +76,7 @@ func TestParse(t *testing.T) {
 				"ts=2018-07-24T19:43:40.275Z lvl=info msg=\"http request\" method=POST\nparent_id=088876RL000 duration=7.45 log_id=09R4e4Rl000",
 			),
 			measurement: "testlog",
-			want: []telegraf.Metric{
+			want: []Dana.Metric{
 				testutil.MustMetric(
 					"testlog",
 					map[string]string{},
@@ -144,7 +144,7 @@ func TestParseLine(t *testing.T) {
 		name        string
 		s           string
 		measurement string
-		want        telegraf.Metric
+		want        Dana.Metric
 		wantErr     bool
 	}{
 		{
@@ -206,7 +206,7 @@ func TestTags(t *testing.T) {
 		measurement string
 		tagKeys     []string
 		s           string
-		want        telegraf.Metric
+		want        Dana.Metric
 		wantErr     bool
 	}{
 		{
@@ -289,7 +289,7 @@ func TestBenchmarkData(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"",
 			map[string]string{

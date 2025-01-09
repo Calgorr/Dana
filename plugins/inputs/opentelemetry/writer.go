@@ -17,7 +17,7 @@ var (
 )
 
 type writeToAccumulator struct {
-	accumulator telegraf.Accumulator
+	accumulator Dana.Accumulator
 }
 
 func (w *writeToAccumulator) NewBatch() otel2influx.InfluxWriterBatch {

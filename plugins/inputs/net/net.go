@@ -37,7 +37,7 @@ func (*Net) SampleConfig() string {
 func (n *Net) Init() error {
 	if !n.IgnoreProtocolStats {
 		config.PrintOptionValueDeprecationNotice("inputs.net", "ignore_protocol_stats", "false",
-			telegraf.DeprecationInfo{
+			Dana.DeprecationInfo{
 				Since:     "1.27.3",
 				RemovalIn: "1.36.0",
 				Notice:    "use the 'inputs.nstat' plugin instead for protocol stats",
@@ -48,7 +48,7 @@ func (n *Net) Init() error {
 	return nil
 }
 
-func (n *Net) Gather(acc telegraf.Accumulator) error {
+func (n *Net) Gather(acc Dana.Accumulator) error {
 	netio, err := n.ps.NetIO()
 	if err != nil {
 		return fmt.Errorf("error getting net io info: %w", err)
@@ -152,7 +152,7 @@ func getInterfaceSpeed(ioName string) int64 {
 }
 
 func init() {
-	inputs.Add("net", func() telegraf.Input {
+	inputs.Add("net", func() Dana.Input {
 		return &Net{ps: system.NewSystemPS()}
 	})
 }

@@ -21,7 +21,7 @@ func TestName(t *testing.T) {
 	err := plugin.Init()
 	require.NoError(t, err)
 
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},
@@ -33,7 +33,7 @@ func TestName(t *testing.T) {
 	}
 
 	actual := plugin.Apply(input...)
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{
@@ -57,7 +57,7 @@ func TestNameTemplate(t *testing.T) {
 	err := plugin.Init()
 	require.NoError(t, err)
 
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{"foo": "measurement"},
@@ -69,7 +69,7 @@ func TestNameTemplate(t *testing.T) {
 	}
 
 	actual := plugin.Apply(input...)
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{
@@ -98,13 +98,13 @@ func TestTagTemplateConcatenate(t *testing.T) {
 	}
 
 	// create metric for testing
-	input := []telegraf.Metric{testutil.MustMetric("Tags", map[string]string{"hostname": "localhost", "level": "debug"}, nil, now)}
+	input := []Dana.Metric{testutil.MustMetric("Tags", map[string]string{"hostname": "localhost", "level": "debug"}, nil, now)}
 
 	// act
 	actual := tmp.Apply(input[0])
 
 	// assert
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("Tags", map[string]string{"hostname": "localhost", "level": "debug", "topic": "localhost.debug"}, nil, now),
 	}
 	testutil.RequireMetricsEqual(t, expected, actual)
@@ -153,7 +153,7 @@ func TestTagAndFieldConcatenate(t *testing.T) {
 	actual := tmp.Apply(m1)
 
 	// assert
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"weather",
 			map[string]string{"location": "us-midwest", "LocalTemp": "us-midwest is too warm"},
@@ -176,7 +176,7 @@ func TestFieldList(t *testing.T) {
 	// Verify
 	expected := m.Copy()
 	expected.AddTag("fields", "map[value:1.23]")
-	testutil.RequireMetricsEqual(t, []telegraf.Metric{expected}, actual)
+	testutil.RequireMetricsEqual(t, []Dana.Metric{expected}, actual)
 }
 
 func TestTagList(t *testing.T) {
@@ -191,7 +191,7 @@ func TestTagList(t *testing.T) {
 	// Verify
 	expected := m.Copy()
 	expected.AddTag("tags", "map[tag1:value1]")
-	testutil.RequireMetricsEqual(t, []telegraf.Metric{expected}, actual)
+	testutil.RequireMetricsEqual(t, []Dana.Metric{expected}, actual)
 }
 
 func TestFields(t *testing.T) {
@@ -210,7 +210,7 @@ func TestFields(t *testing.T) {
 	// Verify
 	expected := m.Copy()
 	expected.AddTag("fields", "map[value:1.23]")
-	testutil.RequireMetricsEqual(t, []telegraf.Metric{expected}, actual)
+	testutil.RequireMetricsEqual(t, []Dana.Metric{expected}, actual)
 }
 
 func TestTags(t *testing.T) {
@@ -229,7 +229,7 @@ func TestTags(t *testing.T) {
 	// Verify
 	expected := m.Copy()
 	expected.AddTag("tags", "map[tag1:value1]")
-	testutil.RequireMetricsEqual(t, []telegraf.Metric{expected}, actual)
+	testutil.RequireMetricsEqual(t, []Dana.Metric{expected}, actual)
 }
 
 func TestString(t *testing.T) {
@@ -248,7 +248,7 @@ func TestString(t *testing.T) {
 	// Verify
 	expected := m.Copy()
 	expected.AddTag("tags", "test1 map[tag1:value1] map[value:1.23] 1257894000000000000")
-	testutil.RequireMetricsEqual(t, []telegraf.Metric{expected}, actual)
+	testutil.RequireMetricsEqual(t, []Dana.Metric{expected}, actual)
 }
 
 func TestDot(t *testing.T) {
@@ -263,14 +263,14 @@ func TestDot(t *testing.T) {
 	// Verify
 	expected := m.Copy()
 	expected.AddTag("metric", "test1 map[tag1:value1] map[value:1.23] 1257894000000000000")
-	testutil.RequireMetricsEqual(t, []telegraf.Metric{expected}, actual)
+	testutil.RequireMetricsEqual(t, []Dana.Metric{expected}, actual)
 }
 
 func TestTracking(t *testing.T) {
 	// Create a tracking metric and tap the delivery information
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, 1)
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, 1)
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
@@ -281,7 +281,7 @@ func TestTracking(t *testing.T) {
 	// Create an expectation
 	e := m.Copy()
 	e.AddTag("metric", "test1 map[tag1:value1] map[value:1.23] 1257894000000000000")
-	expected := []telegraf.Metric{e}
+	expected := []Dana.Metric{e}
 
 	// Configure the plugin
 	plugin := TemplateProcessor{Tag: "metric", Template: "{{.}}"}

@@ -27,7 +27,7 @@ type NebiusCloudMonitoring struct {
 	Timeout  config.Duration `toml:"timeout"`
 	Endpoint string          `toml:"endpoint"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	metadataTokenURL       string
 	metadataFolderURL      string
@@ -132,7 +132,7 @@ func (a *NebiusCloudMonitoring) Close() error {
 }
 
 // Write writes metrics to the remote endpoint
-func (a *NebiusCloudMonitoring) Write(metrics []telegraf.Metric) error {
+func (a *NebiusCloudMonitoring) Write(metrics []Dana.Metric) error {
 	var nebiusCloudMonitoringMetrics []nebiusCloudMonitoringMetric
 	for _, m := range metrics {
 		for _, field := range m.FieldList() {
@@ -242,7 +242,7 @@ func (a *NebiusCloudMonitoring) send(body []byte) error {
 }
 
 func init() {
-	outputs.Add("nebius_cloud_monitoring", func() telegraf.Output {
+	outputs.Add("nebius_cloud_monitoring", func() Dana.Output {
 		return &NebiusCloudMonitoring{}
 	})
 }

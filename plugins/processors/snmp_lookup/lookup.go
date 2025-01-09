@@ -34,7 +34,7 @@ type Lookup struct {
 	CacheTTL              config.Duration `toml:"cache_ttl"`
 	MinTimeBetweenUpdates config.Duration `toml:"min_time_between_updates"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	table             snmp.Table
 	cache             *store
@@ -79,7 +79,7 @@ func (l *Lookup) Init() (err error) {
 	return l.table.Init(translator)
 }
 
-func (l *Lookup) Start(acc telegraf.Accumulator) error {
+func (l *Lookup) Start(acc Dana.Accumulator) error {
 	l.backlog = newBacklog(acc, l.Log, l.Ordered)
 
 	l.cache = newStore(l.CacheSize, l.CacheTTL, l.ParallelLookups, l.MinTimeBetweenUpdates)
@@ -100,7 +100,7 @@ func (l *Lookup) Stop() {
 	}
 }
 
-func (l *Lookup) Add(m telegraf.Metric, acc telegraf.Accumulator) error {
+func (l *Lookup) Add(m Dana.Metric, acc Dana.Accumulator) error {
 	agent, found := m.GetTag(l.AgentTag)
 	if !found {
 		l.Log.Warn("Agent tag missing")
@@ -172,7 +172,7 @@ func (l *Lookup) getConnection(agent string) (snmp.Connection, error) {
 }
 
 func init() {
-	processors.AddStreaming("snmp_lookup", func() telegraf.StreamingProcessor {
+	processors.AddStreaming("snmp_lookup", func() Dana.StreamingProcessor {
 		return &Lookup{
 			AgentTag:              "source",
 			IndexTag:              "index",

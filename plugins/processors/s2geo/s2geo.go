@@ -32,7 +32,7 @@ func (g *Geo) Init() error {
 	return nil
 }
 
-func (g *Geo) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (g *Geo) Apply(in ...Dana.Metric) []Dana.Metric {
 	for _, point := range in {
 		var latOk, lonOk bool
 		var lat, lon float64
@@ -56,7 +56,7 @@ func (g *Geo) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("s2geo", func() telegraf.Processor {
+	processors.Add("s2geo", func() Dana.Processor {
 		return &Geo{
 			LatField:  "lat",
 			LonField:  "lon",

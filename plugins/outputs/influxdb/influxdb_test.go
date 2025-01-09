@@ -23,14 +23,14 @@ type MockClient struct {
 	DatabaseF       func() string
 	CloseF          func()
 
-	log telegraf.Logger
+	log Dana.Logger
 }
 
 func (c *MockClient) URL() string {
 	return c.URLF()
 }
 
-func (c *MockClient) Write(context.Context, []telegraf.Metric) error {
+func (c *MockClient) Write(context.Context, []Dana.Metric) error {
 	return c.WriteF()
 }
 
@@ -46,7 +46,7 @@ func (c *MockClient) Close() {
 	c.CloseF()
 }
 
-func (c *MockClient) SetLogger(log telegraf.Logger) {
+func (c *MockClient) SetLogger(log Dana.Logger) {
 	c.log = log
 }
 
@@ -208,7 +208,7 @@ func TestWriteRecreateDatabaseIfDatabaseNotFound(t *testing.T) {
 		},
 		time.Unix(0, 0),
 	)
-	metrics := []telegraf.Metric{m}
+	metrics := []Dana.Metric{m}
 
 	err = output.Write(metrics)
 	// We only have one URL, so we expect an error

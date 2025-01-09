@@ -66,7 +66,7 @@ func TestOpenTelemetry(t *testing.T) {
 		},
 		time.Unix(0, 1622848686000000000))
 
-	err = plugin.Write([]telegraf.Metric{input})
+	err = plugin.Write([]Dana.Metric{input})
 	require.NoError(t, err)
 
 	got := m.GotMetrics()

@@ -43,11 +43,11 @@ func (p *Postgresql) Init() error {
 	return nil
 }
 
-func (p *Postgresql) Start(_ telegraf.Accumulator) error {
+func (p *Postgresql) Start(_ Dana.Accumulator) error {
 	return p.service.Start()
 }
 
-func (p *Postgresql) Gather(acc telegraf.Accumulator) error {
+func (p *Postgresql) Gather(acc Dana.Accumulator) error {
 	var query string
 	if len(p.Databases) == 0 && len(p.IgnoredDatabases) == 0 {
 		query = `SELECT * FROM pg_stat_database`
@@ -106,7 +106,7 @@ func (p *Postgresql) Stop() {
 	p.service.Stop()
 }
 
-func (p *Postgresql) accRow(row *sql.Rows, acc telegraf.Accumulator, columns []string) error {
+func (p *Postgresql) accRow(row *sql.Rows, acc Dana.Accumulator, columns []string) error {
 	var dbname bytes.Buffer
 
 	// this is where we'll store the column name with its *interface{}
@@ -154,7 +154,7 @@ func (p *Postgresql) accRow(row *sql.Rows, acc telegraf.Accumulator, columns []s
 }
 
 func init() {
-	inputs.Add("postgresql", func() telegraf.Input {
+	inputs.Add("postgresql", func() Dana.Input {
 		return &Postgresql{
 			Config: postgresql.Config{
 				MaxIdle: 1,

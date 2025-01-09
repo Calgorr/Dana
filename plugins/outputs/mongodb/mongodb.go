@@ -60,7 +60,7 @@ type MongoDB struct {
 	Password            config.Secret   `toml:"password"`
 	ServerSelectTimeout config.Duration `toml:"timeout"`
 	TTL                 config.Duration `toml:"ttl"`
-	Log                 telegraf.Logger `toml:"-"`
+	Log                 Dana.Logger     `toml:"-"`
 	client              *mongo.Client
 	clientOptions       *options.ClientOptions
 	collections         map[string]bson.M
@@ -198,7 +198,7 @@ func (s *MongoDB) Close() error {
 // all metric/measurement fields are parent level of document
 // metadata field is named "tags"
 // mongodb stores timestamp as UTC. conversion should be performed during reads in app or in aggregation pipeline
-func marshalMetric(metric telegraf.Metric) bson.D {
+func marshalMetric(metric Dana.Metric) bson.D {
 	var bdoc bson.D
 	for k, v := range metric.Fields() {
 		bdoc = append(bdoc, primitive.E{Key: k, Value: v})
@@ -214,7 +214,7 @@ func marshalMetric(metric telegraf.Metric) bson.D {
 	return bdoc
 }
 
-func (s *MongoDB) Write(metrics []telegraf.Metric) error {
+func (s *MongoDB) Write(metrics []Dana.Metric) error {
 	ctx := context.Background()
 	for _, metric := range metrics {
 		if err := s.createTimeSeriesCollection(metric.Name()); err != nil {
@@ -229,5 +229,5 @@ func (s *MongoDB) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("mongodb", func() telegraf.Output { return &MongoDB{} })
+	outputs.Add("mongodb", func() Dana.Output { return &MongoDB{} })
 }

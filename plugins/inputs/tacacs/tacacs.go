@@ -26,7 +26,7 @@ type Tacacs struct {
 	Secret          config.Secret   `toml:"secret"`
 	RequestAddr     string          `toml:"request_ip"`
 	ResponseTimeout config.Duration `toml:"response_timeout"`
-	Log             telegraf.Logger `toml:"-"`
+	Log             Dana.Logger     `toml:"-"`
 	clients         []tacplus.Client
 	authStart       tacplus.AuthenStart
 }
@@ -96,7 +96,7 @@ func AuthenReplyToString(code uint8) string {
 	return "AuthenStatusUnknown(" + strconv.FormatUint(uint64(code), 10) + ")"
 }
 
-func (t *Tacacs) Gather(acc telegraf.Accumulator) error {
+func (t *Tacacs) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	for idx := range t.clients {
@@ -111,7 +111,7 @@ func (t *Tacacs) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (t *Tacacs) pollServer(acc telegraf.Accumulator, client *tacplus.Client) error {
+func (t *Tacacs) pollServer(acc Dana.Accumulator, client *tacplus.Client) error {
 	// Create the fields for this metric
 	tags := map[string]string{"source": client.Addr}
 	fields := make(map[string]interface{})
@@ -203,7 +203,7 @@ func (t *Tacacs) pollServer(acc telegraf.Accumulator, client *tacplus.Client) er
 }
 
 func init() {
-	inputs.Add("tacacs", func() telegraf.Input {
+	inputs.Add("tacacs", func() Dana.Input {
 		return &Tacacs{ResponseTimeout: config.Duration(time.Second * 5)}
 	})
 }

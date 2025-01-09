@@ -87,7 +87,7 @@ func TestJSONSuccess(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, uint64(5), acc.NMetrics())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"fibaro",
 			map[string]string{
@@ -219,7 +219,7 @@ func TestHC3JSON(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, uint64(5), acc.NMetrics())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"fibaro",
 			map[string]string{

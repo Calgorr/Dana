@@ -37,14 +37,14 @@ type Parser struct {
 	MetricVersion   int               `toml:"openmetrics_metric_version"`
 	Header          http.Header       `toml:"-"` // set by the input plugin
 	DefaultTags     map[string]string `toml:"-"`
-	Log             telegraf.Logger   `toml:"-"`
+	Log             Dana.Logger       `toml:"-"`
 }
 
 func (p *Parser) SetDefaultTags(tags map[string]string) {
 	p.DefaultTags = tags
 }
 
-func (p *Parser) Parse(data []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(data []byte) ([]Dana.Metric, error) {
 	// Determine the metric transport-type derived from the response header
 	contentType := p.Header.Get("Content-Type")
 	var mediaType string
@@ -87,7 +87,7 @@ func (p *Parser) Parse(data []byte) ([]telegraf.Metric, error) {
 	}
 
 	// Convert the OpenMetrics metrics into Telegraf metrics
-	var metrics []telegraf.Metric
+	var metrics []Dana.Metric
 	for _, mf := range metricFamilies {
 		switch p.MetricVersion {
 		case 0, 2:
@@ -101,7 +101,7 @@ func (p *Parser) Parse(data []byte) ([]telegraf.Metric, error) {
 	return metrics, nil
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line))
 	if err != nil {
 		return nil, err
@@ -136,7 +136,7 @@ func getTagsFromLabels(m *Metric, defaultTags map[string]string) map[string]stri
 
 func init() {
 	parsers.Add("openmetrics",
-		func(string) telegraf.Parser {
+		func(string) Dana.Parser {
 			return &Parser{}
 		},
 	)

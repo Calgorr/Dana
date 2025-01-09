@@ -22,10 +22,10 @@ type Parser struct {
 }
 
 // Parse converts a slice of bytes in "application/x-www-form-urlencoded" format into metrics
-func (p Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (p Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 	buf = bytes.TrimSpace(buf)
 	if len(buf) == 0 {
-		return make([]telegraf.Metric, 0), nil
+		return make([]Dana.Metric, 0), nil
 	}
 
 	values, err := url.ParseQuery(string(buf))
@@ -42,11 +42,11 @@ func (p Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 
 	m := metric.New(p.MetricName, tags, fields, time.Now().UTC())
 
-	return []telegraf.Metric{m}, nil
+	return []Dana.Metric{m}, nil
 }
 
 // ParseLine delegates a single line of text to the Parse function
-func (p Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line))
 	if err != nil {
 		return nil, err
@@ -101,7 +101,7 @@ func (p Parser) parseFields(values url.Values) map[string]interface{} {
 
 func init() {
 	parsers.Add("form_urlencoded",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{MetricName: defaultMetricName}
 		})
 }

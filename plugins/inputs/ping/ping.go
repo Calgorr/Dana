@@ -39,11 +39,11 @@ type Ping struct {
 	Percentiles  []int    `toml:"percentiles"`   // Calculate the given percentiles when using native method
 	Binary       string   `toml:"binary"`        // Ping executable binary
 	// Arguments for ping command. When arguments are not empty, system binary will be used and other options (ping_interval, timeout, etc.) will be ignored
-	Arguments []string        `toml:"arguments"`
-	IPv4      bool            `toml:"ipv4"` // Whether to resolve addresses using ipv4 or not.
-	IPv6      bool            `toml:"ipv6"` // Whether to resolve addresses using ipv6 or not.
-	Size      *int            `toml:"size"` // Packet size
-	Log       telegraf.Logger `toml:"-"`
+	Arguments []string    `toml:"arguments"`
+	IPv4      bool        `toml:"ipv4"` // Whether to resolve addresses using ipv4 or not.
+	IPv6      bool        `toml:"ipv6"` // Whether to resolve addresses using ipv6 or not.
+	Size      *int        `toml:"size"` // Packet size
+	Log       Dana.Logger `toml:"-"`
 
 	wg             sync.WaitGroup // wg is used to wait for ping with multiple URLs
 	calcInterval   time.Duration  // Pre-calculated interval and timeout
@@ -93,7 +93,7 @@ func (p *Ping) Init() error {
 	return nil
 }
 
-func (p *Ping) Gather(acc telegraf.Accumulator) error {
+func (p *Ping) Gather(acc Dana.Accumulator) error {
 	for _, host := range p.Urls {
 		p.wg.Add(1)
 		go func(host string) {
@@ -191,7 +191,7 @@ func (p *Ping) nativePing(destination string) (*pingStats, error) {
 	return ps, nil
 }
 
-func (p *Ping) pingToURLNative(destination string, acc telegraf.Accumulator) {
+func (p *Ping) pingToURLNative(destination string, acc Dana.Accumulator) {
 	tags := map[string]string{"url": destination}
 
 	stats, err := p.nativePingFunc(destination)
@@ -295,7 +295,7 @@ func hostPinger(binary string, timeout float64, args ...string) (string, error) 
 }
 
 func init() {
-	inputs.Add("ping", func() telegraf.Input {
+	inputs.Add("ping", func() Dana.Input {
 		p := &Ping{
 			pingHost:     hostPinger,
 			PingInterval: 1.0,

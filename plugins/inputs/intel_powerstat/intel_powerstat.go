@@ -32,7 +32,7 @@ type PowerStat struct {
 	ExcludedCPUs     []string            `toml:"excluded_cpus"`
 	EventDefinitions string              `toml:"event_definitions"`
 	MsrReadTimeout   config.Duration     `toml:"msr_read_timeout"`
-	Log              telegraf.Logger     `toml:"-"`
+	Log              Dana.Logger         `toml:"-"`
 
 	parsedIncludedCores []int
 	parsedExcludedCores []int
@@ -76,7 +76,7 @@ func (p *PowerStat) Init() error {
 }
 
 // Start initializes the metricFetcher interface of the receiver to gather metrics.
-func (p *PowerStat) Start(_ telegraf.Accumulator) error {
+func (p *PowerStat) Start(_ Dana.Accumulator) error {
 	opts := p.option.generate(optConfig{
 		cpuMetrics:     p.CPUMetrics,
 		packageMetrics: p.PackageMetrics,
@@ -104,7 +104,7 @@ func (p *PowerStat) Start(_ telegraf.Accumulator) error {
 	return nil
 }
 
-func (p *PowerStat) Gather(acc telegraf.Accumulator) error {
+func (p *PowerStat) Gather(acc Dana.Accumulator) error {
 	// gather CPU metrics relying on coreFreq and msr which share CPU IDs.
 	if p.needsCoreFreq || p.needsMsrCPU {
 		p.addCPUMetrics(acc)
@@ -235,7 +235,7 @@ func (p *PowerStat) parsePackageMetrics() error {
 // Also, it warns if deprecated metric has been set.
 func (p *PowerStat) parseCPUMetrics() error {
 	if slices.Contains(p.CPUMetrics, cpuBusyCycles) {
-		config.PrintOptionValueDeprecationNotice("inputs.intel_powerstat", "cpu_metrics", cpuBusyCycles, telegraf.DeprecationInfo{
+		config.PrintOptionValueDeprecationNotice("inputs.intel_powerstat", "cpu_metrics", cpuBusyCycles, Dana.DeprecationInfo{
 			Since:     "1.23.0",
 			RemovalIn: "1.35.0;",
 			Notice:    "'cpu_c0_state_residency' metric name should be used instead.",
@@ -404,7 +404,7 @@ func parseCoreRange(coreRange string) ([]int, error) {
 
 // addCPUMetrics takes an accumulator, and adds to it enabled metrics which rely on
 // coreFreq and msr.
-func (p *PowerStat) addCPUMetrics(acc telegraf.Accumulator) {
+func (p *PowerStat) addCPUMetrics(acc Dana.Accumulator) {
 	for _, cpuID := range p.fetcher.GetMsrCPUIDs() {
 		coreID, packageID, err := getDataCPUID(p.fetcher, cpuID)
 		if err != nil {
@@ -427,7 +427,7 @@ func (p *PowerStat) addCPUMetrics(acc telegraf.Accumulator) {
 // addPerCPUMsrMetrics adds to the accumulator enabled metrics, which rely on msr,
 // for a given CPU ID. MSR-related metrics comprise single-time MSR read and several
 // time-related MSR offset reads.
-func (p *PowerStat) addPerCPUMsrMetrics(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addPerCPUMsrMetrics(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	// cpuTemperature metric is a single MSR offset read.
 	if slices.Contains(p.CPUMetrics, cpuTemperature) {
 		p.addCPUTemperature(acc, cpuID, coreID, packageID)
@@ -464,7 +464,7 @@ func (p *PowerStat) addPerCPUMsrMetrics(acc telegraf.Accumulator, cpuID, coreID,
 // addCPUTimeRelatedMsrMetrics adds to the accumulator enabled time-related MSR metrics,
 // for a given CPU ID. NOTE: Requires to run first fetcher.UpdatePerCPUMetrics method
 // to update the values of MSR offsets read.
-func (p *PowerStat) addCPUTimeRelatedMsrMetrics(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUTimeRelatedMsrMetrics(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	for _, m := range p.parsedCPUTimedMsrMetrics {
 		switch m {
 		case cpuC0StateResidency:
@@ -486,7 +486,7 @@ func (p *PowerStat) addCPUTimeRelatedMsrMetrics(acc telegraf.Accumulator, cpuID,
 }
 
 // addCPUPerfMetrics takes an accumulator, and adds to it enabled metrics which rely on perf.
-func (p *PowerStat) addCPUPerfMetrics(acc telegraf.Accumulator) {
+func (p *PowerStat) addCPUPerfMetrics(acc Dana.Accumulator) {
 	var moduleErr *powertelemetry.ModuleNotInitializedError
 
 	// Read events related to perf-related metrics.
@@ -520,7 +520,7 @@ func (p *PowerStat) addCPUPerfMetrics(acc telegraf.Accumulator) {
 }
 
 // addPerCPUPerfMetrics adds to the accumulator enabled metrics, which rely on perf, for a given CPU ID.
-func (p *PowerStat) addPerCPUPerfMetrics(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addPerCPUPerfMetrics(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	for _, m := range p.parsedCPUPerfMetrics {
 		switch m {
 		case cpuC0SubstateC01Percent:
@@ -549,7 +549,7 @@ func getDataCPUID(t topologyFetcher, cpuID int) (coreID, packageID int, err erro
 }
 
 // addPackageMetrics takes an accumulator, and adds enabled package metrics to it.
-func (p *PowerStat) addPackageMetrics(acc telegraf.Accumulator) {
+func (p *PowerStat) addPackageMetrics(acc Dana.Accumulator) {
 	for _, packageID := range p.fetcher.GetPackageIDs() {
 		// Add requested metrics which rely on rapl.
 		if p.needsRapl {
@@ -569,7 +569,7 @@ func (p *PowerStat) addPackageMetrics(acc telegraf.Accumulator) {
 }
 
 // addPerPackageRaplMetrics adds to the accumulator enabled metrics, which rely on rapl, for a given package ID.
-func (p *PowerStat) addPerPackageRaplMetrics(acc telegraf.Accumulator, packageID int) {
+func (p *PowerStat) addPerPackageRaplMetrics(acc Dana.Accumulator, packageID int) {
 	for _, m := range p.parsedPackageRaplMetrics {
 		switch m {
 		case packageCurrentPowerConsumption:
@@ -583,7 +583,7 @@ func (p *PowerStat) addPerPackageRaplMetrics(acc telegraf.Accumulator, packageID
 }
 
 // addPerPackageMsrMetrics adds to the accumulator enabled metrics, which rely on msr registers, for a given package ID.
-func (p *PowerStat) addPerPackageMsrMetrics(acc telegraf.Accumulator, packageID int) {
+func (p *PowerStat) addPerPackageMsrMetrics(acc Dana.Accumulator, packageID int) {
 	for _, m := range p.parsedPackageMsrMetrics {
 		switch m {
 		case packageCPUBaseFrequency:
@@ -595,7 +595,7 @@ func (p *PowerStat) addPerPackageMsrMetrics(acc telegraf.Accumulator, packageID 
 }
 
 // addCPUFrequency fetches CPU frequency metric for a given CPU ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUFrequency(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUFrequency(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	addMetric(
 		acc,
 		&cpuMetric[float64]{
@@ -613,7 +613,7 @@ func (p *PowerStat) addCPUFrequency(acc telegraf.Accumulator, cpuID, coreID, pac
 }
 
 // addCPUFrequency fetches CPU temperature metric for a given CPU ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUTemperature(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUTemperature(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	addMetric(
 		acc,
 		&cpuMetric[uint64]{
@@ -631,7 +631,7 @@ func (p *PowerStat) addCPUTemperature(acc telegraf.Accumulator, cpuID, coreID, p
 }
 
 // addCPUC0StateResidency fetches C0 state residency metric for a given CPU ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUC0StateResidency(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUC0StateResidency(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	addMetric(
 		acc,
 		&cpuMetric[float64]{
@@ -649,7 +649,7 @@ func (p *PowerStat) addCPUC0StateResidency(acc telegraf.Accumulator, cpuID, core
 }
 
 // addCPUC1StateResidency fetches C1 state residency metric for a given CPU ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUC1StateResidency(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUC1StateResidency(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	addMetric(
 		acc,
 		&cpuMetric[float64]{
@@ -667,7 +667,7 @@ func (p *PowerStat) addCPUC1StateResidency(acc telegraf.Accumulator, cpuID, core
 }
 
 // addCPUC3StateResidency fetches C3 state residency metric for a given CPU ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUC3StateResidency(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUC3StateResidency(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	addMetric(
 		acc,
 		&cpuMetric[float64]{
@@ -685,7 +685,7 @@ func (p *PowerStat) addCPUC3StateResidency(acc telegraf.Accumulator, cpuID, core
 }
 
 // addCPUC6StateResidency fetches C6 state residency metric for a given CPU ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUC6StateResidency(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUC6StateResidency(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	addMetric(
 		acc,
 		&cpuMetric[float64]{
@@ -703,7 +703,7 @@ func (p *PowerStat) addCPUC6StateResidency(acc telegraf.Accumulator, cpuID, core
 }
 
 // addCPUC7StateResidency fetches C7 state residency metric for a given CPU ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUC7StateResidency(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUC7StateResidency(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	addMetric(
 		acc,
 		&cpuMetric[float64]{
@@ -721,7 +721,7 @@ func (p *PowerStat) addCPUC7StateResidency(acc telegraf.Accumulator, cpuID, core
 }
 
 // addCPUBusyFrequency fetches CPU busy frequency metric for a given CPU ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUBusyFrequency(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUBusyFrequency(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	addMetric(
 		acc,
 		&cpuMetric[float64]{
@@ -739,7 +739,7 @@ func (p *PowerStat) addCPUBusyFrequency(acc telegraf.Accumulator, cpuID, coreID,
 }
 
 // addCPUBusyCycles fetches CPU busy cycles metric for a given CPU ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUBusyCycles(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUBusyCycles(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	addMetric(
 		acc,
 		&cpuMetric[float64]{
@@ -758,7 +758,7 @@ func (p *PowerStat) addCPUBusyCycles(acc telegraf.Accumulator, cpuID, coreID, pa
 
 // addCPUC0SubstateC01Percent fetches a value indicating the percentage of time the processor spent in its C0.1 substate
 // out of the total time in the C0 state for a given CPU ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUC0SubstateC01Percent(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUC0SubstateC01Percent(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	addMetric(
 		acc,
 		&cpuMetric[float64]{
@@ -777,7 +777,7 @@ func (p *PowerStat) addCPUC0SubstateC01Percent(acc telegraf.Accumulator, cpuID, 
 
 // addCPUC0SubstateC02Percent fetches a value indicating the percentage of time the processor spent in its C0.2 substate
 // out of the total time in the C0 state for a given CPU ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUC0SubstateC02Percent(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUC0SubstateC02Percent(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	addMetric(
 		acc,
 		&cpuMetric[float64]{
@@ -796,7 +796,7 @@ func (p *PowerStat) addCPUC0SubstateC02Percent(acc telegraf.Accumulator, cpuID, 
 
 // addCPUC0SubstateC0WaitPercent fetches a value indicating the percentage of time the processor spent in its C0_Wait substate
 // out of the total time in the C0 state for a given CPU ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUC0SubstateC0WaitPercent(acc telegraf.Accumulator, cpuID, coreID, packageID int) {
+func (p *PowerStat) addCPUC0SubstateC0WaitPercent(acc Dana.Accumulator, cpuID, coreID, packageID int) {
 	addMetric(
 		acc,
 		&cpuMetric[float64]{
@@ -814,7 +814,7 @@ func (p *PowerStat) addCPUC0SubstateC0WaitPercent(acc telegraf.Accumulator, cpuI
 }
 
 // addCurrentPackagePower fetches the current package power metric for a given package ID, and adds it to the accumulator.
-func (p *PowerStat) addCurrentPackagePower(acc telegraf.Accumulator, packageID int) {
+func (p *PowerStat) addCurrentPackagePower(acc Dana.Accumulator, packageID int) {
 	addMetric(
 		acc,
 		&packageMetric[float64]{
@@ -830,7 +830,7 @@ func (p *PowerStat) addCurrentPackagePower(acc telegraf.Accumulator, packageID i
 }
 
 // addCurrentPackagePower fetches the current dram power metric for a given package ID, and adds it to the accumulator.
-func (p *PowerStat) addCurrentDramPower(acc telegraf.Accumulator, packageID int) {
+func (p *PowerStat) addCurrentDramPower(acc Dana.Accumulator, packageID int) {
 	addMetric(
 		acc,
 		&packageMetric[float64]{
@@ -846,7 +846,7 @@ func (p *PowerStat) addCurrentDramPower(acc telegraf.Accumulator, packageID int)
 }
 
 // addCurrentPackagePower fetches the thermal design power metric for a given package ID, and adds it to the accumulator.
-func (p *PowerStat) addThermalDesignPower(acc telegraf.Accumulator, packageID int) {
+func (p *PowerStat) addThermalDesignPower(acc Dana.Accumulator, packageID int) {
 	addMetric(
 		acc,
 		&packageMetric[float64]{
@@ -862,7 +862,7 @@ func (p *PowerStat) addThermalDesignPower(acc telegraf.Accumulator, packageID in
 }
 
 // addCPUBaseFrequency fetches the CPU base frequency metric for a given package ID, and adds it to the accumulator.
-func (p *PowerStat) addCPUBaseFrequency(acc telegraf.Accumulator, packageID int) {
+func (p *PowerStat) addCPUBaseFrequency(acc Dana.Accumulator, packageID int) {
 	addMetric(
 		acc,
 		&packageMetric[uint64]{
@@ -878,7 +878,7 @@ func (p *PowerStat) addCPUBaseFrequency(acc telegraf.Accumulator, packageID int)
 }
 
 // addUncoreFrequency fetches the uncore frequency metrics for a given package ID, and adds it to the accumulator.
-func (p *PowerStat) addUncoreFrequency(acc telegraf.Accumulator, packageID int) {
+func (p *PowerStat) addUncoreFrequency(acc Dana.Accumulator, packageID int) {
 	dieIDs, err := p.fetcher.GetPackageDieIDs(packageID)
 	if err != nil {
 		acc.AddError(fmt.Errorf("failed to get die IDs for package ID %v: %w", packageID, err))
@@ -896,7 +896,7 @@ func (p *PowerStat) addUncoreFrequency(acc telegraf.Accumulator, packageID int) 
 
 // addUncoreFrequencyInitialLimits fetches uncore frequency initial limits for a given pair of package and die ID,
 // and adds it to the accumulator.
-func (p *PowerStat) addUncoreFrequencyInitialLimits(acc telegraf.Accumulator, packageID, dieID int) {
+func (p *PowerStat) addUncoreFrequencyInitialLimits(acc Dana.Accumulator, packageID, dieID int) {
 	initMin, initMax, err := getUncoreFreqInitialLimits(p.fetcher, packageID, dieID)
 	if err == nil {
 		acc.AddGauge(
@@ -935,7 +935,7 @@ func (p *PowerStat) addUncoreFrequencyInitialLimits(acc telegraf.Accumulator, pa
 
 // addUncoreFrequencyCurrentValues fetches uncore frequency current limits and value for a given pair of package and die ID,
 // and adds it to the accumulator.
-func (p *PowerStat) addUncoreFrequencyCurrentValues(acc telegraf.Accumulator, packageID, dieID int) {
+func (p *PowerStat) addUncoreFrequencyCurrentValues(acc Dana.Accumulator, packageID, dieID int) {
 	val, err := getUncoreFreqCurrentValues(p.fetcher, packageID, dieID)
 	if err == nil {
 		acc.AddGauge(
@@ -1020,7 +1020,7 @@ func getUncoreFreqCurrentValues(fetcher metricFetcher, packageID, dieID int) (un
 }
 
 // addMaxTurboFreqLimits fetches the max turbo frequency limits metric for a given package ID, and adds it to the accumulator.
-func (p *PowerStat) addMaxTurboFreqLimits(acc telegraf.Accumulator, packageID int) {
+func (p *PowerStat) addMaxTurboFreqLimits(acc Dana.Accumulator, packageID int) {
 	var moduleErr *powertelemetry.ModuleNotInitializedError
 
 	turboFreqList, err := p.fetcher.GetMaxTurboFreqList(packageID)
@@ -1189,7 +1189,7 @@ func (p *PowerStat) disablePackageMetric(metricToDisable packageMetricType) {
 // logErrorOnce takes an accumulator, a key string value error map, a key string and an error. It adds the error to the accumulator only if the
 // key is not in the logOnceMap. Additionally, if the key is not in logOnceMap map, adds the key to it. This is to prevent excessive error messages
 // from flooding the accumulator.
-func logErrorOnce(acc telegraf.Accumulator, logOnceMap map[string]struct{}, key string, err error) {
+func logErrorOnce(acc Dana.Accumulator, logOnceMap map[string]struct{}, key string, err error) {
 	if _, ok := logOnceMap[key]; !ok {
 		acc.AddError(err)
 		logOnceMap[key] = struct{}{}
@@ -1197,7 +1197,7 @@ func logErrorOnce(acc telegraf.Accumulator, logOnceMap map[string]struct{}, key 
 }
 
 func init() {
-	inputs.Add("intel_powerstat", func() telegraf.Input {
+	inputs.Add("intel_powerstat", func() Dana.Input {
 		return &PowerStat{}
 	})
 }

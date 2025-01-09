@@ -1,4 +1,4 @@
-package telegraf
+package Dana
 
 // Parser is an interface defining functions that a parser plugin must satisfy.
 type Parser interface {

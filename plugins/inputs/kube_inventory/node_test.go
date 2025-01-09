@@ -20,7 +20,7 @@ func TestNode(t *testing.T) {
 	tests := []struct {
 		name     string
 		handler  *mockHandler
-		output   []telegraf.Metric
+		output   []Dana.Metric
 		hasError bool
 	}{
 		{
@@ -30,7 +30,7 @@ func TestNode(t *testing.T) {
 					"/nodes/": corev1.NodeList{},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					nodeMeasurement,
 					map[string]string{},
@@ -111,7 +111,7 @@ func TestNode(t *testing.T) {
 					},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					nodeMeasurement,
 					map[string]string{

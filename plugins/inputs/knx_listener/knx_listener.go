@@ -20,10 +20,10 @@ import (
 var sampleConfig string
 
 type KNXListener struct {
-	ServiceType    string          `toml:"service_type"`
-	ServiceAddress string          `toml:"service_address"`
-	Measurements   []measurement   `toml:"measurement"`
-	Log            telegraf.Logger `toml:"-"`
+	ServiceType    string        `toml:"service_type"`
+	ServiceAddress string        `toml:"service_address"`
+	Measurements   []measurement `toml:"measurement"`
+	Log            Dana.Logger   `toml:"-"`
 
 	client      knxInterface
 	gaTargetMap map[string]addressTarget
@@ -80,7 +80,7 @@ func (kl *KNXListener) Init() error {
 	return nil
 }
 
-func (kl *KNXListener) Start(acc telegraf.Accumulator) error {
+func (kl *KNXListener) Start(acc Dana.Accumulator) error {
 	// Connect to the KNX-IP interface
 	kl.Log.Infof("Trying to connect to %q at %q", kl.ServiceType, kl.ServiceAddress)
 	switch kl.ServiceType {
@@ -127,7 +127,7 @@ func (kl *KNXListener) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (kl *KNXListener) Gather(acc telegraf.Accumulator) error {
+func (kl *KNXListener) Gather(acc Dana.Accumulator) error {
 	if !kl.connected.Load() {
 		// We got disconnected for some reason, so try to reconnect in every
 		// gather cycle until we are reconnected
@@ -146,7 +146,7 @@ func (kl *KNXListener) Stop() {
 	}
 }
 
-func (kl *KNXListener) listen(acc telegraf.Accumulator) {
+func (kl *KNXListener) listen(acc Dana.Accumulator) {
 	for msg := range kl.client.Inbound() {
 		if msg.Command == knx.GroupRead {
 			// Ignore GroupValue_Read requests as they would either
@@ -209,7 +209,7 @@ func (kl *KNXListener) listen(acc telegraf.Accumulator) {
 }
 
 func init() {
-	inputs.Add("knx_listener", func() telegraf.Input { return &KNXListener{ServiceType: "tunnel"} })
+	inputs.Add("knx_listener", func() Dana.Input { return &KNXListener{ServiceType: "tunnel"} })
 	// Register for backward compatibility
-	inputs.Add("KNXListener", func() telegraf.Input { return &KNXListener{ServiceType: "tunnel"} })
+	inputs.Add("KNXListener", func() Dana.Input { return &KNXListener{ServiceType: "tunnel"} })
 }

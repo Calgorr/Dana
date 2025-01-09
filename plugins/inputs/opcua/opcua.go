@@ -17,7 +17,7 @@ var sampleConfig string
 
 type OpcUA struct {
 	readClientConfig
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	client *readClient
 }
@@ -31,7 +31,7 @@ func (o *OpcUA) Init() (err error) {
 	return err
 }
 
-func (o *OpcUA) Gather(acc telegraf.Accumulator) error {
+func (o *OpcUA) Gather(acc Dana.Accumulator) error {
 	// Will (re)connect if the client is disconnected
 	metrics, err := o.client.currentValues()
 	if err != nil {
@@ -47,7 +47,7 @@ func (o *OpcUA) Gather(acc telegraf.Accumulator) error {
 
 // Add this plugin to telegraf
 func init() {
-	inputs.Add("opcua", func() telegraf.Input {
+	inputs.Add("opcua", func() Dana.Input {
 		return &OpcUA{
 			readClientConfig: readClientConfig{
 				InputClientConfig: input.InputClientConfig{

@@ -23,7 +23,7 @@ var sampleConfig string
 
 // init initializes the plugin context
 func init() {
-	outputs.Add("signalfx", func() telegraf.Output {
+	outputs.Add("signalfx", func() Dana.Output {
 		return NewSignalFx()
 	})
 }
@@ -35,7 +35,7 @@ type SignalFx struct {
 	IngestURL          string        `toml:"ingest_url"`
 	IncludedEventNames []string      `toml:"included_event_names"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	includedEventSet map[string]bool
 	client           dpsink.Sink
@@ -45,17 +45,17 @@ type SignalFx struct {
 }
 
 // GetMetricType returns the equivalent telegraf ValueType for a signalfx metric type
-func GetMetricType(mtype telegraf.ValueType) (metricType datapoint.MetricType) {
+func GetMetricType(mtype Dana.ValueType) (metricType datapoint.MetricType) {
 	switch mtype {
-	case telegraf.Counter:
+	case Dana.Counter:
 		metricType = datapoint.Counter
-	case telegraf.Gauge:
+	case Dana.Gauge:
 		metricType = datapoint.Gauge
-	case telegraf.Summary:
+	case Dana.Summary:
 		metricType = datapoint.Gauge
-	case telegraf.Histogram:
+	case Dana.Histogram:
 		metricType = datapoint.Gauge
-	case telegraf.Untyped:
+	case Dana.Untyped:
 		metricType = datapoint.Gauge
 	default:
 		metricType = datapoint.Gauge
@@ -109,7 +109,7 @@ func (s *SignalFx) Close() error {
 	return nil
 }
 
-func (s *SignalFx) ConvertToSignalFx(metrics []telegraf.Metric) ([]*datapoint.Datapoint, []*event.Event) {
+func (s *SignalFx) ConvertToSignalFx(metrics []Dana.Metric) ([]*datapoint.Datapoint, []*event.Event) {
 	var dps []*datapoint.Datapoint
 	var events []*event.Event
 
@@ -162,7 +162,7 @@ func (s *SignalFx) ConvertToSignalFx(metrics []telegraf.Metric) ([]*datapoint.Da
 }
 
 // Write call back for writing metrics
-func (s *SignalFx) Write(metrics []telegraf.Metric) error {
+func (s *SignalFx) Write(metrics []Dana.Metric) error {
 	dps, events := s.ConvertToSignalFx(metrics)
 
 	if len(dps) > 0 {

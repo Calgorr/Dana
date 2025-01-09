@@ -34,12 +34,12 @@ var sampleConfig string
 // service
 type AzureMonitor struct {
 	Timeout             config.Duration
-	NamespacePrefix     string          `toml:"namespace_prefix"`
-	StringsAsDimensions bool            `toml:"strings_as_dimensions"`
-	Region              string          `toml:"region"`
-	ResourceID          string          `toml:"resource_id"`
-	EndpointURL         string          `toml:"endpoint_url"`
-	Log                 telegraf.Logger `toml:"-"`
+	NamespacePrefix     string      `toml:"namespace_prefix"`
+	StringsAsDimensions bool        `toml:"strings_as_dimensions"`
+	Region              string      `toml:"region"`
+	ResourceID          string      `toml:"resource_id"`
+	EndpointURL         string      `toml:"endpoint_url"`
+	Log                 Dana.Logger `toml:"-"`
 
 	url    string
 	auth   autorest.Authorizer
@@ -248,7 +248,7 @@ type azureMonitorSeries struct {
 }
 
 // Write writes metrics to the remote endpoint
-func (a *AzureMonitor) Write(metrics []telegraf.Metric) error {
+func (a *AzureMonitor) Write(metrics []Dana.Metric) error {
 	azmetrics := make(map[uint64]*azureMonitorMetric, len(metrics))
 	for _, m := range metrics {
 		id := hashIDWithTagKeysOnly(m)
@@ -344,7 +344,7 @@ func (a *AzureMonitor) send(body []byte) error {
 	return nil
 }
 
-func hashIDWithTagKeysOnly(m telegraf.Metric) uint64 {
+func hashIDWithTagKeysOnly(m Dana.Metric) uint64 {
 	h := fnv.New64a()
 	h.Write([]byte(m.Name()))
 	h.Write([]byte("\n"))
@@ -363,7 +363,7 @@ func hashIDWithTagKeysOnly(m telegraf.Metric) uint64 {
 	return h.Sum64()
 }
 
-func translate(m telegraf.Metric, prefix string) (*azureMonitorMetric, error) {
+func translate(m Dana.Metric, prefix string) (*azureMonitorMetric, error) {
 	dimensionNames := make([]string, 0, len(m.TagList()))
 	dimensionValues := make([]string, 0, len(m.TagList()))
 	for _, tag := range m.TagList() {
@@ -428,7 +428,7 @@ func translate(m telegraf.Metric, prefix string) (*azureMonitorMetric, error) {
 	}, nil
 }
 
-func getFloatField(m telegraf.Metric, key string) (float64, error) {
+func getFloatField(m Dana.Metric, key string) (float64, error) {
 	fv, ok := m.GetField(key)
 	if !ok {
 		return 0, fmt.Errorf("missing field: %s", key)
@@ -440,7 +440,7 @@ func getFloatField(m telegraf.Metric, key string) (float64, error) {
 	return 0, fmt.Errorf("unexpected type: %s: %T", key, fv)
 }
 
-func getIntField(m telegraf.Metric, key string) (int64, error) {
+func getIntField(m Dana.Metric, key string) (int64, error) {
 	fv, ok := m.GetField(key)
 	if !ok {
 		return 0, fmt.Errorf("missing field: %s", key)
@@ -453,7 +453,7 @@ func getIntField(m telegraf.Metric, key string) (int64, error) {
 }
 
 // Add will append a metric to the output aggregate
-func (a *AzureMonitor) Add(m telegraf.Metric) {
+func (a *AzureMonitor) Add(m Dana.Metric) {
 	// Azure Monitor only supports aggregates 30 minutes into the past and 4
 	// minutes into the future. Future metrics are dropped when pushed.
 	t := m.Time()
@@ -561,8 +561,8 @@ func hashIDWithField(id uint64, fk string) uint64 {
 }
 
 // Push sends metrics to the output metric buffer
-func (a *AzureMonitor) Push() []telegraf.Metric {
-	var metrics []telegraf.Metric
+func (a *AzureMonitor) Push() []Dana.Metric {
+	var metrics []Dana.Metric
 	for tbucket, aggs := range a.cache {
 		// Do not send metrics early
 		if tbucket.After(a.timeFunc().Add(-time.Minute)) {
@@ -616,7 +616,7 @@ func (a *AzureMonitor) Reset() {
 }
 
 func init() {
-	outputs.Add("azure_monitor", func() telegraf.Output {
+	outputs.Add("azure_monitor", func() Dana.Output {
 		return &AzureMonitor{
 			timeFunc:        time.Now,
 			NamespacePrefix: defaultNamespacePrefix,

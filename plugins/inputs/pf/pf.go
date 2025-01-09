@@ -89,7 +89,7 @@ func (*PF) SampleConfig() string {
 	return sampleConfig
 }
 
-func (pf *PF) Gather(acc telegraf.Accumulator) error {
+func (pf *PF) Gather(acc Dana.Accumulator) error {
 	if pf.pfctlCommand == "" {
 		var err error
 		if pf.pfctlCommand, pf.pfctlArgs, err = pf.buildPfctlCmd(); err != nil {
@@ -114,7 +114,7 @@ func errMissingData(tag string) error {
 	return fmt.Errorf("struct data for tag %q not found in %s output", tag, pfctlCommand)
 }
 
-func parsePfctlOutput(pfoutput string, acc telegraf.Accumulator) error {
+func parsePfctlOutput(pfoutput string, acc Dana.Accumulator) error {
 	fields := make(map[string]interface{})
 	scanner := bufio.NewScanner(strings.NewReader(pfoutput))
 	for scanner.Scan() {
@@ -212,7 +212,7 @@ func (pf *PF) buildPfctlCmd() (string, []string, error) {
 }
 
 func init() {
-	inputs.Add("pf", func() telegraf.Input {
+	inputs.Add("pf", func() Dana.Input {
 		pf := &PF{}
 		pf.infoFunc = pf.callPfctl
 		return pf

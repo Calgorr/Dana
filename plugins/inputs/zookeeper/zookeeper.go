@@ -57,7 +57,7 @@ func (*Zookeeper) SampleConfig() string {
 }
 
 // Gather reads stats from all configured servers accumulates stats
-func (z *Zookeeper) Gather(acc telegraf.Accumulator) error {
+func (z *Zookeeper) Gather(acc Dana.Accumulator) error {
 	ctx := context.Background()
 
 	if !z.initialized {
@@ -86,7 +86,7 @@ func (z *Zookeeper) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (z *Zookeeper) gatherServer(ctx context.Context, address string, acc telegraf.Accumulator) error {
+func (z *Zookeeper) gatherServer(ctx context.Context, address string, acc Dana.Accumulator) error {
 	var zookeeperState string
 	_, _, err := net.SplitHostPort(address)
 	if err != nil {
@@ -171,7 +171,7 @@ func (z *Zookeeper) gatherServer(ctx context.Context, address string, acc telegr
 }
 
 func init() {
-	inputs.Add("zookeeper", func() telegraf.Input {
+	inputs.Add("zookeeper", func() Dana.Input {
 		return &Zookeeper{}
 	})
 }

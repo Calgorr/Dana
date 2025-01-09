@@ -33,7 +33,7 @@ type OpenTelemetry struct {
 	MetricsSchema       string          `toml:"metrics_schema"`
 	MaxMsgSize          config.Size     `toml:"max_msg_size"`
 	Timeout             config.Duration `toml:"timeout"`
-	Log                 telegraf.Logger `toml:"-"`
+	Log                 Dana.Logger     `toml:"-"`
 	tls.ServerConfig
 
 	listener   net.Listener // overridden in tests
@@ -61,7 +61,7 @@ func (o *OpenTelemetry) Init() error {
 	return nil
 }
 
-func (o *OpenTelemetry) Start(acc telegraf.Accumulator) error {
+func (o *OpenTelemetry) Start(acc Dana.Accumulator) error {
 	var grpcOptions []grpc.ServerOption
 	if tlsConfig, err := o.ServerConfig.TLSConfig(); err != nil {
 		return err
@@ -119,7 +119,7 @@ func (o *OpenTelemetry) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*OpenTelemetry) Gather(telegraf.Accumulator) error {
+func (*OpenTelemetry) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -133,7 +133,7 @@ func (o *OpenTelemetry) Stop() {
 }
 
 func init() {
-	inputs.Add("opentelemetry", func() telegraf.Input {
+	inputs.Add("opentelemetry", func() Dana.Input {
 		return &OpenTelemetry{
 			SpanDimensions:      otel2influx.DefaultOtelTracesToLineProtocolConfig().SpanDimensions,
 			LogRecordDimensions: otel2influx.DefaultOtelLogsToLineProtocolConfig().LogRecordDimensions,

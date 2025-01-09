@@ -28,7 +28,7 @@ func TestSecretConstantManually(t *testing.T) {
 
 func TestLinking(t *testing.T) {
 	mysecret := "a @{referenced:secret}"
-	resolvers := map[string]telegraf.ResolveFunc{
+	resolvers := map[string]Dana.ResolveFunc{
 		"@{referenced:secret}": func() ([]byte, bool, error) {
 			return []byte("resolved secret"), false, nil
 		},
@@ -44,7 +44,7 @@ func TestLinking(t *testing.T) {
 
 func TestLinkingResolverError(t *testing.T) {
 	mysecret := "a @{referenced:secret}"
-	resolvers := map[string]telegraf.ResolveFunc{
+	resolvers := map[string]Dana.ResolveFunc{
 		"@{referenced:secret}": func() ([]byte, bool, error) {
 			return nil, false, errors.New("broken")
 		},
@@ -68,7 +68,7 @@ func TestGettingMissingResolver(t *testing.T) {
 	s := NewSecret([]byte(mysecret))
 	defer s.Destroy()
 	s.unlinked = make([]string, 0)
-	s.resolvers = map[string]telegraf.ResolveFunc{
+	s.resolvers = map[string]Dana.ResolveFunc{
 		"@{a:dummy}": func() ([]byte, bool, error) {
 			return nil, false, nil
 		},
@@ -83,7 +83,7 @@ func TestGettingResolverError(t *testing.T) {
 	s := NewSecret([]byte(mysecret))
 	defer s.Destroy()
 	s.unlinked = make([]string, 0)
-	s.resolvers = map[string]telegraf.ResolveFunc{
+	s.resolvers = map[string]Dana.ResolveFunc{
 		"@{referenced:secret}": func() ([]byte, bool, error) {
 			return nil, false, errors.New("broken")
 		},
@@ -96,7 +96,7 @@ func TestGettingResolverError(t *testing.T) {
 func TestUninitializedEnclave(t *testing.T) {
 	s := Secret{}
 	defer s.Destroy()
-	require.NoError(t, s.Link(map[string]telegraf.ResolveFunc{}))
+	require.NoError(t, s.Link(map[string]Dana.ResolveFunc{}))
 	retrieved, err := s.Get()
 	require.NoError(t, err)
 	defer retrieved.Destroy()
@@ -108,7 +108,7 @@ func TestEnclaveOpenError(t *testing.T) {
 	s := NewSecret([]byte(mysecret))
 	defer s.Destroy()
 	memguard.Purge()
-	err := s.Link(map[string]telegraf.ResolveFunc{})
+	err := s.Link(map[string]Dana.ResolveFunc{})
 	require.ErrorContains(t, err, "opening enclave failed")
 
 	s.unlinked = make([]string, 0)
@@ -120,7 +120,7 @@ func TestMissingResolver(t *testing.T) {
 	mysecret := "a @{referenced:secret}"
 	s := NewSecret([]byte(mysecret))
 	defer s.Destroy()
-	err := s.Link(map[string]telegraf.ResolveFunc{})
+	err := s.Link(map[string]Dana.ResolveFunc{})
 	require.ErrorContains(t, err, "linking secrets failed: unlinked part")
 }
 
@@ -793,8 +793,8 @@ type MockupSecretPlugin struct {
 	Expected string `toml:"expected"`
 }
 
-func (*MockupSecretPlugin) SampleConfig() string                { return "Mockup test secret plugin" }
-func (*MockupSecretPlugin) Gather(_ telegraf.Accumulator) error { return nil }
+func (*MockupSecretPlugin) SampleConfig() string            { return "Mockup test secret plugin" }
+func (*MockupSecretPlugin) Gather(_ Dana.Accumulator) error { return nil }
 
 type MockupSecretStore struct {
 	Secrets map[string][]byte
@@ -828,7 +828,7 @@ func (s *MockupSecretStore) List() ([]string, error) {
 	}
 	return keys, nil
 }
-func (s *MockupSecretStore) GetResolver(key string) (telegraf.ResolveFunc, error) {
+func (s *MockupSecretStore) GetResolver(key string) (Dana.ResolveFunc, error) {
 	return func() ([]byte, bool, error) {
 		v, err := s.Get(key)
 		return v, s.Dynamic, err
@@ -838,8 +838,8 @@ func (s *MockupSecretStore) GetResolver(key string) (telegraf.ResolveFunc, error
 // Register the mockup plugin on loading
 func init() {
 	// Register the mockup input plugin for the required names
-	inputs.Add("mockup", func() telegraf.Input { return &MockupSecretPlugin{} })
-	secretstores.Add("mockup", func(string) telegraf.SecretStore {
+	inputs.Add("mockup", func() Dana.Input { return &MockupSecretPlugin{} })
+	secretstores.Add("mockup", func(string) Dana.SecretStore {
 		return &MockupSecretStore{}
 	})
 }

@@ -117,8 +117,8 @@ func (p *Parser) SetTimeFunc(f TimeFunc) {
 	p.defaultTime = f
 }
 
-func (p *Parser) Parse(input []byte) ([]telegraf.Metric, error) {
-	metrics := make([]telegraf.Metric, 0)
+func (p *Parser) Parse(input []byte) ([]Dana.Metric, error) {
+	metrics := make([]Dana.Metric, 0)
 	decoder := lineprotocol.NewDecoderWithBytes(input)
 
 	for decoder.Next() {
@@ -133,7 +133,7 @@ func (p *Parser) Parse(input []byte) ([]telegraf.Metric, error) {
 	return metrics, nil
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line))
 	if err != nil {
 		return nil, err
@@ -169,7 +169,7 @@ func (p *Parser) SetTimePrecision(u time.Duration) error {
 	return nil
 }
 
-func (p *Parser) applyDefaultTags(metrics []telegraf.Metric) {
+func (p *Parser) applyDefaultTags(metrics []Dana.Metric) {
 	if len(p.DefaultTags) == 0 {
 		return
 	}
@@ -179,7 +179,7 @@ func (p *Parser) applyDefaultTags(metrics []telegraf.Metric) {
 	}
 }
 
-func (p *Parser) applyDefaultTagsSingle(m telegraf.Metric) {
+func (p *Parser) applyDefaultTagsSingle(m Dana.Metric) {
 	for k, v := range p.DefaultTags {
 		if !m.HasTag(k) {
 			m.AddTag(k, v)
@@ -200,7 +200,7 @@ func (p *Parser) Init() error {
 
 func init() {
 	parsers.Add("influx_upstream",
-		func(string) telegraf.Parser {
+		func(string) Dana.Parser {
 			return &Parser{}
 		},
 	)
@@ -251,7 +251,7 @@ func (sp *StreamParser) SetTimePrecision(u time.Duration) error {
 
 // Next parses the next item from the stream.  You can repeat calls to this
 // function if it returns ParseError to get the next metric or error.
-func (sp *StreamParser) Next() (telegraf.Metric, error) {
+func (sp *StreamParser) Next() (Dana.Metric, error) {
 	if !sp.decoder.Next() {
 		if err := sp.decoder.Err(); err != nil && !errors.Is(err, sp.lastError) {
 			sp.lastError = err
@@ -269,7 +269,7 @@ func (sp *StreamParser) Next() (telegraf.Metric, error) {
 	return m, nil
 }
 
-func nextMetric(decoder *lineprotocol.Decoder, precision lineprotocol.Precision, defaultTime TimeFunc, allowPartial bool) (telegraf.Metric, error) {
+func nextMetric(decoder *lineprotocol.Decoder, precision lineprotocol.Precision, defaultTime TimeFunc, allowPartial bool) (Dana.Metric, error) {
 	measurement, err := decoder.Measurement()
 	if err != nil {
 		return nil, err

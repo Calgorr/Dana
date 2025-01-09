@@ -33,7 +33,7 @@ func (*Interrupts) SampleConfig() string {
 	return sampleConfig
 }
 
-func (s *Interrupts) Gather(acc telegraf.Accumulator) error {
+func (s *Interrupts) Gather(acc Dana.Accumulator) error {
 	for measurement, file := range map[string]string{"interrupts": "/proc/interrupts", "soft_interrupts": "/proc/softirqs"} {
 		irqs, err := parseFile(file)
 		if err != nil {
@@ -117,7 +117,7 @@ func parseFile(file string) ([]irq, error) {
 	return irqs, nil
 }
 
-func reportMetrics(measurement string, irqs []irq, acc telegraf.Accumulator, cpusAsTags bool) {
+func reportMetrics(measurement string, irqs []irq, acc Dana.Accumulator, cpusAsTags bool) {
 	for _, irq := range irqs {
 		tags, fields := gatherTagsFields(irq)
 		if cpusAsTags {
@@ -139,7 +139,7 @@ func newIRQ(id string) *irq {
 }
 
 func init() {
-	inputs.Add("interrupts", func() telegraf.Input {
+	inputs.Add("interrupts", func() Dana.Input {
 		return &Interrupts{}
 	})
 }

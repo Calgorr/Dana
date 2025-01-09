@@ -5,18 +5,18 @@ import (
 	dto "github.com/prometheus/client_model/go"
 )
 
-func mapValueType(mt dto.MetricType) telegraf.ValueType {
+func mapValueType(mt dto.MetricType) Dana.ValueType {
 	switch mt {
 	case dto.MetricType_COUNTER:
-		return telegraf.Counter
+		return Dana.Counter
 	case dto.MetricType_GAUGE:
-		return telegraf.Gauge
+		return Dana.Gauge
 	case dto.MetricType_SUMMARY:
-		return telegraf.Summary
+		return Dana.Summary
 	case dto.MetricType_HISTOGRAM:
-		return telegraf.Histogram
+		return Dana.Histogram
 	default:
-		return telegraf.Untyped
+		return Dana.Untyped
 	}
 }
 

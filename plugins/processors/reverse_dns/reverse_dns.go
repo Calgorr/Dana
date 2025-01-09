@@ -22,7 +22,7 @@ type lookupEntry struct {
 
 type ReverseDNS struct {
 	reverseDNSCache *ReverseDNSCache
-	acc             telegraf.Accumulator
+	acc             Dana.Accumulator
 	parallel        parallel.Parallel
 
 	Lookups            []lookupEntry   `toml:"lookup"`
@@ -30,14 +30,14 @@ type ReverseDNS struct {
 	LookupTimeout      config.Duration `toml:"lookup_timeout"`
 	MaxParallelLookups int             `toml:"max_parallel_lookups"`
 	Ordered            bool            `toml:"ordered"`
-	Log                telegraf.Logger `toml:"-"`
+	Log                Dana.Logger     `toml:"-"`
 }
 
 func (*ReverseDNS) SampleConfig() string {
 	return sampleConfig
 }
 
-func (r *ReverseDNS) Start(acc telegraf.Accumulator) error {
+func (r *ReverseDNS) Start(acc Dana.Accumulator) error {
 	r.acc = acc
 	r.reverseDNSCache = NewReverseDNSCache(
 		time.Duration(r.CacheTTL),
@@ -57,12 +57,12 @@ func (r *ReverseDNS) Stop() {
 	r.reverseDNSCache.Stop()
 }
 
-func (r *ReverseDNS) Add(metric telegraf.Metric, _ telegraf.Accumulator) error {
+func (r *ReverseDNS) Add(metric Dana.Metric, _ Dana.Accumulator) error {
 	r.parallel.Enqueue(metric)
 	return nil
 }
 
-func (r *ReverseDNS) asyncAdd(metric telegraf.Metric) []telegraf.Metric {
+func (r *ReverseDNS) asyncAdd(metric Dana.Metric) []Dana.Metric {
 	for _, lookup := range r.Lookups {
 		if len(lookup.Field) > 0 {
 			if ipField, ok := metric.GetField(lookup.Field); ok {
@@ -91,11 +91,11 @@ func (r *ReverseDNS) asyncAdd(metric telegraf.Metric) []telegraf.Metric {
 			}
 		}
 	}
-	return []telegraf.Metric{metric}
+	return []Dana.Metric{metric}
 }
 
 func init() {
-	processors.AddStreaming("reverse_dns", func() telegraf.StreamingProcessor {
+	processors.AddStreaming("reverse_dns", func() Dana.StreamingProcessor {
 		return newReverseDNS()
 	})
 }

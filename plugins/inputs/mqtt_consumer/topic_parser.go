@@ -150,7 +150,7 @@ func (cfg *topicParsingConfig) newParser() (*topicParser, error) {
 	return p, nil
 }
 
-func (p *topicParser) parse(metric telegraf.Metric, topic string) error {
+func (p *topicParser) parse(metric Dana.Metric, topic string) error {
 	// Split the actual topic into its elements and check for a match
 	topicParts := strings.Split(topic, "/")
 	if p.topicVarLength && len(topicParts) < p.topicMinLength || !p.topicVarLength && len(topicParts) != p.topicMinLength {

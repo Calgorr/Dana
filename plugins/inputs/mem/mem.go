@@ -28,7 +28,7 @@ func (ms *Mem) Init() error {
 	return nil
 }
 
-func (ms *Mem) Gather(acc telegraf.Accumulator) error {
+func (ms *Mem) Gather(acc Dana.Accumulator) error {
 	vm, err := ms.ps.VMStat()
 	if err != nil {
 		return fmt.Errorf("error getting virtual memory info: %w", err)
@@ -101,7 +101,7 @@ func (ms *Mem) Gather(acc telegraf.Accumulator) error {
 
 func init() {
 	ps := system.NewSystemPS()
-	inputs.Add("mem", func() telegraf.Input {
+	inputs.Add("mem", func() Dana.Input {
 		return &Mem{ps: ps}
 	})
 }

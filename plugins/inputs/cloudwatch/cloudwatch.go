@@ -50,7 +50,7 @@ type CloudWatch struct {
 	BatchSize             int                 `toml:"batch_size"`
 	IncludeLinkedAccounts bool                `toml:"include_linked_accounts"`
 	MetricFormat          string              `toml:"metric_format"`
-	Log                   telegraf.Logger     `toml:"-"`
+	Log                   Dana.Logger         `toml:"-"`
 
 	client          cloudwatchClient
 	statFilter      filter.Filter
@@ -121,7 +121,7 @@ func (c *CloudWatch) Init() error {
 	return nil
 }
 
-func (c *CloudWatch) Gather(acc telegraf.Accumulator) error {
+func (c *CloudWatch) Gather(acc Dana.Accumulator) error {
 	filteredMetrics, err := getFilteredMetrics(c)
 	if err != nil {
 		return err
@@ -452,7 +452,7 @@ func (c *CloudWatch) gatherMetrics(
 	return results, nil
 }
 
-func (c *CloudWatch) aggregateMetrics(acc telegraf.Accumulator, metricDataResults map[string][]types.MetricDataResult) {
+func (c *CloudWatch) aggregateMetrics(acc Dana.Accumulator, metricDataResults map[string][]types.MetricDataResult) {
 	grouper := metric.NewSeriesGrouper()
 	for namespace, results := range metricDataResults {
 		namespace = sanitizeMeasurement(namespace)
@@ -566,7 +566,7 @@ func newCloudWatch() *CloudWatch {
 }
 
 func init() {
-	inputs.Add("cloudwatch", func() telegraf.Input {
+	inputs.Add("cloudwatch", func() Dana.Input {
 		return newCloudWatch()
 	})
 }

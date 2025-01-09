@@ -12,9 +12,9 @@ import (
 )
 
 type Serializer struct {
-	Template      string          `toml:"template"`
-	BatchTemplate string          `toml:"batch_template"`
-	Log           telegraf.Logger `toml:"-"`
+	Template      string      `toml:"template"`
+	BatchTemplate string      `toml:"batch_template"`
+	Log           Dana.Logger `toml:"-"`
 
 	tmplMetric *template.Template
 	tmplBatch  *template.Template
@@ -38,12 +38,12 @@ func (s *Serializer) Init() error {
 	return nil
 }
 
-func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
+func (s *Serializer) Serialize(metric Dana.Metric) ([]byte, error) {
 	metricPlain := metric
-	if wm, ok := metric.(telegraf.UnwrappableMetric); ok {
+	if wm, ok := metric.(Dana.UnwrappableMetric); ok {
 		metricPlain = wm.Unwrap()
 	}
-	m, ok := metricPlain.(telegraf.TemplateMetric)
+	m, ok := metricPlain.(Dana.TemplateMetric)
 	if !ok {
 		s.Log.Errorf("metric of type %T is not a template metric", metricPlain)
 		return nil, nil
@@ -60,7 +60,7 @@ func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
 
 	// The template was defined for a batch of metrics, so wrap the metric into a slice
 	if s.BatchTemplate != "" {
-		metrics := []telegraf.TemplateMetric{m}
+		metrics := []Dana.TemplateMetric{m}
 		if err := s.tmplBatch.Execute(&b, &metrics); err != nil {
 			s.Log.Errorf("failed to execute batch template: %v", err)
 			return nil, nil
@@ -72,11 +72,11 @@ func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
 	return nil, nil
 }
 
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
-	newMetrics := make([]telegraf.TemplateMetric, 0, len(metrics))
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
+	newMetrics := make([]Dana.TemplateMetric, 0, len(metrics))
 
 	for _, metric := range metrics {
-		m, ok := metric.(telegraf.TemplateMetric)
+		m, ok := metric.(Dana.TemplateMetric)
 		if !ok {
 			s.Log.Errorf("metric of type %T is not a template metric", metric)
 			return nil, nil
@@ -95,7 +95,7 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
 
 func init() {
 	serializers.Add("template",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

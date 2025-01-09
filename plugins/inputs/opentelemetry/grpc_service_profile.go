@@ -18,12 +18,12 @@ import (
 type profileService struct {
 	service.UnimplementedProfilesServiceServer
 
-	acc    telegraf.Accumulator
+	acc    Dana.Accumulator
 	filter filter.Filter
-	logger telegraf.Logger
+	logger Dana.Logger
 }
 
-func newProfileService(acc telegraf.Accumulator, logger telegraf.Logger, dimensions []string) (*profileService, error) {
+func newProfileService(acc Dana.Accumulator, logger Dana.Logger, dimensions []string) (*profileService, error) {
 	// Check for duplicate dimensions
 	seen := make(map[string]bool, len(dimensions))
 	duplicates := make([]string, 0)

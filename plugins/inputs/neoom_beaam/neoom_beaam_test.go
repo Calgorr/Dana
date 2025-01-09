@@ -24,7 +24,7 @@ func TestCases(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	inputs.Add("neoom_beaam", func() telegraf.Input {
+	inputs.Add("neoom_beaam", func() Dana.Input {
 		return &NeoomBeaam{}
 	})
 
@@ -62,7 +62,7 @@ func TestCases(t *testing.T) {
 			}
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)

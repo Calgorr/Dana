@@ -30,7 +30,7 @@ const (
 type osAggregationQueryTest struct {
 	queryName                 string
 	testAggregationQueryInput osAggregation
-	expectedMetrics           []telegraf.Metric
+	expectedMetrics           []Dana.Metric
 	wantQueryResErr           bool
 	wantInitErr               bool
 }
@@ -52,7 +52,7 @@ func testData() []osAggregationQueryTest {
 				Tags:            []string{"URI.keyword"},
 				mapMetricFields: map[string]string{"size": "long"},
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"measurement1",
 					map[string]string{"URI_keyword": "/downloads/product_1"},
@@ -74,7 +74,7 @@ func testData() []osAggregationQueryTest {
 				Tags:            []string{"URI.keyword"},
 				mapMetricFields: map[string]string{"size": "long"},
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"measurement2",
 					map[string]string{"URI_keyword": "/downloads/product_1"},
@@ -102,7 +102,7 @@ func testData() []osAggregationQueryTest {
 				Tags:            []string{"response.keyword"},
 				mapMetricFields: map[string]string{"size": "long"},
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"measurement3",
 					map[string]string{"response_keyword": "200"},
@@ -138,7 +138,7 @@ func testData() []osAggregationQueryTest {
 				Tags:              []string{"response.keyword", "URI.keyword", "method.keyword"},
 				mapMetricFields:   map[string]string{"size": "long", "response_time": "long"},
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"measurement4",
 					map[string]string{"response_keyword": "404", "URI_keyword": "/downloads/product_1", "method_keyword": "GET"},
@@ -200,7 +200,7 @@ func testData() []osAggregationQueryTest {
 				Tags:            []string{"URI.keyword"},
 				mapMetricFields: map[string]string{},
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"measurement5",
 					map[string]string{"URI_keyword": "/downloads/product_2"},
@@ -220,7 +220,7 @@ func testData() []osAggregationQueryTest {
 				Tags:            []string{"URI.keyword", "response.keyword"},
 				mapMetricFields: map[string]string{},
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"measurement6",
 					map[string]string{"response_keyword": "200", "URI_keyword": "/downloads/product_1"},
@@ -245,7 +245,7 @@ func testData() []osAggregationQueryTest {
 				QueryPeriod:     queryPeriod,
 				mapMetricFields: map[string]string{},
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"measurement7",
 					map[string]string{},
@@ -266,7 +266,7 @@ func testData() []osAggregationQueryTest {
 				QueryPeriod:     queryPeriod,
 				mapMetricFields: map[string]string{"size": "long"},
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"measurement8",
 					map[string]string{},
@@ -324,7 +324,7 @@ func testData() []osAggregationQueryTest {
 				QueryPeriod:     queryPeriod,
 				mapMetricFields: map[string]string{"size": "long"},
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"measurement12",
 					map[string]string{},
@@ -372,7 +372,7 @@ func testData() []osAggregationQueryTest {
 				Tags:            []string{"URI.keyword"},
 				mapMetricFields: map[string]string{"size": "long"},
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"measurement15",
 					map[string]string{"URI_keyword": "/downloads/product_1"},
@@ -412,7 +412,7 @@ func testData() []osAggregationQueryTest {
 				Tags:            []string{"URI.keyword"},
 				mapMetricFields: map[string]string{"size": "long"},
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"measurement16",
 					map[string]string{"URI_keyword": "/downloads/product_1"},
@@ -478,7 +478,7 @@ func testData() []osAggregationQueryTest {
 				Tags:            []string{"URI.keyword"},
 				mapMetricFields: map[string]string{"size": "long"},
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"measurement16",
 					map[string]string{"URI_keyword": "/downloads/product_1"},

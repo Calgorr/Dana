@@ -36,7 +36,7 @@ type bucketData struct {
 	subaggregation aggregation
 }
 
-func (a *aggregationResponse) getMetrics(acc telegraf.Accumulator, measurement string) error {
+func (a *aggregationResponse) getMetrics(acc Dana.Accumulator, measurement string) error {
 	// Simple case (no aggregations)
 	if a.Aggregations == nil {
 		tags := make(map[string]string)
@@ -50,7 +50,7 @@ func (a *aggregationResponse) getMetrics(acc telegraf.Accumulator, measurement s
 	return a.Aggregations.getMetrics(acc, measurement, a.Hits.TotalHits.Value, make(map[string]string))
 }
 
-func (a *aggregation) getMetrics(acc telegraf.Accumulator, measurement string, docCount int64, tags map[string]string) error {
+func (a *aggregation) getMetrics(acc Dana.Accumulator, measurement string, docCount int64, tags map[string]string) error {
 	var err error
 	fields := make(map[string]interface{})
 	for name, agg := range *a {

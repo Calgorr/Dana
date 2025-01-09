@@ -37,7 +37,7 @@ type LDAP struct {
 
 type request struct {
 	query   *ldap.SearchRequest
-	convert func(*ldap.SearchResult, time.Time) []telegraf.Metric
+	convert func(*ldap.SearchResult, time.Time) []Dana.Metric
 }
 
 func (*LDAP) SampleConfig() string {
@@ -102,7 +102,7 @@ func (l *LDAP) Init() error {
 	return nil
 }
 
-func (l *LDAP) Gather(acc telegraf.Accumulator) error {
+func (l *LDAP) Gather(acc Dana.Accumulator) error {
 	// Connect
 	conn, err := l.connect()
 	if err != nil {
@@ -175,5 +175,5 @@ func (l *LDAP) connect() (*ldap.Conn, error) {
 }
 
 func init() {
-	inputs.Add("ldap", func() telegraf.Input { return &LDAP{} })
+	inputs.Add("ldap", func() Dana.Input { return &LDAP{} })
 }

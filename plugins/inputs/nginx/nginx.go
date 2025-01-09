@@ -35,7 +35,7 @@ func (*Nginx) SampleConfig() string {
 	return sampleConfig
 }
 
-func (n *Nginx) Gather(acc telegraf.Accumulator) error {
+func (n *Nginx) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	// Create an HTTP client that is re-used for each
@@ -86,7 +86,7 @@ func (n *Nginx) createHTTPClient() (*http.Client, error) {
 	return client, nil
 }
 
-func (n *Nginx) gatherURL(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *Nginx) gatherURL(addr *url.URL, acc Dana.Accumulator) error {
 	resp, err := n.client.Get(addr.String())
 	if err != nil {
 		return fmt.Errorf("error making HTTP request to %q: %w", addr.String(), err)
@@ -187,7 +187,7 @@ func getTags(addr *url.URL) map[string]string {
 }
 
 func init() {
-	inputs.Add("nginx", func() telegraf.Input {
+	inputs.Add("nginx", func() Dana.Input {
 		return &Nginx{}
 	})
 }

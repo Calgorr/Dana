@@ -76,7 +76,7 @@ func TestFixedValue(t *testing.T) {
 	tests := []struct {
 		name     string
 		plugin   *Example
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "count only",
@@ -84,7 +84,7 @@ func TestFixedValue(t *testing.T) {
 				DeviceName:   "test",
 				NumberFields: 1,
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"example",
 					map[string]string{
@@ -122,7 +122,7 @@ func TestFixedValue(t *testing.T) {
 			plugin: &Example{
 				DeviceName: "test",
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"example",
 					map[string]string{
@@ -164,7 +164,7 @@ func TestFixedValue(t *testing.T) {
 				DeviceName:   "test",
 				NumberFields: 4,
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"example",
 					map[string]string{
@@ -240,7 +240,7 @@ func TestRandomValue(t *testing.T) {
 	tests := []struct {
 		name     string
 		plugin   *Example
-		template telegraf.Metric
+		template Dana.Metric
 	}{
 		{
 			name: "count only",
@@ -378,7 +378,7 @@ func TestRandomValueFailPartial(t *testing.T) {
 	tests := []struct {
 		name        string
 		plugin      *Example
-		expected    []telegraf.Metric
+		expected    []Dana.Metric
 		expectedErr string
 	}{
 		{
@@ -388,7 +388,7 @@ func TestRandomValueFailPartial(t *testing.T) {
 				NumberFields:         1,
 				EnableRandomVariable: true,
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"example",
 					map[string]string{

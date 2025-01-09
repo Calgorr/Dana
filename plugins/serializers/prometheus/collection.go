@@ -19,7 +19,7 @@ type TimeFunc func() time.Time
 
 type metricFamily struct {
 	Name string
-	Type telegraf.ValueType
+	Type Dana.ValueType
 }
 
 type Metric struct {
@@ -122,16 +122,16 @@ func hasLabel(name string, labels []labelPair) bool {
 	return false
 }
 
-func (c *Collection) createLabels(metric telegraf.Metric) []labelPair {
+func (c *Collection) createLabels(metric Dana.Metric) []labelPair {
 	labels := make([]labelPair, 0, len(metric.TagList()))
 	for _, tag := range metric.TagList() {
 		// Ignore special tags for histogram and summary types.
 		switch metric.Type() {
-		case telegraf.Histogram:
+		case Dana.Histogram:
 			if tag.Key == "le" {
 				continue
 			}
-		case telegraf.Summary:
+		case Dana.Summary:
 			if tag.Key == "quantile" {
 				continue
 			}
@@ -180,7 +180,7 @@ func (c *Collection) createLabels(metric telegraf.Metric) []labelPair {
 	return labels
 }
 
-func (c *Collection) Add(metric telegraf.Metric, now time.Time) {
+func (c *Collection) Add(metric Dana.Metric, now time.Time) {
 	labels := c.createLabels(metric)
 	for _, field := range metric.FieldList() {
 		metricName := MetricName(metric.Name(), field.Key, metric.Type())
@@ -217,11 +217,11 @@ func (c *Collection) Add(metric telegraf.Metric, now time.Time) {
 		}
 
 		switch metric.Type() {
-		case telegraf.Counter:
+		case Dana.Counter:
 			fallthrough
-		case telegraf.Gauge:
+		case Dana.Gauge:
 			fallthrough
-		case telegraf.Untyped:
+		case Dana.Untyped:
 			value, ok := SampleValue(field.Value)
 			if !ok {
 				continue
@@ -235,7 +235,7 @@ func (c *Collection) Add(metric telegraf.Metric, now time.Time) {
 			}
 
 			singleEntry.Metrics[metricKey] = m
-		case telegraf.Histogram:
+		case Dana.Histogram:
 			if m == nil {
 				m = &Metric{
 					Labels:    labels,
@@ -286,7 +286,7 @@ func (c *Collection) Add(metric telegraf.Metric, now time.Time) {
 			}
 
 			singleEntry.Metrics[metricKey] = m
-		case telegraf.Summary:
+		case Dana.Summary:
 			if m == nil {
 				m = &Metric{
 					Labels:  labels,
@@ -438,13 +438,13 @@ func (c *Collection) GetProto() []*dto.MetricFamily {
 			}
 
 			switch entry.Family.Type {
-			case telegraf.Gauge:
+			case Dana.Gauge:
 				m.Gauge = &dto.Gauge{Value: proto.Float64(metric.Scaler.Value)}
-			case telegraf.Counter:
+			case Dana.Counter:
 				m.Counter = &dto.Counter{Value: proto.Float64(metric.Scaler.Value)}
-			case telegraf.Untyped:
+			case Dana.Untyped:
 				m.Untyped = &dto.Untyped{Value: proto.Float64(metric.Scaler.Value)}
-			case telegraf.Histogram:
+			case Dana.Histogram:
 				buckets := make([]*dto.Bucket, 0, len(metric.Histogram.Buckets))
 				for _, bucket := range metric.Histogram.Buckets {
 					buckets = append(buckets, &dto.Bucket{
@@ -458,7 +458,7 @@ func (c *Collection) GetProto() []*dto.MetricFamily {
 					SampleCount: proto.Uint64(metric.Histogram.Count),
 					SampleSum:   proto.Float64(metric.Histogram.Sum),
 				}
-			case telegraf.Summary:
+			case Dana.Summary:
 				quantiles := make([]*dto.Quantile, 0, len(metric.Summary.Quantiles))
 				for _, quantile := range metric.Summary.Quantiles {
 					quantiles = append(quantiles, &dto.Quantile{

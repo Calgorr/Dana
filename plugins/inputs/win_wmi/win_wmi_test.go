@@ -101,7 +101,7 @@ func TestMethodIntegration(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"StdRegProv",
 			map[string]string{"ReturnValue": "0"},

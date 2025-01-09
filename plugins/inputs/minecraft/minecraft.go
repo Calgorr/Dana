@@ -35,7 +35,7 @@ func (*Minecraft) SampleConfig() string {
 	return sampleConfig
 }
 
-func (s *Minecraft) Gather(acc telegraf.Accumulator) error {
+func (s *Minecraft) Gather(acc Dana.Accumulator) error {
 	if s.client == nil {
 		connector := newConnector(s.Server, s.Port, s.Password)
 		s.client = newClient(connector)
@@ -71,7 +71,7 @@ func (s *Minecraft) Gather(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("minecraft", func() telegraf.Input {
+	inputs.Add("minecraft", func() Dana.Input {
 		return &Minecraft{
 			Server: "localhost",
 			Port:   "25575",

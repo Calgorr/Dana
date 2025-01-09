@@ -53,7 +53,7 @@ func TestRunningInputMakeMetricNoFields(t *testing.T) {
 		map[string]string{},
 		map[string]interface{}{},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	actual := ri.MakeMetric(m)
 	require.Nil(t, actual)
 }
@@ -72,7 +72,7 @@ func TestRunningInputMakeMetricNilFields(t *testing.T) {
 			"nil":   nil,
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	actual := ri.MakeMetric(m)
 
 	expected := metric.New("RITest",
@@ -101,7 +101,7 @@ func TestRunningInputMakeMetricWithPluginTags(t *testing.T) {
 			"value": int64(101),
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	actual := ri.MakeMetric(m)
 
 	expected := metric.New("RITest",
@@ -134,7 +134,7 @@ func TestRunningInputMakeMetricFilteredOut(t *testing.T) {
 			"value": int64(101),
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	actual := ri.MakeMetric(m)
 	require.Nil(t, actual)
 }
@@ -154,7 +154,7 @@ func TestRunningInputMakeMetricWithDaemonTags(t *testing.T) {
 			"value": int64(101),
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	actual := ri.MakeMetric(m)
 	expected := metric.New("RITest",
 		map[string]string{
@@ -181,7 +181,7 @@ func TestRunningInputMakeMetricNameOverride(t *testing.T) {
 			"value": int64(101),
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	actual := ri.MakeMetric(m)
 	expected := metric.New("foobar",
 		nil,
@@ -206,7 +206,7 @@ func TestRunningInputMakeMetricNamePrefix(t *testing.T) {
 			"value": int64(101),
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	actual := ri.MakeMetric(m)
 	expected := metric.New("foobar_RITest",
 		nil,
@@ -231,7 +231,7 @@ func TestRunningInputMakeMetricNameSuffix(t *testing.T) {
 			"value": int64(101),
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	actual := ri.MakeMetric(m)
 	expected := metric.New("RITest_foobar",
 		nil,
@@ -294,7 +294,7 @@ func TestRunningInputMakeMetricWithAlwaysKeepingPluginTagsDisabled(t *testing.T)
 			"value": int64(101),
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	actual := ri.MakeMetric(m)
 
 	expected := metric.New("RITest",
@@ -332,7 +332,7 @@ func TestRunningInputMakeMetricWithAlwaysKeepingLocalPluginTagsEnabled(t *testin
 			"value": int64(101),
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	actual := ri.MakeMetric(m)
 
 	expected := metric.New("RITest",
@@ -371,7 +371,7 @@ func TestRunningInputMakeMetricWithAlwaysKeepingGlobalPluginTagsEnabled(t *testi
 			"value": int64(101),
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	actual := ri.MakeMetric(m)
 
 	expected := metric.New("RITest",
@@ -411,7 +411,7 @@ func TestRunningInputMakeMetricWithAlwaysKeepingPluginTagsEnabled(t *testing.T) 
 			"value": int64(101),
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	actual := ri.MakeMetric(m)
 
 	expected := metric.New("RITest",
@@ -493,6 +493,6 @@ func (t *mockInput) SampleConfig() string {
 	return ""
 }
 
-func (t *mockInput) Gather(_ telegraf.Accumulator) error {
+func (t *mockInput) Gather(_ Dana.Accumulator) error {
 	return nil
 }

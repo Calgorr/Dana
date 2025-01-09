@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type Mdstat struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*Mdstat) SampleConfig() string { return sampleConfig }
@@ -24,10 +24,10 @@ func (m *Mdstat) Init() error {
 	return nil
 }
 
-func (*Mdstat) Gather(telegraf.Accumulator) error { return nil }
+func (*Mdstat) Gather(Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("mdstat", func() telegraf.Input {
+	inputs.Add("mdstat", func() Dana.Input {
 		return &Mdstat{}
 	})
 }

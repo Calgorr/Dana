@@ -64,7 +64,7 @@ type GNMI struct {
 	KeepaliveTime        config.Duration   `toml:"keepalive_time"`
 	KeepaliveTimeout     config.Duration   `toml:"keepalive_timeout"`
 	YangModelPaths       []string          `toml:"yang_model_paths"`
-	Log                  telegraf.Logger   `toml:"-"`
+	Log                  Dana.Logger       `toml:"-"`
 	common_tls.ClientConfig
 
 	// Internal state
@@ -232,7 +232,7 @@ func (c *GNMI) Init() error {
 	return nil
 }
 
-func (c *GNMI) Start(acc telegraf.Accumulator) error {
+func (c *GNMI) Start(acc Dana.Accumulator) error {
 	// Validate configuration
 	request, err := c.newSubscribeRequest()
 	if err != nil {
@@ -314,7 +314,7 @@ func (c *GNMI) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*GNMI) Gather(telegraf.Accumulator) error {
+func (*GNMI) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -439,7 +439,7 @@ func (s *subscription) buildAlias(aliases map[*pathInfo]string) error {
 	return nil
 }
 
-func newGNMI() telegraf.Input {
+func newGNMI() Dana.Input {
 	return &GNMI{
 		Encoding: "proto",
 		Redial:   config.Duration(10 * time.Second),

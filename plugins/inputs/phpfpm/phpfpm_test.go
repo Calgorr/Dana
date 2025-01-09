@@ -465,7 +465,7 @@ func TestGatherDespiteUnavailable(t *testing.T) {
 	}
 	require.NoError(t, r.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"phpfpm",
 			map[string]string{

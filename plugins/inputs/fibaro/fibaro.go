@@ -47,7 +47,7 @@ func (f *Fibaro) Init() error {
 	return nil
 }
 
-func (f *Fibaro) Gather(acc telegraf.Accumulator) error {
+func (f *Fibaro) Gather(acc Dana.Accumulator) error {
 	if f.client == nil {
 		f.client = &http.Client{
 			Transport: &http.Transport{
@@ -115,7 +115,7 @@ func (f *Fibaro) getJSON(path string) ([]byte, error) {
 }
 
 func init() {
-	inputs.Add("fibaro", func() telegraf.Input {
+	inputs.Add("fibaro", func() Dana.Input {
 		return &Fibaro{
 			Timeout: config.Duration(defaultTimeout),
 		}

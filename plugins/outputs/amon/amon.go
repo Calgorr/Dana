@@ -23,7 +23,7 @@ type Amon struct {
 	ServerKey    string          `toml:"server_key"`
 	AmonInstance string          `toml:"amon_instance"`
 	Timeout      config.Duration `toml:"timeout"`
-	Log          telegraf.Logger `toml:"-"`
+	Log          Dana.Logger     `toml:"-"`
 
 	client *http.Client
 }
@@ -56,7 +56,7 @@ func (a *Amon) Connect() error {
 	return nil
 }
 
-func (a *Amon) Write(metrics []telegraf.Metric) error {
+func (a *Amon) Write(metrics []Dana.Metric) error {
 	if len(metrics) == 0 {
 		return nil
 	}
@@ -109,7 +109,7 @@ func (a *Amon) authenticatedURL() string {
 	return fmt.Sprintf("%s/api/system/%s", a.AmonInstance, a.ServerKey)
 }
 
-func buildMetrics(m telegraf.Metric) (map[string]Point, error) {
+func buildMetrics(m Dana.Metric) (map[string]Point, error) {
 	ms := make(map[string]Point)
 	for k, v := range m.Fields() {
 		var p Point
@@ -145,7 +145,7 @@ func (a *Amon) Close() error {
 }
 
 func init() {
-	outputs.Add("amon", func() telegraf.Output {
+	outputs.Add("amon", func() Dana.Output {
 		return &Amon{}
 	})
 }

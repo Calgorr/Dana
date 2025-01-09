@@ -135,7 +135,7 @@ func TestParsing(t *testing.T) {
 				expected[i].AddTag("url", addr)
 			}
 			raw := acc.GetTelegrafMetrics()
-			actual := make([]telegraf.Metric, 0, len(raw))
+			actual := make([]Dana.Metric, 0, len(raw))
 			for _, m := range raw {
 				actual = append(actual, cfg.Inputs[0].MakeMetric(m))
 			}

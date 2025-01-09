@@ -14,7 +14,7 @@ import (
 
 var idRe = regexp.MustCompile(`([^a-z0-9]+)`)
 
-func (m *MQTT) collectHomieDeviceMessages(topic string, metric telegraf.Metric) ([]message, string, error) {
+func (m *MQTT) collectHomieDeviceMessages(topic string, metric Dana.Metric) ([]message, string, error) {
 	var messages []message
 
 	// Check if the device-id is already registered
@@ -97,7 +97,7 @@ func convertType(value interface{}) (val, dtype string, err error) {
 
 type HomieGenerator struct {
 	PluginName string
-	metric     telegraf.Metric
+	metric     Dana.Metric
 	template   *template.Template
 }
 
@@ -115,7 +115,7 @@ func (t *HomieGenerator) Tag(key string) string {
 	return tagString
 }
 
-func (t *HomieGenerator) Generate(m telegraf.Metric) (string, error) {
+func (t *HomieGenerator) Generate(m Dana.Metric) (string, error) {
 	t.PluginName = m.Name()
 	t.metric = m
 

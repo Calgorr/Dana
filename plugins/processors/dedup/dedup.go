@@ -19,8 +19,8 @@ var sampleConfig string
 type Dedup struct {
 	DedupInterval config.Duration `toml:"dedup_interval"`
 	FlushTime     time.Time
-	Cache         map[uint64]telegraf.Metric
-	Log           telegraf.Logger `toml:"-"`
+	Cache         map[uint64]Dana.Metric
+	Log           Dana.Logger `toml:"-"`
 }
 
 // Remove expired items from cache
@@ -30,7 +30,7 @@ func (d *Dedup) cleanup() {
 		return
 	}
 	d.FlushTime = time.Now()
-	keep := make(map[uint64]telegraf.Metric)
+	keep := make(map[uint64]Dana.Metric)
 	for id, metric := range d.Cache {
 		if time.Since(metric.Time()) < time.Duration(d.DedupInterval) {
 			keep[id] = metric
@@ -40,7 +40,7 @@ func (d *Dedup) cleanup() {
 }
 
 // Save item to cache
-func (d *Dedup) save(metric telegraf.Metric, id uint64) {
+func (d *Dedup) save(metric Dana.Metric, id uint64) {
 	d.Cache[id] = metric.Copy()
 	d.Cache[id].Accept()
 }
@@ -50,7 +50,7 @@ func (*Dedup) SampleConfig() string {
 }
 
 // main processing method
-func (d *Dedup) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
+func (d *Dedup) Apply(metrics ...Dana.Metric) []Dana.Metric {
 	idx := 0
 	for _, metric := range metrics {
 		id := metric.HashID()
@@ -123,7 +123,7 @@ func (d *Dedup) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
 
 func (d *Dedup) GetState() interface{} {
 	s := &serializers_influx.Serializer{}
-	v := make([]telegraf.Metric, 0, len(d.Cache))
+	v := make([]Dana.Metric, 0, len(d.Cache))
 	for _, value := range d.Cache {
 		v = append(v, value)
 	}
@@ -151,11 +151,11 @@ func (d *Dedup) SetState(state interface{}) error {
 }
 
 func init() {
-	processors.Add("dedup", func() telegraf.Processor {
+	processors.Add("dedup", func() Dana.Processor {
 		return &Dedup{
 			DedupInterval: config.Duration(10 * time.Minute),
 			FlushTime:     time.Now(),
-			Cache:         make(map[uint64]telegraf.Metric),
+			Cache:         make(map[uint64]Dana.Metric),
 		}
 	})
 }

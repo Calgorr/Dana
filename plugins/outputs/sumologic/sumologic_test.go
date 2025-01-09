@@ -26,7 +26,7 @@ import (
 	"Dana/testutil"
 )
 
-func getMetric() telegraf.Metric {
+func getMetric() Dana.Metric {
 	m := metric.New(
 		"cpu",
 		map[string]string{},
@@ -38,9 +38,9 @@ func getMetric() telegraf.Metric {
 	return m
 }
 
-func getMetrics() []telegraf.Metric {
+func getMetrics() []Dana.Metric {
 	const count = 100
-	var metrics = make([]telegraf.Metric, count)
+	var metrics = make([]Dana.Metric, count)
 
 	for i := 0; i < count; i++ {
 		m := metric.New(
@@ -112,7 +112,7 @@ func TestMethod(t *testing.T) {
 			}
 			require.NoError(t, err)
 
-			err = plugin.Write([]telegraf.Metric{getMetric()})
+			err = plugin.Write([]Dana.Metric{getMetric()})
 			require.NoError(t, err)
 		})
 	}
@@ -186,7 +186,7 @@ func TestStatusCode(t *testing.T) {
 			err = tt.plugin.Connect()
 			require.NoError(t, err)
 
-			err = tt.plugin.Write([]telegraf.Metric{getMetric()})
+			err = tt.plugin.Write([]Dana.Metric{getMetric()})
 			tt.errFunc(t, err)
 		})
 	}
@@ -295,7 +295,7 @@ func TestContentType(t *testing.T) {
 
 			require.NoError(t, plugin.Connect())
 
-			err = plugin.Write([]telegraf.Metric{getMetric()})
+			err = plugin.Write([]Dana.Metric{getMetric()})
 			require.NoError(t, err)
 
 			if tt.expectedBody != nil {
@@ -368,7 +368,7 @@ func TestContentEncodingGzip(t *testing.T) {
 			err = plugin.Connect()
 			require.NoError(t, err)
 
-			err = plugin.Write([]telegraf.Metric{getMetric()})
+			err = plugin.Write([]Dana.Metric{getMetric()})
 			require.NoError(t, err)
 		})
 	}
@@ -405,7 +405,7 @@ func TestDefaultUserAgent(t *testing.T) {
 		err = plugin.Connect()
 		require.NoError(t, err)
 
-		err = plugin.Write([]telegraf.Metric{getMetric()})
+		err = plugin.Write([]Dana.Metric{getMetric()})
 		require.NoError(t, err)
 	})
 }
@@ -507,7 +507,7 @@ func TestMaxRequestBodySize(t *testing.T) {
 	testcases := []struct {
 		name                     string
 		plugin                   func() *SumoLogic
-		metrics                  []telegraf.Metric
+		metrics                  []Dana.Metric
 		expectedError            bool
 		expectedRequestCount     int32
 		expectedMetricLinesCount int32
@@ -519,7 +519,7 @@ func TestMaxRequestBodySize(t *testing.T) {
 				s.URL = u.String()
 				return s
 			},
-			metrics:                  []telegraf.Metric{getMetric()},
+			metrics:                  []Dana.Metric{getMetric()},
 			expectedError:            false,
 			expectedRequestCount:     1,
 			expectedMetricLinesCount: 1,
@@ -678,7 +678,7 @@ func TestTryingToSendEmptyMetricsDoesntFail(t *testing.T) {
 	u, err := url.Parse("http://" + ts.Listener.Addr().String())
 	require.NoError(t, err)
 
-	metrics := make([]telegraf.Metric, 0)
+	metrics := make([]Dana.Metric, 0)
 	plugin := Default()
 	plugin.URL = u.String()
 

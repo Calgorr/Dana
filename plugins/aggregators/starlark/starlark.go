@@ -50,7 +50,7 @@ func (s *Starlark) Init() error {
 	return nil
 }
 
-func (s *Starlark) Add(metric telegraf.Metric) {
+func (s *Starlark) Add(metric Dana.Metric) {
 	parameters, found := s.GetParameters("add")
 	if !found {
 		s.Log.Errorf("The parameters of the add function could not be found")
@@ -64,7 +64,7 @@ func (s *Starlark) Add(metric telegraf.Metric) {
 	}
 }
 
-func (s *Starlark) Push(acc telegraf.Accumulator) {
+func (s *Starlark) Push(acc Dana.Accumulator) {
 	rv, err := s.Call("push")
 	if err != nil {
 		s.LogError(err)
@@ -104,7 +104,7 @@ func (s *Starlark) Reset() {
 
 // init initializes starlark aggregator plugin
 func init() {
-	aggregators.Add("starlark", func() telegraf.Aggregator {
+	aggregators.Add("starlark", func() Dana.Aggregator {
 		return &Starlark{
 			Common: common.Common{
 				StarlarkLoadFunc: common.LoadFunc,

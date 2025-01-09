@@ -20,7 +20,7 @@ func TestDaemonSet(t *testing.T) {
 	tests := []struct {
 		name     string
 		handler  *mockHandler
-		output   []telegraf.Metric
+		output   []Dana.Metric
 		hasError bool
 	}{
 		{
@@ -71,7 +71,7 @@ func TestDaemonSet(t *testing.T) {
 					},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					"kubernetes_daemonset",
 					map[string]string{

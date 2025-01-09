@@ -35,7 +35,7 @@ func TestCases(t *testing.T) {
 	require.NotEmpty(t, folders)
 
 	// Set up for file inputs
-	outputs.Add("dummy", func() telegraf.Output {
+	outputs.Add("dummy", func() Dana.Output {
 		return &OutputDummy{}
 	})
 
@@ -161,7 +161,7 @@ func checkEvents(messages [][]byte) error {
 /* Dummy output to allow full config parsing loop */
 type OutputDummy struct {
 	Batch      bool `toml:"batch"`
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 	output     [][]byte
 }
 
@@ -178,7 +178,7 @@ func (*OutputDummy) Close() error {
 	return nil
 }
 
-func (o *OutputDummy) Write(metrics []telegraf.Metric) error {
+func (o *OutputDummy) Write(metrics []Dana.Metric) error {
 	if o.Batch {
 		buf, err := o.serializer.SerializeBatch(metrics)
 		if err != nil {
@@ -198,7 +198,7 @@ func (o *OutputDummy) Write(metrics []telegraf.Metric) error {
 	return nil
 }
 
-func (o *OutputDummy) SetSerializer(s telegraf.Serializer) {
+func (o *OutputDummy) SetSerializer(s Dana.Serializer) {
 	o.serializer = s
 }
 

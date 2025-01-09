@@ -2,31 +2,31 @@ package processors
 
 import "Dana"
 
-type Creator func() telegraf.Processor
-type StreamingCreator func() telegraf.StreamingProcessor
+type Creator func() Dana.Processor
+type StreamingCreator func() Dana.StreamingProcessor
 
 // HasUnwrap indicates the presence of an Unwrap() function to retrieve the
-// underlying telegraf.Processor.
+// underlying Dana.Processor.
 type HasUnwrap interface {
-	Unwrap() telegraf.Processor
+	Unwrap() Dana.Processor
 }
 
 // all processors are streaming processors.
-// telegraf.Processor processors are upgraded to telegraf.StreamingProcessor
+// Dana.Processor processors are upgraded to Dana.StreamingProcessor
 var Processors = make(map[string]StreamingCreator)
 
-// Add adds a telegraf.Processor processor
+// Add adds a Dana.Processor processor
 func Add(name string, creator Creator) {
 	Processors[name] = upgradeToStreamingProcessor(creator)
 }
 
-// AddStreaming adds a telegraf.StreamingProcessor streaming processor
+// AddStreaming adds a Dana.StreamingProcessor streaming processor
 func AddStreaming(name string, creator StreamingCreator) {
 	Processors[name] = creator
 }
 
 func upgradeToStreamingProcessor(oldCreator Creator) StreamingCreator {
-	return func() telegraf.StreamingProcessor {
+	return func() Dana.StreamingProcessor {
 		return NewStreamingProcessorFromProcessor(oldCreator())
 	}
 }

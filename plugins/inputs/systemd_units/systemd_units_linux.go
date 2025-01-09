@@ -182,7 +182,7 @@ func (s *SystemdUnits) Init() error {
 	return nil
 }
 
-func (s *SystemdUnits) Start(telegraf.Accumulator) error {
+func (s *SystemdUnits) Start(Dana.Accumulator) error {
 	ctx := context.Background()
 
 	var client *dbus.Conn
@@ -208,7 +208,7 @@ func (s *SystemdUnits) Stop() {
 	s.client = nil
 }
 
-func (s *SystemdUnits) Gather(acc telegraf.Accumulator) error {
+func (s *SystemdUnits) Gather(acc Dana.Accumulator) error {
 	// Reconnect in case the connection was lost
 	if !s.client.Connected() {
 		s.Log.Debug("Connection to systemd daemon lost, trying to reconnect...")

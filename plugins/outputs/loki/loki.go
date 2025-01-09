@@ -116,7 +116,7 @@ func (l *Loki) Close() error {
 	return nil
 }
 
-func (l *Loki) Write(metrics []telegraf.Metric) error {
+func (l *Loki) Write(metrics []Dana.Metric) error {
 	s := Streams{}
 
 	sort.SliceStable(metrics, func(i, j int) bool {
@@ -218,7 +218,7 @@ func sanitizeLabelName(name string) string {
 }
 
 func init() {
-	outputs.Add("loki", func() telegraf.Output {
+	outputs.Add("loki", func() Dana.Output {
 		return &Loki{
 			MetricNameLabel: "__name",
 		}

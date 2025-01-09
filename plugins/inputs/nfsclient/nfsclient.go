@@ -20,12 +20,12 @@ import (
 var sampleConfig string
 
 type NFSClient struct {
-	Fullstat          bool            `toml:"fullstat"`
-	IncludeMounts     []string        `toml:"include_mounts"`
-	ExcludeMounts     []string        `toml:"exclude_mounts"`
-	IncludeOperations []string        `toml:"include_operations"`
-	ExcludeOperations []string        `toml:"exclude_operations"`
-	Log               telegraf.Logger `toml:"-"`
+	Fullstat          bool        `toml:"fullstat"`
+	IncludeMounts     []string    `toml:"include_mounts"`
+	ExcludeMounts     []string    `toml:"exclude_mounts"`
+	IncludeOperations []string    `toml:"include_operations"`
+	ExcludeOperations []string    `toml:"exclude_operations"`
+	Log               Dana.Logger `toml:"-"`
 	nfs3Ops           map[string]bool
 	nfs4Ops           map[string]bool
 	mountstatsPath    string
@@ -194,7 +194,7 @@ func (n *NFSClient) Init() error {
 	return nil
 }
 
-func (n *NFSClient) Gather(acc telegraf.Accumulator) error {
+func (n *NFSClient) Gather(acc Dana.Accumulator) error {
 	if _, err := os.Stat(n.mountstatsPath); os.IsNotExist(err) {
 		return err
 	}
@@ -220,7 +220,7 @@ func (n *NFSClient) Gather(acc telegraf.Accumulator) error {
 	return scanner.Err()
 }
 
-func (n *NFSClient) parseStat(mountpoint, export, version string, line []string, acc telegraf.Accumulator) error {
+func (n *NFSClient) parseStat(mountpoint, export, version string, line []string, acc Dana.Accumulator) error {
 	tags := map[string]string{"mountpoint": mountpoint, "serverexport": export}
 	nline, err := convertToUint64(line)
 	if err != nil {
@@ -378,7 +378,7 @@ func (n *NFSClient) parseStat(mountpoint, export, version string, line []string,
 	return nil
 }
 
-func (n *NFSClient) processText(scanner *bufio.Scanner, acc telegraf.Accumulator) error {
+func (n *NFSClient) processText(scanner *bufio.Scanner, acc Dana.Accumulator) error {
 	var mount string
 	var version string
 	var export string
@@ -481,7 +481,7 @@ func convertToUint64(line []string) ([]uint64, error) {
 }
 
 func init() {
-	inputs.Add("nfsclient", func() telegraf.Input {
+	inputs.Add("nfsclient", func() Dana.Input {
 		return &NFSClient{}
 	})
 }

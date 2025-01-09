@@ -47,7 +47,7 @@ type Ethtool struct {
 	// Normalization on the key names
 	NormalizeKeys []string `toml:"normalize_keys"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	interfaceFilter   filter.Filter
 	namespaceFilter   filter.Filter
@@ -66,7 +66,7 @@ type command interface {
 }
 
 type commandEthtool struct {
-	log                 telegraf.Logger
+	log                 Dana.Logger
 	namespaceGoroutines map[string]*namespaceGoroutine
 }
 
@@ -105,7 +105,7 @@ func (e *Ethtool) Init() error {
 	return e.command.init()
 }
 
-func (e *Ethtool) Gather(acc telegraf.Accumulator) error {
+func (e *Ethtool) Gather(acc Dana.Accumulator) error {
 	// Get the list of interfaces
 	interfaces, err := e.command.interfaces(e.includeNamespaces)
 	if err != nil {
@@ -153,7 +153,7 @@ func (e *Ethtool) interfaceEligibleForGather(iface namespacedInterface) bool {
 }
 
 // Gather the stats for the interface.
-func (e *Ethtool) gatherEthtoolStats(iface namespacedInterface, acc telegraf.Accumulator) {
+func (e *Ethtool) gatherEthtoolStats(iface namespacedInterface, acc Dana.Accumulator) {
 	tags := make(map[string]string)
 	tags[tagInterface] = iface.Name
 	tags[tagNamespace] = iface.namespace.name()
@@ -358,7 +358,7 @@ func (c *commandEthtool) interfaces(includeNamespaces bool) ([]namespacedInterfa
 }
 
 func init() {
-	inputs.Add(pluginName, func() telegraf.Input {
+	inputs.Add(pluginName, func() Dana.Input {
 		return &Ethtool{
 			command: newCommandEthtool(),
 		}

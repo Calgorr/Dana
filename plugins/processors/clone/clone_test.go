@@ -20,7 +20,7 @@ func TestRetainsTags(t *testing.T) {
 		time.Unix(0, 0),
 	)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"m1",
 			map[string]string{"metric_tag": "from_metric"},
@@ -48,7 +48,7 @@ func TestAddTags(t *testing.T) {
 		time.Unix(0, 0),
 	)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"m1",
 			map[string]string{
@@ -85,7 +85,7 @@ func TestOverwritesPresentTagValues(t *testing.T) {
 		time.Unix(0, 0),
 	)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"m1",
 			map[string]string{"metric_tag": "from_config"},
@@ -115,7 +115,7 @@ func TestOverridesName(t *testing.T) {
 		time.Unix(0, 0),
 	)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"overridden",
 			map[string]string{"metric_tag": "from_metric"},
@@ -143,7 +143,7 @@ func TestNamePrefix(t *testing.T) {
 		time.Unix(0, 0),
 	)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"Pre-m1",
 			map[string]string{"metric_tag": "from_metric"},
@@ -171,7 +171,7 @@ func TestNameSuffix(t *testing.T) {
 		time.Unix(0, 0),
 	)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"m1-suff",
 			map[string]string{"metric_tag": "from_metric"},
@@ -192,7 +192,7 @@ func TestNameSuffix(t *testing.T) {
 }
 
 func TestTracking(t *testing.T) {
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New(
 			"m1",
 			map[string]string{"metric_tag": "from_metric"},
@@ -208,14 +208,14 @@ func TestTracking(t *testing.T) {
 	}
 
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
-	input := make([]telegraf.Metric, 0, len(inputRaw))
-	expected := make([]telegraf.Metric, 0, 2*len(input))
+	input := make([]Dana.Metric, 0, len(inputRaw))
+	expected := make([]Dana.Metric, 0, 2*len(input))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)

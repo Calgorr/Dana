@@ -15,10 +15,10 @@ import (
 )
 
 type Supervisor struct {
-	Server     string          `toml:"url"`
-	MetricsInc []string        `toml:"metrics_include"`
-	MetricsExc []string        `toml:"metrics_exclude"`
-	Log        telegraf.Logger `toml:"-"`
+	Server     string      `toml:"url"`
+	MetricsInc []string    `toml:"metrics_include"`
+	MetricsExc []string    `toml:"metrics_exclude"`
+	Log        Dana.Logger `toml:"-"`
 
 	rpcClient   *xmlrpc.Client
 	fieldFilter filter.Filter
@@ -53,7 +53,7 @@ func (*Supervisor) SampleConfig() string {
 	return sampleConfig
 }
 
-func (s *Supervisor) Gather(acc telegraf.Accumulator) error {
+func (s *Supervisor) Gather(acc Dana.Accumulator) error {
 	// API call to get information about all running processes
 	var rawProcessData []processInfo
 	err := s.rpcClient.Call("supervisor.getAllProcessInfo", nil, &rawProcessData)
@@ -154,7 +154,7 @@ func (s *Supervisor) Init() error {
 }
 
 func init() {
-	inputs.Add("supervisor", func() telegraf.Input {
+	inputs.Add("supervisor", func() Dana.Input {
 		return &Supervisor{
 			MetricsExc: []string{"pid", "rc"},
 		}

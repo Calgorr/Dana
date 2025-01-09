@@ -16,7 +16,7 @@ import (
 func TestCases(t *testing.T) {
 	type testcase struct {
 		name       string
-		metrics    []telegraf.Metric
+		metrics    []Dana.Metric
 		numRows    int
 		numColumns int
 	}
@@ -24,7 +24,7 @@ func TestCases(t *testing.T) {
 	var testcases = []testcase{
 		{
 			name: "basic single metric",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{},
@@ -39,7 +39,7 @@ func TestCases(t *testing.T) {
 		},
 		{
 			name: "mix of tags and fields",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{
@@ -66,7 +66,7 @@ func TestCases(t *testing.T) {
 		},
 		{
 			name: "null values",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{
@@ -93,7 +93,7 @@ func TestCases(t *testing.T) {
 		},
 		{
 			name: "data types",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{},
@@ -149,7 +149,7 @@ func TestCases(t *testing.T) {
 }
 
 func TestRotation(t *testing.T) {
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"test",
 			map[string]string{},
@@ -179,7 +179,7 @@ func TestRotation(t *testing.T) {
 }
 
 func TestOmitTimestamp(t *testing.T) {
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"test",
 			map[string]string{},
@@ -212,7 +212,7 @@ func TestOmitTimestamp(t *testing.T) {
 }
 
 func TestTimestampDifferentName(t *testing.T) {
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"test",
 			map[string]string{},

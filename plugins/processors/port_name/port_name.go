@@ -28,7 +28,7 @@ type PortName struct {
 	ProtocolTag     string `toml:"protocol_tag"`
 	ProtocolField   string `toml:"protocol_field"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func readServicesFile() {
@@ -87,7 +87,7 @@ func (*PortName) SampleConfig() string {
 	return sampleConfig
 }
 
-func (pn *PortName) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
+func (pn *PortName) Apply(metrics ...Dana.Metric) []Dana.Metric {
 	for _, m := range metrics {
 		var portProto string
 		var fromField bool
@@ -201,7 +201,7 @@ func (pn *PortName) Init() error {
 }
 
 func init() {
-	processors.Add("port_name", func() telegraf.Processor {
+	processors.Add("port_name", func() Dana.Processor {
 		return &PortName{
 			SourceTag:       "port",
 			SourceField:     "port",

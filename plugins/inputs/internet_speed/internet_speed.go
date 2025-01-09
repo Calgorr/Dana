@@ -38,7 +38,7 @@ type InternetSpeed struct {
 	Connections        int      `toml:"connections"`
 	TestMode           string   `toml:"test_mode"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	server       *speedtest.Server // The main(best) server
 	servers      speedtest.Servers // Auxiliary servers
@@ -69,7 +69,7 @@ func (is *InternetSpeed) Init() error {
 	return nil
 }
 
-func (is *InternetSpeed) Gather(acc telegraf.Accumulator) error {
+func (is *InternetSpeed) Gather(acc Dana.Accumulator) error {
 	// If not caching, go find the closest server each time.
 	// We will find the best server as the main server. And
 	// the remaining servers will be auxiliary candidates.
@@ -205,7 +205,7 @@ func timeDurationMillisecondToFloat64(d time.Duration) float64 {
 }
 
 func init() {
-	inputs.Add("internet_speed", func() telegraf.Input {
+	inputs.Add("internet_speed", func() Dana.Input {
 		return &InternetSpeed{}
 	})
 }

@@ -32,11 +32,11 @@ const (
 )
 
 type Webhook interface {
-	Register(router *mux.Router, acc telegraf.Accumulator, log telegraf.Logger)
+	Register(router *mux.Router, acc Dana.Accumulator, log Dana.Logger)
 }
 
 func init() {
-	inputs.Add("webhooks", func() telegraf.Input { return NewWebhooks() })
+	inputs.Add("webhooks", func() Dana.Input { return NewWebhooks() })
 }
 
 type Webhooks struct {
@@ -52,7 +52,7 @@ type Webhooks struct {
 	Particle    *particle.ParticleWebhook       `toml:"particle"`
 	Artifactory *artifactory.ArtifactoryWebhook `toml:"artifactory"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	srv *http.Server
 }
@@ -65,7 +65,7 @@ func (*Webhooks) SampleConfig() string {
 	return sampleConfig
 }
 
-func (*Webhooks) Gather(telegraf.Accumulator) error {
+func (*Webhooks) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -90,7 +90,7 @@ func (wb *Webhooks) AvailableWebhooks() []Webhook {
 	return webhooks
 }
 
-func (wb *Webhooks) Start(acc telegraf.Accumulator) error {
+func (wb *Webhooks) Start(acc Dana.Accumulator) error {
 	if wb.ReadTimeout < config.Duration(time.Second) {
 		wb.ReadTimeout = config.Duration(defaultReadTimeout)
 	}

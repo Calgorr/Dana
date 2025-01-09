@@ -23,7 +23,7 @@ type Parser struct {
 	Configs           []Config          `toml:"json_v2"`
 	DefaultMetricName string            `toml:"-"`
 	DefaultTags       map[string]string `toml:"-"`
-	Log               telegraf.Logger   `toml:"-"`
+	Log               Dana.Logger       `toml:"-"`
 
 	// **** The struct fields below this comment are used for processing individual configs ****
 
@@ -96,7 +96,7 @@ type metricNode struct {
 	*/
 	IncludeCollection *pathResult
 
-	Metric telegraf.Metric
+	Metric Dana.Metric
 	gjson.Result
 }
 
@@ -120,7 +120,7 @@ func (p *Parser) Init() error {
 	return nil
 }
 
-func (p *Parser) Parse(input []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(input []byte) ([]Dana.Metric, error) {
 	// What we've done here is to put the entire former contents of Parse()
 	// into parseCriticalPath().
 	//
@@ -131,7 +131,7 @@ func (p *Parser) Parse(input []byte) ([]telegraf.Metric, error) {
 	return p.parseCriticalPath(input)
 }
 
-func (p *Parser) parseCriticalPath(input []byte) ([]telegraf.Metric, error) {
+func (p *Parser) parseCriticalPath(input []byte) ([]Dana.Metric, error) {
 	p.parseMutex.Lock()
 	defer p.parseMutex.Unlock()
 
@@ -150,7 +150,7 @@ func (p *Parser) parseCriticalPath(input []byte) ([]telegraf.Metric, error) {
 		return nil, fmt.Errorf("invalid JSON provided, unable to parse: %s", string(input))
 	}
 
-	var metrics []telegraf.Metric
+	var metrics []Dana.Metric
 
 	for _, c := range p.Configs {
 		// Measurement name can either be hardcoded, or parsed from the JSON using a GJSON path expression
@@ -221,13 +221,13 @@ func (p *Parser) parseCriticalPath(input []byte) ([]telegraf.Metric, error) {
 // processMetric will iterate over all 'field' or 'tag' configs and create metrics for each
 // A field/tag can either be a single value or an array of values, each resulting in its own metric
 // For multiple configs, a set of metrics is created from the cartesian product of each separate config
-func (p *Parser) processMetric(input []byte, data []DataSet, tag bool, timestamp time.Time) ([]telegraf.Metric, error) {
+func (p *Parser) processMetric(input []byte, data []DataSet, tag bool, timestamp time.Time) ([]Dana.Metric, error) {
 	if len(data) == 0 {
 		return nil, nil
 	}
 
 	p.iterateObjects = false
-	metrics := make([][]telegraf.Metric, 0, len(data))
+	metrics := make([][]Dana.Metric, 0, len(data))
 	for _, c := range data {
 		if c.Path == "" {
 			return nil, errors.New("the GJSON path is required")
@@ -288,14 +288,14 @@ func (p *Parser) processMetric(input []byte, data []DataSet, tag bool, timestamp
 	return metrics[len(metrics)-1], nil
 }
 
-func cartesianProduct(a, b []telegraf.Metric) []telegraf.Metric {
+func cartesianProduct(a, b []Dana.Metric) []Dana.Metric {
 	if len(a) == 0 {
 		return b
 	}
 	if len(b) == 0 {
 		return a
 	}
-	p := make([]telegraf.Metric, 0, len(a)*len(b))
+	p := make([]Dana.Metric, 0, len(a)*len(b))
 	for _, a := range a {
 		for _, b := range b {
 			m := a.Copy()
@@ -307,7 +307,7 @@ func cartesianProduct(a, b []telegraf.Metric) []telegraf.Metric {
 	return p
 }
 
-func mergeMetric(a, m telegraf.Metric) {
+func mergeMetric(a, m Dana.Metric) {
 	for _, f := range a.FieldList() {
 		m.AddField(f.Key, f.Value)
 	}
@@ -317,8 +317,8 @@ func mergeMetric(a, m telegraf.Metric) {
 }
 
 // expandArray will recursively create a new metricNode for each element in a JSON array or single value
-func (p *Parser) expandArray(result metricNode, timestamp time.Time) ([]telegraf.Metric, error) {
-	var results []telegraf.Metric
+func (p *Parser) expandArray(result metricNode, timestamp time.Time) ([]Dana.Metric, error) {
+	var results []Dana.Metric
 
 	if result.IsObject() {
 		if !p.iterateObjects {
@@ -470,9 +470,9 @@ func (p *Parser) existsInpathResults(index int) *pathResult {
 }
 
 // processObjects will iterate over all 'object' configs and create metrics for each
-func (p *Parser) processObjects(input []byte, objects []Object, timestamp time.Time) ([]telegraf.Metric, error) {
+func (p *Parser) processObjects(input []byte, objects []Object, timestamp time.Time) ([]Dana.Metric, error) {
 	p.iterateObjects = true
-	var t []telegraf.Metric
+	var t []Dana.Metric
 	for _, c := range objects {
 		p.objectConfig = c
 
@@ -539,8 +539,8 @@ func (p *Parser) processObjects(input []byte, objects []Object, timestamp time.T
 
 // combineObject will add all fields/tags to a single metric
 // If the object has multiple array's as elements it won't comine those, they will remain separate metrics
-func (p *Parser) combineObject(result metricNode, timestamp time.Time) ([]telegraf.Metric, error) {
-	var results []telegraf.Metric
+func (p *Parser) combineObject(result metricNode, timestamp time.Time) ([]Dana.Metric, error) {
+	var results []Dana.Metric
 	if result.IsArray() || result.IsObject() {
 		var err error
 		result.ForEach(func(key, val gjson.Result) bool {
@@ -648,7 +648,7 @@ func (p *Parser) isExcluded(key string) bool {
 	return false
 }
 
-func (p *Parser) ParseLine(_ string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(_ string) (Dana.Metric, error) {
 	return nil, errors.New("parsing line is not supported by JSON format")
 }
 
@@ -740,7 +740,7 @@ func (p *Parser) checkResult(result gjson.Result, path string) error {
 func init() {
 	// Register all variants
 	parsers.Add("json_v2",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{DefaultMetricName: defaultMetricName}
 		},
 	)

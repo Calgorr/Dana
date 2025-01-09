@@ -248,7 +248,7 @@ func TestWrite_SingleMetric(t *testing.T) {
 	}
 
 	metric, metricData := createTestMetric(t, "metric1", serializer)
-	err := k.Write([]telegraf.Metric{metric})
+	err := k.Write([]Dana.Metric{metric})
 	require.NoError(t, err, "Should not return error")
 
 	svc.AssertRequests(t, []*kinesis.PutRecordsInput{
@@ -430,7 +430,7 @@ func TestWrite_SerializerError(t *testing.T) {
 	// metric is invalid because of empty name
 	invalidMetric := testutil.TestMetric(3, "")
 
-	err := k.Write([]telegraf.Metric{
+	err := k.Write([]Dana.Metric{
 		metric1,
 		invalidMetric,
 		metric2,
@@ -565,7 +565,7 @@ func (m *mockKinesisPutRecords) AssertRequests(
 	}
 }
 
-func createTestMetric(t *testing.T, name string, serializer telegraf.Serializer) (telegraf.Metric, []byte) {
+func createTestMetric(t *testing.T, name string, serializer Dana.Serializer) (Dana.Metric, []byte) {
 	metric := testutil.TestMetric(1, name)
 
 	data, err := serializer.Serialize(metric)
@@ -574,8 +574,8 @@ func createTestMetric(t *testing.T, name string, serializer telegraf.Serializer)
 	return metric, data
 }
 
-func createTestMetrics(t *testing.T, count uint32, serializer telegraf.Serializer) ([]telegraf.Metric, [][]byte) {
-	metrics := make([]telegraf.Metric, 0, count)
+func createTestMetrics(t *testing.T, count uint32, serializer Dana.Serializer) ([]Dana.Metric, [][]byte) {
+	metrics := make([]Dana.Metric, 0, count)
 	metricsData := make([][]byte, 0, count)
 
 	for i := uint32(0); i < count; i++ {

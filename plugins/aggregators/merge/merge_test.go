@@ -44,7 +44,7 @@ func TestSimple(t *testing.T) {
 	var acc testutil.Accumulator
 	plugin.Push(&acc)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{
@@ -95,7 +95,7 @@ func TestNanosecondPrecision(t *testing.T) {
 	acc.SetPrecision(time.Second)
 	plugin.Push(&acc)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{
@@ -146,7 +146,7 @@ func TestNoRounding(t *testing.T) {
 	acc.SetPrecision(time.Second)
 	plugin.Push(&acc)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{
@@ -206,7 +206,7 @@ func TestWithRounding(t *testing.T) {
 	acc.SetPrecision(time.Second)
 	plugin.Push(&acc)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{
@@ -260,7 +260,7 @@ func TestReset(t *testing.T) {
 
 	plugin.Push(&acc)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{

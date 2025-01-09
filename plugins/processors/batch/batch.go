@@ -24,8 +24,8 @@ func (*Batch) SampleConfig() string {
 	return sampleConfig
 }
 
-func (b *Batch) Apply(in ...telegraf.Metric) []telegraf.Metric {
-	out := make([]telegraf.Metric, 0, len(in))
+func (b *Batch) Apply(in ...Dana.Metric) []Dana.Metric {
+	out := make([]Dana.Metric, 0, len(in))
 	for _, m := range in {
 		if b.SkipExisting && m.HasTag(b.BatchTag) {
 			out = append(out, m)
@@ -42,7 +42,7 @@ func (b *Batch) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("batch", func() telegraf.Processor {
+	processors.Add("batch", func() Dana.Processor {
 		return &Batch{}
 	})
 }

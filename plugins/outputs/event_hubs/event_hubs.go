@@ -53,7 +53,7 @@ func (eh *eventHub) SendBatch(ctx context.Context, iterator eventhub.BatchIterat
 /* End wrapper interface */
 
 type EventHubs struct {
-	Log              telegraf.Logger `toml:"-"`
+	Log              Dana.Logger     `toml:"-"`
 	ConnectionString string          `toml:"connection_string"`
 	Timeout          config.Duration `toml:"timeout"`
 	PartitionKey     string          `toml:"partition_key"`
@@ -61,7 +61,7 @@ type EventHubs struct {
 
 	Hub          EventHubInterface
 	batchOptions []eventhub.BatchOption
-	serializer   telegraf.Serializer
+	serializer   Dana.Serializer
 }
 
 const (
@@ -103,11 +103,11 @@ func (e *EventHubs) Close() error {
 	return nil
 }
 
-func (e *EventHubs) SetSerializer(serializer telegraf.Serializer) {
+func (e *EventHubs) SetSerializer(serializer Dana.Serializer) {
 	e.serializer = serializer
 }
 
-func (e *EventHubs) Write(metrics []telegraf.Metric) error {
+func (e *EventHubs) Write(metrics []Dana.Metric) error {
 	events := make([]*eventhub.Event, 0, len(metrics))
 	for _, metric := range metrics {
 		payload, err := e.serializer.Serialize(metric)
@@ -144,7 +144,7 @@ func (e *EventHubs) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("event_hubs", func() telegraf.Output {
+	outputs.Add("event_hubs", func() Dana.Output {
 		return &EventHubs{
 			Hub:     &eventHub{},
 			Timeout: config.Duration(defaultRequestTimeout),

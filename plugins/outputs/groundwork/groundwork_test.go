@@ -86,7 +86,7 @@ func TestWriteWithDebug(t *testing.T) {
 	logger.RedirectLogging(buf)
 
 	require.NoError(t, i.Init())
-	require.NoError(t, i.Write([]telegraf.Metric{intMetric}))
+	require.NoError(t, i.Write([]Dana.Metric{intMetric}))
 
 	require.NoError(t, logger.CloseLogging())
 	require.Contains(t, buf.String(), defaultTestAgentID)
@@ -175,7 +175,7 @@ func TestWriteWithDefaults(t *testing.T) {
 		},
 	}
 
-	err := i.Write([]telegraf.Metric{intMetric})
+	err := i.Write([]Dana.Metric{intMetric})
 	require.NoError(t, err)
 
 	server.Close()
@@ -260,7 +260,7 @@ func TestWriteWithFields(t *testing.T) {
 		},
 	}
 
-	err := i.Write([]telegraf.Metric{floatMetric})
+	err := i.Write([]Dana.Metric{floatMetric})
 	require.NoError(t, err)
 
 	server.Close()
@@ -394,7 +394,7 @@ func TestWriteWithTags(t *testing.T) {
 		},
 	}
 
-	err := i.Write([]telegraf.Metric{floatMetric})
+	err := i.Write([]Dana.Metric{floatMetric})
 	require.NoError(t, err)
 
 	server.Close()

@@ -42,12 +42,12 @@ func (p *Unpivot) Init() error {
 	return nil
 }
 
-func (p *Unpivot) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
+func (p *Unpivot) Apply(metrics ...Dana.Metric) []Dana.Metric {
 	fieldCount := 0
 	for _, m := range metrics {
 		fieldCount += len(m.FieldList())
 	}
-	results := make([]telegraf.Metric, 0, fieldCount)
+	results := make([]Dana.Metric, 0, fieldCount)
 
 	for _, src := range metrics {
 		// Create a copy without fields and tracking information
@@ -76,7 +76,7 @@ func (p *Unpivot) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("unpivot", func() telegraf.Processor {
+	processors.Add("unpivot", func() Dana.Processor {
 		return &Unpivot{}
 	})
 }

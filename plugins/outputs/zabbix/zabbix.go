@@ -38,7 +38,7 @@ type Zabbix struct {
 	LLDClearInterval           config.Duration `toml:"lld_clear_interval"`
 	Autoregister               string          `toml:"autoregister"`
 	AutoregisterResendInterval config.Duration `toml:"autoregister_resend_interval"`
-	Log                        telegraf.Logger `toml:"-"`
+	Log                        Dana.Logger     `toml:"-"`
 
 	// lldHandler handles low level discovery data
 	lldHandler zabbixLLD
@@ -92,7 +92,7 @@ func (z *Zabbix) Close() error {
 }
 
 // Write sends metrics to Zabbix server
-func (z *Zabbix) Write(metrics []telegraf.Metric) error {
+func (z *Zabbix) Write(metrics []Dana.Metric) error {
 	if len(metrics) == 0 {
 		return nil
 	}
@@ -163,7 +163,7 @@ func (z *Zabbix) sendZabbixMetrics(zbxMetrics []*zabbix.Metric) error {
 
 // processMetric converts a Telegraf metric to a list of Zabbix metrics.
 // Ignore metrics with no hostname.
-func (z Zabbix) processMetric(metric telegraf.Metric) []*zabbix.Metric {
+func (z Zabbix) processMetric(metric Dana.Metric) []*zabbix.Metric {
 	zbxMetrics := make([]*zabbix.Metric, 0, len(metric.FieldList()))
 
 	for _, field := range metric.FieldList() {
@@ -180,7 +180,7 @@ func (z Zabbix) processMetric(metric telegraf.Metric) []*zabbix.Metric {
 }
 
 // buildZabbixMetric builds a Zabbix metric from a Telegraf metric, for one particular value.
-func (z Zabbix) buildZabbixMetric(metric telegraf.Metric, fieldName string, value interface{}) (*zabbix.Metric, error) {
+func (z Zabbix) buildZabbixMetric(metric Dana.Metric, fieldName string, value interface{}) (*zabbix.Metric, error) {
 	hostname, err := getHostname(z.HostTag, metric)
 	if err != nil {
 		return nil, fmt.Errorf("error getting hostname: %w", err)
@@ -219,7 +219,7 @@ func (z Zabbix) buildZabbixMetric(metric telegraf.Metric, fieldName string, valu
 }
 
 func init() {
-	outputs.Add("zabbix", func() telegraf.Output {
+	outputs.Add("zabbix", func() Dana.Output {
 		return &Zabbix{
 			KeyPrefix:                  "telegraf.",
 			HostTag:                    "host",
@@ -231,7 +231,7 @@ func init() {
 }
 
 // getHostname returns the hostname from the tags, or the system hostname if not found.
-func getHostname(hostTag string, metric telegraf.Metric) (string, error) {
+func getHostname(hostTag string, metric Dana.Metric) (string, error) {
 	if hostname, ok := metric.GetTag(hostTag); ok {
 		return hostname, nil
 	}

@@ -48,13 +48,13 @@ func (p *Parser) Init() error {
 	return nil
 }
 
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 	// parse even if the buffer begins with a newline
 	if len(buf) != 0 && buf[0] == '\n' {
 		buf = buf[1:]
 	}
 
-	var metrics []telegraf.Metric
+	var metrics []Dana.Metric
 	var errs []string
 
 	for {
@@ -85,7 +85,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 }
 
 // ParseLine performs Graphite parsing of a single line.
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	// Break into 3 fields (name, value, timestamp).
 	fields := strings.Fields(line)
 	if len(fields) != 2 && len(fields) != 3 {
@@ -194,5 +194,5 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 }
 
 func init() {
-	parsers.Add("graphite", func(string) telegraf.Parser { return &Parser{} })
+	parsers.Add("graphite", func(string) Dana.Parser { return &Parser{} })
 }

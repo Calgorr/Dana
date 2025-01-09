@@ -35,7 +35,7 @@ type SQLServer struct {
 	IncludeQuery []string         `toml:"include_query"`
 	ExcludeQuery []string         `toml:"exclude_query"`
 	HealthMetric bool             `toml:"health_metric"`
-	Log          telegraf.Logger  `toml:"-"`
+	Log          Dana.Logger      `toml:"-"`
 
 	pools       []*sql.DB
 	queries     MapQuery
@@ -210,7 +210,7 @@ func (*SQLServer) SampleConfig() string {
 }
 
 // Gather collect data from SQL Server
-func (s *SQLServer) Gather(acc telegraf.Accumulator) error {
+func (s *SQLServer) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	var mutex sync.Mutex
 	var healthMetrics = make(map[string]*HealthMetric)
@@ -251,7 +251,7 @@ func (s *SQLServer) Gather(acc telegraf.Accumulator) error {
 }
 
 // Start initialize a list of connection pools
-func (s *SQLServer) Start(acc telegraf.Accumulator) error {
+func (s *SQLServer) Start(acc Dana.Accumulator) error {
 	if err := s.initQueries(); err != nil {
 		acc.AddError(err)
 		return err
@@ -328,7 +328,7 @@ func (s *SQLServer) Stop() {
 	}
 }
 
-func (s *SQLServer) gatherServer(pool *sql.DB, query Query, acc telegraf.Accumulator, connectionString string) error {
+func (s *SQLServer) gatherServer(pool *sql.DB, query Query, acc Dana.Accumulator, connectionString string) error {
 	// execute query
 	ctx := context.Background()
 	// Use the query timeout if any
@@ -368,7 +368,7 @@ func (s *SQLServer) gatherServer(pool *sql.DB, query Query, acc telegraf.Accumul
 	return rows.Err()
 }
 
-func (s *SQLServer) accRow(query Query, acc telegraf.Accumulator, row scanner) error {
+func (s *SQLServer) accRow(query Query, acc Dana.Accumulator, row scanner) error {
 	var fields = make(map[string]interface{})
 
 	// store the column name with its *interface{}
@@ -437,7 +437,7 @@ func gatherHealth(healthMetrics map[string]*HealthMetric, serv string, queryErro
 }
 
 // accHealth accumulates the query health data contained within the healthMetrics map
-func (s *SQLServer) accHealth(healthMetrics map[string]*HealthMetric, acc telegraf.Accumulator) {
+func (s *SQLServer) accHealth(healthMetrics map[string]*HealthMetric, acc Dana.Accumulator) {
 	for connectionString, connectionStats := range healthMetrics {
 		sqlInstance, databaseName := getConnectionIdentifiers(connectionString)
 		tags := map[string]string{healthMetricInstanceTag: sqlInstance, healthMetricDatabaseTag: databaseName}
@@ -571,7 +571,7 @@ func (s *SQLServer) refreshToken() (*adal.Token, error) {
 }
 
 func init() {
-	inputs.Add("sqlserver", func() telegraf.Input {
+	inputs.Add("sqlserver", func() Dana.Input {
 		return &SQLServer{
 			AuthMethod: "connection_string",
 		}

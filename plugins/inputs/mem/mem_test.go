@@ -67,7 +67,7 @@ func TestMemStats(t *testing.T) {
 	err = plugin.Gather(&acc)
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"mem",
 			map[string]string{},
@@ -109,7 +109,7 @@ func TestMemStats(t *testing.T) {
 				"write_back_tmp":   uint64(0),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 	}
 

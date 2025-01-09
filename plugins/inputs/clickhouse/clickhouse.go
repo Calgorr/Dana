@@ -65,7 +65,7 @@ func (ch *ClickHouse) Init() error {
 }
 
 // Start ClickHouse input service
-func (ch *ClickHouse) Start(telegraf.Accumulator) error {
+func (ch *ClickHouse) Start(Dana.Accumulator) error {
 	timeout := defaultTimeout
 	if time.Duration(ch.Timeout) != 0 {
 		timeout = time.Duration(ch.Timeout)
@@ -87,7 +87,7 @@ func (ch *ClickHouse) Start(telegraf.Accumulator) error {
 }
 
 // Gather collect data from ClickHouse server
-func (ch *ClickHouse) Gather(acc telegraf.Accumulator) (err error) {
+func (ch *ClickHouse) Gather(acc Dana.Accumulator) (err error) {
 	var (
 		connects []connect
 		exists   = func(host string) bool {
@@ -130,7 +130,7 @@ func (ch *ClickHouse) Gather(acc telegraf.Accumulator) (err error) {
 	}
 
 	for i := range connects {
-		metricsFuncs := []func(acc telegraf.Accumulator, conn *connect) error{
+		metricsFuncs := []func(acc Dana.Accumulator, conn *connect) error{
 			ch.tables,
 			ch.replicationQueue,
 			ch.detachedParts,
@@ -199,7 +199,7 @@ func (ch *ClickHouse) clusterIncludeExcludeFilter() string {
 	return "WHERE " + includeFilter
 }
 
-func (ch *ClickHouse) commonMetrics(acc telegraf.Accumulator, conn *connect, metric string) error {
+func (ch *ClickHouse) commonMetrics(acc Dana.Accumulator, conn *connect, metric string) error {
 	var intResult []struct {
 		Metric string   `json:"metric"`
 		Value  chUInt64 `json:"value"`
@@ -233,7 +233,7 @@ func (ch *ClickHouse) commonMetrics(acc telegraf.Accumulator, conn *connect, met
 	return nil
 }
 
-func (ch *ClickHouse) zookeeper(acc telegraf.Accumulator, conn *connect) error {
+func (ch *ClickHouse) zookeeper(acc Dana.Accumulator, conn *connect) error {
 	var zkExists []struct {
 		ZkExists chUInt64 `json:"zk_exists"`
 	}
@@ -261,7 +261,7 @@ func (ch *ClickHouse) zookeeper(acc telegraf.Accumulator, conn *connect) error {
 	return nil
 }
 
-func (ch *ClickHouse) replicationQueue(acc telegraf.Accumulator, conn *connect) error {
+func (ch *ClickHouse) replicationQueue(acc Dana.Accumulator, conn *connect) error {
 	var replicationQueueExists []struct {
 		ReplicationQueueExists chUInt64 `json:"replication_queue_exists"`
 	}
@@ -292,7 +292,7 @@ func (ch *ClickHouse) replicationQueue(acc telegraf.Accumulator, conn *connect) 
 	return nil
 }
 
-func (ch *ClickHouse) detachedParts(acc telegraf.Accumulator, conn *connect) error {
+func (ch *ClickHouse) detachedParts(acc Dana.Accumulator, conn *connect) error {
 	var detachedParts []struct {
 		DetachedParts chUInt64 `json:"detached_parts"`
 	}
@@ -312,7 +312,7 @@ func (ch *ClickHouse) detachedParts(acc telegraf.Accumulator, conn *connect) err
 	return nil
 }
 
-func (ch *ClickHouse) dictionaries(acc telegraf.Accumulator, conn *connect) error {
+func (ch *ClickHouse) dictionaries(acc Dana.Accumulator, conn *connect) error {
 	var brokenDictionaries []struct {
 		Origin         string   `json:"origin"`
 		BytesAllocated chUInt64 `json:"bytes_allocated"`
@@ -345,7 +345,7 @@ func (ch *ClickHouse) dictionaries(acc telegraf.Accumulator, conn *connect) erro
 	return nil
 }
 
-func (ch *ClickHouse) mutations(acc telegraf.Accumulator, conn *connect) error {
+func (ch *ClickHouse) mutations(acc Dana.Accumulator, conn *connect) error {
 	var mutationsStatus []struct {
 		Failed    chUInt64 `json:"failed"`
 		Running   chUInt64 `json:"running"`
@@ -371,7 +371,7 @@ func (ch *ClickHouse) mutations(acc telegraf.Accumulator, conn *connect) error {
 	return nil
 }
 
-func (ch *ClickHouse) disks(acc telegraf.Accumulator, conn *connect) error {
+func (ch *ClickHouse) disks(acc Dana.Accumulator, conn *connect) error {
 	var disksStatus []struct {
 		Name            string   `json:"name"`
 		Path            string   `json:"path"`
@@ -400,7 +400,7 @@ func (ch *ClickHouse) disks(acc telegraf.Accumulator, conn *connect) error {
 	return nil
 }
 
-func (ch *ClickHouse) processes(acc telegraf.Accumulator, conn *connect) error {
+func (ch *ClickHouse) processes(acc Dana.Accumulator, conn *connect) error {
 	var processesStats []struct {
 		QueryType      string  `json:"query_type"`
 		Percentile50   float64 `json:"p50"`
@@ -429,7 +429,7 @@ func (ch *ClickHouse) processes(acc telegraf.Accumulator, conn *connect) error {
 	return nil
 }
 
-func (ch *ClickHouse) textLog(acc telegraf.Accumulator, conn *connect) error {
+func (ch *ClickHouse) textLog(acc Dana.Accumulator, conn *connect) error {
 	var textLogExists []struct {
 		TextLogExists chUInt64 `json:"text_log_exists"`
 	}
@@ -461,7 +461,7 @@ func (ch *ClickHouse) textLog(acc telegraf.Accumulator, conn *connect) error {
 	return nil
 }
 
-func (ch *ClickHouse) tables(acc telegraf.Accumulator, conn *connect) error {
+func (ch *ClickHouse) tables(acc Dana.Accumulator, conn *connect) error {
 	var parts []struct {
 		Database string   `json:"database"`
 		Table    string   `json:"table"`
@@ -624,10 +624,10 @@ var commonMetricsIsFloat = map[string]bool{
 	"asynchronous_metrics": true,
 }
 
-var _ telegraf.ServiceInput = &ClickHouse{}
+var _ Dana.ServiceInput = &ClickHouse{}
 
 func init() {
-	inputs.Add("clickhouse", func() telegraf.Input {
+	inputs.Add("clickhouse", func() Dana.Input {
 		return &ClickHouse{
 			AutoDiscovery: true,
 			ClientConfig: tls.ClientConfig{

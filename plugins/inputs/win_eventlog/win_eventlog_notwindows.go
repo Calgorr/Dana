@@ -14,20 +14,20 @@ import (
 var sampleConfig string
 
 type WinEventLog struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (w *WinEventLog) Init() error {
 	w.Log.Warn("current platform is not supported")
 	return nil
 }
-func (*WinEventLog) SampleConfig() string                { return sampleConfig }
-func (*WinEventLog) Gather(_ telegraf.Accumulator) error { return nil }
-func (*WinEventLog) Start(_ telegraf.Accumulator) error  { return nil }
-func (*WinEventLog) Stop()                               {}
+func (*WinEventLog) SampleConfig() string            { return sampleConfig }
+func (*WinEventLog) Gather(_ Dana.Accumulator) error { return nil }
+func (*WinEventLog) Start(_ Dana.Accumulator) error  { return nil }
+func (*WinEventLog) Stop()                           {}
 
 func init() {
-	inputs.Add("win_eventlog", func() telegraf.Input {
+	inputs.Add("win_eventlog", func() Dana.Input {
 		return &WinEventLog{}
 	})
 }

@@ -79,10 +79,10 @@ func (p *Parser) SetTimePrecision(u time.Duration) {
 	p.handler.SetTimePrecision(u)
 }
 
-func (p *Parser) Parse(input []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(input []byte) ([]Dana.Metric, error) {
 	p.Lock()
 	defer p.Unlock()
-	metrics := make([]telegraf.Metric, 0)
+	metrics := make([]Dana.Metric, 0)
 	p.machine.SetData(input)
 
 	for {
@@ -114,7 +114,7 @@ func (p *Parser) Parse(input []byte) ([]telegraf.Metric, error) {
 	return metrics, nil
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line))
 	if err != nil {
 		return nil, err
@@ -131,7 +131,7 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 	p.DefaultTags = tags
 }
 
-func (p *Parser) applyDefaultTags(metrics []telegraf.Metric) {
+func (p *Parser) applyDefaultTags(metrics []Dana.Metric) {
 	if len(p.DefaultTags) == 0 {
 		return
 	}
@@ -141,7 +141,7 @@ func (p *Parser) applyDefaultTags(metrics []telegraf.Metric) {
 	}
 }
 
-func (p *Parser) applyDefaultTagsSingle(metric telegraf.Metric) {
+func (p *Parser) applyDefaultTagsSingle(metric Dana.Metric) {
 	for k, v := range p.DefaultTags {
 		if !metric.HasTag(k) {
 			metric.AddTag(k, v)
@@ -171,7 +171,7 @@ func (p *Parser) Init() error {
 
 func init() {
 	parsers.Add("influx",
-		func(string) telegraf.Parser {
+		func(string) Dana.Parser {
 			return &Parser{}
 		},
 	)
@@ -205,7 +205,7 @@ func (sp *StreamParser) SetTimePrecision(u time.Duration) {
 
 // Next parses the next item from the stream.  You can repeat calls to this
 // function if it returns ParseError to get the next metric or error.
-func (sp *StreamParser) Next() (telegraf.Metric, error) {
+func (sp *StreamParser) Next() (Dana.Metric, error) {
 	err := sp.machine.Next()
 	if errors.Is(err, EOF) {
 		return nil, err

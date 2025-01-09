@@ -24,7 +24,7 @@ import (
 func TestWrite(t *testing.T) {
 	testCases := []struct {
 		name               string
-		inputMetric        []telegraf.Metric
+		inputMetric        []Dana.Metric
 		metricsGrouping    string
 		tableName          string
 		expected           map[string]interface{}
@@ -194,7 +194,7 @@ func TestWriteWithType(t *testing.T) {
 	expectedResultMap := map[string]string{metricName: `{"fields":{"value":1},"name":"test1","tags":{"tag1":"value1"},"timestamp":1257894000}`}
 	mockMetrics := testutil.MockMetrics()
 	// Multi tables
-	mockMetricsMulti := []telegraf.Metric{
+	mockMetricsMulti := []Dana.Metric{
 		testutil.TestMetric(1.0, "test2"),
 		testutil.TestMetric(2.0, "test3"),
 	}
@@ -205,7 +205,7 @@ func TestWriteWithType(t *testing.T) {
 	// List of tests
 	testCases := []struct {
 		name                      string
-		inputMetric               []telegraf.Metric
+		inputMetric               []Dana.Metric
 		metricsGrouping           string
 		tableNameToExpectedResult map[string]string
 		expectedWriteError        string

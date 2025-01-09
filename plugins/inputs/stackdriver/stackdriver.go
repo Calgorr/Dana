@@ -55,7 +55,7 @@ type (
 		DistributionAggregationAligners []string              `toml:"distribution_aggregation_aligners"`
 		Filter                          *listTimeSeriesFilter `toml:"filter"`
 
-		Log telegraf.Logger
+		Log Dana.Logger
 
 		client              metricClient
 		timeSeriesConfCache *timeSeriesConfCache
@@ -97,7 +97,7 @@ type (
 
 	// stackdriverMetricClient is a metric client for stackdriver
 	stackdriverMetricClient struct {
-		log  telegraf.Logger
+		log  Dana.Logger
 		conn *monitoring.MetricClient
 
 		listMetricDescriptorsCalls selfstat.Stat
@@ -196,8 +196,8 @@ func (*stackdriver) SampleConfig() string {
 	return sampleConfig
 }
 
-// Gather implements telegraf.Input interface
-func (s *stackdriver) Gather(acc telegraf.Accumulator) error {
+// Gather implements Dana.Input interface
+func (s *stackdriver) Gather(acc Dana.Accumulator) error {
 	ctx := context.Background()
 
 	if s.RateLimit == 0 {
@@ -710,7 +710,7 @@ func addDistribution(dist *distributionpb.Distribution, tags map[string]string, 
 }
 
 func init() {
-	inputs.Add("stackdriver", func() telegraf.Input {
+	inputs.Add("stackdriver", func() Dana.Input {
 		return &stackdriver{
 			CacheTTL:                     defaultCacheTTL,
 			RateLimit:                    defaultRateLimit,

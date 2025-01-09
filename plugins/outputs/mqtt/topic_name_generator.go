@@ -14,7 +14,7 @@ type TopicNameGenerator struct {
 	Hostname    string
 	TopicPrefix string
 	PluginName  string
-	metric      telegraf.Metric
+	metric      Dana.Metric
 	template    *template.Template
 }
 
@@ -36,7 +36,7 @@ func (t *TopicNameGenerator) Tag(key string) string {
 	return tagString
 }
 
-func (t *TopicNameGenerator) Generate(hostname string, m telegraf.Metric) (string, error) {
+func (t *TopicNameGenerator) Generate(hostname string, m Dana.Metric) (string, error) {
 	t.Hostname = hostname
 	t.metric = m
 	t.PluginName = m.Name()

@@ -16,7 +16,7 @@ var tests = []struct {
 	name        string
 	maxBytes    int
 	uintSupport bool
-	input       telegraf.Metric
+	input       Dana.Metric
 	output      []byte
 	errReason   string
 }{
@@ -541,7 +541,7 @@ func TestSerialize_SerializeBatch(t *testing.T) {
 		time.Unix(0, 0),
 	)
 
-	metrics := []telegraf.Metric{m, m}
+	metrics := []Dana.Metric{m, m}
 
 	serializer := &Serializer{
 		SortFields: true,

@@ -21,9 +21,9 @@ type config struct {
 }
 
 type loadedConfig struct {
-	Input     telegraf.Input
-	Processor telegraf.StreamingProcessor
-	Output    telegraf.Output
+	Input     Dana.Input
+	Processor Dana.StreamingProcessor
+	Output    Dana.Output
 }
 
 // LoadConfig Adds plugins to the shim
@@ -111,7 +111,7 @@ func createPluginsWithTomlConfig(md toml.MetaData, conf config) (loadedConfig, e
 		plugin := creator()
 		if len(primitives) > 0 {
 			primitive := primitives[0]
-			var p telegraf.PluginDescriber = plugin
+			var p Dana.PluginDescriber = plugin
 			if processor, ok := plugin.(processors.HasUnwrap); ok {
 				p = processor.Unwrap()
 			}

@@ -42,7 +42,7 @@ type RavenDB struct {
 
 	tls.ClientConfig
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	client               *http.Client
 	requestURLServer     string
@@ -55,7 +55,7 @@ func (*RavenDB) SampleConfig() string {
 	return sampleConfig
 }
 
-func (r *RavenDB) Gather(acc telegraf.Accumulator) error {
+func (r *RavenDB) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	for _, statToCollect := range r.StatsInclude {
@@ -132,7 +132,7 @@ func (r *RavenDB) requestJSON(u string, target interface{}) error {
 	return json.NewDecoder(resp.Body).Decode(target)
 }
 
-func (r *RavenDB) gatherServer(acc telegraf.Accumulator) {
+func (r *RavenDB) gatherServer(acc Dana.Accumulator) {
 	serverResponse := &serverMetricsResponse{}
 
 	err := r.requestJSON(r.requestURLServer, &serverResponse)
@@ -211,7 +211,7 @@ func (r *RavenDB) gatherServer(acc telegraf.Accumulator) {
 	acc.AddFields("ravendb_server", fields, tags)
 }
 
-func (r *RavenDB) gatherDatabases(acc telegraf.Accumulator) {
+func (r *RavenDB) gatherDatabases(acc Dana.Accumulator) {
 	databasesResponse := &databasesMetricResponse{}
 
 	err := r.requestJSON(r.requestURLDatabases, &databasesResponse)
@@ -275,7 +275,7 @@ func (r *RavenDB) gatherDatabases(acc telegraf.Accumulator) {
 	}
 }
 
-func (r *RavenDB) gatherIndexes(acc telegraf.Accumulator) {
+func (r *RavenDB) gatherIndexes(acc Dana.Accumulator) {
 	indexesResponse := &indexesMetricResponse{}
 
 	err := r.requestJSON(r.requestURLIndexes, &indexesResponse)
@@ -316,7 +316,7 @@ func (r *RavenDB) gatherIndexes(acc telegraf.Accumulator) {
 	}
 }
 
-func (r *RavenDB) gatherCollections(acc telegraf.Accumulator) {
+func (r *RavenDB) gatherCollections(acc Dana.Accumulator) {
 	collectionsResponse := &collectionsMetricResponse{}
 
 	err := r.requestJSON(r.requestURLCollection, &collectionsResponse)
@@ -388,7 +388,7 @@ func (r *RavenDB) Init() error {
 }
 
 func init() {
-	inputs.Add("ravendb", func() telegraf.Input {
+	inputs.Add("ravendb", func() Dana.Input {
 		return &RavenDB{
 			Timeout:      config.Duration(defaultTimeout * time.Second),
 			StatsInclude: []string{"server", "databases", "indexes", "collections"},

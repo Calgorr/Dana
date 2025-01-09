@@ -641,7 +641,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 	require.NoError(t, plugin.Init())
 
 	// Create the expectations
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"bind_memory",
 			map[string]string{
@@ -657,7 +657,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 				"total_use":    int64(777821909),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -673,7 +673,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 				"total":  int64(2706043),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -689,7 +689,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 				"total":  int64(387478),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -705,7 +705,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 				"total":  int64(742986),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -721,7 +721,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 				"total":  int64(0),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -737,7 +737,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 				"total":  int64(267800),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -753,7 +753,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 				"total":  int64(288938),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -769,7 +769,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 				"total":  int64(393216),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -785,7 +785,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 				"total":  int64(262144),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -801,7 +801,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 				"total":  int64(0),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -817,7 +817,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 				"total":  int64(0),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_counter",
@@ -1266,7 +1266,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 	require.NoError(t, plugin.Init())
 
 	// Create the expectations
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"bind_memory",
 			map[string]string{
@@ -1282,7 +1282,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 				"total_use":    uint64(777821909),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -1298,7 +1298,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 				"total":  uint64(2706043),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -1314,7 +1314,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 				"total":  uint64(387478),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -1330,7 +1330,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 				"total":  uint64(742986),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -1346,7 +1346,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 				"total":  uint64(0),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -1362,7 +1362,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 				"total":  uint64(267800),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -1378,7 +1378,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 				"total":  uint64(288938),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -1394,7 +1394,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 				"total":  uint64(393216),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -1410,7 +1410,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 				"total":  uint64(262144),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -1426,7 +1426,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 				"total":  uint64(0),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_memory_context",
@@ -1442,7 +1442,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 				"total":  uint64(0),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		metric.New(
 			"bind_counter",

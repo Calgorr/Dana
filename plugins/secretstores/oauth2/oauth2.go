@@ -36,7 +36,7 @@ type OAuth2 struct {
 	Tenant       string          `toml:"tenant_id"`
 	ExpiryMargin config.Duration `toml:"token_expiry_margin"`
 	TokenConfigs []TokenConfig   `toml:"token"`
-	Log          telegraf.Logger `toml:"-"`
+	Log          Dana.Logger     `toml:"-"`
 
 	sources map[string]oauth2.TokenSource
 	cancel  context.CancelFunc
@@ -184,7 +184,7 @@ func (o *OAuth2) List() ([]string, error) {
 }
 
 // GetResolver returns a function to resolve the given key.
-func (o *OAuth2) GetResolver(key string) (telegraf.ResolveFunc, error) {
+func (o *OAuth2) GetResolver(key string) (Dana.ResolveFunc, error) {
 	resolver := func() ([]byte, bool, error) {
 		s, err := o.Get(key)
 		return s, true, err
@@ -194,7 +194,7 @@ func (o *OAuth2) GetResolver(key string) (telegraf.ResolveFunc, error) {
 
 // Register the secret-store on load.
 func init() {
-	secretstores.Add("oauth2", func(_ string) telegraf.SecretStore {
+	secretstores.Add("oauth2", func(_ string) Dana.SecretStore {
 		return &OAuth2{ExpiryMargin: config.Duration(time.Second)}
 	})
 }

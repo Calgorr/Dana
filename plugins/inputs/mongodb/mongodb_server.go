@@ -22,7 +22,7 @@ type server struct {
 	hostname   string
 	lastResult *mongoStatus
 
-	log telegraf.Logger
+	log Dana.Logger
 }
 
 type oplogEntry struct {
@@ -271,7 +271,7 @@ func (s *server) gatherCollectionStats(colStatsDbs []string) (*colStats, error) 
 	return results, nil
 }
 
-func (s *server) gatherData(acc telegraf.Accumulator, gatherClusterStatus, gatherDbStats, gatherColStats, gatherTopStat bool, colStatsDbs []string) error {
+func (s *server) gatherData(acc Dana.Accumulator, gatherClusterStatus, gatherDbStats, gatherColStats, gatherTopStat bool, colStatsDbs []string) error {
 	serverStatus, err := s.gatherServerStatus()
 	if err != nil {
 		return err

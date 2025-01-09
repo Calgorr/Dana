@@ -29,7 +29,7 @@ type FileCount struct {
 	FollowSymlinks bool            `toml:"follow_symlinks"`
 	Size           config.Size     `toml:"size"`
 	MTime          config.Duration `toml:"mtime"`
-	Log            telegraf.Logger `toml:"-"`
+	Log            Dana.Logger     `toml:"-"`
 
 	fs          fileSystem
 	fileFilters []fileFilterFunc
@@ -42,7 +42,7 @@ func (*FileCount) SampleConfig() string {
 	return sampleConfig
 }
 
-func (fc *FileCount) Gather(acc telegraf.Accumulator) error {
+func (fc *FileCount) Gather(acc Dana.Accumulator) error {
 	if fc.globPaths == nil {
 		fc.initGlobPaths(acc)
 	}
@@ -138,7 +138,7 @@ func (fc *FileCount) initFileFilters() {
 	fc.fileFilters = rejectNilFilters(filters)
 }
 
-func (fc *FileCount) count(acc telegraf.Accumulator, basedir string, glob globpath.GlobPath) {
+func (fc *FileCount) count(acc Dana.Accumulator, basedir string, glob globpath.GlobPath) {
 	childCount := make(map[string]int64)
 	childSize := make(map[string]int64)
 	oldestFileTimestamp := make(map[string]int64)
@@ -284,7 +284,7 @@ func (fc *FileCount) getDirs() []string {
 	return dirs
 }
 
-func (fc *FileCount) initGlobPaths(acc telegraf.Accumulator) {
+func (fc *FileCount) initGlobPaths(acc Dana.Accumulator) {
 	dirs := fc.getDirs()
 	fc.globPaths = make([]globpath.GlobPath, 0, len(dirs))
 	for _, directory := range dirs {
@@ -312,7 +312,7 @@ func newFileCount() *FileCount {
 }
 
 func init() {
-	inputs.Add("filecount", func() telegraf.Input {
+	inputs.Add("filecount", func() Dana.Input {
 		return newFileCount()
 	})
 }

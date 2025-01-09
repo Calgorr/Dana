@@ -13,7 +13,7 @@ import (
 var sampleConfig string
 
 type Postfix struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*Postfix) SampleConfig() string { return sampleConfig }
@@ -23,10 +23,10 @@ func (p *Postfix) Init() error {
 	return nil
 }
 
-func (*Postfix) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Postfix) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("postfix", func() telegraf.Input {
+	inputs.Add("postfix", func() Dana.Input {
 		return &Postfix{}
 	})
 }

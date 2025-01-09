@@ -6,7 +6,7 @@ import (
 	"Dana"
 )
 
-var _ telegraf.Logger = &Logger{}
+var _ Dana.Logger = &Logger{}
 
 type Logger struct {
 	Name  string // Name is the plugin name, will be printed in the `[]`.
@@ -14,8 +14,8 @@ type Logger struct {
 }
 
 // We always want to output at debug level during testing to find issues easier
-func (Logger) Level() telegraf.LogLevel {
-	return telegraf.Debug
+func (Logger) Level() Dana.LogLevel {
+	return Dana.Debug
 }
 
 // Adding attributes is not supported by the test-logger

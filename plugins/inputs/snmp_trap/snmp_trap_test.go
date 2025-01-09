@@ -169,7 +169,7 @@ func TestReceiveTrap(t *testing.T) {
 
 		// receive
 		entries []entry
-		metrics []telegraf.Metric
+		metrics []Dana.Metric
 	}{
 		// ordinary v2c coldStart trap
 		{
@@ -212,7 +212,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -286,7 +286,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -352,7 +352,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -418,7 +418,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -482,7 +482,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -544,7 +544,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -606,7 +606,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -668,7 +668,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -730,7 +730,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -792,7 +792,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -854,7 +854,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -918,7 +918,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -982,7 +982,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -1046,7 +1046,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -1110,7 +1110,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -1174,7 +1174,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -1238,7 +1238,7 @@ func TestReceiveTrap(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -1355,7 +1355,7 @@ func TestReceiveTrapMultipleConfig(t *testing.T) {
 
 		// receive
 		entries []entry
-		metrics []telegraf.Metric
+		metrics []Dana.Metric
 	}{
 		// ordinary v3 coldStart SHA trap auth and AES priv
 		{
@@ -1404,7 +1404,7 @@ func TestReceiveTrapMultipleConfig(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -1482,7 +1482,7 @@ func TestReceiveTrapMultipleConfig(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags
@@ -1559,7 +1559,7 @@ func TestReceiveTrapMultipleConfig(t *testing.T) {
 					},
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"snmp_trap", // name
 					map[string]string{ // tags

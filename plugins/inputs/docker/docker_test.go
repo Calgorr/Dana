@@ -705,8 +705,8 @@ func TestContainerNames(t *testing.T) {
 	}
 }
 
-func filterMetrics(metrics []telegraf.Metric, f func(telegraf.Metric) bool) []telegraf.Metric {
-	results := make([]telegraf.Metric, 0, len(metrics))
+func filterMetrics(metrics []Dana.Metric, f func(Dana.Metric) bool) []Dana.Metric {
+	results := make([]Dana.Metric, 0, len(metrics))
 	for _, m := range metrics {
 		if f(m) {
 			results = append(results, m)
@@ -720,7 +720,7 @@ func TestContainerStatus(t *testing.T) {
 		name     string
 		now      func() time.Time
 		inspect  types.ContainerJSON
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "finished_at is zero value",
@@ -728,7 +728,7 @@ func TestContainerStatus(t *testing.T) {
 				return time.Date(2018, 6, 14, 5, 51, 53, 266176036, time.UTC)
 			},
 			inspect: containerInspect(),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"docker_container_status",
 					map[string]string{
@@ -765,7 +765,7 @@ func TestContainerStatus(t *testing.T) {
 				i.ContainerJSONBase.State.FinishedAt = "2018-06-14T05:53:53.266176036Z"
 				return i
 			}(),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"docker_container_status",
 					map[string]string{
@@ -804,7 +804,7 @@ func TestContainerStatus(t *testing.T) {
 				i.ContainerJSONBase.State.FinishedAt = "2018-06-14T05:53:53.266176036Z"
 				return i
 			}(),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"docker_container_status",
 					map[string]string{
@@ -841,7 +841,7 @@ func TestContainerStatus(t *testing.T) {
 				i.ContainerJSONBase.State.FinishedAt = "2019-01-01T00:00:01Z"
 				return i
 			}(),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"docker_container_status",
 					map[string]string{
@@ -903,7 +903,7 @@ func TestContainerStatus(t *testing.T) {
 			err := d.Gather(&acc)
 			require.NoError(t, err)
 
-			actual := filterMetrics(acc.GetTelegrafMetrics(), func(m telegraf.Metric) bool {
+			actual := filterMetrics(acc.GetTelegrafMetrics(), func(m Dana.Metric) bool {
 				return m.Name() == "docker_container_status"
 			})
 			testutil.RequireMetricsEqual(t, tt.expected, actual)
@@ -1397,7 +1397,7 @@ func Test_parseContainerStatsPerDeviceAndTotal(t *testing.T) {
 	tests := []struct {
 		name     string
 		args     args
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "Per device and total metrics enabled",
@@ -1406,7 +1406,7 @@ func Test_parseContainerStatsPerDeviceAndTotal(t *testing.T) {
 				perDeviceInclude: containerMetricClasses,
 				totalInclude:     containerMetricClasses,
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metricCPUTotal, metricCPU0, metricCPU1,
 				metricNetworkTotal, metricNetworkEth0, metricNetworkEth1,
 				metricBlkioTotal, metricBlkio6_0, metricBlkio6_1,
@@ -1418,7 +1418,7 @@ func Test_parseContainerStatsPerDeviceAndTotal(t *testing.T) {
 				stat:             stats,
 				perDeviceInclude: containerMetricClasses,
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metricCPU0, metricCPU1,
 				metricNetworkEth0, metricNetworkEth1,
 				metricBlkio6_0, metricBlkio6_1,
@@ -1430,7 +1430,7 @@ func Test_parseContainerStatsPerDeviceAndTotal(t *testing.T) {
 				stat:         stats,
 				totalInclude: containerMetricClasses,
 			},
-			expected: []telegraf.Metric{metricCPUTotal, metricNetworkTotal, metricBlkioTotal},
+			expected: []Dana.Metric{metricCPUTotal, metricNetworkTotal, metricBlkioTotal},
 		},
 		{
 			name: "Per device and total metrics disabled",
@@ -1450,7 +1450,7 @@ func Test_parseContainerStatsPerDeviceAndTotal(t *testing.T) {
 			}
 			d.parseContainerStats(tt.args.stat, &acc, tt.args.tags, tt.args.id, tt.args.daemonOSType)
 
-			actual := filterMetrics(acc.GetTelegrafMetrics(), func(m telegraf.Metric) bool {
+			actual := filterMetrics(acc.GetTelegrafMetrics(), func(m Dana.Metric) bool {
 				return choice.Contains(m.Name(),
 					[]string{"docker_container_cpu", "docker_container_net", "docker_container_blkio"})
 			})

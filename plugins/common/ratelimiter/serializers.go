@@ -11,8 +11,8 @@ import (
 // Serializer interface abstracting the different implementations of a
 // limited-size serializer
 type Serializer interface {
-	Serialize(metric telegraf.Metric, limit int64) ([]byte, error)
-	SerializeBatch(metrics []telegraf.Metric, limit int64) ([]byte, error)
+	Serialize(metric Dana.Metric, limit int64) ([]byte, error)
+	SerializeBatch(metrics []Dana.Metric, limit int64) ([]byte, error)
 }
 
 // Individual serializers do serialize each metric individually using the
@@ -20,18 +20,18 @@ type Serializer interface {
 // until the limit is reached. This only works for serializers NOT requiring
 // the serialization of a batch as-a-whole.
 type IndividualSerializer struct {
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 	buffer     *bytes.Buffer
 }
 
-func NewIndividualSerializer(s telegraf.Serializer) *IndividualSerializer {
+func NewIndividualSerializer(s Dana.Serializer) *IndividualSerializer {
 	return &IndividualSerializer{
 		serializer: s,
 		buffer:     &bytes.Buffer{},
 	}
 }
 
-func (s *IndividualSerializer) Serialize(metric telegraf.Metric, limit int64) ([]byte, error) {
+func (s *IndividualSerializer) Serialize(metric Dana.Metric, limit int64) ([]byte, error) {
 	// Do the serialization
 	buf, err := s.serializer.Serialize(metric)
 	if err != nil {
@@ -47,7 +47,7 @@ func (s *IndividualSerializer) Serialize(metric telegraf.Metric, limit int64) ([
 	return nil, internal.ErrSizeLimitReached
 }
 
-func (s *IndividualSerializer) SerializeBatch(metrics []telegraf.Metric, limit int64) ([]byte, error) {
+func (s *IndividualSerializer) SerializeBatch(metrics []Dana.Metric, limit int64) ([]byte, error) {
 	// Grow the buffer so it can hold at least the required size. This will
 	// save us from reallocate often
 	s.buffer.Reset()

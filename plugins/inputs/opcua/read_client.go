@@ -41,7 +41,7 @@ type readClient struct {
 	ctx    context.Context
 }
 
-func (rc *readClientConfig) createReadClient(log telegraf.Logger) (*readClient, error) {
+func (rc *readClientConfig) createReadClient(log Dana.Logger) (*readClient, error) {
 	inputClient, err := rc.InputClientConfig.CreateInputClient(log)
 	if err != nil {
 		return nil, err
@@ -110,7 +110,7 @@ func (o *readClient) ensureConnected() error {
 	return nil
 }
 
-func (o *readClient) currentValues() ([]telegraf.Metric, error) {
+func (o *readClient) currentValues() ([]Dana.Metric, error) {
 	if err := o.ensureConnected(); err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func (o *readClient) currentValues() ([]telegraf.Metric, error) {
 		return nil, err
 	}
 
-	metrics := make([]telegraf.Metric, 0, len(o.NodeMetricMapping))
+	metrics := make([]Dana.Metric, 0, len(o.NodeMetricMapping))
 	// Parse the resulting data into metrics
 	for i := range o.NodeIDs {
 		if !o.StatusCodeOK(o.LastReceivedData[i].Quality) {

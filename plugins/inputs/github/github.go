@@ -43,7 +43,7 @@ func (*GitHub) SampleConfig() string {
 }
 
 // Gather GitHub Metrics
-func (g *GitHub) Gather(acc telegraf.Accumulator) error {
+func (g *GitHub) Gather(acc Dana.Accumulator) error {
 	ctx := context.Background()
 
 	if g.githubClient == nil {
@@ -67,7 +67,7 @@ func (g *GitHub) Gather(acc telegraf.Accumulator) error {
 	wg.Add(len(g.Repositories))
 
 	for _, repository := range g.Repositories {
-		go func(repositoryName string, acc telegraf.Accumulator) {
+		go func(repositoryName string, acc Dana.Accumulator) {
 			defer wg.Done()
 
 			owner, repository, err := splitRepositoryName(repositoryName)
@@ -222,7 +222,7 @@ func (g *GitHub) getPullRequestFields(ctx context.Context, owner, repo string) (
 }
 
 func init() {
-	inputs.Add("github", func() telegraf.Input {
+	inputs.Add("github", func() Dana.Input {
 		return &GitHub{
 			HTTPTimeout: config.Duration(time.Second * 5),
 		}

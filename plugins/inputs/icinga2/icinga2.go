@@ -33,7 +33,7 @@ type Icinga2 struct {
 	ResponseTimeout config.Duration `toml:"response_timeout"`
 	tls.ClientConfig
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	client *http.Client
 }
@@ -102,7 +102,7 @@ func (i *Icinga2) Init() error {
 	return nil
 }
 
-func (i *Icinga2) Gather(acc telegraf.Accumulator) error {
+func (i *Icinga2) Gather(acc Dana.Accumulator) error {
 	// Collect /v1/objects
 	for _, objectType := range i.Objects {
 		requestURL := "%s/v1/objects/%s?attrs=name&attrs=display_name&attrs=state&attrs=check_command"
@@ -164,7 +164,7 @@ func (i *Icinga2) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (i *Icinga2) gatherObjects(acc telegraf.Accumulator, checks resultObject, objectType string) {
+func (i *Icinga2) gatherObjects(acc Dana.Accumulator, checks resultObject, objectType string) {
 	for _, check := range checks.Results {
 		serverURL, err := url.Parse(i.Server)
 		if err != nil {
@@ -289,7 +289,7 @@ func parsePerfdataResponse(resp *http.Response) (map[string]interface{}, error) 
 }
 
 func init() {
-	inputs.Add("icinga2", func() telegraf.Input {
+	inputs.Add("icinga2", func() Dana.Input {
 		return &Icinga2{
 			Server:          "https://localhost:5665",
 			Objects:         []string{"services"},

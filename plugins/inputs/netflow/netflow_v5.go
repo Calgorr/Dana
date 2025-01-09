@@ -22,7 +22,7 @@ func (*netflowv5Decoder) init() error {
 	return nil
 }
 
-func (*netflowv5Decoder) decode(srcIP net.IP, payload []byte) ([]telegraf.Metric, error) {
+func (*netflowv5Decoder) decode(srcIP net.IP, payload []byte) ([]Dana.Metric, error) {
 	src := srcIP.String()
 
 	// Decode the message
@@ -34,7 +34,7 @@ func (*netflowv5Decoder) decode(srcIP net.IP, payload []byte) ([]telegraf.Metric
 
 	// Extract metrics
 	t := time.Unix(int64(msg.UnixSecs), int64(msg.UnixNSecs))
-	metrics := make([]telegraf.Metric, 0, len(msg.Records))
+	metrics := make([]Dana.Metric, 0, len(msg.Records))
 	for _, record := range msg.Records {
 		tags := map[string]string{
 			"source":  src,

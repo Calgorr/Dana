@@ -22,12 +22,12 @@ var (
 
 // sink interface that has to be implemented by a logging sink
 type sink interface {
-	Print(telegraf.LogLevel, time.Time, string, map[string]interface{}, ...interface{})
+	Print(Dana.LogLevel, time.Time, string, map[string]interface{}, ...interface{})
 }
 
 // logger is the actual implementation of the telegraf logger interface
 type logger struct {
-	level    *telegraf.LogLevel
+	level    *Dana.LogLevel
 	category string
 	name     string
 	alias    string
@@ -70,7 +70,7 @@ func New(category, name, alias string) *logger {
 }
 
 // Level returns the current log-level of the logger
-func (l *logger) Level() telegraf.LogLevel {
+func (l *logger) Level() Dana.LogLevel {
 	if l.level != nil {
 		return *l.level
 	}
@@ -93,7 +93,7 @@ func (l *logger) Errorf(format string, args ...interface{}) {
 }
 
 func (l *logger) Error(args ...interface{}) {
-	l.Print(telegraf.Error, time.Now(), args...)
+	l.Print(Dana.Error, time.Now(), args...)
 	for _, f := range l.onError {
 		f()
 	}
@@ -105,7 +105,7 @@ func (l *logger) Warnf(format string, args ...interface{}) {
 }
 
 func (l *logger) Warn(args ...interface{}) {
-	l.Print(telegraf.Warn, time.Now(), args...)
+	l.Print(Dana.Warn, time.Now(), args...)
 }
 
 // Info logging
@@ -114,7 +114,7 @@ func (l *logger) Infof(format string, args ...interface{}) {
 }
 
 func (l *logger) Info(args ...interface{}) {
-	l.Print(telegraf.Info, time.Now(), args...)
+	l.Print(Dana.Info, time.Now(), args...)
 }
 
 // Debug logging, this is suppressed on console
@@ -123,7 +123,7 @@ func (l *logger) Debugf(format string, args ...interface{}) {
 }
 
 func (l *logger) Debug(args ...interface{}) {
-	l.Print(telegraf.Debug, time.Now(), args...)
+	l.Print(Dana.Debug, time.Now(), args...)
 }
 
 // Trace logging, this is suppressed on console
@@ -132,10 +132,10 @@ func (l *logger) Tracef(format string, args ...interface{}) {
 }
 
 func (l *logger) Trace(args ...interface{}) {
-	l.Print(telegraf.Trace, time.Now(), args...)
+	l.Print(Dana.Trace, time.Now(), args...)
 }
 
-func (l *logger) Print(level telegraf.LogLevel, ts time.Time, args ...interface{}) {
+func (l *logger) Print(level Dana.LogLevel, ts time.Time, args ...interface{}) {
 	// Check if we are in early logging state and store the message in this case
 	if instance.impl == nil {
 		instance.add(level, ts, l.prefix, l.attributes, args...)
@@ -154,7 +154,7 @@ func (l *logger) Print(level telegraf.LogLevel, ts time.Time, args ...interface{
 }
 
 // SetLevel overrides the current log-level of the logger
-func (l *logger) SetLevel(level telegraf.LogLevel) {
+func (l *logger) SetLevel(level Dana.LogLevel) {
 	l.level = &level
 }
 
@@ -163,8 +163,8 @@ func (l *logger) SetLogLevel(name string) error {
 	if name == "" {
 		return nil
 	}
-	level := telegraf.LogLevelFromString(name)
-	if level == telegraf.None {
+	level := Dana.LogLevelFromString(name)
+	if level == Dana.None {
 		return fmt.Errorf("invalid log-level %q", name)
 	}
 	l.SetLevel(level)
@@ -199,7 +199,7 @@ type Config struct {
 	StructuredLogMessageKey string
 
 	// internal  log-level
-	logLevel telegraf.LogLevel
+	logLevel Dana.LogLevel
 }
 
 // SetupLogging configures the logging output.
@@ -234,13 +234,13 @@ func SetupLogging(cfg *Config) error {
 	}
 
 	if cfg.Debug {
-		cfg.logLevel = telegraf.Debug
+		cfg.logLevel = Dana.Debug
 	}
 	if cfg.Quiet {
-		cfg.logLevel = telegraf.Error
+		cfg.logLevel = Dana.Error
 	}
 	if !cfg.Debug && !cfg.Quiet {
-		cfg.logLevel = telegraf.Info
+		cfg.logLevel = Dana.Info
 	}
 
 	if cfg.InstanceName == "" {

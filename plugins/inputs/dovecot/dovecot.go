@@ -37,7 +37,7 @@ func (*Dovecot) SampleConfig() string {
 	return sampleConfig
 }
 
-func (d *Dovecot) Gather(acc telegraf.Accumulator) error {
+func (d *Dovecot) Gather(acc Dana.Accumulator) error {
 	if !validQuery[d.Type] {
 		return fmt.Errorf("error: %s is not a valid query type", d.Type)
 	}
@@ -65,7 +65,7 @@ func (d *Dovecot) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func gatherServer(addr string, acc telegraf.Accumulator, qtype, filter string) error {
+func gatherServer(addr string, acc Dana.Accumulator, qtype, filter string) error {
 	var proto string
 
 	if strings.HasPrefix(addr, "/") {
@@ -124,7 +124,7 @@ func gatherServer(addr string, acc telegraf.Accumulator, qtype, filter string) e
 	return nil
 }
 
-func gatherStats(buf *bytes.Buffer, acc telegraf.Accumulator, host, qtype string) {
+func gatherStats(buf *bytes.Buffer, acc Dana.Accumulator, host, qtype string) {
 	lines := strings.Split(buf.String(), "\n")
 	head := strings.Split(lines[0], "\t")
 	vals := lines[1:]
@@ -191,7 +191,7 @@ func secParser(tm string) float64 {
 }
 
 func init() {
-	inputs.Add("dovecot", func() telegraf.Input {
+	inputs.Add("dovecot", func() Dana.Input {
 		return &Dovecot{}
 	})
 }

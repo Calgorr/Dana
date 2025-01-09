@@ -26,19 +26,19 @@ type File struct {
 	UseBatchFormat       bool            `toml:"use_batch_format"`
 	CompressionAlgorithm string          `toml:"compression_algorithm"`
 	CompressionLevel     int             `toml:"compression_level"`
-	Log                  telegraf.Logger `toml:"-"`
+	Log                  Dana.Logger     `toml:"-"`
 
 	encoder    internal.ContentEncoder
 	writer     io.Writer
 	closers    []io.Closer
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 }
 
 func (*File) SampleConfig() string {
 	return sampleConfig
 }
 
-func (f *File) SetSerializer(serializer telegraf.Serializer) {
+func (f *File) SetSerializer(serializer Dana.Serializer) {
 	f.serializer = serializer
 }
 
@@ -93,7 +93,7 @@ func (f *File) Close() error {
 	return err
 }
 
-func (f *File) Write(metrics []telegraf.Metric) error {
+func (f *File) Write(metrics []Dana.Metric) error {
 	var writeErr error
 
 	if f.UseBatchFormat {
@@ -134,7 +134,7 @@ func (f *File) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("file", func() telegraf.Output {
+	outputs.Add("file", func() Dana.Output {
 		return &File{
 			CompressionLevel: -1,
 		}

@@ -490,7 +490,7 @@ func TestParseSampleTemplateJSON(t *testing.T) {
 	require.Equal(t, map[string]string{"metric_type": "gauge", "pool": "non-heap"}, vmMemoryNonHeapCommitted.Tags())
 }
 
-func search(metrics []telegraf.Metric, name string, tags map[string]string, fieldName string) telegraf.Metric {
+func search(metrics []Dana.Metric, name string, tags map[string]string, fieldName string) Dana.Metric {
 	for _, v := range metrics {
 		if v.Name() == name && containsAll(v.Tags(), tags) {
 			if len(fieldName) == 0 {
@@ -517,13 +517,13 @@ func TestDropWizard(t *testing.T) {
 	tests := []struct {
 		name        string
 		input       []byte
-		metrics     []telegraf.Metric
+		metrics     []Dana.Metric
 		expectError bool
 	}{
 		{
 			name:  "minimal",
 			input: []byte(`{"version": "3.0.0", "counters": {"cpu": {"value": 42}}}`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{
@@ -539,7 +539,7 @@ func TestDropWizard(t *testing.T) {
 		{
 			name:  "name with space unescaped",
 			input: []byte(`{"version": "3.0.0", "counters": {"hello world": {"value": 42}}}`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"hello world",
 					map[string]string{
@@ -560,7 +560,7 @@ func TestDropWizard(t *testing.T) {
 		{
 			name:  "name with space double slash escape",
 			input: []byte(`{"version": "3.0.0", "counters": {"hello\\ world": {"value": 42}}}`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"hello world",
 					map[string]string{
@@ -607,7 +607,7 @@ func TestBenchmarkData(t *testing.T) {
 	plugin := &Parser{}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"benchmark",
 			map[string]string{

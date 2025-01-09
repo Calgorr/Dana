@@ -20,7 +20,7 @@ func TestStatefulSet(t *testing.T) {
 	tests := []struct {
 		name     string
 		handler  *mockHandler
-		output   []telegraf.Metric
+		output   []Dana.Metric
 		hasError bool
 	}{
 		{
@@ -66,7 +66,7 @@ func TestStatefulSet(t *testing.T) {
 					},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					"kubernetes_statefulset",
 					map[string]string{
@@ -119,7 +119,7 @@ func TestStatefulSet(t *testing.T) {
 					},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					"kubernetes_statefulset",
 					map[string]string{
@@ -175,7 +175,7 @@ func TestStatefulSet(t *testing.T) {
 					},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					"kubernetes_statefulset",
 					map[string]string{

@@ -200,7 +200,7 @@ type metricInfoProvider interface {
 }
 
 // addMetric takes a metricInfoProvider interface and adds metric information to an accumulator.
-func addMetric(acc telegraf.Accumulator, m metricInfoProvider, logOnceMap map[string]struct{}) {
+func addMetric(acc Dana.Accumulator, m metricInfoProvider, logOnceMap map[string]struct{}) {
 	fields, err := m.fields()
 	if err == nil {
 		acc.AddGauge(

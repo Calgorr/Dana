@@ -27,8 +27,8 @@ type CloudWatch struct {
 	Namespace             string `toml:"namespace"` // CloudWatch Metrics Namespace
 	HighResolutionMetrics bool   `toml:"high_resolution_metrics"`
 	svc                   *cloudwatch.Client
-	WriteStatistics       bool            `toml:"write_statistics"`
-	Log                   telegraf.Logger `toml:"-"`
+	WriteStatistics       bool        `toml:"write_statistics"`
+	Log                   Dana.Logger `toml:"-"`
 	common_aws.CredentialConfig
 	common_http.HTTPClientConfig
 	client *http.Client
@@ -189,7 +189,7 @@ func (c *CloudWatch) Close() error {
 	return nil
 }
 
-func (c *CloudWatch) Write(metrics []telegraf.Metric) error {
+func (c *CloudWatch) Write(metrics []Dana.Metric) error {
 	var datums []types.MetricDatum
 	for _, m := range metrics {
 		d := BuildMetricDatum(c.WriteStatistics, c.HighResolutionMetrics, m)
@@ -248,10 +248,10 @@ func PartitionDatums(size int, datums []types.MetricDatum) [][]types.MetricDatum
 	return partitions
 }
 
-// BuildMetricDatum makes a MetricDatum from telegraf.Metric. It would check if all required fields of
+// BuildMetricDatum makes a MetricDatum from Dana.Metric. It would check if all required fields of
 // cloudwatch.StatisticSet are available. If so, it would build MetricDatum from statistic values.
 // Otherwise, fields would still been built independently.
-func BuildMetricDatum(buildStatistic, highResolutionMetrics bool, point telegraf.Metric) []types.MetricDatum {
+func BuildMetricDatum(buildStatistic, highResolutionMetrics bool, point Dana.Metric) []types.MetricDatum {
 	fields := make(map[string]cloudwatchField)
 	tags := point.Tags()
 	storageResolution := int64(60)
@@ -419,7 +419,7 @@ func convert(v interface{}) (value float64, ok bool) {
 }
 
 func init() {
-	outputs.Add("cloudwatch", func() telegraf.Output {
+	outputs.Add("cloudwatch", func() Dana.Output {
 		return &CloudWatch{}
 	})
 }

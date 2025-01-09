@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var testmetrics = []telegraf.Metric{
+var testmetrics = []Dana.Metric{
 	metric.New(
 		"packing",
 		map[string]string{
@@ -95,7 +95,7 @@ func TestNoMetric(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	var input []telegraf.Metric
+	var input []Dana.Metric
 	require.Empty(t, plugin.Apply(input...))
 }
 
@@ -151,7 +151,7 @@ func TestNamePass(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"welding",
 			map[string]string{
@@ -195,7 +195,7 @@ func TestNameDrop(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"packing",
 			map[string]string{
@@ -239,7 +239,7 @@ func TestNameGlob(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"foundry",
 			map[string]string{
@@ -271,7 +271,7 @@ func TestTagPass(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"packing",
 			map[string]string{
@@ -328,7 +328,7 @@ func TestTagDrop(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"welding",
 			map[string]string{
@@ -363,7 +363,7 @@ func TestTagMultiple(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"foundry",
 			map[string]string{
@@ -408,7 +408,7 @@ func TestTagGlob(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"foundry",
 			map[string]string{
@@ -485,7 +485,7 @@ func TestFieldPass(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"foundry",
 			map[string]string{
@@ -530,7 +530,7 @@ func TestFieldDrop(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"packing",
 			map[string]string{
@@ -574,7 +574,7 @@ func TestFieldGlob(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"foundry",
 			map[string]string{
@@ -642,7 +642,7 @@ func TestRuleMultiple(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"packing",
 			map[string]string{
@@ -665,20 +665,20 @@ func TestTracking(t *testing.T) {
 	inputRaw := testmetrics
 
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m.Copy(), notify)
 		input = append(input, tm)
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"welding",
 			map[string]string{

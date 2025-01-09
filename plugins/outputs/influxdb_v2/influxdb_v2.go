@@ -43,7 +43,7 @@ type InfluxDB struct {
 	OmitTimestamp    bool              `toml:"influx_omit_timestamp"`
 	PingTimeout      config.Duration   `toml:"ping_timeout"`
 	ReadIdleTimeout  config.Duration   `toml:"read_idle_timeout"`
-	Log              telegraf.Logger   `toml:"-"`
+	Log              Dana.Logger       `toml:"-"`
 	commontls.ClientConfig
 	ratelimiter.RateLimitConfig
 
@@ -193,7 +193,7 @@ func (i *InfluxDB) Close() error {
 
 // Write sends metrics to one of the configured servers, logging each
 // unsuccessful. If all servers fail, return an error.
-func (i *InfluxDB) Write(metrics []telegraf.Metric) error {
+func (i *InfluxDB) Write(metrics []Dana.Metric) error {
 	ctx := context.Background()
 
 	for _, n := range rand.Perm(len(i.clients)) {
@@ -213,7 +213,7 @@ func (i *InfluxDB) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("influxdb_v2", func() telegraf.Output {
+	outputs.Add("influxdb_v2", func() Dana.Output {
 		return &InfluxDB{
 			Timeout: config.Duration(time.Second * 5),
 		}

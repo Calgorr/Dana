@@ -29,10 +29,10 @@ type Exec struct {
 	Environment    []string        `toml:"environment"`
 	Timeout        config.Duration `toml:"timeout"`
 	UseBatchFormat bool            `toml:"use_batch_format"`
-	Log            telegraf.Logger `toml:"-"`
+	Log            Dana.Logger     `toml:"-"`
 
 	runner     Runner
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 }
 
 func (*Exec) SampleConfig() string {
@@ -46,7 +46,7 @@ func (e *Exec) Init() error {
 }
 
 // SetSerializer sets the serializer for the output.
-func (e *Exec) SetSerializer(serializer telegraf.Serializer) {
+func (e *Exec) SetSerializer(serializer Dana.Serializer) {
 	e.serializer = serializer
 }
 
@@ -61,7 +61,7 @@ func (e *Exec) Close() error {
 }
 
 // Write writes the metrics to the configured command.
-func (e *Exec) Write(metrics []telegraf.Metric) error {
+func (e *Exec) Write(metrics []Dana.Metric) error {
 	var buffer bytes.Buffer
 	if e.UseBatchFormat {
 		serializedMetrics, err := e.serializer.SerializeBatch(metrics)
@@ -99,7 +99,7 @@ type Runner interface {
 // CommandRunner runs a command with the ability to kill the process before the timeout.
 type CommandRunner struct {
 	cmd *exec.Cmd
-	log telegraf.Logger
+	log Dana.Logger
 }
 
 // Run runs the command.
@@ -122,7 +122,7 @@ func (c *CommandRunner) Run(timeout time.Duration, command, environments []strin
 
 		s = removeWindowsCarriageReturns(s)
 		if s.Len() > 0 {
-			if c.log.Level() < telegraf.Debug {
+			if c.log.Level() < Dana.Debug {
 				c.log.Errorf("Command error: %q", c.truncate(s))
 			} else {
 				c.log.Debugf("Command error: %q", s)
@@ -162,7 +162,7 @@ func (c *CommandRunner) truncate(buf bytes.Buffer) string {
 }
 
 func init() {
-	outputs.Add("exec", func() telegraf.Output {
+	outputs.Add("exec", func() Dana.Output {
 		return &Exec{
 			Timeout:        config.Duration(time.Second * 5),
 			UseBatchFormat: true,

@@ -18,13 +18,13 @@ import (
 var sampleConfig string
 
 type Parser struct {
-	DropOriginal bool            `toml:"drop_original"`
-	Merge        string          `toml:"merge"`
-	ParseFields  []string        `toml:"parse_fields"`
-	Base64Fields []string        `toml:"parse_fields_base64"`
-	ParseTags    []string        `toml:"parse_tags"`
-	Log          telegraf.Logger `toml:"-"`
-	parser       telegraf.Parser
+	DropOriginal bool        `toml:"drop_original"`
+	Merge        string      `toml:"merge"`
+	ParseFields  []string    `toml:"parse_fields"`
+	Base64Fields []string    `toml:"parse_fields_base64"`
+	ParseTags    []string    `toml:"parse_tags"`
+	Log          Dana.Logger `toml:"-"`
+	parser       Dana.Parser
 }
 
 func (p *Parser) Init() error {
@@ -41,14 +41,14 @@ func (*Parser) SampleConfig() string {
 	return sampleConfig
 }
 
-func (p *Parser) SetParser(parser telegraf.Parser) {
+func (p *Parser) SetParser(parser Dana.Parser) {
 	p.parser = parser
 }
 
-func (p *Parser) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
-	results := make([]telegraf.Metric, 0, len(metrics))
+func (p *Parser) Apply(metrics ...Dana.Metric) []Dana.Metric {
+	results := make([]Dana.Metric, 0, len(metrics))
 	for _, metric := range metrics {
-		var newMetrics []telegraf.Metric
+		var newMetrics []Dana.Metric
 		if !p.DropOriginal {
 			newMetrics = append(newMetrics, metric)
 		} else {
@@ -148,7 +148,7 @@ func (p *Parser) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
 	return results
 }
 
-func merge(base telegraf.Metric, metrics []telegraf.Metric) telegraf.Metric {
+func merge(base Dana.Metric, metrics []Dana.Metric) Dana.Metric {
 	for _, metric := range metrics {
 		for _, field := range metric.FieldList() {
 			base.AddField(field.Key, field.Value)
@@ -161,7 +161,7 @@ func merge(base telegraf.Metric, metrics []telegraf.Metric) telegraf.Metric {
 	return base
 }
 
-func mergeWithTimestamp(base telegraf.Metric, metrics []telegraf.Metric) telegraf.Metric {
+func mergeWithTimestamp(base Dana.Metric, metrics []Dana.Metric) Dana.Metric {
 	for _, metric := range metrics {
 		for _, field := range metric.FieldList() {
 			base.AddField(field.Key, field.Value)
@@ -177,7 +177,7 @@ func mergeWithTimestamp(base telegraf.Metric, metrics []telegraf.Metric) telegra
 	return base
 }
 
-func (p *Parser) parseValue(value string) ([]telegraf.Metric, error) {
+func (p *Parser) parseValue(value string) ([]Dana.Metric, error) {
 	return p.parser.Parse([]byte(value))
 }
 
@@ -195,7 +195,7 @@ func (p *Parser) toBytes(value interface{}) ([]byte, error) {
 }
 
 func init() {
-	processors.Add("parser", func() telegraf.Processor {
+	processors.Add("parser", func() Dana.Processor {
 		return &Parser{DropOriginal: false}
 	})
 }

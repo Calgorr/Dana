@@ -36,7 +36,7 @@ func (*Tengine) SampleConfig() string {
 	return sampleConfig
 }
 
-func (n *Tengine) Gather(acc telegraf.Accumulator) error {
+func (n *Tengine) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	// Create an HTTP client that is re-used for each
@@ -120,7 +120,7 @@ type TengineStatus struct {
 	httpUps5xx            uint64
 }
 
-func (n *Tengine) gatherURL(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *Tengine) gatherURL(addr *url.URL, acc Dana.Accumulator) error {
 	var tengineStatus TengineStatus
 	resp, err := n.client.Get(addr.String())
 	if err != nil {
@@ -319,7 +319,7 @@ func getTags(addr *url.URL, serverName string) map[string]string {
 }
 
 func init() {
-	inputs.Add("tengine", func() telegraf.Input {
+	inputs.Add("tengine", func() Dana.Input {
 		return &Tengine{}
 	})
 }

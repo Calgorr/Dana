@@ -49,7 +49,7 @@ type Parser struct {
 	Configs              []Config          `toml:"xpath"`
 	DefaultMetricName    string            `toml:"-"`
 	DefaultTags          map[string]string `toml:"-"`
-	Log                  telegraf.Logger   `toml:"-"`
+	Log                  Dana.Logger       `toml:"-"`
 
 	// Required for backward compatibility
 	ConfigsXML     []Config `toml:"xml" deprecated:"1.23.1;1.35.0;use 'xpath' instead"`
@@ -95,7 +95,7 @@ func (p *Parser) Init() error {
 		// Required for backward compatibility
 		if len(p.ConfigsXML) > 0 {
 			p.Configs = append(p.Configs, p.ConfigsXML...)
-			config.PrintOptionDeprecationNotice("parsers.xpath", "xml", telegraf.DeprecationInfo{
+			config.PrintOptionDeprecationNotice("parsers.xpath", "xml", Dana.DeprecationInfo{
 				Since:     "1.23.1",
 				RemovalIn: "1.35.0",
 				Notice:    "use 'xpath' instead",
@@ -109,7 +109,7 @@ func (p *Parser) Init() error {
 		// Required for backward compatibility
 		if len(p.ConfigsJSON) > 0 {
 			p.Configs = append(p.Configs, p.ConfigsJSON...)
-			config.PrintOptionDeprecationNotice("parsers.xpath", "xpath_json", telegraf.DeprecationInfo{
+			config.PrintOptionDeprecationNotice("parsers.xpath", "xpath_json", Dana.DeprecationInfo{
 				Since:     "1.23.1",
 				RemovalIn: "1.35.0",
 				Notice:    "use 'xpath' instead",
@@ -121,7 +121,7 @@ func (p *Parser) Init() error {
 		// Required for backward compatibility
 		if len(p.ConfigsMsgPack) > 0 {
 			p.Configs = append(p.Configs, p.ConfigsMsgPack...)
-			config.PrintOptionDeprecationNotice("parsers.xpath", "xpath_msgpack", telegraf.DeprecationInfo{
+			config.PrintOptionDeprecationNotice("parsers.xpath", "xpath_msgpack", Dana.DeprecationInfo{
 				Since:     "1.23.1",
 				RemovalIn: "1.35.0",
 				Notice:    "use 'xpath' instead",
@@ -146,7 +146,7 @@ func (p *Parser) Init() error {
 		// Required for backward compatibility
 		if len(p.ConfigsProto) > 0 {
 			p.Configs = append(p.Configs, p.ConfigsProto...)
-			config.PrintOptionDeprecationNotice("parsers.xpath", "xpath_proto", telegraf.DeprecationInfo{
+			config.PrintOptionDeprecationNotice("parsers.xpath", "xpath_proto", Dana.DeprecationInfo{
 				Since:     "1.23.1",
 				RemovalIn: "1.35.0",
 				Notice:    "use 'xpath' instead",
@@ -196,7 +196,7 @@ func (p *Parser) Init() error {
 	return nil
 }
 
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 	t := time.Now()
 
 	// Parse the XML
@@ -209,7 +209,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 	}
 
 	// Queries
-	metrics := make([]telegraf.Metric, 0)
+	metrics := make([]Dana.Metric, 0)
 	p.Log.Debugf("Number of configs: %d", len(p.Configs))
 	for _, cfg := range p.Configs {
 		selectedNodes, err := p.document.QueryAll(doc, cfg.Selection)
@@ -235,7 +235,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 	return metrics, nil
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line))
 	if err != nil {
 		return nil, err
@@ -255,7 +255,7 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 	p.DefaultTags = tags
 }
 
-func (p *Parser) parseQuery(starttime time.Time, doc, selected dataNode, cfg Config) (telegraf.Metric, error) {
+func (p *Parser) parseQuery(starttime time.Time, doc, selected dataNode, cfg Config) (Dana.Metric, error) {
 	var timestamp time.Time
 	var metricname string
 
@@ -629,7 +629,7 @@ func (p *Parser) constructFieldName(root, node dataNode, name string, expand boo
 }
 
 func (p *Parser) debugEmptyQuery(operation string, root dataNode, initialquery string) {
-	if p.Log == nil || !(p.Log.Level().Includes(telegraf.Trace) || p.Trace) { // for backward compatibility
+	if p.Log == nil || !(p.Log.Level().Includes(Dana.Trace) || p.Trace) { // for backward compatibility
 		return
 	}
 
@@ -661,7 +661,7 @@ func (p *Parser) debugEmptyQuery(operation string, root dataNode, initialquery s
 func init() {
 	// Register all variants
 	parsers.Add("xml",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{
 				Format:            "xml",
 				DefaultMetricName: defaultMetricName,
@@ -669,7 +669,7 @@ func init() {
 		},
 	)
 	parsers.Add("xpath_cbor",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{
 				Format:            "xpath_cbor",
 				DefaultMetricName: defaultMetricName,
@@ -677,7 +677,7 @@ func init() {
 		},
 	)
 	parsers.Add("xpath_json",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{
 				Format:            "xpath_json",
 				DefaultMetricName: defaultMetricName,
@@ -685,7 +685,7 @@ func init() {
 		},
 	)
 	parsers.Add("xpath_msgpack",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{
 				Format:            "xpath_msgpack",
 				DefaultMetricName: defaultMetricName,
@@ -693,7 +693,7 @@ func init() {
 		},
 	)
 	parsers.Add("xpath_protobuf",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{
 				Format:            "xpath_protobuf",
 				DefaultMetricName: defaultMetricName,

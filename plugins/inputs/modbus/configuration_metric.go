@@ -39,7 +39,7 @@ type configurationPerMetric struct {
 
 	workarounds         workarounds
 	excludeRegisterType bool
-	logger              telegraf.Logger
+	logger              Dana.Logger
 }
 
 func (*configurationPerMetric) sampleConfigPart() string {

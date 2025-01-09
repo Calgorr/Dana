@@ -195,7 +195,7 @@ func (d FieldDict) Iterate() starlark.Iterator {
 
 type FieldIterator struct {
 	*Metric
-	fields []*telegraf.Field
+	fields []*Dana.Field
 }
 
 // Next implements the starlark.Iterator interface.

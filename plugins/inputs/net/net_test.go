@@ -49,7 +49,7 @@ func TestNetIOStats(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"net",
 			map[string]string{"interface": "eth0"},
@@ -65,7 +65,7 @@ func TestNetIOStats(t *testing.T) {
 				"speed":        int64(100),
 			},
 			time.Unix(0, 0),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		metric.New(
 			"net",
@@ -116,7 +116,7 @@ func TestNetIOStatsSpeedUnsupported(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"net",
 			map[string]string{"interface": "eth1"},
@@ -132,7 +132,7 @@ func TestNetIOStatsSpeedUnsupported(t *testing.T) {
 				"speed":        int64(-1),
 			},
 			time.Unix(0, 0),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		metric.New(
 			"net",
@@ -183,7 +183,7 @@ func TestNetIOStatsNoSpeedFile(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"net",
 			map[string]string{"interface": "eth2"},
@@ -199,7 +199,7 @@ func TestNetIOStatsNoSpeedFile(t *testing.T) {
 				"speed":        int64(-1),
 			},
 			time.Unix(0, 0),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		metric.New(
 			"net",

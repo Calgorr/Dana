@@ -19,7 +19,7 @@ type entitiesResolver interface {
 type iaEntitiesResolver struct {
 	reader      ia.Reader
 	transformer ia.Transformer
-	log         telegraf.Logger
+	log         Dana.Logger
 }
 
 func (e *iaEntitiesResolver) resolveEntities(coreEntities []*coreEventEntity, uncoreEntities []*uncoreEventEntity) error {

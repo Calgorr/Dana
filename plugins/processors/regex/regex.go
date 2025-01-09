@@ -13,12 +13,12 @@ import (
 var sampleConfig string
 
 type Regex struct {
-	Tags         []converter     `toml:"tags"`
-	Fields       []converter     `toml:"fields"`
-	TagRename    []converter     `toml:"tag_rename"`
-	FieldRename  []converter     `toml:"field_rename"`
-	MetricRename []converter     `toml:"metric_rename"`
-	Log          telegraf.Logger `toml:"-"`
+	Tags         []converter `toml:"tags"`
+	Fields       []converter `toml:"fields"`
+	TagRename    []converter `toml:"tag_rename"`
+	FieldRename  []converter `toml:"field_rename"`
+	MetricRename []converter `toml:"metric_rename"`
+	Log          Dana.Logger `toml:"-"`
 }
 
 func (*Regex) SampleConfig() string {
@@ -74,7 +74,7 @@ func (r *Regex) Init() error {
 	return nil
 }
 
-func (r *Regex) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (r *Regex) Apply(in ...Dana.Metric) []Dana.Metric {
 	for _, metric := range in {
 		for _, c := range r.Tags {
 			c.apply(metric)
@@ -101,5 +101,5 @@ func (r *Regex) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("regex", func() telegraf.Processor { return &Regex{} })
+	processors.Add("regex", func() Dana.Processor { return &Regex{} })
 }

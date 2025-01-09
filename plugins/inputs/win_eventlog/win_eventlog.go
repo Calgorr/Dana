@@ -30,21 +30,21 @@ var sampleConfig string
 
 // WinEventLog config
 type WinEventLog struct {
-	Locale                 uint32          `toml:"locale"`
-	EventlogName           string          `toml:"eventlog_name"`
-	Query                  string          `toml:"xpath_query"`
-	FromBeginning          bool            `toml:"from_beginning"`
-	BatchSize              uint32          `toml:"event_batch_size"`
-	ProcessUserData        bool            `toml:"process_userdata"`
-	ProcessEventData       bool            `toml:"process_eventdata"`
-	Separator              string          `toml:"separator"`
-	OnlyFirstLineOfMessage bool            `toml:"only_first_line_of_message"`
-	TimeStampFromEvent     bool            `toml:"timestamp_from_event"`
-	EventTags              []string        `toml:"event_tags"`
-	EventFields            []string        `toml:"event_fields"`
-	ExcludeFields          []string        `toml:"exclude_fields"`
-	ExcludeEmpty           []string        `toml:"exclude_empty"`
-	Log                    telegraf.Logger `toml:"-"`
+	Locale                 uint32      `toml:"locale"`
+	EventlogName           string      `toml:"eventlog_name"`
+	Query                  string      `toml:"xpath_query"`
+	FromBeginning          bool        `toml:"from_beginning"`
+	BatchSize              uint32      `toml:"event_batch_size"`
+	ProcessUserData        bool        `toml:"process_userdata"`
+	ProcessEventData       bool        `toml:"process_eventdata"`
+	Separator              string      `toml:"separator"`
+	OnlyFirstLineOfMessage bool        `toml:"only_first_line_of_message"`
+	TimeStampFromEvent     bool        `toml:"timestamp_from_event"`
+	EventTags              []string    `toml:"event_tags"`
+	EventFields            []string    `toml:"event_fields"`
+	ExcludeFields          []string    `toml:"exclude_fields"`
+	ExcludeEmpty           []string    `toml:"exclude_empty"`
+	Log                    Dana.Logger `toml:"-"`
 
 	subscription     EvtHandle
 	subscriptionFlag EvtSubscribeFlag
@@ -96,7 +96,7 @@ func (w *WinEventLog) Init() error {
 	return nil
 }
 
-func (w *WinEventLog) Start(_ telegraf.Accumulator) error {
+func (w *WinEventLog) Start(_ Dana.Accumulator) error {
 	subscription, err := w.evtSubscribe()
 	if err != nil {
 		return fmt.Errorf("subscription of Windows Event Log failed: %w", err)
@@ -143,7 +143,7 @@ func (w *WinEventLog) SetState(state interface{}) error {
 }
 
 // Gather Windows Event Log entries
-func (w *WinEventLog) Gather(acc telegraf.Accumulator) error {
+func (w *WinEventLog) Gather(acc Dana.Accumulator) error {
 	for {
 		events, err := w.fetchEvents(w.subscription)
 		if err != nil {
@@ -560,7 +560,7 @@ func openPublisherMetadata(
 }
 
 func init() {
-	inputs.Add("win_eventlog", func() telegraf.Input {
+	inputs.Add("win_eventlog", func() Dana.Input {
 		return &WinEventLog{
 			ProcessUserData:        true,
 			ProcessEventData:       true,

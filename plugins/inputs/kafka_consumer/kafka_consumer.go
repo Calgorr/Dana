@@ -51,7 +51,7 @@ type KafkaConsumer struct {
 	ConsumerFetchDefault                 config.Size     `toml:"consumer_fetch_default"`
 	ConnectionStrategy                   string          `toml:"connection_strategy" deprecated:"1.33.0;1.40.0;use 'startup_error_behavior' instead"`
 	ResolveCanonicalBootstrapServersOnly bool            `toml:"resolve_canonical_bootstrap_servers_only"`
-	Log                                  telegraf.Logger `toml:"-"`
+	Log                                  Dana.Logger     `toml:"-"`
 	kafka.ReadConfig
 
 	consumerCreator consumerGroupCreator
@@ -63,7 +63,7 @@ type KafkaConsumer struct {
 	allWantedTopics []string
 	fingerprint     string
 
-	parser    telegraf.Parser
+	parser    Dana.Parser
 	topicLock sync.Mutex
 	wg        sync.WaitGroup
 	cancel    context.CancelFunc
@@ -77,16 +77,16 @@ type consumerGroupHandler struct {
 	msgHeaderToMetricName string
 	timestampSource       string
 
-	acc    telegraf.TrackingAccumulator
+	acc    Dana.TrackingAccumulator
 	sem    semaphore
-	parser telegraf.Parser
+	parser Dana.Parser
 	wg     sync.WaitGroup
 	cancel context.CancelFunc
 
 	mu          sync.Mutex
-	undelivered map[telegraf.TrackingID]message
+	undelivered map[Dana.TrackingID]message
 
-	log telegraf.Logger
+	log Dana.Logger
 }
 
 // message is an aggregate type binding the Kafka message and the session so that offsets can be updated.
@@ -216,11 +216,11 @@ func (k *KafkaConsumer) Init() error {
 	return nil
 }
 
-func (k *KafkaConsumer) SetParser(parser telegraf.Parser) {
+func (k *KafkaConsumer) SetParser(parser Dana.Parser) {
 	k.parser = parser
 }
 
-func (k *KafkaConsumer) Start(acc telegraf.Accumulator) error {
+func (k *KafkaConsumer) Start(acc Dana.Accumulator) error {
 	var err error
 
 	// If TopicRegexps is set, add matches to Topics
@@ -299,7 +299,7 @@ func (k *KafkaConsumer) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*KafkaConsumer) Gather(telegraf.Accumulator) error {
+func (*KafkaConsumer) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -404,7 +404,7 @@ func (k *KafkaConsumer) create() error {
 	return err
 }
 
-func (k *KafkaConsumer) startErrorAdder(acc telegraf.Accumulator) {
+func (k *KafkaConsumer) startErrorAdder(acc Dana.Accumulator) {
 	k.wg.Add(1)
 	go func() {
 		defer k.wg.Done()
@@ -414,11 +414,11 @@ func (k *KafkaConsumer) startErrorAdder(acc telegraf.Accumulator) {
 	}()
 }
 
-func newConsumerGroupHandler(acc telegraf.Accumulator, maxUndelivered int, parser telegraf.Parser, log telegraf.Logger) *consumerGroupHandler {
+func newConsumerGroupHandler(acc Dana.Accumulator, maxUndelivered int, parser Dana.Parser, log Dana.Logger) *consumerGroupHandler {
 	handler := &consumerGroupHandler{
 		acc:         acc.WithTracking(maxUndelivered),
 		sem:         make(chan empty, maxUndelivered),
-		undelivered: make(map[telegraf.TrackingID]message, maxUndelivered),
+		undelivered: make(map[Dana.TrackingID]message, maxUndelivered),
 		parser:      parser,
 		log:         log,
 	}
@@ -427,7 +427,7 @@ func newConsumerGroupHandler(acc telegraf.Accumulator, maxUndelivered int, parse
 
 // Setup is called once when a new session is opened. It setups up the handler and begins processing delivered messages.
 func (h *consumerGroupHandler) Setup(sarama.ConsumerGroupSession) error {
-	h.undelivered = make(map[telegraf.TrackingID]message)
+	h.undelivered = make(map[Dana.TrackingID]message)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	h.cancel = cancel
@@ -484,7 +484,7 @@ func (h *consumerGroupHandler) run(ctx context.Context) {
 	}
 }
 
-func (h *consumerGroupHandler) onDelivery(track telegraf.DeliveryInfo) {
+func (h *consumerGroupHandler) onDelivery(track Dana.DeliveryInfo) {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 
@@ -585,7 +585,7 @@ func (h *consumerGroupHandler) handle(session sarama.ConsumerGroupSession, msg *
 }
 
 func init() {
-	inputs.Add("kafka_consumer", func() telegraf.Input {
+	inputs.Add("kafka_consumer", func() Dana.Input {
 		return &KafkaConsumer{}
 	})
 }

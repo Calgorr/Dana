@@ -60,14 +60,14 @@ func TestSendReceive(t *testing.T) {
 	tests := []struct {
 		name     string
 		msgs     map[string][]string
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "single message",
 			msgs: map[string][]string{
 				"telegraf": {"test,source=foo value=42i"},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"test",
 					map[string]string{
@@ -91,7 +91,7 @@ func TestSendReceive(t *testing.T) {
 					"wale,part=back named=false",
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"test",
 					map[string]string{

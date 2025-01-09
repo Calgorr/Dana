@@ -49,7 +49,7 @@ type Dpdk struct {
 	MetadataFields            []string        `toml:"metadata_fields"`
 	PluginOptions             []string        `toml:"plugin_options"`
 	UnreachableSocketBehavior string          `toml:"unreachable_socket_behavior"`
-	Log                       telegraf.Logger `toml:"-"`
+	Log                       Dana.Logger     `toml:"-"`
 
 	connectors                   []*dpdkConnector
 	rawdevCommands               []string
@@ -101,13 +101,13 @@ func (dpdk *Dpdk) Init() error {
 }
 
 // Start implements ServiceInput interface
-func (dpdk *Dpdk) Start(telegraf.Accumulator) error {
+func (dpdk *Dpdk) Start(Dana.Accumulator) error {
 	return dpdk.maintainConnections()
 }
 
 // Gather function gathers all unique commands and processes each command sequentially
 // Parallel processing could be achieved by running several instances of this plugin with different settings
-func (dpdk *Dpdk) Gather(acc telegraf.Accumulator) error {
+func (dpdk *Dpdk) Gather(acc Dana.Accumulator) error {
 	if err := dpdk.Start(acc); err != nil {
 		return err
 	}
@@ -259,7 +259,7 @@ func (dpdk *Dpdk) maintainConnections() error {
 }
 
 // Gathers all unique commands
-func (dpdk *Dpdk) gatherCommands(acc telegraf.Accumulator, dpdkConnector *dpdkConnector) []string {
+func (dpdk *Dpdk) gatherCommands(acc Dana.Accumulator, dpdkConnector *dpdkConnector) []string {
 	var commands []string
 	if choice.Contains("ethdev", dpdk.DeviceTypes) {
 		ethdevCommands := removeSubset(dpdk.ethdevCommands, dpdk.ethdevExcludedCommandsFilter)
@@ -283,7 +283,7 @@ func (dpdk *Dpdk) gatherCommands(acc telegraf.Accumulator, dpdkConnector *dpdkCo
 }
 
 func init() {
-	inputs.Add(pluginName, func() telegraf.Input {
+	inputs.Add(pluginName, func() Dana.Input {
 		dpdk := &Dpdk{
 			// Setting it here (rather than in `Init()`) to distinguish between "zero" value,
 			// default value and don't having value in config at all.

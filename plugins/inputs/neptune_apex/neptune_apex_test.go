@@ -61,14 +61,14 @@ func TestParseXML(t *testing.T) {
 	tests := []struct {
 		name        string
 		xmlResponse []byte
-		wantMetrics []telegraf.Metric
+		wantMetrics []Dana.Metric
 		wantAccErr  bool
 		wantErr     bool
 	}{
 		{
 			name:        "Good test",
 			xmlResponse: []byte(apex2016),
-			wantMetrics: []telegraf.Metric{
+			wantMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					Measurement,
 					map[string]string{
@@ -224,7 +224,7 @@ func TestParseXML(t *testing.T) {
 				`<status><date>12/22/2018 21:55:37</date>
 				<timezone>-8.0</timezone><power><failed>a</failed>
 				<restored>12/22/2018 22:55:37</restored></power></status>`),
-			wantMetrics: []telegraf.Metric{
+			wantMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					Measurement,
 					map[string]string{
@@ -247,7 +247,7 @@ func TestParseXML(t *testing.T) {
 				`<status><date>12/22/2018 21:55:37</date>
 				<timezone>-8.0</timezone><power><restored>a</restored>
 				<failed>12/22/2018 22:55:37</failed></power></status>`),
-			wantMetrics: []telegraf.Metric{
+			wantMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					Measurement,
 					map[string]string{
@@ -281,7 +281,7 @@ func TestParseXML(t *testing.T) {
 				<probes><probe><name>o1W</name><value>abc</value></probe>
 				</probes></status>`),
 			wantAccErr: true,
-			wantMetrics: []telegraf.Metric{
+			wantMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					Measurement,
 					map[string]string{
@@ -310,7 +310,7 @@ func TestParseXML(t *testing.T) {
 				<probes><probe><name>o1A</name><value>abc</value></probe>
 				</probes></status>`),
 			wantAccErr: true,
-			wantMetrics: []telegraf.Metric{
+			wantMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					Measurement,
 					map[string]string{
@@ -338,7 +338,7 @@ func TestParseXML(t *testing.T) {
 				<probes><probe><name>p1</name><value>abc</value></probe>
 				</probes></status>`),
 			wantAccErr: true,
-			wantMetrics: []telegraf.Metric{
+			wantMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					Measurement,
 					map[string]string{

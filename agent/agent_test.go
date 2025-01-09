@@ -229,11 +229,11 @@ func TestCases(t *testing.T) {
 }
 
 // Implement a "test-mode" like call but collect the metrics
-func collect(ctx context.Context, a *Server, wait time.Duration) ([]telegraf.Metric, error) {
-	var received []telegraf.Metric
+func collect(ctx context.Context, a *Server, wait time.Duration) ([]Dana.Metric, error) {
+	var received []Dana.Metric
 	var mu sync.Mutex
 
-	src := make(chan telegraf.Metric, 100)
+	src := make(chan Dana.Metric, 100)
 
 	var wg sync.WaitGroup
 	wg.Add(1)

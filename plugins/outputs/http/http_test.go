@@ -26,7 +26,7 @@ import (
 	"Dana/testutil"
 )
 
-func getMetric() telegraf.Metric {
+func getMetric() Dana.Metric {
 	m := metric.New(
 		"cpu",
 		map[string]string{},
@@ -39,8 +39,8 @@ func getMetric() telegraf.Metric {
 	return m
 }
 
-func getMetrics(n int) []telegraf.Metric {
-	m := make([]telegraf.Metric, n)
+func getMetrics(n int) []Dana.Metric {
+	m := make([]Dana.Metric, n)
 	for n > 0 {
 		n--
 		m[n] = getMetric()
@@ -126,7 +126,7 @@ func TestMethod(t *testing.T) {
 			}
 			require.NoError(t, err)
 
-			err = tt.plugin.Write([]telegraf.Metric{getMetric()})
+			err = tt.plugin.Write([]Dana.Metric{getMetric()})
 			require.NoError(t, err)
 		})
 	}
@@ -195,7 +195,7 @@ func TestHTTPClientConfig(t *testing.T) {
 			require.Equal(t, tt.expectedMaxIdleConns, maxIdleConns)
 			require.Equal(t, tt.expectedMaxIdleConnsPerHost, maxIdleConnsPerHost)
 
-			err = tt.plugin.Write([]telegraf.Metric{getMetric()})
+			err = tt.plugin.Write([]Dana.Metric{getMetric()})
 			require.NoError(t, err)
 		})
 	}
@@ -281,7 +281,7 @@ func TestStatusCode(t *testing.T) {
 
 			tt.plugin.Log = testutil.Logger{}
 
-			err = tt.plugin.Write([]telegraf.Metric{getMetric()})
+			err = tt.plugin.Write([]Dana.Metric{getMetric()})
 			tt.errFunc(t, err)
 		})
 	}
@@ -334,7 +334,7 @@ func TestContentType(t *testing.T) {
 			err = tt.plugin.Connect()
 			require.NoError(t, err)
 
-			err = tt.plugin.Write([]telegraf.Metric{getMetric()})
+			err = tt.plugin.Write([]Dana.Metric{getMetric()})
 			require.NoError(t, err)
 		})
 	}
@@ -411,7 +411,7 @@ func TestContentEncodingGzip(t *testing.T) {
 			err = tt.plugin.Connect()
 			require.NoError(t, err)
 
-			err = tt.plugin.Write([]telegraf.Metric{getMetric()})
+			err = tt.plugin.Write([]Dana.Metric{getMetric()})
 			require.NoError(t, err)
 		})
 	}
@@ -473,7 +473,7 @@ func TestBasicAuth(t *testing.T) {
 			require.NoError(t, serializer.Init())
 			plugin.SetSerializer(serializer)
 			require.NoError(t, plugin.Connect())
-			require.NoError(t, plugin.Write([]telegraf.Metric{getMetric()}))
+			require.NoError(t, plugin.Write([]Dana.Metric{getMetric()}))
 		})
 	}
 }
@@ -579,7 +579,7 @@ func TestOAuthClientCredentialsGrant(t *testing.T) {
 			err = tt.plugin.Connect()
 			require.NoError(t, err)
 
-			err = tt.plugin.Write([]telegraf.Metric{getMetric()})
+			err = tt.plugin.Write([]Dana.Metric{getMetric()})
 			require.NoError(t, err)
 		})
 	}
@@ -677,7 +677,7 @@ func TestOAuthAuthorizationCodeGrant(t *testing.T) {
 			tt.plugin.SetSerializer(serializer)
 
 			require.NoError(t, tt.plugin.Connect())
-			require.NoError(t, tt.plugin.Write([]telegraf.Metric{getMetric()}))
+			require.NoError(t, tt.plugin.Write([]Dana.Metric{getMetric()}))
 			require.NoError(t, err)
 		})
 	}
@@ -711,7 +711,7 @@ func TestDefaultUserAgent(t *testing.T) {
 		err = client.Connect()
 		require.NoError(t, err)
 
-		err = client.Write([]telegraf.Metric{getMetric()})
+		err = client.Write([]Dana.Metric{getMetric()})
 		require.NoError(t, err)
 	})
 }
@@ -734,7 +734,7 @@ func TestBatchedUnbatched(t *testing.T) {
 	jsonSerializer := &json.Serializer{}
 	require.NoError(t, jsonSerializer.Init())
 
-	s := map[string]telegraf.Serializer{
+	s := map[string]Dana.Serializer{
 		"influx": influxSerializer,
 		"json":   jsonSerializer,
 	}
@@ -812,7 +812,7 @@ func TestAwsCredentials(t *testing.T) {
 			err = tt.plugin.Connect()
 			require.NoError(t, err)
 
-			err = tt.plugin.Write([]telegraf.Metric{getMetric()})
+			err = tt.plugin.Write([]Dana.Metric{getMetric()})
 			require.NoError(t, err)
 		})
 	}

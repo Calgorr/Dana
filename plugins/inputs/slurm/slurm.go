@@ -31,7 +31,7 @@ type Slurm struct {
 	Token            string          `toml:"token"`
 	EnabledEndpoints []string        `toml:"enabled_endpoints"`
 	ResponseTimeout  config.Duration `toml:"response_timeout"`
-	Log              telegraf.Logger `toml:"-"`
+	Log              Dana.Logger     `toml:"-"`
 	tls.ClientConfig
 
 	client      *goslurm.APIClient
@@ -143,7 +143,7 @@ func parseTres(tres string) map[string]interface{} {
 	return parsedValues
 }
 
-func (s *Slurm) gatherDiagMetrics(acc telegraf.Accumulator, diag *goslurm.V0038DiagStatistics) {
+func (s *Slurm) gatherDiagMetrics(acc Dana.Accumulator, diag *goslurm.V0038DiagStatistics) {
 	records := make(map[string]interface{}, 13)
 	tags := map[string]string{"source": s.baseURL.Hostname()}
 
@@ -190,7 +190,7 @@ func (s *Slurm) gatherDiagMetrics(acc telegraf.Accumulator, diag *goslurm.V0038D
 	acc.AddFields("slurm_diag", records, tags)
 }
 
-func (s *Slurm) gatherJobsMetrics(acc telegraf.Accumulator, jobs []goslurm.V0038JobResponseProperties) {
+func (s *Slurm) gatherJobsMetrics(acc Dana.Accumulator, jobs []goslurm.V0038JobResponseProperties) {
 	for i := range jobs {
 		records := make(map[string]interface{}, 19)
 		tags := make(map[string]string, 3)
@@ -267,7 +267,7 @@ func (s *Slurm) gatherJobsMetrics(acc telegraf.Accumulator, jobs []goslurm.V0038
 	}
 }
 
-func (s *Slurm) gatherNodesMetrics(acc telegraf.Accumulator, nodes []goslurm.V0038Node) {
+func (s *Slurm) gatherNodesMetrics(acc Dana.Accumulator, nodes []goslurm.V0038Node) {
 	for _, node := range nodes {
 		records := make(map[string]interface{}, 13)
 		tags := make(map[string]string, 2)
@@ -325,7 +325,7 @@ func (s *Slurm) gatherNodesMetrics(acc telegraf.Accumulator, nodes []goslurm.V00
 	}
 }
 
-func (s *Slurm) gatherPartitionsMetrics(acc telegraf.Accumulator, partitions []goslurm.V0038Partition) {
+func (s *Slurm) gatherPartitionsMetrics(acc Dana.Accumulator, partitions []goslurm.V0038Partition) {
 	for _, partition := range partitions {
 		records := make(map[string]interface{}, 5)
 		tags := make(map[string]string, 2)
@@ -357,7 +357,7 @@ func (s *Slurm) gatherPartitionsMetrics(acc telegraf.Accumulator, partitions []g
 	}
 }
 
-func (s *Slurm) gatherReservationsMetrics(acc telegraf.Accumulator, reservations []goslurm.V0038Reservation) {
+func (s *Slurm) gatherReservationsMetrics(acc Dana.Accumulator, reservations []goslurm.V0038Reservation) {
 	for _, reservation := range reservations {
 		records := make(map[string]interface{}, 9)
 		tags := make(map[string]string, 2)
@@ -399,7 +399,7 @@ func (s *Slurm) gatherReservationsMetrics(acc telegraf.Accumulator, reservations
 	}
 }
 
-func (s *Slurm) Gather(acc telegraf.Accumulator) (err error) {
+func (s *Slurm) Gather(acc Dana.Accumulator) (err error) {
 	auth := context.WithValue(
 		context.Background(),
 		goslurm.ContextAPIKeys,
@@ -468,7 +468,7 @@ func (s *Slurm) Gather(acc telegraf.Accumulator) (err error) {
 }
 
 func init() {
-	inputs.Add("slurm", func() telegraf.Input {
+	inputs.Add("slurm", func() Dana.Input {
 		return &Slurm{
 			ResponseTimeout: config.Duration(5 * time.Second),
 		}

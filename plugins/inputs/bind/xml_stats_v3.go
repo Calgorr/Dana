@@ -68,8 +68,8 @@ type v3CounterGroup struct {
 	} `xml:"counter"`
 }
 
-// addStatsXMLv3 walks a v3Stats struct and adds the values to the telegraf.Accumulator.
-func (b *Bind) addStatsXMLv3(stats v3Stats, acc telegraf.Accumulator, hostPort string) {
+// addStatsXMLv3 walks a v3Stats struct and adds the values to the Dana.Accumulator.
+func (b *Bind) addStatsXMLv3(stats v3Stats, acc Dana.Accumulator, hostPort string) {
 	grouper := metric.NewSeriesGrouper()
 	ts := time.Now()
 	host, port, err := net.SplitHostPort(hostPort)
@@ -153,7 +153,7 @@ func (b *Bind) addStatsXMLv3(stats v3Stats, acc telegraf.Accumulator, hostPort s
 // readStatsXMLv3 takes a base URL to probe, and requests the individual statistics documents that
 // we are interested in. These individual documents have a combined size which is significantly
 // smaller than if we requested everything at once (e.g. taskmgr and socketmgr can be omitted).
-func (b *Bind) readStatsXMLv3(addr *url.URL, acc telegraf.Accumulator) error {
+func (b *Bind) readStatsXMLv3(addr *url.URL, acc Dana.Accumulator) error {
 	var stats v3Stats
 
 	// Progressively build up full v3Stats struct by parsing the individual HTTP responses

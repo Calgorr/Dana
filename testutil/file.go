@@ -11,7 +11,7 @@ import (
 )
 
 type LineParser interface {
-	ParseLine(line string) (telegraf.Metric, error)
+	ParseLine(line string) (Dana.Metric, error)
 }
 
 // ParseRawLinesFrom returns the raw lines between the given header and a trailing blank line
@@ -49,7 +49,7 @@ func ParseRawLinesFrom(lines []string, header string) ([]string, error) {
 }
 
 // ParseMetricsFrom parses metrics from the given lines in line-protocol following a header, with a trailing blank line
-func ParseMetricsFrom(lines []string, header string, parser LineParser) ([]telegraf.Metric, error) {
+func ParseMetricsFrom(lines []string, header string, parser LineParser) ([]Dana.Metric, error) {
 	if len(lines) < 2 {
 		// We need a line for HEADER and EMPTY TRAILING LINE
 		return nil, errors.New("expected at least two lines to parse from")
@@ -65,7 +65,7 @@ func ParseMetricsFrom(lines []string, header string, parser LineParser) ([]teleg
 		return nil, fmt.Errorf("header %q does not exist", header)
 	}
 
-	metrics := make([]telegraf.Metric, 0)
+	metrics := make([]Dana.Metric, 0)
 	for _, line := range lines[start:] {
 		if !strings.HasPrefix(strings.TrimLeft(line, "\t "), "#") {
 			return nil, errors.New("section does not end with trailing empty line")
@@ -87,8 +87,8 @@ func ParseMetricsFrom(lines []string, header string, parser LineParser) ([]teleg
 }
 
 // ParseMetricsFromFile parses metrics from the given file in line-protocol
-func ParseMetricsFromFile(filename string, parser telegraf.Parser) ([]telegraf.Metric, error) {
-	var metrics []telegraf.Metric
+func ParseMetricsFromFile(filename string, parser Dana.Parser) ([]Dana.Metric, error) {
+	var metrics []Dana.Metric
 
 	f, err := os.Open(filename)
 	if err != nil {

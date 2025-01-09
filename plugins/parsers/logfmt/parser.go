@@ -27,10 +27,10 @@ type Parser struct {
 }
 
 // Parse converts a slice of bytes in logfmt format to metrics.
-func (p *Parser) Parse(b []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(b []byte) ([]Dana.Metric, error) {
 	reader := bytes.NewReader(b)
 	decoder := logfmt.NewDecoder(reader)
-	metrics := make([]telegraf.Metric, 0)
+	metrics := make([]Dana.Metric, 0)
 	for {
 		ok := decoder.ScanRecord()
 		if !ok {
@@ -74,7 +74,7 @@ func (p *Parser) Parse(b []byte) ([]telegraf.Metric, error) {
 }
 
 // ParseLine converts a single line of text in logfmt format to metrics.
-func (p *Parser) ParseLine(s string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(s string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(s))
 	if err != nil {
 		return nil, err
@@ -91,7 +91,7 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 	p.DefaultTags = tags
 }
 
-func (p *Parser) applyDefaultTags(metrics []telegraf.Metric) {
+func (p *Parser) applyDefaultTags(metrics []Dana.Metric) {
 	if len(p.DefaultTags) == 0 {
 		return
 	}
@@ -119,7 +119,7 @@ func (p *Parser) Init() error {
 func init() {
 	// Register parser
 	parsers.Add("logfmt",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{metricName: defaultMetricName}
 		},
 	)

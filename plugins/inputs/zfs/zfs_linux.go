@@ -153,7 +153,7 @@ func gatherV2(lines []string, tags map[string]string) (map[string]interface{}, e
 	return fields, nil
 }
 
-func gatherPoolStats(pool poolInfo, acc telegraf.Accumulator) error {
+func gatherPoolStats(pool poolInfo, acc Dana.Accumulator) error {
 	lines, err := internal.ReadLines(pool.ioFilename)
 	if err != nil {
 		return err
@@ -179,7 +179,7 @@ func gatherPoolStats(pool poolInfo, acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (z *Zfs) Gather(acc telegraf.Accumulator) error {
+func (z *Zfs) Gather(acc Dana.Accumulator) error {
 	kstatMetrics := z.KstatMetrics
 	if len(kstatMetrics) == 0 {
 		// vdev_cache_stats is deprecated
@@ -237,7 +237,7 @@ func (z *Zfs) Gather(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("zfs", func() telegraf.Input {
+	inputs.Add("zfs", func() Dana.Input {
 		return &Zfs{}
 	})
 }

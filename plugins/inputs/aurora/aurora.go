@@ -63,7 +63,7 @@ func (*Aurora) SampleConfig() string {
 	return sampleConfig
 }
 
-func (a *Aurora) Gather(acc telegraf.Accumulator) error {
+func (a *Aurora) Gather(acc Dana.Accumulator) error {
 	if a.client == nil {
 		err := a.initialize()
 		if err != nil {
@@ -183,7 +183,7 @@ func (a *Aurora) gatherRole(ctx context.Context, origin *url.URL) (roleType, err
 }
 
 func (a *Aurora) gatherScheduler(
-	ctx context.Context, origin *url.URL, role roleType, acc telegraf.Accumulator,
+	ctx context.Context, origin *url.URL, role roleType, acc Dana.Accumulator,
 ) error {
 	loc := *origin
 	loc.Path = "vars.json"
@@ -252,7 +252,7 @@ func (a *Aurora) gatherScheduler(
 }
 
 func init() {
-	inputs.Add("aurora", func() telegraf.Input {
+	inputs.Add("aurora", func() Dana.Input {
 		return &Aurora{}
 	})
 }

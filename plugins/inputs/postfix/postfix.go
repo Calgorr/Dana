@@ -29,7 +29,7 @@ func (*Postfix) SampleConfig() string {
 	return sampleConfig
 }
 
-func (p *Postfix) Gather(acc telegraf.Accumulator) error {
+func (p *Postfix) Gather(acc Dana.Accumulator) error {
 	if p.QueueDirectory == "" {
 		var err error
 		p.QueueDirectory, err = getQueueDirectory()
@@ -59,7 +59,7 @@ func getQueueDirectory() (string, error) {
 	return strings.TrimSpace(string(qd)), nil
 }
 
-func qScan(path string, acc telegraf.Accumulator) (map[string]interface{}, error) {
+func qScan(path string, acc Dana.Accumulator) (map[string]interface{}, error) {
 	var length, size int64
 	var oldest time.Time
 
@@ -106,7 +106,7 @@ func qScan(path string, acc telegraf.Accumulator) (map[string]interface{}, error
 }
 
 func init() {
-	inputs.Add("postfix", func() telegraf.Input {
+	inputs.Add("postfix", func() Dana.Input {
 		return &Postfix{
 			QueueDirectory: "/var/spool/postfix",
 		}

@@ -45,13 +45,13 @@ type Socket struct {
 	url           *url.URL
 	interfaceName string
 	tlsCfg        *tls.Config
-	log           telegraf.Logger
+	log           Dana.Logger
 
 	splitter bufio.SplitFunc
 	listener listener
 }
 
-func (cfg *Config) NewSocket(address string, splitcfg *SplitConfig, logger telegraf.Logger) (*Socket, error) {
+func (cfg *Config) NewSocket(address string, splitcfg *SplitConfig, logger Dana.Logger) (*Socket, error) {
 	s := &Socket{
 		Config: *cfg,
 		log:    logger,

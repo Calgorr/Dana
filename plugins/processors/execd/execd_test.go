@@ -224,7 +224,7 @@ func TestCases(t *testing.T) {
 	require.NotEmpty(t, folders)
 
 	// Set up for file inputs
-	processors.AddStreaming("execd", func() telegraf.StreamingProcessor {
+	processors.AddStreaming("execd", func() Dana.StreamingProcessor {
 		return New()
 	})
 
@@ -282,7 +282,7 @@ func TestTracking(t *testing.T) {
 	now := time.Now()
 
 	// Setup the raw  input and expected output data
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{
@@ -307,7 +307,7 @@ func TestTracking(t *testing.T) {
 		),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{
@@ -334,15 +334,15 @@ func TestTracking(t *testing.T) {
 
 	// Create a testing notifier
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
 	// Convert raw input to tracking metrics
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)

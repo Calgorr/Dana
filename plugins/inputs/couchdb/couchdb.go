@@ -97,7 +97,7 @@ func (*CouchDB) SampleConfig() string {
 	return sampleConfig
 }
 
-func (c *CouchDB) Gather(accumulator telegraf.Accumulator) error {
+func (c *CouchDB) Gather(accumulator Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	for _, u := range c.Hosts {
 		wg.Add(1)
@@ -114,7 +114,7 @@ func (c *CouchDB) Gather(accumulator telegraf.Accumulator) error {
 	return nil
 }
 
-func (c *CouchDB) fetchAndInsertData(accumulator telegraf.Accumulator, host string) error {
+func (c *CouchDB) fetchAndInsertData(accumulator Dana.Accumulator, host string) error {
 	if c.client == nil {
 		c.client = &http.Client{
 			Transport: &http.Transport{
@@ -277,7 +277,7 @@ func generateFields(fields map[string]interface{}, prefix string, obj metaData) 
 }
 
 func init() {
-	inputs.Add("couchdb", func() telegraf.Input {
+	inputs.Add("couchdb", func() Dana.Input {
 		return &CouchDB{
 			client: &http.Client{
 				Transport: &http.Transport{

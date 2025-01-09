@@ -13,7 +13,7 @@ import (
 var sampleConfig string
 
 type IntelRDT struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*IntelRDT) SampleConfig() string { return sampleConfig }
@@ -23,14 +23,14 @@ func (i *IntelRDT) Init() error {
 	return nil
 }
 
-func (*IntelRDT) Start(_ telegraf.Accumulator) error { return nil }
+func (*IntelRDT) Start(_ Dana.Accumulator) error { return nil }
 
-func (*IntelRDT) Gather(_ telegraf.Accumulator) error { return nil }
+func (*IntelRDT) Gather(_ Dana.Accumulator) error { return nil }
 
 func (*IntelRDT) Stop() {}
 
 func init() {
-	inputs.Add("intel_rdt", func() telegraf.Input {
+	inputs.Add("intel_rdt", func() Dana.Input {
 		return &IntelRDT{}
 	})
 }

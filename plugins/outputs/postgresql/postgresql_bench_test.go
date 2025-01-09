@@ -23,7 +23,7 @@ func BenchmarkPostgresql_concurrent(b *testing.B) {
 	benchmarkPostgresql(b, gen, 10, true)
 }
 
-func benchmarkPostgresql(b *testing.B, gen <-chan []telegraf.Metric, concurrency int, foreignTags bool) {
+func benchmarkPostgresql(b *testing.B, gen <-chan []Dana.Metric, concurrency int, foreignTags bool) {
 	p, err := newPostgresqlTest(b)
 	require.NoError(b, err)
 
@@ -68,7 +68,7 @@ type batchGeneratorArgs struct {
 }
 
 // tagCardinality counts all the tag keys & values as one element. fieldCardinality counts all the field keys (not values) as one element.
-func batchGenerator(args batchGeneratorArgs) <-chan []telegraf.Metric {
+func batchGenerator(args batchGeneratorArgs) <-chan []Dana.Metric {
 	tagSets := make([]MSS, 0, args.tagCardinality)
 	for i := 0; i < args.tagCardinality; i++ {
 		tags := MSS{}
@@ -78,10 +78,10 @@ func batchGenerator(args batchGeneratorArgs) <-chan []telegraf.Metric {
 		tagSets = append(tagSets, tags)
 	}
 
-	metricChan := make(chan []telegraf.Metric, 32)
+	metricChan := make(chan []Dana.Metric, 32)
 	go func() {
 		for {
-			batch := make([]telegraf.Metric, 0, args.batchSize)
+			batch := make([]Dana.Metric, 0, args.batchSize)
 			for i := 0; i < args.batchSize; i++ {
 				tableName := args.b.Name() + "_" + strconv.Itoa(rand.Intn(args.numTables))
 

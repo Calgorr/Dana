@@ -29,15 +29,15 @@ const (
 var sampleConfig string
 
 type GCS struct {
-	CredentialsFile     string          `toml:"credentials_file"`
-	Bucket              string          `toml:"bucket"`
-	Prefix              string          `toml:"key_prefix"`
-	OffsetKey           string          `toml:"offset_key"`
-	ObjectsPerIteration int             `toml:"objects_per_iteration"`
-	Log                 telegraf.Logger `toml:"-"`
+	CredentialsFile     string      `toml:"credentials_file"`
+	Bucket              string      `toml:"bucket"`
+	Prefix              string      `toml:"key_prefix"`
+	OffsetKey           string      `toml:"offset_key"`
+	ObjectsPerIteration int         `toml:"objects_per_iteration"`
+	Log                 Dana.Logger `toml:"-"`
 
 	offSet offSet
-	parser telegraf.Parser
+	parser Dana.Parser
 	client *storage.Client
 	ctx    context.Context
 }
@@ -61,11 +61,11 @@ func (*GCS) SampleConfig() string {
 	return sampleConfig
 }
 
-func (gcs *GCS) SetParser(parser telegraf.Parser) {
+func (gcs *GCS) SetParser(parser Dana.Parser) {
 	gcs.parser = parser
 }
 
-func (gcs *GCS) Gather(acc telegraf.Accumulator) error {
+func (gcs *GCS) Gather(acc Dana.Accumulator) error {
 	query := gcs.createQuery()
 
 	bucketName := gcs.Bucket
@@ -119,7 +119,7 @@ func (gcs *GCS) shouldIgnore(name string) bool {
 	return gcs.offSet.OffSet == name || gcs.OffsetKey == name
 }
 
-func (gcs *GCS) processMeasurementsInObject(name string, bucket *storage.BucketHandle, acc telegraf.Accumulator) error {
+func (gcs *GCS) processMeasurementsInObject(name string, bucket *storage.BucketHandle, acc Dana.Accumulator) error {
 	gcs.Log.Debugf("Fetching key: %s", name)
 	r, err := bucket.Object(name).NewReader(gcs.ctx)
 	defer gcs.closeReader(r)
@@ -141,7 +141,7 @@ func (gcs *GCS) processMeasurementsInObject(name string, bucket *storage.BucketH
 	return nil
 }
 
-func (gcs *GCS) fetchedMetrics(r *storage.Reader) ([]telegraf.Metric, error) {
+func (gcs *GCS) fetchedMetrics(r *storage.Reader) ([]Dana.Metric, error) {
 	buf := new(bytes.Buffer)
 	if _, err := buf.ReadFrom(r); err != nil {
 		return nil, err
@@ -274,7 +274,7 @@ func (offSet *offSet) isPresent() bool {
 }
 
 func init() {
-	inputs.Add("google_cloud_storage", func() telegraf.Input {
+	inputs.Add("google_cloud_storage", func() Dana.Input {
 		gcs := &GCS{}
 		return gcs
 	})

@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type Bcache struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*Bcache) SampleConfig() string { return sampleConfig }
@@ -24,10 +24,10 @@ func (b *Bcache) Init() error {
 	return nil
 }
 
-func (*Bcache) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Bcache) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("bcache", func() telegraf.Input {
+	inputs.Add("bcache", func() Dana.Input {
 		return &Bcache{}
 	})
 }

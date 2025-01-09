@@ -217,7 +217,7 @@ func TestTableManagerIntegration_MatchSource(t *testing.T) {
 	p.TagsAsForeignKeys = true
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 1}),
 	}
 	tsrc := NewTableSources(p.Postgresql, metrics)[t.Name()]
@@ -244,7 +244,7 @@ func TestTableManagerIntegration_MatchSource_UnsignedIntegers(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", nil, MSI{"a": uint64(1)}),
 	}
 	tsrc := NewTableSources(p.Postgresql, metrics)[t.Name()]
@@ -263,7 +263,7 @@ func TestTableManagerIntegration_noCreateTable(t *testing.T) {
 	p.CreateTemplates = nil
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 1}),
 	}
 	tsrc := NewTableSources(p.Postgresql, metrics)[t.Name()]
@@ -282,7 +282,7 @@ func TestTableManagerIntegration_noCreateTagTable(t *testing.T) {
 	p.TagsAsForeignKeys = true
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 1}),
 	}
 	tsrc := NewTableSources(p.Postgresql, metrics)[t.Name()]
@@ -301,7 +301,7 @@ func TestTableManagerIntegration_cache(t *testing.T) {
 	p.TagsAsForeignKeys = true
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 1}),
 	}
 	tsrc := NewTableSources(p.Postgresql, metrics)[t.Name()]
@@ -320,13 +320,13 @@ func TestTableManagerIntegration_noAlterMissingTag(t *testing.T) {
 	p.AddColumnTemplates = make([]*sqltemplate.Template, 0)
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 1}),
 	}
 	tsrc := NewTableSources(p.Postgresql, metrics)[t.Name()]
 	require.NoError(t, p.tableManager.MatchSource(ctx, p.db, tsrc))
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 2}),
 		newMetric(t, "", MSS{"tag": "foo", "bar": "baz"}, MSI{"a": 3}),
 	}
@@ -348,13 +348,13 @@ func TestTableManagerIntegration_noAlterMissingTagTableTag(t *testing.T) {
 	p.TagTableAddColumnTemplates = make([]*sqltemplate.Template, 0)
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 1}),
 	}
 	tsrc := NewTableSources(p.Postgresql, metrics)[t.Name()]
 	require.NoError(t, p.tableManager.MatchSource(ctx, p.db, tsrc))
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 2}),
 		newMetric(t, "", MSS{"tag": "foo", "bar": "baz"}, MSI{"a": 3}),
 	}
@@ -379,13 +379,13 @@ func TestTableManagerIntegration_badAlterTagTable(t *testing.T) {
 	p.TagTableAddColumnTemplates = []*sqltemplate.Template{tmpl}
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 1}),
 	}
 	tsrc := NewTableSources(p.Postgresql, metrics)[t.Name()]
 	require.NoError(t, p.tableManager.MatchSource(ctx, p.db, tsrc))
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 2}),
 		newMetric(t, "", MSS{"tag": "foo", "bar": "baz"}, MSI{"a": 3}),
 	}
@@ -406,13 +406,13 @@ func TestTableManagerIntegration_noAlterMissingField(t *testing.T) {
 	p.AddColumnTemplates = make([]*sqltemplate.Template, 0)
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 1}),
 	}
 	tsrc := NewTableSources(p.Postgresql, metrics)[t.Name()]
 	require.NoError(t, p.tableManager.MatchSource(ctx, p.db, tsrc))
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 2}),
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 3, "b": 3}),
 	}
@@ -434,13 +434,13 @@ func TestTableManagerIntegration_badAlterField(t *testing.T) {
 	p.AddColumnTemplates = []*sqltemplate.Template{tmpl}
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 1}),
 	}
 	tsrc := NewTableSources(p.Postgresql, metrics)[t.Name()]
 	require.NoError(t, p.tableManager.MatchSource(ctx, p.db, tsrc))
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 2}),
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 3, "b": 3}),
 	}
@@ -455,7 +455,7 @@ func TestTableManager_addColumnTemplates(t *testing.T) {
 	p.TagsAsForeignKeys = true
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"foo": "bar"}, MSI{"a": 1}),
 	}
 	tsrc := NewTableSources(p.Postgresql, metrics)[t.Name()]
@@ -470,7 +470,7 @@ func TestTableManager_addColumnTemplates(t *testing.T) {
 
 	require.NoError(t, p.Connect())
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "", MSS{"pop": "tart"}, MSI{"a": 1, "b": 2}),
 	}
 	tsrc = NewTableSources(p.Postgresql, metrics)[t.Name()]
@@ -496,7 +496,7 @@ func TestTableManager_TimeWithTimezone(t *testing.T) {
 	require.NoError(t, p.Init())
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"pop": "tart"}, MSI{"a": 1, "b": 2}),
 	}
 	tsrc := NewTableSources(p.Postgresql, metrics)[t.Name()]

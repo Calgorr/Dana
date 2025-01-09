@@ -33,7 +33,7 @@ func TestGather(t *testing.T) {
 	tests := []struct {
 		name    string
 		client  *mockClient
-		metrics []telegraf.Metric
+		metrics []Dana.Metric
 		err     error
 	}{
 		{
@@ -84,7 +84,7 @@ func TestGather(t *testing.T) {
 					}
 				},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"minecraft",
 					map[string]string{

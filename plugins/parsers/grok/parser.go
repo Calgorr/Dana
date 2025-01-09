@@ -80,7 +80,7 @@ type Parser struct {
 	Multiline          bool              `toml:"grok_multiline"`
 	Measurement        string            `toml:"-"`
 	DefaultTags        map[string]string `toml:"-"`
-	Log                telegraf.Logger   `toml:"-"`
+	Log                Dana.Logger       `toml:"-"`
 
 	// Timezone is an optional component to help render log dates to
 	// your chosen zone.
@@ -197,7 +197,7 @@ func (p *Parser) Compile() error {
 }
 
 // ParseLine is the primary function to process individual lines, returning the metrics
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	var err error
 	// values are the parsed fields from the log line
 	var values map[string]string
@@ -381,8 +381,8 @@ func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
 	return metric.New(p.Measurement, tags, fields, p.tsModder.tsMod(timestamp)), nil
 }
 
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
-	metrics := make([]telegraf.Metric, 0)
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
+	metrics := make([]Dana.Metric, 0)
 
 	if p.Multiline {
 		m, err := p.ParseLine(string(buf))
@@ -594,7 +594,7 @@ func (p *Parser) Init() error {
 
 func init() {
 	parsers.Add("grok",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{
 				Measurement: defaultMetricName,
 			}

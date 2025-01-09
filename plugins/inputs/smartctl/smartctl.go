@@ -28,7 +28,7 @@ type Smartctl struct {
 	Timeout        config.Duration `toml:"timeout"`
 	DevicesInclude []string        `toml:"devices_include"`
 	DevicesExclude []string        `toml:"devices_exclude"`
-	Log            telegraf.Logger `toml:"-"`
+	Log            Dana.Logger     `toml:"-"`
 
 	deviceFilter filter.Filter
 }
@@ -67,7 +67,7 @@ func (s *Smartctl) Init() error {
 	return nil
 }
 
-func (s *Smartctl) Gather(acc telegraf.Accumulator) error {
+func (s *Smartctl) Gather(acc Dana.Accumulator) error {
 	devices, err := s.scan()
 	if err != nil {
 		return fmt.Errorf("error while scanning system: %w", err)
@@ -85,7 +85,7 @@ func (s *Smartctl) Gather(acc telegraf.Accumulator) error {
 func init() {
 	// Set LC_NUMERIC to uniform numeric output from cli tools
 	_ = os.Setenv("LC_NUMERIC", "en_US.UTF-8")
-	inputs.Add("smartctl", func() telegraf.Input {
+	inputs.Add("smartctl", func() Dana.Input {
 		return &Smartctl{
 			Timeout: config.Duration(time.Second * 30),
 		}

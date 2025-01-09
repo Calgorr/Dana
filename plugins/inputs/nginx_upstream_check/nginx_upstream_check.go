@@ -57,7 +57,7 @@ func (*NginxUpstreamCheck) SampleConfig() string {
 	return sampleConfig
 }
 
-func (check *NginxUpstreamCheck) Gather(accumulator telegraf.Accumulator) error {
+func (check *NginxUpstreamCheck) Gather(accumulator Dana.Accumulator) error {
 	if check.client == nil {
 		client, err := check.createHTTPClient()
 
@@ -141,7 +141,7 @@ func (check *NginxUpstreamCheck) gatherJSONData(address string, value interface{
 	return nil
 }
 
-func (check *NginxUpstreamCheck) gatherStatusData(address string, accumulator telegraf.Accumulator) error {
+func (check *NginxUpstreamCheck) gatherStatusData(address string, accumulator Dana.Accumulator) error {
 	checkData := &nginxUpstreamCheckData{}
 
 	err := check.gatherJSONData(address, checkData)
@@ -193,7 +193,7 @@ func newNginxUpstreamCheck() *NginxUpstreamCheck {
 }
 
 func init() {
-	inputs.Add("nginx_upstream_check", func() telegraf.Input {
+	inputs.Add("nginx_upstream_check", func() Dana.Input {
 		return newNginxUpstreamCheck()
 	})
 }

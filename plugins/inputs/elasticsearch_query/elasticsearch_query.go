@@ -31,7 +31,7 @@ type ElasticsearchQuery struct {
 	HealthCheckInterval config.Duration `toml:"health_check_interval"`
 	Aggregations        []esAggregation `toml:"aggregation"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	httpclient *http.Client
 	common_http.HTTPClientConfig
@@ -89,12 +89,12 @@ func (e *ElasticsearchQuery) Init() error {
 	return nil
 }
 
-func (*ElasticsearchQuery) Start(telegraf.Accumulator) error {
+func (*ElasticsearchQuery) Start(Dana.Accumulator) error {
 	return nil
 }
 
 // Gather writes the results of the queries from Elasticsearch to the Accumulator.
-func (e *ElasticsearchQuery) Gather(acc telegraf.Accumulator) error {
+func (e *ElasticsearchQuery) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	err := e.connectToES()
@@ -209,7 +209,7 @@ func (e *ElasticsearchQuery) createHTTPClient() (*http.Client, error) {
 	return e.HTTPClientConfig.CreateClient(ctx, e.Log)
 }
 
-func (e *ElasticsearchQuery) esAggregationQuery(acc telegraf.Accumulator, aggregation esAggregation, i int) error {
+func (e *ElasticsearchQuery) esAggregationQuery(acc Dana.Accumulator, aggregation esAggregation, i int) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(e.Timeout))
 	defer cancel()
 
@@ -236,7 +236,7 @@ func (e *ElasticsearchQuery) esAggregationQuery(acc telegraf.Accumulator, aggreg
 }
 
 func init() {
-	inputs.Add("elasticsearch_query", func() telegraf.Input {
+	inputs.Add("elasticsearch_query", func() Dana.Input {
 		return &ElasticsearchQuery{
 			HealthCheckInterval: config.Duration(time.Second * 10),
 			HTTPClientConfig: common_http.HTTPClientConfig{

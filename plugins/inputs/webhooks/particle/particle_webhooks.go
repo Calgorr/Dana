@@ -39,12 +39,12 @@ func (e *event) Time() (time.Time, error) {
 
 type ParticleWebhook struct {
 	Path string
-	acc  telegraf.Accumulator
-	log  telegraf.Logger
+	acc  Dana.Accumulator
+	log  Dana.Logger
 	auth.BasicAuth
 }
 
-func (rb *ParticleWebhook) Register(router *mux.Router, acc telegraf.Accumulator, log telegraf.Logger) {
+func (rb *ParticleWebhook) Register(router *mux.Router, acc Dana.Accumulator, log Dana.Logger) {
 	router.HandleFunc(rb.Path, rb.eventHandler).Methods("POST")
 	rb.log = log
 	rb.log.Infof("Started the webhooks_particle on %s", rb.Path)

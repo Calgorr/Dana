@@ -44,7 +44,7 @@ type X509Cert struct {
 	Timeout          config.Duration `toml:"timeout"`
 	ServerName       string          `toml:"server_name"`
 	ExcludeRootCerts bool            `toml:"exclude_root_certs"`
-	Log              telegraf.Logger `toml:"-"`
+	Log              Dana.Logger     `toml:"-"`
 	common_tls.ClientConfig
 	proxy.TCPProxy
 
@@ -92,7 +92,7 @@ func (c *X509Cert) Init() error {
 }
 
 // Gather adds metrics into the accumulator.
-func (c *X509Cert) Gather(acc telegraf.Accumulator) error {
+func (c *X509Cert) Gather(acc Dana.Accumulator) error {
 	now := time.Now()
 
 	collectedUrls := append(c.locations, c.collectCertURLs()...)
@@ -525,7 +525,7 @@ func (c *X509Cert) collectCertURLs() []*url.URL {
 }
 
 func init() {
-	inputs.Add("x509_cert", func() telegraf.Input {
+	inputs.Add("x509_cert", func() Dana.Input {
 		return &X509Cert{
 			Timeout: config.Duration(5 * time.Second),
 		}

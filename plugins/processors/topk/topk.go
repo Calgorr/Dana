@@ -28,9 +28,9 @@ type TopK struct {
 	AddGroupByTag      string          `toml:"add_groupby_tag"`
 	AddRankFields      []string        `toml:"add_rank_fields"`
 	AddAggregateFields []string        `toml:"add_aggregate_fields"`
-	Log                telegraf.Logger `toml:"-"`
+	Log                Dana.Logger     `toml:"-"`
 
-	cache           map[string][]telegraf.Metric
+	cache           map[string][]Dana.Metric
 	tagsGlobs       filter.Filter
 	rankFieldSet    map[string]bool
 	aggFieldSet     map[string]bool
@@ -79,11 +79,11 @@ func (*TopK) SampleConfig() string {
 }
 
 func (t *TopK) Reset() {
-	t.cache = make(map[string][]telegraf.Metric)
+	t.cache = make(map[string][]Dana.Metric)
 	t.lastAggregation = time.Now()
 }
 
-func (t *TopK) generateGroupByKey(m telegraf.Metric) (string, error) {
+func (t *TopK) generateGroupByKey(m Dana.Metric) (string, error) {
 	// Create the filter.Filter objects if they have not been created
 	if t.tagsGlobs == nil && len(t.GroupBy) > 0 {
 		var err error
@@ -114,7 +114,7 @@ func (t *TopK) generateGroupByKey(m telegraf.Metric) (string, error) {
 	return groupkey, nil
 }
 
-func (t *TopK) groupBy(m telegraf.Metric) {
+func (t *TopK) groupBy(m Dana.Metric) {
 	// Generate the metric group key
 	groupkey, err := t.generateGroupByKey(m)
 	if err != nil {
@@ -126,7 +126,7 @@ func (t *TopK) groupBy(m telegraf.Metric) {
 
 	// Initialize the key with an empty list if necessary
 	if _, ok := t.cache[groupkey]; !ok {
-		t.cache[groupkey] = make([]telegraf.Metric, 0, 10)
+		t.cache[groupkey] = make([]Dana.Metric, 0, 10)
 	}
 
 	// Append the metric to the corresponding key list
@@ -138,7 +138,7 @@ func (t *TopK) groupBy(m telegraf.Metric) {
 	}
 }
 
-func (t *TopK) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (t *TopK) Apply(in ...Dana.Metric) []Dana.Metric {
 	// Init any internal datastructures that are not initialized yet
 	if t.rankFieldSet == nil {
 		t.rankFieldSet = make(map[string]bool)
@@ -201,7 +201,7 @@ func convert(in interface{}) (float64, bool) {
 	}
 }
 
-func (t *TopK) push() []telegraf.Metric {
+func (t *TopK) push() []Dana.Metric {
 	// Generate aggregations list using the selected fields
 	aggregations := make([]MetricAggregation, 0, 100)
 	aggregator, err := t.getAggregationFunction(t.Aggregation)
@@ -216,7 +216,7 @@ func (t *TopK) push() []telegraf.Metric {
 	}
 
 	// The return value that will hold the returned metrics
-	var ret = make([]telegraf.Metric, 0)
+	var ret = make([]Dana.Metric, 0)
 	// Get the top K metrics for each field and add them to the return value
 	addedKeys := make(map[string]bool)
 	for _, field := range t.Fields {
@@ -253,7 +253,7 @@ func (t *TopK) push() []telegraf.Metric {
 
 	t.Reset()
 
-	result := make([]telegraf.Metric, 0, len(ret))
+	result := make([]Dana.Metric, 0, len(ret))
 	for _, m := range ret {
 		newMetric := metric.New(m.Name(), m.Tags(), m.Fields(), m.Time(), m.Type())
 		result = append(result, newMetric)
@@ -263,9 +263,9 @@ func (t *TopK) push() []telegraf.Metric {
 }
 
 // Function that generates the aggregation functions
-func (t *TopK) getAggregationFunction(aggOperation string) (func([]telegraf.Metric, []string) map[string]float64, error) {
+func (t *TopK) getAggregationFunction(aggOperation string) (func([]Dana.Metric, []string) map[string]float64, error) {
 	// This is a function aggregates a set of metrics using a given aggregation function
-	var aggregator = func(ms []telegraf.Metric, fields []string, f func(map[string]float64, float64, string)) map[string]float64 {
+	var aggregator = func(ms []Dana.Metric, fields []string, f func(map[string]float64, float64, string)) map[string]float64 {
 		agg := make(map[string]float64)
 		// Compute the sums of the selected fields over all the measurements collected for this metric
 		for _, m := range ms {
@@ -288,7 +288,7 @@ func (t *TopK) getAggregationFunction(aggOperation string) (func([]telegraf.Metr
 
 	switch aggOperation {
 	case "sum":
-		return func(ms []telegraf.Metric, fields []string) map[string]float64 {
+		return func(ms []Dana.Metric, fields []string) map[string]float64 {
 			sum := func(agg map[string]float64, val float64, field string) {
 				agg[field] += val
 			}
@@ -296,7 +296,7 @@ func (t *TopK) getAggregationFunction(aggOperation string) (func([]telegraf.Metr
 		}, nil
 
 	case "min":
-		return func(ms []telegraf.Metric, fields []string) map[string]float64 {
+		return func(ms []Dana.Metric, fields []string) map[string]float64 {
 			vmin := func(agg map[string]float64, val float64, field string) {
 				// If this field has not been set, set it to the maximum float64
 				_, ok := agg[field]
@@ -313,7 +313,7 @@ func (t *TopK) getAggregationFunction(aggOperation string) (func([]telegraf.Metr
 		}, nil
 
 	case "max":
-		return func(ms []telegraf.Metric, fields []string) map[string]float64 {
+		return func(ms []Dana.Metric, fields []string) map[string]float64 {
 			vmax := func(agg map[string]float64, val float64, field string) {
 				// If this field has not been set, set it to the minimum float64
 				_, ok := agg[field]
@@ -330,7 +330,7 @@ func (t *TopK) getAggregationFunction(aggOperation string) (func([]telegraf.Metr
 		}, nil
 
 	case "mean":
-		return func(ms []telegraf.Metric, fields []string) map[string]float64 {
+		return func(ms []Dana.Metric, fields []string) map[string]float64 {
 			mean := make(map[string]float64)
 			meanCounters := make(map[string]float64)
 			// Compute the sums of the selected fields over all the measurements collected for this metric
@@ -373,7 +373,7 @@ func (t *TopK) getAggregationFunction(aggOperation string) (func([]telegraf.Metr
 }
 
 func init() {
-	processors.Add("topk", func() telegraf.Processor {
+	processors.Add("topk", func() Dana.Processor {
 		return New()
 	})
 }

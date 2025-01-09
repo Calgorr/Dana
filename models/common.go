@@ -14,7 +14,7 @@ func logName(pluginType, name, alias string) string {
 	return pluginType + "." + name + "::" + alias
 }
 
-func SetLoggerOnPlugin(i interface{}, logger telegraf.Logger) {
+func SetLoggerOnPlugin(i interface{}, logger Dana.Logger) {
 	valI := reflect.ValueOf(i)
 
 	if valI.Type().Kind() != reflect.Ptr {

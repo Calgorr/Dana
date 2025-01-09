@@ -26,7 +26,7 @@ func (*Internal) SampleConfig() string {
 	return sampleConfig
 }
 
-func (s *Internal) Gather(acc telegraf.Accumulator) error {
+func (s *Internal) Gather(acc Dana.Accumulator) error {
 	for _, m := range selfstat.Metrics() {
 		if m.Name() == "internal_agent" {
 			m.AddTag("go_version", strings.TrimPrefix(runtime.Version(), "go"))
@@ -46,7 +46,7 @@ func (s *Internal) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func collectMemStat(acc telegraf.Accumulator) {
+func collectMemStat(acc Dana.Accumulator) {
 	m := &runtime.MemStats{}
 	runtime.ReadMemStats(m)
 	fields := map[string]any{
@@ -69,7 +69,7 @@ func collectMemStat(acc telegraf.Accumulator) {
 	acc.AddFields("internal_memstats", fields, make(map[string]string))
 }
 
-func collectGoStat(acc telegraf.Accumulator) {
+func collectGoStat(acc Dana.Accumulator) {
 	descs := metrics.All()
 	samples := make([]metrics.Sample, len(descs))
 	for i := range samples {
@@ -134,7 +134,7 @@ func medianBucket(h *metrics.Float64Histogram) float64 {
 }
 
 func init() {
-	inputs.Add("internal", func() telegraf.Input {
+	inputs.Add("internal", func() Dana.Input {
 		return &Internal{
 			CollectMemstats: true,
 		}

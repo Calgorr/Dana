@@ -107,7 +107,7 @@ type HTTPConfig struct {
 
 	InfluxUintSupport bool `toml:"influx_uint_support"`
 	Serializer        *influx.Serializer
-	Log               telegraf.Logger
+	Log               Dana.Logger
 }
 
 type httpClient struct {
@@ -119,7 +119,7 @@ type httpClient struct {
 	// found" error occurs.
 	createDatabaseExecuted map[string]bool
 
-	log telegraf.Logger
+	log Dana.Logger
 }
 
 func NewHTTPClient(cfg HTTPConfig) (*httpClient, error) {
@@ -282,14 +282,14 @@ type dbrp struct {
 }
 
 // Write sends the metrics to InfluxDB
-func (c *httpClient) Write(ctx context.Context, metrics []telegraf.Metric) error {
+func (c *httpClient) Write(ctx context.Context, metrics []Dana.Metric) error {
 	// If these options are not used, we can skip in plugin batching and send
 	// the full batch in a single request.
 	if c.config.DatabaseTag == "" && c.config.RetentionPolicyTag == "" {
 		return c.writeBatch(ctx, c.config.Database, c.config.RetentionPolicy, metrics)
 	}
 
-	batches := make(map[dbrp][]telegraf.Metric)
+	batches := make(map[dbrp][]Dana.Metric)
 	for _, metric := range metrics {
 		db, ok := metric.GetTag(c.config.DatabaseTag)
 		if !ok {
@@ -338,7 +338,7 @@ func (c *httpClient) Write(ctx context.Context, metrics []telegraf.Metric) error
 	return nil
 }
 
-func (c *httpClient) writeBatch(ctx context.Context, db, rp string, metrics []telegraf.Metric) error {
+func (c *httpClient) writeBatch(ctx context.Context, db, rp string, metrics []Dana.Metric) error {
 	loc, err := makeWriteURL(c.config.URL, db, rp, c.config.Consistency)
 	if err != nil {
 		return fmt.Errorf("failed making write url: %w", err)
@@ -489,7 +489,7 @@ func (c *httpClient) makeWriteRequest(address string, body io.Reader) (*http.Req
 
 // requestBodyReader warp io.Reader from influx.NewReader to io.ReadCloser, which is useful to fast close the write
 // side of the connection in case of error
-func (c *httpClient) requestBodyReader(metrics []telegraf.Metric) io.ReadCloser {
+func (c *httpClient) requestBodyReader(metrics []Dana.Metric) io.ReadCloser {
 	reader := influx.NewReader(metrics, c.config.Serializer)
 
 	if c.config.ContentEncoding == "gzip" {

@@ -19,7 +19,7 @@ type entitiesParser interface {
 }
 
 type configParser struct {
-	log telegraf.Logger
+	log Dana.Logger
 	sys sysInfoProvider
 }
 

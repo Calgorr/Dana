@@ -22,7 +22,7 @@ func TestOptions_Apply(t *testing.T) {
 			name:         "Smoke Test",
 			o:            newOptions("/my/test/"),
 			inputMetrics: getSmokeTestInputMetrics(samplePath),
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					smokeMetricName,
 					map[string]string{
@@ -54,14 +54,14 @@ func TestOptions_Apply(t *testing.T) {
 						Dest:  "basePath",
 					},
 				}},
-			inputMetrics: []telegraf.Metric{
+			inputMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"testMetric",
 					map[string]string{"sourcePath": samplePath},
 					map[string]interface{}{"sourcePath": samplePath},
 					time.Now()),
 			},
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					"testMetric",
 					map[string]string{"sourcePath": samplePath, "basePath": "file.log"},
@@ -74,7 +74,7 @@ func TestOptions_Apply(t *testing.T) {
 }
 
 func TestTracking(t *testing.T) {
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"sourcePath": samplePath},
@@ -83,7 +83,7 @@ func TestTracking(t *testing.T) {
 		),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"sourcePath": samplePath, "basePath": "file.log"},
@@ -93,14 +93,14 @@ func TestTracking(t *testing.T) {
 	}
 
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)

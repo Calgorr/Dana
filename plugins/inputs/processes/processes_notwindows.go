@@ -19,8 +19,8 @@ import (
 )
 
 type Processes struct {
-	UseSudo bool            `toml:"use_sudo"`
-	Log     telegraf.Logger `toml:"-"`
+	UseSudo bool        `toml:"use_sudo"`
+	Log     Dana.Logger `toml:"-"`
 
 	execPS       func(UseSudo bool) ([]byte, error)
 	readProcFile func(filename string) ([]byte, error)
@@ -28,7 +28,7 @@ type Processes struct {
 	forceProc    bool
 }
 
-func (p *Processes) Gather(acc telegraf.Accumulator) error {
+func (p *Processes) Gather(acc Dana.Accumulator) error {
 	// Get an empty map of metric fields
 	fields := getEmptyFields()
 
@@ -230,7 +230,7 @@ func execPS(useSudo bool) ([]byte, error) {
 }
 
 func init() {
-	inputs.Add("processes", func() telegraf.Input {
+	inputs.Add("processes", func() Dana.Input {
 		return &Processes{
 			execPS:       execPS,
 			readProcFile: readProcFile,

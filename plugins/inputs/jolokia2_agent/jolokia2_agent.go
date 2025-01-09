@@ -40,7 +40,7 @@ func (*JolokiaAgent) SampleConfig() string {
 	return sampleConfig
 }
 
-func (ja *JolokiaAgent) Gather(acc telegraf.Accumulator) error {
+func (ja *JolokiaAgent) Gather(acc Dana.Accumulator) error {
 	if ja.gatherer == nil {
 		ja.gatherer = common.NewGatherer(ja.createMetrics())
 	}
@@ -97,7 +97,7 @@ func (ja *JolokiaAgent) createClient(url string) (*common.Client, error) {
 }
 
 func init() {
-	inputs.Add("jolokia2_agent", func() telegraf.Input {
+	inputs.Add("jolokia2_agent", func() Dana.Input {
 		return &JolokiaAgent{
 			DefaultFieldSeparator: ".",
 		}

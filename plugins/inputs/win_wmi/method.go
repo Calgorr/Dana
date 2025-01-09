@@ -66,7 +66,7 @@ func (m *Method) prepare(host string, username, password config.Secret) error {
 	return nil
 }
 
-func (m *Method) execute(acc telegraf.Accumulator) error {
+func (m *Method) execute(acc Dana.Accumulator) error {
 	// The only way to run WMI queries in parallel while being thread-safe is to
 	// ensure the CoInitialize[Ex]() call is bound to its current OS thread.
 	// Otherwise, attempting to initialize and run parallel queries across

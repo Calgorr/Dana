@@ -88,7 +88,7 @@ var engineStats = map[string]string{
 
 func (e *engine) AddEngineStats(
 	keys []string,
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	tags map[string]string,
 ) {
 	engine := reflect.ValueOf(e).Elem()
@@ -99,7 +99,7 @@ func (e *engine) AddEngineStats(
 	acc.AddFields("rethinkdb_engine", fields, tags)
 }
 
-func (s *storage) AddStats(acc telegraf.Accumulator, tags map[string]string) {
+func (s *storage) AddStats(acc Dana.Accumulator, tags map[string]string) {
 	fields := map[string]interface{}{
 		"cache_bytes_in_use":            s.Cache.BytesInUse,
 		"disk_read_bytes_per_sec":       s.Disk.ReadBytesPerSec,

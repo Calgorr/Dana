@@ -85,7 +85,7 @@ func (*DCOS) SampleConfig() string {
 	return sampleConfig
 }
 
-func (d *DCOS) Gather(acc telegraf.Accumulator) error {
+func (d *DCOS) Gather(acc Dana.Accumulator) error {
 	err := d.initialize()
 	if err != nil {
 		return err
@@ -117,7 +117,7 @@ func (d *DCOS) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (d *DCOS) gatherNode(ctx context.Context, acc telegraf.Accumulator, cluster, node string) {
+func (d *DCOS) gatherNode(ctx context.Context, acc Dana.Accumulator, cluster, node string) {
 	if !d.nodeFilter.Match(node) {
 		return
 	}
@@ -138,7 +138,7 @@ func (d *DCOS) gatherNode(ctx context.Context, acc telegraf.Accumulator, cluster
 	wg.Wait()
 }
 
-func (d *DCOS) gatherContainers(ctx context.Context, acc telegraf.Accumulator, cluster, node string) {
+func (d *DCOS) gatherContainers(ctx context.Context, acc Dana.Accumulator, cluster, node string) {
 	containers, err := d.client.getContainers(ctx, node)
 	if err != nil {
 		acc.AddError(err)
@@ -244,7 +244,7 @@ func createPoints(m *metrics) []*point {
 	return results
 }
 
-func addMetrics(acc telegraf.Accumulator, cluster, mname string, m *metrics, tagDimensions []string) {
+func addMetrics(acc Dana.Accumulator, cluster, mname string, m *metrics, tagDimensions []string) {
 	tm := time.Now()
 
 	points := createPoints(m)
@@ -266,15 +266,15 @@ func addMetrics(acc telegraf.Accumulator, cluster, mname string, m *metrics, tag
 	}
 }
 
-func addNodeMetrics(acc telegraf.Accumulator, cluster string, m *metrics) {
+func addNodeMetrics(acc Dana.Accumulator, cluster string, m *metrics) {
 	addMetrics(acc, cluster, "dcos_node", m, nodeDimensions)
 }
 
-func addContainerMetrics(acc telegraf.Accumulator, cluster string, m *metrics) {
+func addContainerMetrics(acc Dana.Accumulator, cluster string, m *metrics) {
 	addMetrics(acc, cluster, "dcos_container", m, containerDimensions)
 }
 
-func addAppMetrics(acc telegraf.Accumulator, cluster string, m *metrics) {
+func addAppMetrics(acc Dana.Accumulator, cluster string, m *metrics) {
 	addMetrics(acc, cluster, "dcos_app", m, appDimensions)
 }
 
@@ -378,7 +378,7 @@ func (d *DCOS) createFilters() error {
 }
 
 func init() {
-	inputs.Add("dcos", func() telegraf.Input {
+	inputs.Add("dcos", func() Dana.Input {
 		return &DCOS{
 			MaxConnections:  defaultMaxConnections,
 			ResponseTimeout: config.Duration(defaultResponseTimeout),

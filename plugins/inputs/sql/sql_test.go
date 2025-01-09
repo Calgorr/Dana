@@ -66,7 +66,7 @@ func TestMariaDBIntegration(t *testing.T) {
 	var testset = []struct {
 		name     string
 		queries  []Query
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "metric_one",
@@ -79,7 +79,7 @@ func TestMariaDBIntegration(t *testing.T) {
 					TimeFormat:          "2006-01-02 15:04:05",
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"sql",
 					map[string]string{
@@ -165,7 +165,7 @@ func TestPostgreSQLIntegration(t *testing.T) {
 	var testset = []struct {
 		name     string
 		queries  []Query
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "metric_one",
@@ -178,7 +178,7 @@ func TestPostgreSQLIntegration(t *testing.T) {
 					TimeFormat:          "2006-01-02 15:04:05",
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"sql",
 					map[string]string{
@@ -260,7 +260,7 @@ func TestClickHouseIntegration(t *testing.T) {
 	var testset = []struct {
 		name     string
 		queries  []Query
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "metric_one",
@@ -273,7 +273,7 @@ func TestClickHouseIntegration(t *testing.T) {
 					TimeFormat:          "unix",
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"sql",
 					map[string]string{

@@ -31,11 +31,11 @@ const (
 )
 
 type LogParser struct {
-	Files         []string        `toml:"files"`
-	FromBeginning bool            `toml:"from_beginning"`
-	WatchMethod   string          `toml:"watch_method"`
-	GrokConfig    grokConfig      `toml:"grok"`
-	Log           telegraf.Logger `toml:"-"`
+	Files         []string    `toml:"files"`
+	FromBeginning bool        `toml:"from_beginning"`
+	WatchMethod   string      `toml:"watch_method"`
+	GrokConfig    grokConfig  `toml:"grok"`
+	Log           Dana.Logger `toml:"-"`
 
 	tailers map[string]*tail.Tail
 	offsets map[string]int64
@@ -43,10 +43,10 @@ type LogParser struct {
 	done    chan struct{}
 	wg      sync.WaitGroup
 
-	acc telegraf.Accumulator
+	acc Dana.Accumulator
 
 	sync.Mutex
-	grokParser telegraf.Parser
+	grokParser Dana.Parser
 }
 
 type grokConfig struct {
@@ -73,7 +73,7 @@ func (l *LogParser) Init() error {
 	return nil
 }
 
-func (l *LogParser) Start(acc telegraf.Accumulator) error {
+func (l *LogParser) Start(acc Dana.Accumulator) error {
 	l.Lock()
 	defer l.Unlock()
 
@@ -119,7 +119,7 @@ func (l *LogParser) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (l *LogParser) Gather(_ telegraf.Accumulator) error {
+func (l *LogParser) Gather(_ Dana.Accumulator) error {
 	l.Lock()
 	defer l.Unlock()
 
@@ -261,7 +261,7 @@ func (l *LogParser) receiver(tailer *tail.Tail) {
 func (l *LogParser) parser() {
 	defer l.wg.Done()
 
-	var m telegraf.Metric
+	var m Dana.Metric
 	var err error
 	var entry logEntry
 	for {
@@ -301,7 +301,7 @@ func newLogParser() *LogParser {
 }
 
 func init() {
-	inputs.Add("logparser", func() telegraf.Input {
+	inputs.Add("logparser", func() Dana.Input {
 		return newLogParser()
 	})
 }

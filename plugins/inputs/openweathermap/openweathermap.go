@@ -128,7 +128,7 @@ func (n *OpenWeatherMap) Init() error {
 	return nil
 }
 
-func (n *OpenWeatherMap) Gather(acc telegraf.Accumulator) error {
+func (n *OpenWeatherMap) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	for _, fetch := range n.Fetch {
 		switch fetch {
@@ -166,7 +166,7 @@ func (n *OpenWeatherMap) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (n *OpenWeatherMap) gatherWeather(acc telegraf.Accumulator, city string) error {
+func (n *OpenWeatherMap) gatherWeather(acc Dana.Accumulator, city string) error {
 	// Query the data and decode the response
 	addr := n.formatURL("/data/2.5/weather", city)
 	buf, err := n.gatherURL(addr)
@@ -215,7 +215,7 @@ func (n *OpenWeatherMap) gatherWeather(acc telegraf.Accumulator, city string) er
 	return nil
 }
 
-func (n *OpenWeatherMap) gatherWeatherBatch(acc telegraf.Accumulator, cities string) error {
+func (n *OpenWeatherMap) gatherWeatherBatch(acc Dana.Accumulator, cities string) error {
 	// Query the data and decode the response
 	addr := n.formatURL("/data/2.5/group", cities)
 	buf, err := n.gatherURL(addr)
@@ -266,7 +266,7 @@ func (n *OpenWeatherMap) gatherWeatherBatch(acc telegraf.Accumulator, cities str
 	return nil
 }
 
-func (n *OpenWeatherMap) gatherForecast(acc telegraf.Accumulator, city string) error {
+func (n *OpenWeatherMap) gatherForecast(acc Dana.Accumulator, city string) error {
 	// Query the data and decode the response
 	addr := n.formatURL("/data/2.5/forecast", city)
 	buf, err := n.gatherURL(addr)
@@ -352,7 +352,7 @@ func (n *OpenWeatherMap) gatherURL(addr string) ([]byte, error) {
 }
 
 func init() {
-	inputs.Add("openweathermap", func() telegraf.Input {
+	inputs.Add("openweathermap", func() Dana.Input {
 		return &OpenWeatherMap{
 			ResponseTimeout: config.Duration(5 * time.Second),
 		}

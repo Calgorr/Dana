@@ -10,8 +10,8 @@ import (
 
 type RunningProcessor struct {
 	sync.Mutex
-	log       telegraf.Logger
-	Processor telegraf.StreamingProcessor
+	log       Dana.Logger
+	Processor Dana.StreamingProcessor
 	Config    *ProcessorConfig
 }
 
@@ -31,7 +31,7 @@ type ProcessorConfig struct {
 	LogLevel string
 }
 
-func NewRunningProcessor(processor telegraf.StreamingProcessor, config *ProcessorConfig) *RunningProcessor {
+func NewRunningProcessor(processor Dana.StreamingProcessor, config *ProcessorConfig) *RunningProcessor {
 	tags := map[string]string{"processor": config.Name}
 	if config.Alias != "" {
 		tags["alias"] = config.Alias
@@ -54,12 +54,12 @@ func NewRunningProcessor(processor telegraf.StreamingProcessor, config *Processo
 	}
 }
 
-func (rp *RunningProcessor) metricFiltered(metric telegraf.Metric) {
+func (rp *RunningProcessor) metricFiltered(metric Dana.Metric) {
 	metric.Drop()
 }
 
 func (rp *RunningProcessor) Init() error {
-	if p, ok := rp.Processor.(telegraf.Initializer); ok {
+	if p, ok := rp.Processor.(Dana.Initializer); ok {
 		err := p.Init()
 		if err != nil {
 			return err
@@ -69,13 +69,13 @@ func (rp *RunningProcessor) Init() error {
 }
 
 func (rp *RunningProcessor) ID() string {
-	if p, ok := rp.Processor.(telegraf.PluginWithID); ok {
+	if p, ok := rp.Processor.(Dana.PluginWithID); ok {
 		return p.ID()
 	}
 	return rp.Config.ID
 }
 
-func (rp *RunningProcessor) Log() telegraf.Logger {
+func (rp *RunningProcessor) Log() Dana.Logger {
 	return rp.log
 }
 
@@ -83,15 +83,15 @@ func (rp *RunningProcessor) LogName() string {
 	return logName("processors", rp.Config.Name, rp.Config.Alias)
 }
 
-func (rp *RunningProcessor) MakeMetric(metric telegraf.Metric) telegraf.Metric {
+func (rp *RunningProcessor) MakeMetric(metric Dana.Metric) Dana.Metric {
 	return metric
 }
 
-func (rp *RunningProcessor) Start(acc telegraf.Accumulator) error {
+func (rp *RunningProcessor) Start(acc Dana.Accumulator) error {
 	return rp.Processor.Start(acc)
 }
 
-func (rp *RunningProcessor) Add(m telegraf.Metric, acc telegraf.Accumulator) error {
+func (rp *RunningProcessor) Add(m Dana.Metric, acc Dana.Accumulator) error {
 	ok, err := rp.Config.Filter.Select(m)
 	if err != nil {
 		rp.log.Errorf("filtering failed: %v", err)

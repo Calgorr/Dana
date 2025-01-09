@@ -52,10 +52,10 @@ type HTTP struct {
 	AwsService              string                    `toml:"aws_service"`
 	NonRetryableStatusCodes []int                     `toml:"non_retryable_statuscodes"`
 	common_http.HTTPClientConfig
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	client     *http.Client
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 
 	awsCfg *aws.Config
 	common_aws.CredentialConfig
@@ -69,7 +69,7 @@ func (*HTTP) SampleConfig() string {
 	return sampleConfig
 }
 
-func (h *HTTP) SetSerializer(serializer telegraf.Serializer) {
+func (h *HTTP) SetSerializer(serializer Dana.Serializer) {
 	h.serializer = serializer
 }
 
@@ -108,7 +108,7 @@ func (h *HTTP) Close() error {
 	return nil
 }
 
-func (h *HTTP) Write(metrics []telegraf.Metric) error {
+func (h *HTTP) Write(metrics []Dana.Metric) error {
 	if h.UseBatchFormat {
 		reqBody, err := h.serializer.SerializeBatch(metrics)
 		if err != nil {
@@ -255,7 +255,7 @@ func (h *HTTP) writeMetric(reqBody []byte) error {
 }
 
 func init() {
-	outputs.Add("http", func() telegraf.Output {
+	outputs.Add("http", func() Dana.Output {
 		return &HTTP{
 			Method:         defaultMethod,
 			URL:            defaultURL,

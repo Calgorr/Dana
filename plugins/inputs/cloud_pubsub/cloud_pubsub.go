@@ -50,20 +50,20 @@ type PubSub struct {
 
 	Base64Data bool `toml:"base64_data"`
 
-	ContentEncoding      string          `toml:"content_encoding"`
-	MaxDecompressionSize config.Size     `toml:"max_decompression_size"`
-	Log                  telegraf.Logger `toml:"-"`
+	ContentEncoding      string      `toml:"content_encoding"`
+	MaxDecompressionSize config.Size `toml:"max_decompression_size"`
+	Log                  Dana.Logger `toml:"-"`
 
 	sub     subscription
 	stubSub func() subscription
 
 	cancel context.CancelFunc
 
-	parser telegraf.Parser
+	parser Dana.Parser
 	wg     *sync.WaitGroup
-	acc    telegraf.TrackingAccumulator
+	acc    Dana.TrackingAccumulator
 
-	undelivered  map[telegraf.TrackingID]message
+	undelivered  map[Dana.TrackingID]message
 	sem          semaphore
 	decoder      internal.ContentDecoder
 	decoderMutex sync.Mutex
@@ -108,14 +108,14 @@ func (ps *PubSub) Init() error {
 }
 
 // SetParser implements ParserInput interface.
-func (ps *PubSub) SetParser(parser telegraf.Parser) {
+func (ps *PubSub) SetParser(parser Dana.Parser) {
 	ps.parser = parser
 }
 
 // Start initializes the plugin and processing messages from Google PubSub.
 // Two goroutines are started - one pulling for the subscription, one
 // receiving delivery notifications from the accumulator.
-func (ps *PubSub) Start(ac telegraf.Accumulator) error {
+func (ps *PubSub) Start(ac Dana.Accumulator) error {
 	ps.sem = make(semaphore, ps.MaxUndeliveredMessages)
 	ps.acc = ac.WithTracking(ps.MaxUndeliveredMessages)
 
@@ -152,7 +152,7 @@ func (ps *PubSub) Start(ac telegraf.Accumulator) error {
 }
 
 // Gather does nothing for this service input.
-func (*PubSub) Gather(telegraf.Accumulator) error {
+func (*PubSub) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -245,7 +245,7 @@ func (ps *PubSub) onMessage(ctx context.Context, msg message) error {
 
 	id := ps.acc.AddTrackingMetricGroup(metrics)
 	if ps.undelivered == nil {
-		ps.undelivered = make(map[telegraf.TrackingID]message)
+		ps.undelivered = make(map[Dana.TrackingID]message)
 	}
 	ps.undelivered[id] = msg
 
@@ -295,7 +295,7 @@ func (ps *PubSub) waitForDelivery(parentCtx context.Context) {
 	}
 }
 
-func (ps *PubSub) removeDelivered(id telegraf.TrackingID) message {
+func (ps *PubSub) removeDelivered(id Dana.TrackingID) message {
 	ps.Lock()
 	defer ps.Unlock()
 
@@ -349,7 +349,7 @@ func (ps *PubSub) getGCPSubscription(subID string) (subscription, error) {
 }
 
 func init() {
-	inputs.Add("cloud_pubsub", func() telegraf.Input {
+	inputs.Add("cloud_pubsub", func() Dana.Input {
 		ps := &PubSub{
 			MaxUndeliveredMessages: defaultMaxUndeliveredMessages,
 		}

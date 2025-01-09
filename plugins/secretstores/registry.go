@@ -5,7 +5,7 @@ import (
 )
 
 // Creator is the function to create a new parser
-type Creator func(id string) telegraf.SecretStore
+type Creator func(id string) Dana.SecretStore
 
 // SecretStores contains the registry of all known secret-stores
 var SecretStores = make(map[string]Creator)

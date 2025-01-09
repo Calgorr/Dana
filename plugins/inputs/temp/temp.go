@@ -12,9 +12,9 @@ import (
 var sampleConfig string
 
 type Temperature struct {
-	MetricFormat string          `toml:"metric_format"`
-	DeviceTag    bool            `toml:"add_device_tag"`
-	Log          telegraf.Logger `toml:"-"`
+	MetricFormat string      `toml:"metric_format"`
+	DeviceTag    bool        `toml:"add_device_tag"`
+	Log          Dana.Logger `toml:"-"`
 }
 
 func (*Temperature) SampleConfig() string {
@@ -22,7 +22,7 @@ func (*Temperature) SampleConfig() string {
 }
 
 func init() {
-	inputs.Add("temp", func() telegraf.Input {
+	inputs.Add("temp", func() Dana.Input {
 		return &Temperature{}
 	})
 }

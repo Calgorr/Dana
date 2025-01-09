@@ -29,7 +29,7 @@ type Librato struct {
 	SourceTag string          `toml:"source_tag" deprecated:"1.0.0;1.35.0;use 'template' instead"`
 	Timeout   config.Duration `toml:"timeout"`
 	Template  string          `toml:"template"`
-	Log       telegraf.Logger `toml:"-"`
+	Log       Dana.Logger     `toml:"-"`
 
 	APIUrl string
 	client *http.Client
@@ -80,7 +80,7 @@ func (l *Librato) Connect() error {
 	return nil
 }
 
-func (l *Librato) Write(metrics []telegraf.Metric) error {
+func (l *Librato) Write(metrics []Dana.Metric) error {
 	if len(metrics) == 0 {
 		return nil
 	}
@@ -178,7 +178,7 @@ func (l *Librato) writeBatch(start, sizeBatch, metricCounter int, tempGauges []*
 	return nil
 }
 
-func (l *Librato) buildGauges(m telegraf.Metric) ([]*Gauge, error) {
+func (l *Librato) buildGauges(m Dana.Metric) ([]*Gauge, error) {
 	if m.Time().Unix() == 0 {
 		return nil, fmt.Errorf("time was zero %s", m.Name())
 	}
@@ -248,7 +248,7 @@ func (l *Librato) Close() error {
 }
 
 func init() {
-	outputs.Add("librato", func() telegraf.Output {
+	outputs.Add("librato", func() Dana.Output {
 		return NewLibrato(libratoAPI)
 	})
 }

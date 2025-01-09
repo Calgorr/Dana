@@ -29,7 +29,7 @@ func (*Raindrops) SampleConfig() string {
 	return sampleConfig
 }
 
-func (r *Raindrops) Gather(acc telegraf.Accumulator) error {
+func (r *Raindrops) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	for _, u := range r.Urls {
@@ -51,7 +51,7 @@ func (r *Raindrops) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (r *Raindrops) gatherURL(addr *url.URL, acc telegraf.Accumulator) error {
+func (r *Raindrops) gatherURL(addr *url.URL, acc Dana.Accumulator) error {
 	resp, err := r.httpClient.Get(addr.String())
 	if err != nil {
 		return fmt.Errorf("error making HTTP request to %q: %w", addr.String(), err)
@@ -170,7 +170,7 @@ func getTags(addr *url.URL) map[string]string {
 }
 
 func init() {
-	inputs.Add("raindrops", func() telegraf.Input {
+	inputs.Add("raindrops", func() Dana.Input {
 		return &Raindrops{httpClient: &http.Client{
 			Transport: &http.Transport{
 				ResponseHeaderTimeout: 3 * time.Second,

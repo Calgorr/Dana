@@ -20,7 +20,7 @@ func Test_LinkStatusCommand(t *testing.T) {
 		dpdkConn := dpdk.connectors[0]
 		dpdkConn.processCommand(mockAcc, testutil.Logger{}, ethdevLinkStatusCommand+",1", nil)
 
-		expected := []telegraf.Metric{
+		expected := []Dana.Metric{
 			testutil.MustMetric(
 				"dpdk",
 				map[string]string{
@@ -47,7 +47,7 @@ func Test_LinkStatusCommand(t *testing.T) {
 		dpdkConn := dpdk.connectors[0]
 		dpdkConn.processCommand(mockAcc, testutil.Logger{}, ethdevLinkStatusCommand+",1", nil)
 
-		expected := []telegraf.Metric{
+		expected := []Dana.Metric{
 			testutil.MustMetric(
 				"dpdk",
 				map[string]string{
@@ -85,7 +85,7 @@ func Test_LinkStatusCommand(t *testing.T) {
 		simulateResponse(mockConn, response, nil)
 		dpdkConn := dpdk.connectors[0]
 		dpdkConn.processCommand(mockAcc, testutil.Logger{}, ethdevLinkStatusCommand+",1", nil)
-		expected := []telegraf.Metric{
+		expected := []Dana.Metric{
 			testutil.MustMetric(
 				"dpdk",
 				map[string]string{
@@ -111,7 +111,7 @@ func Test_LinkStatusCommand(t *testing.T) {
 		dpdkConn := dpdk.connectors[0]
 		dpdkConn.processCommand(mockAcc, testutil.Logger{}, ethdevLinkStatusCommand+",1", nil)
 
-		expected := []telegraf.Metric{
+		expected := []Dana.Metric{
 			testutil.MustMetric(
 				"dpdk",
 				map[string]string{

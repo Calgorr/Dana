@@ -12,7 +12,7 @@ import (
 	"Dana/testutil"
 )
 
-func newM1() telegraf.Metric {
+func newM1() Dana.Metric {
 	return testutil.MustMetric(
 		"access_log",
 		map[string]string{
@@ -26,7 +26,7 @@ func newM1() telegraf.Metric {
 	)
 }
 
-func newM2() telegraf.Metric {
+func newM2() Dana.Metric {
 	return testutil.MustMetric(
 		"access_log",
 		map[string]string{
@@ -42,7 +42,7 @@ func newM2() telegraf.Metric {
 	)
 }
 
-func newUUIDTags() telegraf.Metric {
+func newUUIDTags() Dana.Metric {
 	m1 := metric.New("access_log",
 		map[string]string{
 			"compound": "other-18cb0b46-73b8-4084-9fc4-5105f32a8a68",
@@ -179,7 +179,7 @@ func TestTagConversions(t *testing.T) {
 }
 
 func TestMetricNameConversions(t *testing.T) {
-	inputTemplate := []telegraf.Metric{
+	inputTemplate := []Dana.Metric{
 		testutil.MustMetric(
 			"access_log",
 			map[string]string{
@@ -223,7 +223,7 @@ func TestMetricNameConversions(t *testing.T) {
 	tests := []struct {
 		name      string
 		converter converter
-		expected  []telegraf.Metric
+		expected  []Dana.Metric
 	}{
 		{
 			name: "Should change metric name",
@@ -231,7 +231,7 @@ func TestMetricNameConversions(t *testing.T) {
 				Pattern:     "^(\\w+)_log$",
 				Replacement: "${1}",
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"access",
 					map[string]string{
@@ -276,7 +276,7 @@ func TestMetricNameConversions(t *testing.T) {
 
 	for _, test := range tests {
 		// Copy the inputs as they will be modified by the processor
-		input := make([]telegraf.Metric, 0, len(inputTemplate))
+		input := make([]Dana.Metric, 0, len(inputTemplate))
 		for _, m := range inputTemplate {
 			input = append(input, m.Copy())
 		}
@@ -295,7 +295,7 @@ func TestMetricNameConversions(t *testing.T) {
 }
 
 func TestFieldRenameConversions(t *testing.T) {
-	inputTemplate := []telegraf.Metric{
+	inputTemplate := []Dana.Metric{
 		testutil.MustMetric(
 			"access_log",
 			map[string]string{
@@ -339,7 +339,7 @@ func TestFieldRenameConversions(t *testing.T) {
 	tests := []struct {
 		name      string
 		converter converter
-		expected  []telegraf.Metric
+		expected  []Dana.Metric
 	}{
 		{
 			name: "Should change field name",
@@ -347,7 +347,7 @@ func TestFieldRenameConversions(t *testing.T) {
 				Pattern:     "^(?:ignore|error)_(\\w+)$",
 				Replacement: "result_${1}",
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"access_log",
 					map[string]string{
@@ -394,7 +394,7 @@ func TestFieldRenameConversions(t *testing.T) {
 				Pattern:     "^(?:ignore|error)_(\\w+)$",
 				Replacement: "request",
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"access_log",
 					map[string]string{
@@ -442,7 +442,7 @@ func TestFieldRenameConversions(t *testing.T) {
 				Replacement: "request",
 				ResultKey:   "overwrite",
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"access_log",
 					map[string]string{
@@ -486,7 +486,7 @@ func TestFieldRenameConversions(t *testing.T) {
 
 	for _, test := range tests {
 		// Copy the inputs as they will be modified by the processor
-		input := make([]telegraf.Metric, 0, len(inputTemplate))
+		input := make([]Dana.Metric, 0, len(inputTemplate))
 		for _, m := range inputTemplate {
 			input = append(input, m.Copy())
 		}
@@ -505,7 +505,7 @@ func TestFieldRenameConversions(t *testing.T) {
 }
 
 func TestTagRenameConversions(t *testing.T) {
-	inputTemplate := []telegraf.Metric{
+	inputTemplate := []Dana.Metric{
 		testutil.MustMetric(
 			"access_log",
 			map[string]string{
@@ -549,7 +549,7 @@ func TestTagRenameConversions(t *testing.T) {
 	tests := []struct {
 		name      string
 		converter converter
-		expected  []telegraf.Metric
+		expected  []Dana.Metric
 	}{
 		{
 			name: "Should change tag name",
@@ -557,7 +557,7 @@ func TestTagRenameConversions(t *testing.T) {
 				Pattern:     "^resp_(\\w+)$",
 				Replacement: "${1}",
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"access_log",
 					map[string]string{
@@ -604,7 +604,7 @@ func TestTagRenameConversions(t *testing.T) {
 				Pattern:     "^resp_(\\w+)$",
 				Replacement: "verb",
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"access_log",
 					map[string]string{
@@ -652,7 +652,7 @@ func TestTagRenameConversions(t *testing.T) {
 				Replacement: "verb",
 				ResultKey:   "overwrite",
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"access_log",
 					map[string]string{
@@ -694,7 +694,7 @@ func TestTagRenameConversions(t *testing.T) {
 
 	for _, test := range tests {
 		// Copy the inputs as they will be modified by the processor
-		input := make([]telegraf.Metric, 0, len(inputTemplate))
+		input := make([]Dana.Metric, 0, len(inputTemplate))
 		for _, m := range inputTemplate {
 			input = append(input, m.Copy())
 		}
@@ -798,7 +798,7 @@ func TestNamedGroups(t *testing.T) {
 		time.Unix(1695243874, 0),
 	)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"access_log",
 			map[string]string{
@@ -1010,7 +1010,7 @@ func TestTrackedMetricNotLost(t *testing.T) {
 		now,
 	)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"access_log",
 			map[string]string{
@@ -1032,8 +1032,8 @@ func TestTrackedMetricNotLost(t *testing.T) {
 
 	// Create fake notification for testing
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, 1)
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, 1)
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)

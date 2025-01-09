@@ -11,11 +11,11 @@ import (
 
 type metric struct {
 	MetricName   string
-	MetricTags   []*telegraf.Tag
-	MetricFields []*telegraf.Field
+	MetricTags   []*Dana.Tag
+	MetricFields []*Dana.Field
 	MetricTime   time.Time
 
-	MetricType telegraf.ValueType
+	MetricType Dana.ValueType
 }
 
 func New(
@@ -23,13 +23,13 @@ func New(
 	tags map[string]string,
 	fields map[string]interface{},
 	tm time.Time,
-	tp ...telegraf.ValueType,
-) telegraf.Metric {
-	var vtype telegraf.ValueType
+	tp ...Dana.ValueType,
+) Dana.Metric {
+	var vtype Dana.ValueType
 	if len(tp) > 0 {
 		vtype = tp[0]
 	} else {
-		vtype = telegraf.Untyped
+		vtype = Dana.Untyped
 	}
 
 	m := &metric{
@@ -41,23 +41,23 @@ func New(
 	}
 
 	if len(tags) > 0 {
-		m.MetricTags = make([]*telegraf.Tag, 0, len(tags))
+		m.MetricTags = make([]*Dana.Tag, 0, len(tags))
 		for k, v := range tags {
 			m.MetricTags = append(m.MetricTags,
-				&telegraf.Tag{Key: k, Value: v})
+				&Dana.Tag{Key: k, Value: v})
 		}
 		sort.Slice(m.MetricTags, func(i, j int) bool { return m.MetricTags[i].Key < m.MetricTags[j].Key })
 	}
 
 	if len(fields) > 0 {
-		m.MetricFields = make([]*telegraf.Field, 0, len(fields))
+		m.MetricFields = make([]*Dana.Field, 0, len(fields))
 		for k, v := range fields {
 			v := convertField(v)
 			if v == nil {
 				continue
 			}
 
-			m.MetricFields = append(m.MetricFields, &telegraf.Field{Key: k, Value: v})
+			m.MetricFields = append(m.MetricFields, &Dana.Field{Key: k, Value: v})
 		}
 	}
 
@@ -66,21 +66,21 @@ func New(
 
 // FromMetric returns a deep copy of the metric with any tracking information
 // removed.
-func FromMetric(other telegraf.Metric) telegraf.Metric {
+func FromMetric(other Dana.Metric) Dana.Metric {
 	m := &metric{
 		MetricName:   other.Name(),
-		MetricTags:   make([]*telegraf.Tag, len(other.TagList())),
-		MetricFields: make([]*telegraf.Field, len(other.FieldList())),
+		MetricTags:   make([]*Dana.Tag, len(other.TagList())),
+		MetricFields: make([]*Dana.Field, len(other.FieldList())),
 		MetricTime:   other.Time(),
 		MetricType:   other.Type(),
 	}
 
 	for i, tag := range other.TagList() {
-		m.MetricTags[i] = &telegraf.Tag{Key: tag.Key, Value: tag.Value}
+		m.MetricTags[i] = &Dana.Tag{Key: tag.Key, Value: tag.Value}
 	}
 
 	for i, field := range other.FieldList() {
-		m.MetricFields[i] = &telegraf.Field{Key: field.Key, Value: field.Value}
+		m.MetricFields[i] = &Dana.Field{Key: field.Key, Value: field.Value}
 	}
 	return m
 }
@@ -101,7 +101,7 @@ func (m *metric) Tags() map[string]string {
 	return tags
 }
 
-func (m *metric) TagList() []*telegraf.Tag {
+func (m *metric) TagList() []*Dana.Tag {
 	return m.MetricTags
 }
 
@@ -114,7 +114,7 @@ func (m *metric) Fields() map[string]interface{} {
 	return fields
 }
 
-func (m *metric) FieldList() []*telegraf.Field {
+func (m *metric) FieldList() []*Dana.Field {
 	return m.MetricFields
 }
 
@@ -122,7 +122,7 @@ func (m *metric) Time() time.Time {
 	return m.MetricTime
 }
 
-func (m *metric) Type() telegraf.ValueType {
+func (m *metric) Type() Dana.ValueType {
 	return m.MetricType
 }
 
@@ -151,11 +151,11 @@ func (m *metric) AddTag(key, value string) {
 
 		m.MetricTags = append(m.MetricTags, nil)
 		copy(m.MetricTags[i+1:], m.MetricTags[i:])
-		m.MetricTags[i] = &telegraf.Tag{Key: key, Value: value}
+		m.MetricTags[i] = &Dana.Tag{Key: key, Value: value}
 		return
 	}
 
-	m.MetricTags = append(m.MetricTags, &telegraf.Tag{Key: key, Value: value})
+	m.MetricTags = append(m.MetricTags, &Dana.Tag{Key: key, Value: value})
 }
 
 func (m *metric) HasTag(key string) bool {
@@ -195,11 +195,11 @@ func (m *metric) RemoveTag(key string) {
 func (m *metric) AddField(key string, value interface{}) {
 	for i, field := range m.MetricFields {
 		if key == field.Key {
-			m.MetricFields[i] = &telegraf.Field{Key: key, Value: convertField(value)}
+			m.MetricFields[i] = &Dana.Field{Key: key, Value: convertField(value)}
 			return
 		}
 	}
-	m.MetricFields = append(m.MetricFields, &telegraf.Field{Key: key, Value: convertField(value)})
+	m.MetricFields = append(m.MetricFields, &Dana.Field{Key: key, Value: convertField(value)})
 }
 
 func (m *metric) HasField(key string) bool {
@@ -242,25 +242,25 @@ func (m *metric) SetTime(t time.Time) {
 	m.MetricTime = t
 }
 
-func (m *metric) SetType(t telegraf.ValueType) {
+func (m *metric) SetType(t Dana.ValueType) {
 	m.MetricType = t
 }
 
-func (m *metric) Copy() telegraf.Metric {
+func (m *metric) Copy() Dana.Metric {
 	m2 := &metric{
 		MetricName:   m.MetricName,
-		MetricTags:   make([]*telegraf.Tag, len(m.MetricTags)),
-		MetricFields: make([]*telegraf.Field, len(m.MetricFields)),
+		MetricTags:   make([]*Dana.Tag, len(m.MetricTags)),
+		MetricFields: make([]*Dana.Field, len(m.MetricFields)),
 		MetricTime:   m.MetricTime,
 		MetricType:   m.MetricType,
 	}
 
 	for i, tag := range m.MetricTags {
-		m2.MetricTags[i] = &telegraf.Tag{Key: tag.Key, Value: tag.Value}
+		m2.MetricTags[i] = &Dana.Tag{Key: tag.Key, Value: tag.Value}
 	}
 
 	for i, field := range m.MetricFields {
-		m2.MetricFields[i] = &telegraf.Field{Key: field.Key, Value: field.Value}
+		m2.MetricFields[i] = &Dana.Field{Key: field.Key, Value: field.Value}
 	}
 	return m2
 }

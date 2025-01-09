@@ -128,7 +128,7 @@ func TestSanitize(t *testing.T) {
 func BenchmarkHttpSend(b *testing.B) {
 	const batchSize = 50
 	const metricsCount = 4 * batchSize
-	metrics := make([]telegraf.Metric, 0, metricsCount)
+	metrics := make([]Dana.Metric, 0, metricsCount)
 	for i := 0; i < metricsCount; i++ {
 		metrics = append(metrics, testutil.TestMetric(1.0))
 	}

@@ -30,7 +30,7 @@ func TestNewMetric(t *testing.T) {
 }
 
 // cpu value=1
-func baseMetric() telegraf.Metric {
+func baseMetric() Dana.Metric {
 	tags := map[string]string{}
 	fields := map[string]interface{}{
 		"value": float64(1),
@@ -322,7 +322,7 @@ func TestValueType(t *testing.T) {
 	fields := map[string]interface{}{
 		"value": float64(42),
 	}
-	m := New("cpu", tags, fields, now, telegraf.Gauge)
+	m := New("cpu", tags, fields, now, Dana.Gauge)
 
-	require.Equal(t, telegraf.Gauge, m.Type())
+	require.Equal(t, Dana.Gauge, m.Type())
 }

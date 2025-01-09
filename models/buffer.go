@@ -19,7 +19,7 @@ var (
 
 type Transaction struct {
 	// Batch of metrics to write
-	Batch []telegraf.Metric
+	Batch []Dana.Metric
 
 	// Accept denotes the indices of metrics that were successfully written
 	Accept []int
@@ -66,7 +66,7 @@ type Buffer interface {
 	Len() int
 
 	// Add adds metrics to the buffer and returns number of dropped metrics.
-	Add(metrics ...telegraf.Metric) int
+	Add(metrics ...Dana.Metric) int
 
 	// Batch starts a transaction by returning a slice of metrics up to the
 	// given batch-size starting from the oldest metric in the buffer. Metrics
@@ -156,19 +156,19 @@ func (b *BufferStats) metricAdded() {
 	b.MetricsAdded.Incr(1)
 }
 
-func (b *BufferStats) metricWritten(m telegraf.Metric) {
+func (b *BufferStats) metricWritten(m Dana.Metric) {
 	AgentMetricsWritten.Incr(1)
 	b.MetricsWritten.Incr(1)
 	m.Accept()
 }
 
-func (b *BufferStats) metricRejected(m telegraf.Metric) {
+func (b *BufferStats) metricRejected(m Dana.Metric) {
 	AgentMetricsRejected.Incr(1)
 	b.MetricsRejected.Incr(1)
 	m.Reject()
 }
 
-func (b *BufferStats) metricDropped(m telegraf.Metric) {
+func (b *BufferStats) metricDropped(m Dana.Metric) {
 	AgentMetricsDropped.Incr(1)
 	b.MetricsDropped.Incr(1)
 	m.Reject()

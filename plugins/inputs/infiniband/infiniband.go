@@ -12,7 +12,7 @@ import (
 var sampleConfig string
 
 type Infiniband struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*Infiniband) SampleConfig() string {
@@ -21,5 +21,5 @@ func (*Infiniband) SampleConfig() string {
 
 // Initialise plugin
 func init() {
-	inputs.Add("infiniband", func() telegraf.Input { return &Infiniband{} })
+	inputs.Add("infiniband", func() Dana.Input { return &Infiniband{} })
 }

@@ -84,7 +84,7 @@ func (*GrayLog) SampleConfig() string {
 	return sampleConfig
 }
 
-func (h *GrayLog) Gather(acc telegraf.Accumulator) error {
+func (h *GrayLog) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	if h.client.httpClient() == nil {
@@ -127,7 +127,7 @@ func (h *GrayLog) Gather(acc telegraf.Accumulator) error {
 //
 //	error: Any error that may have occurred
 func (h *GrayLog) gatherServer(
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	serverURL string,
 ) error {
 	resp, _, err := h.sendRequest(serverURL)
@@ -258,7 +258,7 @@ func (h *GrayLog) sendRequest(serverURL string) (string, float64, error) {
 }
 
 func init() {
-	inputs.Add("graylog", func() telegraf.Input {
+	inputs.Add("graylog", func() Dana.Input {
 		return &GrayLog{
 			client:  &realHTTPClient{},
 			Timeout: config.Duration(5 * time.Second),

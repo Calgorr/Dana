@@ -55,15 +55,15 @@ type EventHub struct {
 	IoTHubConnectionModuleIDTag   string   `toml:"iot_hub_connection_module_id_tag"`
 	IoTHubEnqueuedTimeField       string   `toml:"iot_hub_enqueued_time_field"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	// Azure
 	hub    *eventhub.Hub
 	cancel context.CancelFunc
 	wg     sync.WaitGroup
 
-	parser telegraf.Parser
-	in     chan []telegraf.Metric
+	parser Dana.Parser
+	in     chan []Dana.Metric
 }
 
 type (
@@ -108,12 +108,12 @@ func (e *EventHub) Init() (err error) {
 	return err
 }
 
-func (e *EventHub) SetParser(parser telegraf.Parser) {
+func (e *EventHub) SetParser(parser Dana.Parser) {
 	e.parser = parser
 }
 
-func (e *EventHub) Start(acc telegraf.Accumulator) error {
-	e.in = make(chan []telegraf.Metric)
+func (e *EventHub) Start(acc Dana.Accumulator) error {
+	e.in = make(chan []Dana.Metric)
 
 	var ctx context.Context
 	ctx, e.cancel = context.WithCancel(context.Background())
@@ -148,7 +148,7 @@ func (e *EventHub) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*EventHub) Gather(telegraf.Accumulator) error {
+func (*EventHub) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -204,9 +204,9 @@ func (e *EventHub) onMessage(ctx context.Context, event *eventhub.Event) error {
 
 // OnDelivery returns true if a new slot has opened up in the TrackingAccumulator.
 func (e *EventHub) onDelivery(
-	acc telegraf.TrackingAccumulator,
-	groups map[telegraf.TrackingID][]telegraf.Metric,
-	track telegraf.DeliveryInfo,
+	acc Dana.TrackingAccumulator,
+	groups map[Dana.TrackingID][]Dana.Metric,
+	track Dana.DeliveryInfo,
 ) bool {
 	if track.Delivered() {
 		delete(groups, track.ID())
@@ -230,10 +230,10 @@ func (e *EventHub) onDelivery(
 	return false
 }
 
-func (e *EventHub) startTracking(ctx context.Context, ac telegraf.Accumulator) {
+func (e *EventHub) startTracking(ctx context.Context, ac Dana.Accumulator) {
 	acc := ac.WithTracking(e.MaxUndeliveredMessages)
 	sem := make(semaphore, e.MaxUndeliveredMessages)
-	groups := make(map[telegraf.TrackingID][]telegraf.Metric, e.MaxUndeliveredMessages)
+	groups := make(map[Dana.TrackingID][]Dana.Metric, e.MaxUndeliveredMessages)
 
 	for {
 		select {
@@ -261,8 +261,8 @@ func (e *EventHub) startTracking(ctx context.Context, ac telegraf.Accumulator) {
 	}
 }
 
-func deepCopyMetrics(in []telegraf.Metric) []telegraf.Metric {
-	metrics := make([]telegraf.Metric, 0, len(in))
+func deepCopyMetrics(in []Dana.Metric) []Dana.Metric {
+	metrics := make([]Dana.Metric, 0, len(in))
 	for _, m := range in {
 		metrics = append(metrics, m.Copy())
 	}
@@ -270,7 +270,7 @@ func deepCopyMetrics(in []telegraf.Metric) []telegraf.Metric {
 }
 
 // CreateMetrics returns the Metrics from the Event.
-func (e *EventHub) createMetrics(event *eventhub.Event) ([]telegraf.Metric, error) {
+func (e *EventHub) createMetrics(event *eventhub.Event) ([]Dana.Metric, error) {
 	metrics, err := e.parser.Parse(event.Data)
 	if err != nil {
 		return nil, err
@@ -340,7 +340,7 @@ func (e *EventHub) createMetrics(event *eventhub.Event) ([]telegraf.Metric, erro
 }
 
 func init() {
-	inputs.Add("eventhub_consumer", func() telegraf.Input {
+	inputs.Add("eventhub_consumer", func() Dana.Input {
 		return &EventHub{}
 	})
 }

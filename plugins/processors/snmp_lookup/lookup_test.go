@@ -131,7 +131,7 @@ func TestStart(t *testing.T) {
 func TestGetConnection(t *testing.T) {
 	tests := []struct {
 		name     string
-		input    telegraf.Metric
+		input    Dana.Metric
 		expected string
 	}{
 		{
@@ -257,8 +257,8 @@ func TestUpdateAgent(t *testing.T) {
 func TestAdd(t *testing.T) {
 	tests := []struct {
 		name     string
-		input    telegraf.Metric
-		expected []telegraf.Metric
+		input    Dana.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name:     "no source tag",
@@ -275,7 +275,7 @@ func TestAdd(t *testing.T) {
 				map[string]interface{}{"value": 42},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{
@@ -297,7 +297,7 @@ func TestAdd(t *testing.T) {
 				map[string]interface{}{"value": 42},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{
@@ -321,7 +321,7 @@ func TestAdd(t *testing.T) {
 				map[string]interface{}{"value": 42},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{
@@ -421,7 +421,7 @@ func TestExpiry(t *testing.T) {
 	m.AddTag("index", "123")
 	require.NoError(t, p.Add(m.Copy(), &acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{
@@ -467,7 +467,7 @@ func TestExpiry(t *testing.T) {
 	m.AddTag("index", "0")
 	require.NoError(t, p.Add(m, &acc))
 
-	expected = []telegraf.Metric{
+	expected = []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{
@@ -525,7 +525,7 @@ func TestOrdered(t *testing.T) {
 	}
 
 	// Setup the input data
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"test1",
 			map[string]string{"source": "b.yourcompany.com"},
@@ -560,7 +560,7 @@ func TestOrdered(t *testing.T) {
 	}
 
 	// Setup expectations
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test1",
 			map[string]string{

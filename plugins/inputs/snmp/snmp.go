@@ -38,7 +38,7 @@ type Snmp struct {
 
 	connectionCache []snmp.Connection
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	translator snmp.Translator
 }
@@ -83,7 +83,7 @@ func (s *Snmp) Init() error {
 		s.AgentHostTag = "agent_host"
 	}
 	if s.AgentHostTag != "source" {
-		config.PrintOptionValueDeprecationNotice("inputs.snmp", "agent_host_tag", s.AgentHostTag, telegraf.DeprecationInfo{
+		config.PrintOptionValueDeprecationNotice("inputs.snmp", "agent_host_tag", s.AgentHostTag, Dana.DeprecationInfo{
 			Since:  "1.29.0",
 			Notice: `set to "source" for consistent usage across plugins or safely ignore this message and continue to use the current value`,
 		})
@@ -95,7 +95,7 @@ func (s *Snmp) Init() error {
 // Gather retrieves all the configured fields and tables.
 // Any error encountered does not halt the process. The errors are accumulated
 // and returned at the end.
-func (s *Snmp) Gather(acc telegraf.Accumulator) error {
+func (s *Snmp) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	for i, agent := range s.Agents {
 		wg.Add(1)
@@ -130,7 +130,7 @@ func (s *Snmp) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (s *Snmp) gatherTable(acc telegraf.Accumulator, gs snmp.Connection, t snmp.Table, topTags map[string]string, walk bool) error {
+func (s *Snmp) gatherTable(acc Dana.Accumulator, gs snmp.Connection, t snmp.Table, topTags map[string]string, walk bool) error {
 	rt, err := t.Build(gs, walk)
 	if err != nil {
 		return err
@@ -194,7 +194,7 @@ func (s *Snmp) getConnection(idx int) (snmp.Connection, error) {
 }
 
 func init() {
-	inputs.Add("snmp", func() telegraf.Input {
+	inputs.Add("snmp", func() Dana.Input {
 		return &Snmp{
 			Name: "snmp",
 			ClientConfig: snmp.ClientConfig{

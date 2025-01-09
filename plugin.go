@@ -1,4 +1,4 @@
-package telegraf
+package Dana
 
 // DeprecationInfo contains information for marking a plugin deprecated.
 type DeprecationInfo struct {
@@ -22,7 +22,7 @@ type Initializer interface {
 // PluginDescriber contains the functions all plugins must implement to describe
 // themselves to Telegraf. Note that all plugins may define a logger that is
 // not part of the interface, but will receive an injected logger if it's set.
-// eg: Log telegraf.Logger `toml:"-"`
+// eg: Log Dana.Logger `toml:"-"`
 type PluginDescriber interface {
 	// SampleConfig returns the default configuration of the Plugin
 	SampleConfig() string

@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type WinServices struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*WinServices) SampleConfig() string { return sampleConfig }
@@ -23,10 +23,10 @@ func (w *WinServices) Init() error {
 	w.Log.Warn("Current platform is not supported")
 	return nil
 }
-func (*WinServices) Gather(telegraf.Accumulator) error { return nil }
+func (*WinServices) Gather(Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("win_services", func() telegraf.Input {
+	inputs.Add("win_services", func() Dana.Input {
 		return &WinServices{}
 	})
 }

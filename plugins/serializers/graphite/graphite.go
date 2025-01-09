@@ -83,7 +83,7 @@ func (s *GraphiteSerializer) Init() error {
 	return nil
 }
 
-func (s *GraphiteSerializer) Serialize(metric telegraf.Metric) ([]byte, error) {
+func (s *GraphiteSerializer) Serialize(metric Dana.Metric) ([]byte, error) {
 	var out []byte
 
 	// Convert UnixNano to Unix timestamps
@@ -137,7 +137,7 @@ func (s *GraphiteSerializer) Serialize(metric telegraf.Metric) ([]byte, error) {
 	return out, nil
 }
 
-func (s *GraphiteSerializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (s *GraphiteSerializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	var batch bytes.Buffer
 	for _, m := range metrics {
 		buf, err := s.Serialize(m)
@@ -355,7 +355,7 @@ func compatibleSanitize(name, value string) string {
 
 func init() {
 	serializers.Add("graphite",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &GraphiteSerializer{}
 		},
 	)

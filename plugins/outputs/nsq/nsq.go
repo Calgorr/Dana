@@ -17,17 +17,17 @@ var sampleConfig string
 type NSQ struct {
 	Server string
 	Topic  string
-	Log    telegraf.Logger `toml:"-"`
+	Log    Dana.Logger `toml:"-"`
 
 	producer   *nsq.Producer
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 }
 
 func (*NSQ) SampleConfig() string {
 	return sampleConfig
 }
 
-func (n *NSQ) SetSerializer(serializer telegraf.Serializer) {
+func (n *NSQ) SetSerializer(serializer Dana.Serializer) {
 	n.serializer = serializer
 }
 
@@ -48,7 +48,7 @@ func (n *NSQ) Close() error {
 	return nil
 }
 
-func (n *NSQ) Write(metrics []telegraf.Metric) error {
+func (n *NSQ) Write(metrics []Dana.Metric) error {
 	if len(metrics) == 0 {
 		return nil
 	}
@@ -69,7 +69,7 @@ func (n *NSQ) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("nsq", func() telegraf.Output {
+	outputs.Add("nsq", func() Dana.Output {
 		return &NSQ{}
 	})
 }

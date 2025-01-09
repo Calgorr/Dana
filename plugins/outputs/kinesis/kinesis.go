@@ -30,8 +30,8 @@ type (
 		Partition          *Partition `toml:"partition"`
 		Debug              bool       `toml:"debug"`
 
-		Log        telegraf.Logger `toml:"-"`
-		serializer telegraf.Serializer
+		Log        Dana.Logger `toml:"-"`
+		serializer Dana.Serializer
 		svc        kinesisClient
 
 		common_aws.CredentialConfig
@@ -85,7 +85,7 @@ func (k *KinesisOutput) Close() error {
 	return nil
 }
 
-func (k *KinesisOutput) SetSerializer(serializer telegraf.Serializer) {
+func (k *KinesisOutput) SetSerializer(serializer Dana.Serializer) {
 	k.serializer = serializer
 }
 
@@ -114,7 +114,7 @@ func (k *KinesisOutput) writeKinesis(r []types.PutRecordsRequestEntry) time.Dura
 	return time.Since(start)
 }
 
-func (k *KinesisOutput) getPartitionKey(metric telegraf.Metric) string {
+func (k *KinesisOutput) getPartitionKey(metric Dana.Metric) string {
 	if k.Partition != nil {
 		switch k.Partition.Method {
 		case "static":
@@ -149,7 +149,7 @@ func (k *KinesisOutput) getPartitionKey(metric telegraf.Metric) string {
 	return k.PartitionKey
 }
 
-func (k *KinesisOutput) Write(metrics []telegraf.Metric) error {
+func (k *KinesisOutput) Write(metrics []Dana.Metric) error {
 	var sz uint32
 
 	if len(metrics) == 0 {
@@ -190,7 +190,7 @@ func (k *KinesisOutput) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("kinesis", func() telegraf.Output {
+	outputs.Add("kinesis", func() Dana.Output {
 		return &KinesisOutput{}
 	})
 }

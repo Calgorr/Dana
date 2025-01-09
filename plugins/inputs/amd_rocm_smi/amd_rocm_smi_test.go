@@ -93,12 +93,12 @@ func TestGatherValidJSON(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name:     "Vega 10 XT",
 			filename: "vega-10-XT.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"amd_rocm_smi",
 					map[string]string{
@@ -130,7 +130,7 @@ func TestGatherValidJSON(t *testing.T) {
 		{
 			name:     "Vega 20 WKS GL-XE [Radeon Pro VII]",
 			filename: "vega-20-WKS-GL-XE.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"amd_rocm_smi",
 					map[string]string{
@@ -166,7 +166,7 @@ func TestGatherValidJSON(t *testing.T) {
 		{
 			name:     "mi100 + ROCm 571",
 			filename: "mi100_rocm571.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"amd_rocm_smi",
 					map[string]string{
@@ -340,7 +340,7 @@ func TestGatherValidJSON(t *testing.T) {
 		{
 			name:     "mi100 + ROCm 602",
 			filename: "mi100_rocm602.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"amd_rocm_smi",
 					map[string]string{
@@ -458,7 +458,7 @@ func TestGatherValidJSON(t *testing.T) {
 		{
 			name:     "rx6700xt + ROCm 430",
 			filename: "rx6700xt_rocm430.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"amd_rocm_smi",
 					map[string]string{
@@ -493,7 +493,7 @@ func TestGatherValidJSON(t *testing.T) {
 		{
 			name:     "rx6700xt + ROCm 571",
 			filename: "rx6700xt_rocm571.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"amd_rocm_smi",
 					map[string]string{
@@ -528,7 +528,7 @@ func TestGatherValidJSON(t *testing.T) {
 		{
 			name:     "rx6700xt + ROCm 602",
 			filename: "rx6700xt_rocm602.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"amd_rocm_smi",
 					map[string]string{
@@ -562,7 +562,7 @@ func TestGatherValidJSON(t *testing.T) {
 		{
 			name:     "rx6700xt + ROCm 612",
 			filename: "rx6700xt_rocm612.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"amd_rocm_smi",
 					map[string]string{

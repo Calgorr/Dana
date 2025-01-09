@@ -30,7 +30,7 @@ type translator interface {
 }
 
 type wrapLog struct {
-	telegraf.Logger
+	Dana.Logger
 }
 
 func (l wrapLog) Printf(format string, args ...interface{}) {
@@ -59,14 +59,14 @@ type SnmpTrap struct {
 	PrivProtocol string        `toml:"priv_protocol"`
 	PrivPassword config.Secret `toml:"priv_password"`
 
-	acc      telegraf.Accumulator
+	acc      Dana.Accumulator
 	listener *gosnmp.TrapListener
 	timeFunc func() time.Time
 	errCh    chan error
 
 	makeHandlerWrapper func(gosnmp.TrapHandlerFunc) gosnmp.TrapHandlerFunc
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	transl translator
 }
@@ -75,12 +75,12 @@ func (*SnmpTrap) SampleConfig() string {
 	return sampleConfig
 }
 
-func (*SnmpTrap) Gather(telegraf.Accumulator) error {
+func (*SnmpTrap) Gather(Dana.Accumulator) error {
 	return nil
 }
 
 func init() {
-	inputs.Add("snmp_trap", func() telegraf.Input {
+	inputs.Add("snmp_trap", func() Dana.Input {
 		return &SnmpTrap{
 			timeFunc:       time.Now,
 			ServiceAddress: "udp://:162",
@@ -115,7 +115,7 @@ func (s *SnmpTrap) Init() error {
 	return nil
 }
 
-func (s *SnmpTrap) Start(acc telegraf.Accumulator) error {
+func (s *SnmpTrap) Start(acc Dana.Accumulator) error {
 	s.acc = acc
 	s.listener = gosnmp.NewTrapListener()
 	s.listener.OnNewTrap = makeTrapHandler(s)

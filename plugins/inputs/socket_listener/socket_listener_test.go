@@ -37,7 +37,7 @@ func TestSocketListener(t *testing.T) {
 		[]byte("test,foo=bar v=1i 123456789\ntest,foo=baz v=2i 123456790\n"),
 		[]byte("test,foo=zab v=3i 123456791\n"),
 	}
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"foo": "bar"},
@@ -222,7 +222,7 @@ func TestLargeReadBufferTCP(t *testing.T) {
 
 	// Create a large message with the readbuffer size
 	message := bytes.Repeat([]byte{'a'}, int(bufsize)-2)
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{},
@@ -300,7 +300,7 @@ func TestLargeReadBufferUnixgram(t *testing.T) {
 
 	// Create a large message with the readbuffer size
 	message := bytes.Repeat([]byte{'a'}, int(bufsize))
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{},
@@ -354,7 +354,7 @@ func TestCases(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	inputs.Add("socket_listener", func() telegraf.Input {
+	inputs.Add("socket_listener", func() Dana.Input {
 		return &SocketListener{}
 	})
 
@@ -387,7 +387,7 @@ func TestCases(t *testing.T) {
 			require.NotEmpty(t, sequence)
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)

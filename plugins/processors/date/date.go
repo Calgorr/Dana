@@ -44,7 +44,7 @@ func (d *Date) Init() error {
 	return err
 }
 
-func (d *Date) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (d *Date) Apply(in ...Dana.Metric) []Dana.Metric {
 	for _, point := range in {
 		tm := point.Time().In(d.location).Add(time.Duration(d.DateOffset))
 		if len(d.TagKey) > 0 {
@@ -69,7 +69,7 @@ func (d *Date) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("date", func() telegraf.Processor {
+	processors.Add("date", func() Dana.Processor {
 		return &Date{
 			Timezone: defaultTimezone,
 		}

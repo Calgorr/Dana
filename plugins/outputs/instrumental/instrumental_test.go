@@ -44,7 +44,7 @@ func TestWrite(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics := []telegraf.Metric{m1, m2}
+	metrics := []Dana.Metric{m1, m2}
 	err := i.Write(metrics)
 	require.NoError(t, err)
 
@@ -76,7 +76,7 @@ func TestWrite(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics = []telegraf.Metric{m3, m4, m5, m6}
+	metrics = []Dana.Metric{m3, m4, m5, m6}
 	err = i.Write(metrics)
 	require.NoError(t, err)
 

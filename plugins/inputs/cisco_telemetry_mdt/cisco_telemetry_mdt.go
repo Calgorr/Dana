@@ -57,7 +57,7 @@ type CiscoTelemetryMDT struct {
 	IncludeDeleteField bool                  `toml:"include_delete_field"`
 	SourceFieldName    string                `toml:"source_field_name"`
 
-	Log telegraf.Logger
+	Log Dana.Logger
 
 	// GRPC TLS settings
 	common_tls.ServerConfig
@@ -74,7 +74,7 @@ type CiscoTelemetryMDT struct {
 	nxpathMap       map[string]map[string]string // per path map
 	propMap         map[string]func(field *telemetry.TelemetryField, value interface{}) interface{}
 	mutex           sync.Mutex
-	acc             telegraf.Accumulator
+	acc             Dana.Accumulator
 	wg              sync.WaitGroup
 
 	// Though unused in the code, required by protoc-gen-go-grpc to maintain compatibility
@@ -99,7 +99,7 @@ func (*CiscoTelemetryMDT) SampleConfig() string {
 }
 
 // Start the Cisco MDT service
-func (c *CiscoTelemetryMDT) Start(acc telegraf.Accumulator) error {
+func (c *CiscoTelemetryMDT) Start(acc Dana.Accumulator) error {
 	var err error
 	c.acc = acc
 	c.listener, err = net.Listen("tcp", c.ServiceAddress)
@@ -218,7 +218,7 @@ func (c *CiscoTelemetryMDT) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*CiscoTelemetryMDT) Gather(telegraf.Accumulator) error {
+func (*CiscoTelemetryMDT) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -799,7 +799,7 @@ func (c *CiscoTelemetryMDT) parseContentField(
 }
 
 func init() {
-	inputs.Add("cisco_telemetry_mdt", func() telegraf.Input {
+	inputs.Add("cisco_telemetry_mdt", func() Dana.Input {
 		return &CiscoTelemetryMDT{
 			Transport:       "grpc",
 			ServiceAddress:  "127.0.0.1:57000",

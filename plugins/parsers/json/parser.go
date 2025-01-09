@@ -34,15 +34,15 @@ type Parser struct {
 	Strict       bool     `toml:"json_strict"`
 
 	DefaultTags map[string]string `toml:"-"`
-	Log         telegraf.Logger   `toml:"-"`
+	Log         Dana.Logger       `toml:"-"`
 
 	location     *time.Location
 	tagFilter    filter.Filter
 	stringFilter filter.Filter
 }
 
-func (p *Parser) parseArray(data []interface{}, timestamp time.Time) ([]telegraf.Metric, error) {
-	results := make([]telegraf.Metric, 0)
+func (p *Parser) parseArray(data []interface{}, timestamp time.Time) ([]Dana.Metric, error) {
+	results := make([]Dana.Metric, 0)
 
 	for _, item := range data {
 		switch v := item.(type) {
@@ -63,7 +63,7 @@ func (p *Parser) parseArray(data []interface{}, timestamp time.Time) ([]telegraf
 	return results, nil
 }
 
-func (p *Parser) parseObject(data map[string]interface{}, timestamp time.Time) ([]telegraf.Metric, error) {
+func (p *Parser) parseObject(data map[string]interface{}, timestamp time.Time) ([]Dana.Metric, error) {
 	tags := make(map[string]string)
 	for k, v := range p.DefaultTags {
 		tags[k] = v
@@ -112,7 +112,7 @@ func (p *Parser) parseObject(data map[string]interface{}, timestamp time.Time) (
 	tags, nFields := p.switchFieldToTag(tags, f.Fields)
 	m := metric.New(name, tags, nFields, timestamp)
 
-	return []telegraf.Metric{m}, nil
+	return []Dana.Metric{m}, nil
 }
 
 // will take in field map with strings and bools,
@@ -181,7 +181,7 @@ func (p *Parser) Init() error {
 	return nil
 }
 
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 	if p.Query != "" {
 		result := gjson.GetBytes(buf, p.Query)
 		buf = []byte(result.Raw)
@@ -197,7 +197,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 	buf = bytes.TrimSpace(buf)
 	buf = bytes.TrimPrefix(buf, utf8BOM)
 	if len(buf) == 0 {
-		return make([]telegraf.Metric, 0), nil
+		return make([]Dana.Metric, 0), nil
 	}
 
 	var data interface{}
@@ -219,7 +219,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 	}
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line + "\n"))
 
 	if err != nil {
@@ -239,7 +239,7 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 
 func init() {
 	parsers.Add("json",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{
 				MetricName: defaultMetricName,
 				Strict:     true,

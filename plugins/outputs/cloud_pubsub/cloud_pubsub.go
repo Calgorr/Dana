@@ -37,14 +37,14 @@ type PubSub struct {
 	Base64Data            bool            `toml:"base64_data"`
 	ContentEncoding       string          `toml:"content_encoding"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	t topic
 	c *pubsub.Client
 
 	stubTopic func(id string) topic
 
-	serializer     telegraf.Serializer
+	serializer     Dana.Serializer
 	publishResults []publishResult
 	encoder        internal.ContentEncoder
 }
@@ -53,7 +53,7 @@ func (*PubSub) SampleConfig() string {
 	return sampleConfig
 }
 
-func (ps *PubSub) SetSerializer(serializer telegraf.Serializer) {
+func (ps *PubSub) SetSerializer(serializer Dana.Serializer) {
 	ps.serializer = serializer
 }
 
@@ -72,7 +72,7 @@ func (ps *PubSub) Close() error {
 	return nil
 }
 
-func (ps *PubSub) Write(metrics []telegraf.Metric) error {
+func (ps *PubSub) Write(metrics []Dana.Metric) error {
 	ps.refreshTopic()
 
 	// Serialize metrics and package into appropriate PubSub messages
@@ -156,7 +156,7 @@ func (ps *PubSub) publishSettings() pubsub.PublishSettings {
 	return settings
 }
 
-func (ps *PubSub) toMessages(metrics []telegraf.Metric) ([]*pubsub.Message, error) {
+func (ps *PubSub) toMessages(metrics []Dana.Metric) ([]*pubsub.Message, error) {
 	if ps.SendBatched {
 		b, err := ps.serializer.SerializeBatch(metrics)
 		if err != nil {
@@ -282,7 +282,7 @@ func (ps *PubSub) Init() error {
 }
 
 func init() {
-	outputs.Add("cloud_pubsub", func() telegraf.Output {
+	outputs.Add("cloud_pubsub", func() Dana.Output {
 		return &PubSub{}
 	})
 }

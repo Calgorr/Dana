@@ -10,9 +10,9 @@ import (
 )
 
 // AddOutput adds the input to the shim. Later calls to Run() will run this.
-func (s *Shim) AddOutput(output telegraf.Output) error {
+func (s *Shim) AddOutput(output Dana.Output) error {
 	models.SetLoggerOnPlugin(output, s.Log())
-	if p, ok := output.(telegraf.Initializer); ok {
+	if p, ok := output.(Dana.Initializer); ok {
 		err := p.Init()
 		if err != nil {
 			return fmt.Errorf("failed to init input: %w", err)
@@ -36,7 +36,7 @@ func (s *Shim) RunOutput() error {
 	}
 	defer s.Output.Close()
 
-	var m telegraf.Metric
+	var m Dana.Metric
 
 	scanner := bufio.NewScanner(s.stdin)
 	for scanner.Scan() {
@@ -45,7 +45,7 @@ func (s *Shim) RunOutput() error {
 			fmt.Fprintf(s.stderr, "Failed to parse metric: %s\n", err)
 			continue
 		}
-		if err = s.Output.Write([]telegraf.Metric{m}); err != nil {
+		if err = s.Output.Write([]Dana.Metric{m}); err != nil {
 			fmt.Fprintf(s.stderr, "Failed to write metric: %s\n", err)
 		}
 	}

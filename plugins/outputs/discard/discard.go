@@ -19,10 +19,10 @@ func (*Discard) SampleConfig() string {
 
 func (d *Discard) Connect() error { return nil }
 func (d *Discard) Close() error   { return nil }
-func (d *Discard) Write(_ []telegraf.Metric) error {
+func (d *Discard) Write(_ []Dana.Metric) error {
 	return nil
 }
 
 func init() {
-	outputs.Add("discard", func() telegraf.Output { return &Discard{} })
+	outputs.Add("discard", func() Dana.Output { return &Discard{} })
 }

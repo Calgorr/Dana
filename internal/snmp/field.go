@@ -94,7 +94,7 @@ func (f *Field) Init(tr Translator) error {
 
 	switch f.Conversion {
 	case "hwaddr", "enum(1)":
-		config.PrintOptionValueDeprecationNotice("inputs.snmp", "field.conversion", f.Conversion, telegraf.DeprecationInfo{
+		config.PrintOptionValueDeprecationNotice("inputs.snmp", "field.conversion", f.Conversion, Dana.DeprecationInfo{
 			Since:  "1.33.0",
 			Notice: "Use 'displayhint' instead",
 		})

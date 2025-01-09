@@ -47,7 +47,7 @@ func TestBuildMetrics(t *testing.T) {
 	var timestamp int64 = 1257894000
 
 	var metricTests = []struct {
-		metric       telegraf.Metric
+		metric       Dana.Metric
 		metricPoints []serializers_wavefront.MetricPoint
 	}{
 		{
@@ -92,7 +92,7 @@ func TestBuildMetricsStrict(t *testing.T) {
 	var timestamp int64 = 1257894000
 
 	var metricTests = []struct {
-		metric       telegraf.Metric
+		metric       Dana.Metric
 		metricPoints []serializers_wavefront.MetricPoint
 	}{
 		{
@@ -141,7 +141,7 @@ func TestBuildMetricsWithSimpleFields(t *testing.T) {
 	)
 
 	var metricTests = []struct {
-		metric      telegraf.Metric
+		metric      Dana.Metric
 		metricLines []serializers_wavefront.MetricPoint
 	}{
 		{

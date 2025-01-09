@@ -30,8 +30,8 @@ func TestMinMax(t *testing.T) {
 	tests := []struct {
 		name     string
 		scale    []scalingValuesMinMax
-		inputs   []telegraf.Metric
-		expected []telegraf.Metric
+		inputs   []Dana.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "Field Scaling",
@@ -51,7 +51,7 @@ func TestMinMax(t *testing.T) {
 					Fields: []string{"test3", "test4"},
 				},
 			},
-			inputs: []telegraf.Metric{
+			inputs: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": int64(0),
@@ -73,7 +73,7 @@ func TestMinMax(t *testing.T) {
 						"test4": float32(-0.5),
 					}, time.Unix(0, 0)),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": float64(50),
@@ -107,7 +107,7 @@ func TestMinMax(t *testing.T) {
 					Fields: []string{"test1", "test2"},
 				},
 			},
-			inputs: []telegraf.Metric{
+			inputs: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": int64(0),
@@ -115,7 +115,7 @@ func TestMinMax(t *testing.T) {
 						"test3": int64(1),
 					}, time.Unix(0, 0)),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": float64(50),
@@ -135,14 +135,14 @@ func TestMinMax(t *testing.T) {
 					Fields: []string{"test1", "test2"},
 				},
 			},
-			inputs: []telegraf.Metric{
+			inputs: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": int64(-2),
 						"test2": uint64(2),
 					}, time.Unix(0, 0)),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": float64(-50),
@@ -161,13 +161,13 @@ func TestMinMax(t *testing.T) {
 					Fields: []string{"test1", "test2"},
 				},
 			},
-			inputs: []telegraf.Metric{
+			inputs: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": int64(0),
 					}, time.Unix(0, 0)),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": float64(50),
@@ -203,8 +203,8 @@ func TestFactor(t *testing.T) {
 	tests := []struct {
 		name     string
 		scale    []scalingValuesFactor
-		inputs   []telegraf.Metric
-		expected []telegraf.Metric
+		inputs   []Dana.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "Field Scaling",
@@ -220,7 +220,7 @@ func TestFactor(t *testing.T) {
 					Fields: []string{"test3", "test4"},
 				},
 			},
-			inputs: []telegraf.Metric{
+			inputs: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": int64(0),
@@ -242,7 +242,7 @@ func TestFactor(t *testing.T) {
 						"test4": float32(-0.5),
 					}, time.Unix(0, 0)),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": float64(50),
@@ -274,7 +274,7 @@ func TestFactor(t *testing.T) {
 					Fields: []string{"test1", "test2"},
 				},
 			},
-			inputs: []telegraf.Metric{
+			inputs: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": int64(0),
@@ -282,7 +282,7 @@ func TestFactor(t *testing.T) {
 						"test3": int64(1),
 					}, time.Unix(0, 0)),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": float64(50),
@@ -300,13 +300,13 @@ func TestFactor(t *testing.T) {
 					Fields: []string{"test1", "test2"},
 				},
 			},
-			inputs: []telegraf.Metric{
+			inputs: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": int64(0),
 					}, time.Unix(0, 0)),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": float64(50),
@@ -321,13 +321,13 @@ func TestFactor(t *testing.T) {
 					Fields: []string{"test1"},
 				},
 			},
-			inputs: []telegraf.Metric{
+			inputs: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": int64(1),
 					}, time.Unix(0, 0)),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": float64(50),
@@ -342,13 +342,13 @@ func TestFactor(t *testing.T) {
 					Fields: []string{"test1"},
 				},
 			},
-			inputs: []telegraf.Metric{
+			inputs: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": int64(1),
 					}, time.Unix(0, 0)),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("Name1", map[string]string{},
 					map[string]interface{}{
 						"test1": float64(51),
@@ -474,27 +474,27 @@ func TestErrorCasesMinMax(t *testing.T) {
 }
 
 func TestTracking(t *testing.T) {
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 99}, time.Unix(0, 0)),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 1}, time.Unix(0, 0)),
 	}
 
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"foo",
 			map[string]string{},

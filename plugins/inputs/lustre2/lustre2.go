@@ -26,10 +26,10 @@ var sampleConfig string
 
 type Lustre2 struct {
 	// Lustre proc files can change between versions, so we want to future-proof by letting people choose what to look at.
-	MgsProcfiles []string        `toml:"mgs_procfiles"`
-	OstProcfiles []string        `toml:"ost_procfiles"`
-	MdsProcfiles []string        `toml:"mds_procfiles"`
-	Log          telegraf.Logger `toml:"-"`
+	MgsProcfiles []string    `toml:"mgs_procfiles"`
+	OstProcfiles []string    `toml:"ost_procfiles"`
+	MdsProcfiles []string    `toml:"mds_procfiles"`
+	Log          Dana.Logger `toml:"-"`
 
 	// used by the testsuite to generate mock sysfs and procfs files
 	rootdir string
@@ -46,7 +46,7 @@ func (*Lustre2) SampleConfig() string {
 	return sampleConfig
 }
 
-func (l *Lustre2) Gather(acc telegraf.Accumulator) error {
+func (l *Lustre2) Gather(acc Dana.Accumulator) error {
 	l.allFields = make(map[tags]map[string]interface{})
 
 	err := l.getLustreHealth()
@@ -761,7 +761,7 @@ var wantedMdtJobstatsFields = []*mapping{
 }
 
 func init() {
-	inputs.Add("lustre2", func() telegraf.Input {
+	inputs.Add("lustre2", func() Dana.Input {
 		return &Lustre2{}
 	})
 }

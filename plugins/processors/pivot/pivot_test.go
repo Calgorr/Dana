@@ -16,8 +16,8 @@ func TestPivot(t *testing.T) {
 	tests := []struct {
 		name     string
 		pivot    *Pivot
-		metrics  []telegraf.Metric
-		expected []telegraf.Metric
+		metrics  []Dana.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "simple",
@@ -25,7 +25,7 @@ func TestPivot(t *testing.T) {
 				TagKey:   "name",
 				ValueKey: "value",
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"name": "idle_time",
@@ -36,7 +36,7 @@ func TestPivot(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -52,7 +52,7 @@ func TestPivot(t *testing.T) {
 				TagKey:   "name",
 				ValueKey: "value",
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"foo": "idle_time",
@@ -63,7 +63,7 @@ func TestPivot(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"foo": "idle_time",
@@ -81,7 +81,7 @@ func TestPivot(t *testing.T) {
 				TagKey:   "name",
 				ValueKey: "value",
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"name": "idle_time",
@@ -92,7 +92,7 @@ func TestPivot(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"name": "idle_time",
@@ -115,7 +115,7 @@ func TestPivot(t *testing.T) {
 
 func TestTracking(t *testing.T) {
 	// Setup raw input and expected output
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"name": "idle_time"},
@@ -136,7 +136,7 @@ func TestTracking(t *testing.T) {
 		),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{},
@@ -159,15 +159,15 @@ func TestTracking(t *testing.T) {
 
 	// Create fake notification for testing
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
 	// Convert raw input to tracking metric
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)

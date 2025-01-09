@@ -97,7 +97,7 @@ func (*Unbound) SampleConfig() string {
 }
 
 // All the dots in stat name will replaced by underscores. Histogram statistics will not be collected.
-func (s *Unbound) Gather(acc telegraf.Accumulator) error {
+func (s *Unbound) Gather(acc Dana.Accumulator) error {
 	// Always exclude histogram statistics
 	statExcluded := []string{"histogram.*"}
 	filterExcluded, err := filter.Compile(statExcluded)
@@ -176,7 +176,7 @@ func (s *Unbound) Gather(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("unbound", func() telegraf.Input {
+	inputs.Add("unbound", func() Dana.Input {
 		return &Unbound{
 			run:         unboundRunner,
 			Binary:      defaultBinary,

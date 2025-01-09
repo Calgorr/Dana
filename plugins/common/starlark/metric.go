@@ -12,16 +12,16 @@ import (
 )
 
 type Metric struct {
-	ID             telegraf.TrackingID
-	metric         telegraf.Metric
+	ID             Dana.TrackingID
+	metric         Dana.Metric
 	tagIterCount   int
 	fieldIterCount int
 	frozen         bool
 }
 
-// Wrap updates the starlark.Metric to wrap a new telegraf.Metric.
-func (m *Metric) Wrap(metric telegraf.Metric) {
-	if tm, ok := metric.(telegraf.TrackingMetric); ok {
+// Wrap updates the starlark.Metric to wrap a new Dana.Metric.
+func (m *Metric) Wrap(metric Dana.Metric) {
+	if tm, ok := metric.(Dana.TrackingMetric); ok {
 		m.ID = tm.TrackingID()
 	}
 	m.metric = metric
@@ -30,8 +30,8 @@ func (m *Metric) Wrap(metric telegraf.Metric) {
 	m.frozen = false
 }
 
-// Unwrap removes the telegraf.Metric from the startlark.Metric.
-func (m *Metric) Unwrap() telegraf.Metric {
+// Unwrap removes the Dana.Metric from the startlark.Metric.
+func (m *Metric) Unwrap() Dana.Metric {
 	return m.metric
 }
 

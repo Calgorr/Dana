@@ -531,7 +531,7 @@ var fieldMappingsIPFIX = map[uint16][]fieldMapping{
 // Decoder structure
 type netflowDecoder struct {
 	penFiles []string
-	log      telegraf.Logger
+	log      Dana.Logger
 
 	templates     map[string]netflow.NetFlowTemplateSystem
 	mappingsV9    map[uint16]fieldMapping
@@ -542,8 +542,8 @@ type netflowDecoder struct {
 	sync.Mutex
 }
 
-func (d *netflowDecoder) decode(srcIP net.IP, payload []byte) ([]telegraf.Metric, error) {
-	var metrics []telegraf.Metric
+func (d *netflowDecoder) decode(srcIP net.IP, payload []byte) ([]Dana.Metric, error) {
+	var metrics []Dana.Metric
 
 	t := time.Now()
 	src := srcIP.String()
@@ -726,7 +726,7 @@ func (d *netflowDecoder) init() error {
 	return nil
 }
 
-func (d *netflowDecoder) decodeValueV9(field netflow.DataField) ([]telegraf.Field, error) {
+func (d *netflowDecoder) decodeValueV9(field netflow.DataField) ([]Dana.Field, error) {
 	raw := field.Value.([]byte)
 	elementID := field.Type
 
@@ -736,31 +736,31 @@ func (d *netflowDecoder) decodeValueV9(field netflow.DataField) ([]telegraf.Fiel
 		if err != nil {
 			return nil, err
 		}
-		return []telegraf.Field{{Key: m.name, Value: v}}, nil
+		return []Dana.Field{{Key: m.name, Value: v}}, nil
 	}
 
 	// Check the version specific default field mappings
 	if mappings, found := fieldMappingsNetflowV9[elementID]; found {
-		var fields []telegraf.Field
+		var fields []Dana.Field
 		for _, m := range mappings {
 			v, err := m.decoder(raw)
 			if err != nil {
 				return nil, err
 			}
-			fields = append(fields, telegraf.Field{Key: m.name, Value: v})
+			fields = append(fields, Dana.Field{Key: m.name, Value: v})
 		}
 		return fields, nil
 	}
 
 	// Check the common default field mappings
 	if mappings, found := fieldMappingsNetflowCommon[elementID]; found {
-		var fields []telegraf.Field
+		var fields []Dana.Field
 		for _, m := range mappings {
 			v, err := m.decoder(raw)
 			if err != nil {
 				return nil, err
 			}
-			fields = append(fields, telegraf.Field{Key: m.name, Value: v})
+			fields = append(fields, Dana.Field{Key: m.name, Value: v})
 		}
 		return fields, nil
 	}
@@ -769,13 +769,13 @@ func (d *netflowDecoder) decodeValueV9(field netflow.DataField) ([]telegraf.Fiel
 	// Netflow v9 packets. See https://github.com/influxdata/telegraf/issues/14902
 	// and https://github.com/influxdata/telegraf/issues/14903.
 	if mappings, found := fieldMappingsIPFIX[elementID]; found {
-		var fields []telegraf.Field
+		var fields []Dana.Field
 		for _, m := range mappings {
 			v, err := m.decoder(raw)
 			if err != nil {
 				return nil, err
 			}
-			fields = append(fields, telegraf.Field{Key: m.name, Value: v})
+			fields = append(fields, Dana.Field{Key: m.name, Value: v})
 		}
 		return fields, nil
 	}
@@ -791,10 +791,10 @@ func (d *netflowDecoder) decodeValueV9(field netflow.DataField) ([]telegraf.Fiel
 		return nil, err
 	}
 
-	return []telegraf.Field{{Key: key, Value: v}}, nil
+	return []Dana.Field{{Key: key, Value: v}}, nil
 }
 
-func (d *netflowDecoder) decodeValueIPFIX(field netflow.DataField) ([]telegraf.Field, error) {
+func (d *netflowDecoder) decodeValueIPFIX(field netflow.DataField) ([]Dana.Field, error) {
 	raw := field.Value.([]byte)
 
 	// Checking for reverse elements according to RFC5103
@@ -814,7 +814,7 @@ func (d *netflowDecoder) decodeValueIPFIX(field netflow.DataField) ([]telegraf.F
 			if err != nil {
 				return nil, err
 			}
-			return []telegraf.Field{{Key: name, Value: v}}, nil
+			return []Dana.Field{{Key: name, Value: v}}, nil
 		}
 		if !d.logged[key] {
 			d.log.Debugf("unknown IPFIX PEN data field %v", field)
@@ -825,7 +825,7 @@ func (d *netflowDecoder) decodeValueIPFIX(field netflow.DataField) ([]telegraf.F
 		if err != nil {
 			return nil, err
 		}
-		return []telegraf.Field{{Key: name, Value: v}}, nil
+		return []Dana.Field{{Key: name, Value: v}}, nil
 	}
 
 	// Check the user-specified mapping
@@ -834,31 +834,31 @@ func (d *netflowDecoder) decodeValueIPFIX(field netflow.DataField) ([]telegraf.F
 		if err != nil {
 			return nil, err
 		}
-		return []telegraf.Field{{Key: prefix + m.name, Value: v}}, nil
+		return []Dana.Field{{Key: prefix + m.name, Value: v}}, nil
 	}
 
 	// Check the version specific default field mappings
 	if mappings, found := fieldMappingsIPFIX[elementID]; found {
-		var fields []telegraf.Field
+		var fields []Dana.Field
 		for _, m := range mappings {
 			v, err := m.decoder(raw)
 			if err != nil {
 				return nil, err
 			}
-			fields = append(fields, telegraf.Field{Key: prefix + m.name, Value: v})
+			fields = append(fields, Dana.Field{Key: prefix + m.name, Value: v})
 		}
 		return fields, nil
 	}
 
 	// Check the common default field mappings
 	if mappings, found := fieldMappingsNetflowCommon[elementID]; found {
-		var fields []telegraf.Field
+		var fields []Dana.Field
 		for _, m := range mappings {
 			v, err := m.decoder(raw)
 			if err != nil {
 				return nil, err
 			}
-			fields = append(fields, telegraf.Field{Key: prefix + m.name, Value: v})
+			fields = append(fields, Dana.Field{Key: prefix + m.name, Value: v})
 		}
 		return fields, nil
 	}
@@ -873,5 +873,5 @@ func (d *netflowDecoder) decodeValueIPFIX(field netflow.DataField) ([]telegraf.F
 	if err != nil {
 		return nil, err
 	}
-	return []telegraf.Field{{Key: key, Value: v}}, nil
+	return []Dana.Field{{Key: key, Value: v}}, nil
 }

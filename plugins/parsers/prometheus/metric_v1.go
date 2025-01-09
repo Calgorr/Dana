@@ -11,14 +11,14 @@ import (
 	"Dana/metric"
 )
 
-func (p *Parser) extractMetricsV1(prommetrics *dto.MetricFamily) []telegraf.Metric {
+func (p *Parser) extractMetricsV1(prommetrics *dto.MetricFamily) []Dana.Metric {
 	now := time.Now()
 
 	// Convert each prometheus metrics to the corresponding telegraf metrics.
 	// You will get one telegraf metric with one field per prometheus metric
 	// for "simple" types like Gauge and Counter but a telegraf metric with
 	// multiple fields for "complex" types like Summary or Histogram.
-	var metrics []telegraf.Metric
+	var metrics []Dana.Metric
 	metricName := prommetrics.GetName()
 	metricType := prommetrics.GetType()
 	for _, pm := range prommetrics.Metric {
@@ -47,7 +47,7 @@ func (p *Parser) extractMetricsV1(prommetrics *dto.MetricFamily) []telegraf.Metr
 					fields[fname] = v
 				}
 			}
-			metrics = append(metrics, metric.New(metricName, tags, fields, t, telegraf.Summary))
+			metrics = append(metrics, metric.New(metricName, tags, fields, t, Dana.Summary))
 		case dto.MetricType_HISTOGRAM:
 			histogram := pm.GetHistogram()
 
@@ -59,7 +59,7 @@ func (p *Parser) extractMetricsV1(prommetrics *dto.MetricFamily) []telegraf.Metr
 				fname := strconv.FormatFloat(b.GetUpperBound(), 'g', -1, 64)
 				fields[fname] = float64(b.GetCumulativeCount())
 			}
-			metrics = append(metrics, metric.New(metricName, tags, fields, t, telegraf.Histogram))
+			metrics = append(metrics, metric.New(metricName, tags, fields, t, Dana.Histogram))
 		default:
 			var fname string
 			var v float64

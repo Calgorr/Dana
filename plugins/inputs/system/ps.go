@@ -40,7 +40,7 @@ func NewSystemPS() *SystemPS {
 
 type SystemPS struct {
 	PSDiskDeps
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 type SystemPSDisk struct{}

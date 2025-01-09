@@ -93,12 +93,12 @@ func TestGatherValidXML(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name:     "GeForce GTX 1070 Ti",
 			filename: "gtx-1070-ti.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"nvidia_smi",
 					map[string]string{
@@ -132,7 +132,7 @@ func TestGatherValidXML(t *testing.T) {
 		{
 			name:     "GeForce GTX 1660 Ti",
 			filename: "gtx-1660-ti.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"nvidia_smi",
 					map[string]string{
@@ -178,7 +178,7 @@ func TestGatherValidXML(t *testing.T) {
 		{
 			name:     "Quadro P400",
 			filename: "quadro-p400.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"nvidia_smi",
 					map[string]string{
@@ -223,7 +223,7 @@ func TestGatherValidXML(t *testing.T) {
 		{
 			name:     "Quadro P2000",
 			filename: "quadro-p2000-v12.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"nvidia_smi",
 					map[string]string{
@@ -273,7 +273,7 @@ func TestGatherValidXML(t *testing.T) {
 		{
 			name:     "Tesla T4",
 			filename: "tesla-t4.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"nvidia_smi",
 					map[string]string{
@@ -325,7 +325,7 @@ func TestGatherValidXML(t *testing.T) {
 		{
 			name:     "A10G",
 			filename: "a10g.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"nvidia_smi",
 					map[string]string{
@@ -378,7 +378,7 @@ func TestGatherValidXML(t *testing.T) {
 		{
 			name:     "RTC 3080 schema v12",
 			filename: "rtx-3080-v12.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"nvidia_smi",
 					map[string]string{
@@ -497,7 +497,7 @@ func TestGatherValidXML(t *testing.T) {
 		{
 			name:     "RTC 3090 schema v12",
 			filename: "rtx-3090-v12.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"nvidia_smi",
 					map[string]string{
@@ -545,7 +545,7 @@ func TestGatherValidXML(t *testing.T) {
 		{
 			name:     "A100-SXM4 schema v12",
 			filename: "a100-sxm4-v12.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"nvidia_smi",
 					map[string]string{

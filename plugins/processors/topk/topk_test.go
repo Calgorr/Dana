@@ -15,7 +15,7 @@ import (
 
 var tenMillisecondsDuration = config.Duration(10 * time.Millisecond)
 
-// Key, value pair that represents a telegraf.Metric Field
+// Key, value pair that represents a Dana.Metric Field
 type field struct {
 	key string
 	val interface{}
@@ -25,7 +25,7 @@ func fieldList(fields ...field) []field {
 	return fields
 }
 
-// Key, value pair that represents a telegraf.Metric Tag
+// Key, value pair that represents a Dana.Metric Tag
 type tag struct {
 	key string
 	val string
@@ -54,8 +54,8 @@ type metricChange struct {
 //	comparing metrics that have the same fields/tags added in different orders will return false, although
 //	they are semantically equal.
 //	Therefore the fields and tags must be in the same order that the processor would add them
-func generateAns(input []telegraf.Metric, changeSet map[int]metricChange) []telegraf.Metric {
-	answer := make([]telegraf.Metric, 0, len(input))
+func generateAns(input []Dana.Metric, changeSet map[int]metricChange) []Dana.Metric {
+	answer := make([]Dana.Metric, 0, len(input))
 
 	// For every input metric, we check if there is a change we need to apply
 	// If there is no change for a given input metric, the metric is dropped
@@ -91,8 +91,8 @@ func generateAns(input []telegraf.Metric, changeSet map[int]metricChange) []tele
 	return answer
 }
 
-func deepCopy(a []telegraf.Metric) []telegraf.Metric {
-	ret := make([]telegraf.Metric, 0, len(a))
+func deepCopy(a []Dana.Metric) []Dana.Metric {
+	ret := make([]Dana.Metric, 0, len(a))
 	for _, m := range a {
 		ret = append(ret, m.Copy())
 	}
@@ -100,7 +100,7 @@ func deepCopy(a []telegraf.Metric) []telegraf.Metric {
 	return ret
 }
 
-func belongs(m telegraf.Metric, ms []telegraf.Metric) bool {
+func belongs(m Dana.Metric, ms []Dana.Metric) bool {
 	for _, i := range ms {
 		if testutil.MetricEqual(i, m) {
 			return true
@@ -109,7 +109,7 @@ func belongs(m telegraf.Metric, ms []telegraf.Metric) bool {
 	return false
 }
 
-func subSet(a, b []telegraf.Metric) bool {
+func subSet(a, b []Dana.Metric) bool {
 	subset := true
 	for _, m := range a {
 		if !belongs(m, b) {
@@ -120,11 +120,11 @@ func subSet(a, b []telegraf.Metric) bool {
 	return subset
 }
 
-func equalSets(l1, l2 []telegraf.Metric) bool {
+func equalSets(l1, l2 []Dana.Metric) bool {
 	return subSet(l1, l2) && subSet(l2, l1)
 }
 
-func runAndCompare(topk *TopK, metrics, answer []telegraf.Metric, testID string, t *testing.T) {
+func runAndCompare(topk *TopK, metrics, answer []Dana.Metric, testID string, t *testing.T) {
 	// Sleep for `period`, otherwise the processor will only
 	// cache the metrics, but it will not process them
 	time.Sleep(time.Duration(topk.Period))
@@ -507,27 +507,27 @@ func TestTopkGroupByKeyTag(t *testing.T) {
 }
 
 func TestTracking(t *testing.T) {
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 100}, time.Unix(0, 0)),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 22}, time.Unix(0, 0)),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 1}, time.Unix(0, 0)),
 	}
 
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"foo",
 			map[string]string{},
@@ -560,7 +560,7 @@ func TestTracking(t *testing.T) {
 	plugin.Reset()
 
 	// Process expected metrics and compare with resulting metrics
-	var actual []telegraf.Metric
+	var actual []Dana.Metric
 	require.Eventuallyf(t, func() bool {
 		actual = plugin.Apply(input...)
 		return len(actual) > 0

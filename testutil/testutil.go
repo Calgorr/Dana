@@ -41,17 +41,17 @@ func GetLocalHost() string {
 	return localhost
 }
 
-// MockMetrics returns a mock []telegraf.Metric object for using in unit tests
+// MockMetrics returns a mock []Dana.Metric object for using in unit tests
 // of telegraf output sinks.
-func MockMetrics() []telegraf.Metric {
-	metrics := make([]telegraf.Metric, 0)
+func MockMetrics() []Dana.Metric {
+	metrics := make([]Dana.Metric, 0)
 	// Create a new point batch
 	metrics = append(metrics, TestMetric(1.0))
 	return metrics
 }
 
-func MockMetricsWithValue(value float64) []telegraf.Metric {
-	metrics := make([]telegraf.Metric, 0)
+func MockMetricsWithValue(value float64) []Dana.Metric {
+	metrics := make([]Dana.Metric, 0)
 	// Create a new point batch
 	metrics = append(metrics, TestMetric(value))
 	return metrics
@@ -63,7 +63,7 @@ func MockMetricsWithValue(value float64) []telegraf.Metric {
 //	tags -> "tag1":"value1"
 //	value -> value
 //	time -> time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC)
-func TestMetric(value interface{}, name ...string) telegraf.Metric {
+func TestMetric(value interface{}, name ...string) Dana.Metric {
 	if value == nil {
 		panic("Cannot use a nil value")
 	}
@@ -87,7 +87,7 @@ func OnlyTags() cmp.Option {
 	return cmp.FilterPath(f, cmp.Ignore())
 }
 
-func PrintMetrics(m []telegraf.Metric) {
+func PrintMetrics(m []Dana.Metric) {
 	s := &influx.Serializer{
 		SortFields:  true,
 		UintSupport: true,

@@ -556,7 +556,7 @@ func TestFilterContent(t *testing.T) {
 			}
 			require.NoError(t, parser.Init())
 
-			var metrics []telegraf.Metric
+			var metrics []Dana.Metric
 			for _, data := range testdata {
 				m, err := parser.Parse(data)
 				require.NoError(t, err)
@@ -679,7 +679,7 @@ func TestParseLine(t *testing.T) {
 		data     []interface{}
 		filter   *Filter
 		entries  []Entry
-		expected telegraf.Metric
+		expected Dana.Metric
 	}{
 		{
 			name: "no match",
@@ -883,7 +883,7 @@ func TestParse(t *testing.T) {
 		data       []interface{}
 		entries    []Entry
 		ignoreTime bool
-		expected   []telegraf.Metric
+		expected   []Dana.Metric
 	}{
 		{
 			name: "fixed numbers",
@@ -988,7 +988,7 @@ func TestParse(t *testing.T) {
 				},
 			},
 			ignoreTime: true,
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"binary",
 					map[string]string{
@@ -1042,7 +1042,7 @@ func TestParse(t *testing.T) {
 				},
 			},
 			ignoreTime: true,
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"binary",
 					map[string]string{"address": "43842"},
@@ -1078,7 +1078,7 @@ func TestParse(t *testing.T) {
 				},
 			},
 			ignoreTime: true,
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"testmetric",
 					map[string]string{"address": "43842"},
@@ -1111,7 +1111,7 @@ func TestParse(t *testing.T) {
 				},
 			},
 			ignoreTime: true,
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"testmetric",
 					map[string]string{"address": "43842"},
@@ -1142,7 +1142,7 @@ func TestParse(t *testing.T) {
 					Type: "float64",
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"binary",
 					map[string]string{"address": "258"},
@@ -1174,7 +1174,7 @@ func TestParse(t *testing.T) {
 					Type: "float64",
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"binary",
 					map[string]string{"address": "258"},
@@ -1205,7 +1205,7 @@ func TestParse(t *testing.T) {
 					Type: "float64",
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"binary",
 					map[string]string{"address": "258"},
@@ -1237,7 +1237,7 @@ func TestParse(t *testing.T) {
 					Type: "float64",
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"binary",
 					map[string]string{"address": "258"},
@@ -1268,7 +1268,7 @@ func TestParse(t *testing.T) {
 					Type: "float64",
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"binary",
 					map[string]string{"address": "258"},
@@ -1300,7 +1300,7 @@ func TestParse(t *testing.T) {
 					Type: "float64",
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"binary",
 					map[string]string{"address": "258"},
@@ -1332,7 +1332,7 @@ func TestParse(t *testing.T) {
 					Type: "float64",
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"binary",
 					map[string]string{"address": "258"},
@@ -1363,7 +1363,7 @@ func TestParse(t *testing.T) {
 					Type: "float64",
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"binary",
 					map[string]string{},
@@ -1535,7 +1535,7 @@ func TestBenchmarkData(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"benchmark",
 			map[string]string{
@@ -1562,7 +1562,7 @@ func TestBenchmarkData(t *testing.T) {
 		),
 	}
 
-	actual := make([]telegraf.Metric, 0, 2)
+	actual := make([]Dana.Metric, 0, 2)
 	for _, buf := range benchmarkData {
 		m, err := plugin.Parse(buf)
 		require.NoError(t, err)

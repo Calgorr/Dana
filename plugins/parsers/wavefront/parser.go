@@ -26,7 +26,7 @@ type Point struct {
 type Parser struct {
 	parsers     *sync.Pool
 	DefaultTags map[string]string `toml:"-"`
-	Log         telegraf.Logger   `toml:"-"`
+	Log         Dana.Logger       `toml:"-"`
 }
 
 // PointParser is a thread-unsafe parser and must be kept in a pool.
@@ -64,7 +64,7 @@ func (p *Parser) Init() error {
 	return nil
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	buf := []byte(line)
 
 	metrics, err := p.Parse(buf)
@@ -79,13 +79,13 @@ func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
 	return nil, nil
 }
 
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 	pp := p.parsers.Get().(*PointParser)
 	defer p.parsers.Put(pp)
 	return pp.Parse(buf)
 }
 
-func (p *PointParser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (p *PointParser) Parse(buf []byte) ([]Dana.Metric, error) {
 	// parse even if the buffer begins with a newline
 	buf = bytes.TrimPrefix(buf, []byte("\n"))
 	// add newline to end if not exists:
@@ -127,8 +127,8 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 	p.DefaultTags = tags
 }
 
-func (p *PointParser) convertPointToTelegrafMetric(points []Point) ([]telegraf.Metric, error) {
-	metrics := make([]telegraf.Metric, 0)
+func (p *PointParser) convertPointToTelegrafMetric(points []Point) ([]Dana.Metric, error) {
+	metrics := make([]Dana.Metric, 0)
 
 	for _, point := range points {
 		tags := make(map[string]string)
@@ -217,7 +217,7 @@ func (p *PointParser) reset(buf []byte) {
 
 func init() {
 	parsers.Add("wavefront",
-		func(string) telegraf.Parser {
+		func(string) Dana.Parser {
 			return &Parser{}
 		})
 }

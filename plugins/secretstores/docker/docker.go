@@ -76,7 +76,7 @@ func (d *Docker) Set(_, _ string) error {
 }
 
 // GetResolver returns a function to resolve the given key.
-func (d *Docker) GetResolver(key string) (telegraf.ResolveFunc, error) {
+func (d *Docker) GetResolver(key string) (Dana.ResolveFunc, error) {
 	resolver := func() ([]byte, bool, error) {
 		s, err := d.Get(key)
 		return s, d.Dynamic, err
@@ -86,7 +86,7 @@ func (d *Docker) GetResolver(key string) (telegraf.ResolveFunc, error) {
 
 // Register the secret-store on load.
 func init() {
-	secretstores.Add("docker", func(id string) telegraf.SecretStore {
+	secretstores.Add("docker", func(id string) Dana.SecretStore {
 		return &Docker{ID: id}
 	})
 }

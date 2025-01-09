@@ -71,7 +71,7 @@ func (n *ConsulAgent) Init() error {
 	return nil
 }
 
-func (n *ConsulAgent) Gather(acc telegraf.Accumulator) error {
+func (n *ConsulAgent) Gather(acc Dana.Accumulator) error {
 	summaryMetrics, err := n.loadJSON(n.URL + "/v1/agent/metrics")
 	if err != nil {
 		return err
@@ -109,7 +109,7 @@ func (n *ConsulAgent) loadJSON(url string) (*agentInfo, error) {
 }
 
 // buildConsulAgent, it builds all the metrics and adds them to the accumulator)
-func buildConsulAgent(acc telegraf.Accumulator, agentInfo *agentInfo) error {
+func buildConsulAgent(acc Dana.Accumulator, agentInfo *agentInfo) error {
 	t, err := internal.ParseTimestamp(timeLayout, agentInfo.Timestamp, nil)
 	if err != nil {
 		return fmt.Errorf("error parsing time: %w", err)
@@ -167,7 +167,7 @@ func buildConsulAgent(acc telegraf.Accumulator, agentInfo *agentInfo) error {
 }
 
 func init() {
-	inputs.Add("consul_agent", func() telegraf.Input {
+	inputs.Add("consul_agent", func() Dana.Input {
 		return &ConsulAgent{
 			ResponseTimeout: config.Duration(5 * time.Second),
 		}

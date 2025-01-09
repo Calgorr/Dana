@@ -52,7 +52,7 @@ type Elasticsearch struct {
 	Password                   string            `toml:"password"`
 	NumMostRecentIndices       int               `toml:"num_most_recent_indices"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	client *http.Client
 	common_http.HTTPClientConfig
@@ -159,11 +159,11 @@ func (e *Elasticsearch) Init() error {
 	return nil
 }
 
-func (*Elasticsearch) Start(telegraf.Accumulator) error {
+func (*Elasticsearch) Start(Dana.Accumulator) error {
 	return nil
 }
 
-func (e *Elasticsearch) Gather(acc telegraf.Accumulator) error {
+func (e *Elasticsearch) Gather(acc Dana.Accumulator) error {
 	if e.client == nil {
 		client, err := e.createHTTPClient()
 
@@ -179,7 +179,7 @@ func (e *Elasticsearch) Gather(acc telegraf.Accumulator) error {
 
 		e.serverInfo = make(map[string]serverInfo)
 		for _, serv := range e.Servers {
-			go func(s string, acc telegraf.Accumulator) {
+			go func(s string, acc Dana.Accumulator) {
 				defer wgC.Done()
 				info := serverInfo{}
 
@@ -210,7 +210,7 @@ func (e *Elasticsearch) Gather(acc telegraf.Accumulator) error {
 	wg.Add(len(e.Servers))
 
 	for _, serv := range e.Servers {
-		go func(s string, acc telegraf.Accumulator) {
+		go func(s string, acc Dana.Accumulator) {
 			defer wg.Done()
 			url := e.nodeStatsURL(s)
 
@@ -312,7 +312,7 @@ func (e *Elasticsearch) gatherNodeID(url string) (string, error) {
 	return "", nil
 }
 
-func (e *Elasticsearch) gatherNodeStats(url string, acc telegraf.Accumulator) error {
+func (e *Elasticsearch) gatherNodeStats(url string, acc Dana.Accumulator) error {
 	nodeStats := &struct {
 		ClusterName string               `json:"cluster_name"`
 		Nodes       map[string]*nodeStat `json:"nodes"`
@@ -366,7 +366,7 @@ func (e *Elasticsearch) gatherNodeStats(url string, acc telegraf.Accumulator) er
 	return nil
 }
 
-func (e *Elasticsearch) gatherClusterHealth(url string, acc telegraf.Accumulator) error {
+func (e *Elasticsearch) gatherClusterHealth(url string, acc Dana.Accumulator) error {
 	healthStats := &clusterHealth{}
 	if err := e.gatherJSONData(url, healthStats); err != nil {
 		return err
@@ -418,7 +418,7 @@ func (e *Elasticsearch) gatherClusterHealth(url string, acc telegraf.Accumulator
 	return nil
 }
 
-func (e *Elasticsearch) gatherEnrichStats(url string, acc telegraf.Accumulator) error {
+func (e *Elasticsearch) gatherEnrichStats(url string, acc Dana.Accumulator) error {
 	enrichStats := &enrichStats{}
 	if err := e.gatherJSONData(url, enrichStats); err != nil {
 		return err
@@ -458,7 +458,7 @@ func (e *Elasticsearch) gatherEnrichStats(url string, acc telegraf.Accumulator) 
 	return nil
 }
 
-func (e *Elasticsearch) gatherClusterStats(url string, acc telegraf.Accumulator) error {
+func (e *Elasticsearch) gatherClusterStats(url string, acc Dana.Accumulator) error {
 	clusterStats := &clusterStats{}
 	if err := e.gatherJSONData(url, clusterStats); err != nil {
 		return err
@@ -488,7 +488,7 @@ func (e *Elasticsearch) gatherClusterStats(url string, acc telegraf.Accumulator)
 	return nil
 }
 
-func (e *Elasticsearch) gatherIndicesStats(url string, acc telegraf.Accumulator) error {
+func (e *Elasticsearch) gatherIndicesStats(url string, acc Dana.Accumulator) error {
 	indicesStats := &struct {
 		Shards  map[string]interface{} `json:"_shards"`
 		All     map[string]interface{} `json:"_all"`
@@ -525,7 +525,7 @@ func (e *Elasticsearch) gatherIndicesStats(url string, acc telegraf.Accumulator)
 }
 
 // gatherSortedIndicesStats gathers stats for all indices in no particular order.
-func (e *Elasticsearch) gatherIndividualIndicesStats(indices map[string]indexStat, now time.Time, acc telegraf.Accumulator) error {
+func (e *Elasticsearch) gatherIndividualIndicesStats(indices map[string]indexStat, now time.Time, acc Dana.Accumulator) error {
 	// Sort indices into buckets based on their configured prefix, if any matches.
 	categorizedIndexNames := e.categorizeIndices(indices)
 	for _, matchingIndices := range categorizedIndexNames {
@@ -585,7 +585,7 @@ func (e *Elasticsearch) categorizeIndices(indices map[string]indexStat) map[stri
 	return categorizedIndexNames
 }
 
-func (e *Elasticsearch) gatherSingleIndexStats(name string, index indexStat, now time.Time, acc telegraf.Accumulator) error {
+func (e *Elasticsearch) gatherSingleIndexStats(name string, index indexStat, now time.Time, acc Dana.Accumulator) error {
 	indexTag := map[string]string{"index_name": name}
 	stats := map[string]interface{}{
 		"primaries": index.Primaries,
@@ -781,7 +781,7 @@ func newElasticsearch() *Elasticsearch {
 }
 
 func init() {
-	inputs.Add("elasticsearch", func() telegraf.Input {
+	inputs.Add("elasticsearch", func() Dana.Input {
 		return newElasticsearch()
 	})
 }

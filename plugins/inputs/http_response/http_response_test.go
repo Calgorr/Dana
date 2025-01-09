@@ -1141,7 +1141,7 @@ func TestRedirect(t *testing.T) {
 	require.NoError(t, h.Init())
 	require.NoError(t, h.Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"http_response",
 			map[string]string{

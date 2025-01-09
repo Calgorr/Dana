@@ -155,7 +155,7 @@ func TestDirectoryWithTrailingSlash(t *testing.T) {
 	err := plugin.Gather(&acc)
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"filecount",
 			map[string]string{
@@ -168,7 +168,7 @@ func TestDirectoryWithTrailingSlash(t *testing.T) {
 				"oldest_file_timestamp": time.Unix(1292351105, 0).UnixNano(),
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 	}
 

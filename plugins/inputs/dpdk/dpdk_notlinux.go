@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type Dpdk struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*Dpdk) SampleConfig() string { return sampleConfig }
@@ -24,10 +24,10 @@ func (d *Dpdk) Init() error {
 	return nil
 }
 
-func (*Dpdk) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Dpdk) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("dpdk", func() telegraf.Input {
+	inputs.Add("dpdk", func() Dana.Input {
 		return &Dpdk{}
 	})
 }

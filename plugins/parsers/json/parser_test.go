@@ -886,7 +886,7 @@ func TestParse(t *testing.T) {
 		name     string
 		parser   *Parser
 		input    []byte
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "tag keys with underscore issue 6705",
@@ -895,7 +895,7 @@ func TestParse(t *testing.T) {
 				TagKeys:    []string{"metric___name__"},
 			},
 			input: []byte(`{"metric": {"__name__": "howdy", "time_idle": 42}}`),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"json",
 					map[string]string{
@@ -929,7 +929,7 @@ func TestParse(t *testing.T) {
 				MetricName: "json",
 			},
 			input: []byte(`[{"answer": 42}]`),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"json",
 					map[string]string{},
@@ -952,7 +952,7 @@ func TestParse(t *testing.T) {
     "status": "error"
 }
 `),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"json",
 					map[string]string{},
@@ -977,7 +977,7 @@ func TestParse(t *testing.T) {
 	"timestamp":  1541183052
 }
 `),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"json",
 					map[string]string{},
@@ -1007,7 +1007,7 @@ func TestParseWithWildcardTagKeys(t *testing.T) {
 		name     string
 		parser   *Parser
 		input    []byte
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "wildcard matching with tags nested within object",
@@ -1016,7 +1016,7 @@ func TestParseWithWildcardTagKeys(t *testing.T) {
 				TagKeys:    []string{"tags_object_*"},
 			},
 			input: []byte(validJSONTags),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"json_test",
 					map[string]string{
@@ -1038,7 +1038,7 @@ func TestParseWithWildcardTagKeys(t *testing.T) {
 				TagKeys:    []string{"*tag"},
 			},
 			input: []byte(validJSONTags),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"json_test",
 					map[string]string{
@@ -1062,7 +1062,7 @@ func TestParseWithWildcardTagKeys(t *testing.T) {
 				TagKeys:    []string{"wrongtagkey", "tags_object_*"},
 			},
 			input: []byte(validJSONTags),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"json_test",
 					map[string]string{
@@ -1084,7 +1084,7 @@ func TestParseWithWildcardTagKeys(t *testing.T) {
 				TagKeys:    []string{"mytag", "tags_object_*"},
 			},
 			input: []byte(validJSONTags),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"json_test",
 					map[string]string{
@@ -1118,7 +1118,7 @@ func TestParseLineWithWildcardTagKeys(t *testing.T) {
 		name     string
 		parser   *Parser
 		input    string
-		expected telegraf.Metric
+		expected Dana.Metric
 	}{
 		{
 			name: "wildcard matching with tags nested within object",
@@ -1223,7 +1223,7 @@ func TestParseArrayWithWildcardTagKeys(t *testing.T) {
 		name     string
 		parser   *Parser
 		input    []byte
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "wildcard matching with keys containing tag within array works",
@@ -1232,7 +1232,7 @@ func TestParseArrayWithWildcardTagKeys(t *testing.T) {
 				TagKeys:    []string{"*tag"},
 			},
 			input: []byte(validJSONArrayTags),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"json_array_test",
 					map[string]string{
@@ -1270,7 +1270,7 @@ func TestParseArrayWithWildcardTagKeys(t *testing.T) {
 				TagKeys:    []string{"tags_array_*"},
 			},
 			input: []byte(validJSONArrayTags),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"json_array_test",
 					map[string]string{
@@ -1304,7 +1304,7 @@ func TestParseArrayWithWildcardTagKeys(t *testing.T) {
 				TagKeys:    []string{"mytag", "*tag"},
 			},
 			input: []byte(validJSONArrayTags),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"json_array_test",
 					map[string]string{
@@ -1342,7 +1342,7 @@ func TestParseArrayWithWildcardTagKeys(t *testing.T) {
 				TagKeys:    []string{"anothert", "*tag"},
 			},
 			input: []byte(validJSONArrayTags),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"json_array_test",
 					map[string]string{
@@ -1398,7 +1398,7 @@ func TestBenchmarkData(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"benchmark",
 			map[string]string{

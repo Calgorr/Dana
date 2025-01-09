@@ -19,7 +19,7 @@ import (
 
 // Decoder structure
 type sflowv5Decoder struct {
-	log telegraf.Logger
+	log Dana.Logger
 
 	warnedCounterRaw map[uint32]bool
 	warnedFlowRaw    map[int64]bool
@@ -35,7 +35,7 @@ func (d *sflowv5Decoder) init() error {
 	return nil
 }
 
-func (d *sflowv5Decoder) decode(srcIP net.IP, payload []byte) ([]telegraf.Metric, error) {
+func (d *sflowv5Decoder) decode(srcIP net.IP, payload []byte) ([]Dana.Metric, error) {
 	t := time.Now()
 	src := srcIP.String()
 
@@ -47,7 +47,7 @@ func (d *sflowv5Decoder) decode(srcIP net.IP, payload []byte) ([]telegraf.Metric
 	}
 
 	// Extract metrics
-	metrics := make([]telegraf.Metric, 0, len(msg.Samples))
+	metrics := make([]Dana.Metric, 0, len(msg.Samples))
 	for _, s := range msg.Samples {
 		tags := map[string]string{
 			"source":  src,

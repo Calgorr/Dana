@@ -8,7 +8,7 @@ import (
 	"Dana"
 )
 
-func collectDaemonSets(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory) {
+func collectDaemonSets(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory) {
 	list, err := ki.client.getDaemonSets(ctx)
 	if err != nil {
 		acc.AddError(err)
@@ -19,7 +19,7 @@ func collectDaemonSets(ctx context.Context, acc telegraf.Accumulator, ki *Kubern
 	}
 }
 
-func (ki *KubernetesInventory) gatherDaemonSet(d *apps.DaemonSet, acc telegraf.Accumulator) {
+func (ki *KubernetesInventory) gatherDaemonSet(d *apps.DaemonSet, acc Dana.Accumulator) {
 	fields := map[string]interface{}{
 		"generation":               d.Generation,
 		"current_number_scheduled": d.Status.CurrentNumberScheduled,

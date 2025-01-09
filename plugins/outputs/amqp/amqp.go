@@ -62,11 +62,11 @@ type AMQP struct {
 	Timeout            config.Duration   `toml:"timeout"`
 	UseBatchFormat     bool              `toml:"use_batch_format"`
 	ContentEncoding    string            `toml:"content_encoding"`
-	Log                telegraf.Logger   `toml:"-"`
+	Log                Dana.Logger       `toml:"-"`
 	tls.ClientConfig
 	proxy.TCPProxy
 
-	serializer   telegraf.Serializer
+	serializer   Dana.Serializer
 	connect      func(*ClientConfig) (Client, error)
 	client       Client
 	config       *ClientConfig
@@ -83,7 +83,7 @@ func (*AMQP) SampleConfig() string {
 	return sampleConfig
 }
 
-func (q *AMQP) SetSerializer(serializer telegraf.Serializer) {
+func (q *AMQP) SetSerializer(serializer Dana.Serializer) {
 	q.serializer = serializer
 }
 
@@ -115,7 +115,7 @@ func (q *AMQP) Close() error {
 	return nil
 }
 
-func (q *AMQP) routingKey(metric telegraf.Metric) string {
+func (q *AMQP) routingKey(metric Dana.Metric) string {
 	if q.RoutingTag != "" {
 		key, ok := metric.GetTag(q.RoutingTag)
 		if ok {
@@ -125,8 +125,8 @@ func (q *AMQP) routingKey(metric telegraf.Metric) string {
 	return q.RoutingKey
 }
 
-func (q *AMQP) Write(metrics []telegraf.Metric) error {
-	batches := make(map[string][]telegraf.Metric)
+func (q *AMQP) Write(metrics []Dana.Metric) error {
+	batches := make(map[string][]Dana.Metric)
 	if q.ExchangeType == "header" {
 		// Since the routing_key is ignored for this exchange type send as a
 		// single batch.
@@ -135,7 +135,7 @@ func (q *AMQP) Write(metrics []telegraf.Metric) error {
 		for _, metric := range metrics {
 			routingKey := q.routingKey(metric)
 			if _, ok := batches[routingKey]; !ok {
-				batches[routingKey] = make([]telegraf.Metric, 0)
+				batches[routingKey] = make([]Dana.Metric, 0)
 			}
 
 			batches[routingKey] = append(batches[routingKey], metric)
@@ -206,7 +206,7 @@ func (q *AMQP) publish(key string, body []byte) error {
 	return nil
 }
 
-func (q *AMQP) serialize(metrics []telegraf.Metric) ([]byte, error) {
+func (q *AMQP) serialize(metrics []Dana.Metric) ([]byte, error) {
 	if q.UseBatchFormat {
 		return q.serializer.SerializeBatch(metrics)
 	}
@@ -318,7 +318,7 @@ func connect(clientConfig *ClientConfig) (Client, error) {
 }
 
 func init() {
-	outputs.Add("amqp", func() telegraf.Output {
+	outputs.Add("amqp", func() Dana.Output {
 		return &AMQP{
 			Brokers:      []string{DefaultURL},
 			ExchangeType: DefaultExchangeType,

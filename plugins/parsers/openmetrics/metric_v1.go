@@ -10,14 +10,14 @@ import (
 	"Dana/metric"
 )
 
-func (p *Parser) extractMetricsV1(ometrics *MetricFamily) []telegraf.Metric {
+func (p *Parser) extractMetricsV1(ometrics *MetricFamily) []Dana.Metric {
 	now := time.Now()
 
 	// Convert each prometheus metrics to the corresponding telegraf metrics.
 	// You will get one telegraf metric with one field per prometheus metric
 	// for "simple" types like Gauge and Counter but a telegraf metric with
 	// multiple fields for "complex" types like Summary or Histogram.
-	var metrics []telegraf.Metric
+	var metrics []Dana.Metric
 	metricName := ometrics.GetName()
 	metricType := ometrics.GetType()
 	for _, om := range ometrics.GetMetrics() {
@@ -55,7 +55,7 @@ func (p *Parser) extractMetricsV1(ometrics *MetricFamily) []telegraf.Metric {
 					continue
 				}
 				fields := map[string]interface{}{"value": value}
-				metrics = append(metrics, metric.New(metricName, tags, fields, t, telegraf.Untyped))
+				metrics = append(metrics, metric.New(metricName, tags, fields, t, Dana.Untyped))
 			case MetricType_GAUGE:
 				x := omp.GetGaugeValue().GetValue()
 				if x == nil {
@@ -72,7 +72,7 @@ func (p *Parser) extractMetricsV1(ometrics *MetricFamily) []telegraf.Metric {
 					continue
 				}
 				fields := map[string]interface{}{"gauge": value}
-				metrics = append(metrics, metric.New(metricName, tags, fields, t, telegraf.Gauge))
+				metrics = append(metrics, metric.New(metricName, tags, fields, t, Dana.Gauge))
 			case MetricType_COUNTER:
 				x := omp.GetCounterValue().GetTotal()
 				if x == nil {
@@ -89,7 +89,7 @@ func (p *Parser) extractMetricsV1(ometrics *MetricFamily) []telegraf.Metric {
 					continue
 				}
 				fields := map[string]interface{}{"counter": value}
-				metrics = append(metrics, metric.New(metricName, tags, fields, t, telegraf.Counter))
+				metrics = append(metrics, metric.New(metricName, tags, fields, t, Dana.Counter))
 			case MetricType_STATE_SET:
 				stateset := omp.GetStateSetValue()
 				// Collect the fields
@@ -98,7 +98,7 @@ func (p *Parser) extractMetricsV1(ometrics *MetricFamily) []telegraf.Metric {
 					fname := strings.ReplaceAll(state.GetName(), " ", "_")
 					fields[fname] = state.GetEnabled()
 				}
-				metrics = append(metrics, metric.New(metricName, tags, fields, t, telegraf.Untyped))
+				metrics = append(metrics, metric.New(metricName, tags, fields, t, Dana.Untyped))
 			case MetricType_INFO:
 				info := omp.GetInfoValue().GetInfo()
 				fields := map[string]interface{}{"info": uint64(1)}
@@ -109,7 +109,7 @@ func (p *Parser) extractMetricsV1(ometrics *MetricFamily) []telegraf.Metric {
 				for _, itag := range info {
 					mptags[itag.Name] = itag.Value
 				}
-				metrics = append(metrics, metric.New(metricName, mptags, fields, t, telegraf.Untyped))
+				metrics = append(metrics, metric.New(metricName, mptags, fields, t, Dana.Untyped))
 			case MetricType_HISTOGRAM, MetricType_GAUGE_HISTOGRAM:
 				histogram := omp.GetHistogramValue()
 
@@ -131,7 +131,7 @@ func (p *Parser) extractMetricsV1(ometrics *MetricFamily) []telegraf.Metric {
 					fname := strconv.FormatFloat(b.GetUpperBound(), 'g', -1, 64)
 					fields[fname] = float64(b.GetCount())
 				}
-				metrics = append(metrics, metric.New(metricName, tags, fields, t, telegraf.Histogram))
+				metrics = append(metrics, metric.New(metricName, tags, fields, t, Dana.Histogram))
 			case MetricType_SUMMARY:
 				summary := omp.GetSummaryValue()
 
@@ -155,7 +155,7 @@ func (p *Parser) extractMetricsV1(ometrics *MetricFamily) []telegraf.Metric {
 						fields[fname] = v
 					}
 				}
-				metrics = append(metrics, metric.New(metricName, tags, fields, t, telegraf.Summary))
+				metrics = append(metrics, metric.New(metricName, tags, fields, t, Dana.Summary))
 			}
 		}
 	}

@@ -45,7 +45,7 @@ func (v *Parser) Init() error {
 	return nil
 }
 
-func (v *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (v *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 	vStr := string(bytes.TrimSpace(bytes.Trim(buf, "\x00")))
 
 	// unless it's a string, separate out any fields in the buffer,
@@ -92,10 +92,10 @@ func (v *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 	m := metric.New(v.MetricName, v.DefaultTags,
 		fields, time.Now().UTC())
 
-	return []telegraf.Metric{m}, nil
+	return []Dana.Metric{m}, nil
 }
 
-func (v *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (v *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := v.Parse([]byte(line))
 
 	if err != nil {
@@ -115,7 +115,7 @@ func (v *Parser) SetDefaultTags(tags map[string]string) {
 
 func init() {
 	parsers.Add("value",
-		func(defaultMetricName string) telegraf.Parser {
+		func(defaultMetricName string) Dana.Parser {
 			return &Parser{
 				FieldName:  "value",
 				MetricName: defaultMetricName,

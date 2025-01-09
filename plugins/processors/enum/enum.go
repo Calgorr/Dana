@@ -56,14 +56,14 @@ func (mapper *EnumMapper) Init() error {
 	return nil
 }
 
-func (mapper *EnumMapper) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (mapper *EnumMapper) Apply(in ...Dana.Metric) []Dana.Metric {
 	for i := 0; i < len(in); i++ {
 		in[i] = mapper.applyMappings(in[i])
 	}
 	return in
 }
 
-func (mapper *EnumMapper) applyMappings(metric telegraf.Metric) telegraf.Metric {
+func (mapper *EnumMapper) applyMappings(metric Dana.Metric) Dana.Metric {
 	newFields := make(map[string]interface{})
 	newTags := make(map[string]string)
 
@@ -87,7 +87,7 @@ func (mapper *EnumMapper) applyMappings(metric telegraf.Metric) telegraf.Metric 
 	return metric
 }
 
-func (mapper *EnumMapper) fieldMapping(metric telegraf.Metric, mapping Mapping, newFields map[string]interface{}) {
+func (mapper *EnumMapper) fieldMapping(metric Dana.Metric, mapping Mapping, newFields map[string]interface{}) {
 	fields := metric.FieldList()
 	for _, f := range fields {
 		if mapper.FieldFilters[mapping.Field].Match(f.Key) {
@@ -100,7 +100,7 @@ func (mapper *EnumMapper) fieldMapping(metric telegraf.Metric, mapping Mapping, 
 	}
 }
 
-func (mapper *EnumMapper) tagMapping(metric telegraf.Metric, mapping Mapping, newTags map[string]string) {
+func (mapper *EnumMapper) tagMapping(metric Dana.Metric, mapping Mapping, newTags map[string]string) {
 	tags := metric.TagList()
 	for _, t := range tags {
 		if mapper.TagFilters[mapping.Tag].Match(t.Key) {
@@ -148,18 +148,18 @@ func (mapping *Mapping) getDestination(defaultDest string) string {
 	return defaultDest
 }
 
-func writeField(metric telegraf.Metric, name string, value interface{}) {
+func writeField(metric Dana.Metric, name string, value interface{}) {
 	metric.RemoveField(name)
 	metric.AddField(name, value)
 }
 
-func writeTag(metric telegraf.Metric, name, value string) {
+func writeTag(metric Dana.Metric, name, value string) {
 	metric.RemoveTag(name)
 	metric.AddTag(name, value)
 }
 
 func init() {
-	processors.Add("enum", func() telegraf.Processor {
+	processors.Add("enum", func() Dana.Processor {
 		return &EnumMapper{}
 	})
 }

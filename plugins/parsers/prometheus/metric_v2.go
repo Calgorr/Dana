@@ -11,13 +11,13 @@ import (
 	"Dana/metric"
 )
 
-func (p *Parser) extractMetricsV2(prommetrics *dto.MetricFamily) []telegraf.Metric {
+func (p *Parser) extractMetricsV2(prommetrics *dto.MetricFamily) []Dana.Metric {
 	now := time.Now()
 
 	// Convert each prometheus metric to a corresponding telegraf metric
 	// with one field each. The process will filter NaNs in values and skip
 	// the corresponding metrics.
-	var metrics []telegraf.Metric
+	var metrics []Dana.Metric
 	metricName := prommetrics.GetName()
 	metricType := prommetrics.GetType()
 	for _, pm := range prommetrics.Metric {
@@ -40,7 +40,7 @@ func (p *Parser) extractMetricsV2(prommetrics *dto.MetricFamily) []telegraf.Metr
 			summaryFields := make(map[string]interface{})
 			summaryFields[metricName+"_count"] = float64(summary.GetSampleCount())
 			summaryFields[metricName+"_sum"] = summary.GetSampleSum()
-			metrics = append(metrics, metric.New("prometheus", tags, summaryFields, t, telegraf.Summary))
+			metrics = append(metrics, metric.New("prometheus", tags, summaryFields, t, Dana.Summary))
 
 			// Add one metric per quantile
 			for _, q := range summary.Quantile {
@@ -49,7 +49,7 @@ func (p *Parser) extractMetricsV2(prommetrics *dto.MetricFamily) []telegraf.Metr
 				quantileFields := map[string]interface{}{
 					metricName: q.GetValue(),
 				}
-				m := metric.New("prometheus", quantileTags, quantileFields, t, telegraf.Summary)
+				m := metric.New("prometheus", quantileTags, quantileFields, t, Dana.Summary)
 				metrics = append(metrics, m)
 			}
 		case dto.MetricType_HISTOGRAM:
@@ -59,7 +59,7 @@ func (p *Parser) extractMetricsV2(prommetrics *dto.MetricFamily) []telegraf.Metr
 			histFields := make(map[string]interface{})
 			histFields[metricName+"_count"] = float64(histogram.GetSampleCount())
 			histFields[metricName+"_sum"] = histogram.GetSampleSum()
-			metrics = append(metrics, metric.New("prometheus", tags, histFields, t, telegraf.Histogram))
+			metrics = append(metrics, metric.New("prometheus", tags, histFields, t, Dana.Histogram))
 
 			// Add one metric per histogram bucket
 			var infSeen bool
@@ -69,7 +69,7 @@ func (p *Parser) extractMetricsV2(prommetrics *dto.MetricFamily) []telegraf.Metr
 				bucketFields := map[string]interface{}{
 					metricName + "_bucket": float64(b.GetCumulativeCount()),
 				}
-				m := metric.New("prometheus", bucketTags, bucketFields, t, telegraf.Histogram)
+				m := metric.New("prometheus", bucketTags, bucketFields, t, Dana.Histogram)
 				metrics = append(metrics, m)
 
 				// Record if any of the buckets marks an infinite upper bound
@@ -83,7 +83,7 @@ func (p *Parser) extractMetricsV2(prommetrics *dto.MetricFamily) []telegraf.Metr
 				infFields := map[string]interface{}{
 					metricName + "_bucket": float64(histogram.GetSampleCount()),
 				}
-				m := metric.New("prometheus", infTags, infFields, t, telegraf.Histogram)
+				m := metric.New("prometheus", infTags, infFields, t, Dana.Histogram)
 				metrics = append(metrics, m)
 			}
 		default:

@@ -24,11 +24,11 @@ type Execd struct {
 	Command      []string        `toml:"command"`
 	Environment  []string        `toml:"environment"`
 	RestartDelay config.Duration `toml:"restart_delay"`
-	Log          telegraf.Logger
+	Log          Dana.Logger
 
-	parser     telegraf.Parser
-	serializer telegraf.Serializer
-	acc        telegraf.Accumulator
+	parser     Dana.Parser
+	serializer Dana.Serializer
+	acc        Dana.Accumulator
 	process    *process.Process
 }
 
@@ -38,11 +38,11 @@ func New() *Execd {
 	}
 }
 
-func (e *Execd) SetParser(p telegraf.Parser) {
+func (e *Execd) SetParser(p Dana.Parser) {
 	e.parser = p
 }
 
-func (e *Execd) SetSerializer(s telegraf.Serializer) {
+func (e *Execd) SetSerializer(s Dana.Serializer) {
 	e.serializer = s
 }
 
@@ -50,7 +50,7 @@ func (*Execd) SampleConfig() string {
 	return sampleConfig
 }
 
-func (e *Execd) Start(acc telegraf.Accumulator) error {
+func (e *Execd) Start(acc Dana.Accumulator) error {
 	e.acc = acc
 
 	var err error
@@ -77,7 +77,7 @@ func (e *Execd) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (e *Execd) Add(m telegraf.Metric, _ telegraf.Accumulator) error {
+func (e *Execd) Add(m Dana.Metric, _ Dana.Accumulator) error {
 	b, err := e.serializer.Serialize(m)
 	if err != nil {
 		return fmt.Errorf("metric serializing error: %w", err)
@@ -174,7 +174,7 @@ func (e *Execd) Init() error {
 }
 
 func init() {
-	processors.AddStreaming("execd", func() telegraf.StreamingProcessor {
+	processors.AddStreaming("execd", func() Dana.StreamingProcessor {
 		return New()
 	})
 }

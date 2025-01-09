@@ -8,7 +8,7 @@ import (
 	"Dana"
 )
 
-func collectDeployments(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory) {
+func collectDeployments(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory) {
 	list, err := ki.client.getDeployments(ctx)
 	if err != nil {
 		acc.AddError(err)
@@ -19,7 +19,7 @@ func collectDeployments(ctx context.Context, acc telegraf.Accumulator, ki *Kuber
 	}
 }
 
-func (ki *KubernetesInventory) gatherDeployment(d *v1.Deployment, acc telegraf.Accumulator) {
+func (ki *KubernetesInventory) gatherDeployment(d *v1.Deployment, acc Dana.Accumulator) {
 	fields := map[string]interface{}{
 		"replicas_available":   d.Status.AvailableReplicas,
 		"replicas_unavailable": d.Status.UnavailableReplicas,

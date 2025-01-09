@@ -50,7 +50,7 @@ type Modbus struct {
 	Workarounds            workarounds     `toml:"workarounds"`
 	ConfigurationType      string          `toml:"configuration_type"`
 	ExcludeRegisterTypeTag bool            `toml:"exclude_register_type_tag"`
-	Log                    telegraf.Logger `toml:"-"`
+	Log                    Dana.Logger     `toml:"-"`
 
 	// configuration type specific settings
 	configurationOriginal
@@ -217,7 +217,7 @@ func (m *Modbus) Init() error {
 	return nil
 }
 
-func (m *Modbus) Gather(acc telegraf.Accumulator) error {
+func (m *Modbus) Gather(acc Dana.Accumulator) error {
 	if !m.isConnected {
 		if err := m.connect(); err != nil {
 			return err
@@ -289,7 +289,7 @@ func (m *Modbus) initClient() error {
 	}
 
 	var tracelog mb.Logger
-	if m.Log.Level().Includes(telegraf.Trace) || m.DebugConnection { // for backward compatibility
+	if m.Log.Level().Includes(Dana.Trace) || m.DebugConnection { // for backward compatibility
 		tracelog = m
 	}
 
@@ -562,5 +562,5 @@ func (m *Modbus) Printf(format string, v ...interface{}) {
 
 // Add this plugin to telegraf
 func init() {
-	inputs.Add("modbus", func() telegraf.Input { return &Modbus{} })
+	inputs.Add("modbus", func() Dana.Input { return &Modbus{} })
 }

@@ -13,7 +13,7 @@ import (
 )
 
 func TestIndividualSerializer(t *testing.T) {
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"serializer_test",
 			map[string]string{
@@ -169,7 +169,7 @@ func TestIndividualSerializer(t *testing.T) {
 }
 
 func TestIndividualSerializerFirstTooBig(t *testing.T) {
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"serializer_test",
 			map[string]string{
@@ -215,7 +215,7 @@ func TestIndividualSerializerFirstTooBig(t *testing.T) {
 }
 
 func TestIndividualSerializerUnlimited(t *testing.T) {
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"serializer_test",
 			map[string]string{

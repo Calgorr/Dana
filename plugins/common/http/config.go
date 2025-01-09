@@ -31,7 +31,7 @@ type HTTPClientConfig struct {
 	cookie.CookieAuthConfig
 }
 
-func (h *HTTPClientConfig) CreateClient(ctx context.Context, log telegraf.Logger) (*http.Client, error) {
+func (h *HTTPClientConfig) CreateClient(ctx context.Context, log Dana.Logger) (*http.Client, error) {
 	tlsCfg, err := h.ClientConfig.TLSConfig()
 	if err != nil {
 		return nil, fmt.Errorf("failed to set TLS config: %w", err)

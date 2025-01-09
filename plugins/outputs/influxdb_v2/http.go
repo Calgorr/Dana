@@ -66,7 +66,7 @@ type httpClient struct {
 	params           url.Values
 	retryTime        time.Time
 	retryCount       int
-	log              telegraf.Logger
+	log              Dana.Logger
 }
 
 func (c *httpClient) Init() error {
@@ -155,12 +155,12 @@ func (g genericRespError) Error() string {
 	return errString
 }
 
-func (c *httpClient) Write(ctx context.Context, metrics []telegraf.Metric) error {
+func (c *httpClient) Write(ctx context.Context, metrics []Dana.Metric) error {
 	if c.retryTime.After(time.Now()) {
 		return errors.New("retry time has not elapsed")
 	}
 
-	batches := make(map[string][]telegraf.Metric)
+	batches := make(map[string][]Dana.Metric)
 	batchIndices := make(map[string][]int)
 	if c.bucketTag == "" {
 		batches[c.bucket] = metrics
@@ -228,7 +228,7 @@ func (c *httpClient) Write(ctx context.Context, metrics []telegraf.Metric) error
 	return nil
 }
 
-func (c *httpClient) splitAndWriteBatch(ctx context.Context, bucket string, metrics []telegraf.Metric) error {
+func (c *httpClient) splitAndWriteBatch(ctx context.Context, bucket string, metrics []Dana.Metric) error {
 	c.log.Warnf("Retrying write after splitting metric payload in half to reduce batch size")
 	midpoint := len(metrics) / 2
 
@@ -239,7 +239,7 @@ func (c *httpClient) splitAndWriteBatch(ctx context.Context, bucket string, metr
 	return c.writeBatch(ctx, bucket, metrics[midpoint:])
 }
 
-func (c *httpClient) writeBatch(ctx context.Context, bucket string, metrics []telegraf.Metric) error {
+func (c *httpClient) writeBatch(ctx context.Context, bucket string, metrics []Dana.Metric) error {
 	// Get the current limit for the outbound data
 	ratets := time.Now()
 	limit := c.rateLimiter.Remaining(ratets)
