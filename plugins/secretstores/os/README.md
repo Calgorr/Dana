@@ -86,7 +86,7 @@ If `password` is omitted, you will be prompted for the password on startup.
 ### Windows
 
 On Windows you can use the Credential Manager in the Control Panel or
-[Telegraf](../../../cmd/telegraf/README.md) to manage your secrets.
+[Telegraf](../../../cmd/Dana/README.md) to manage your secrets.
 
 If using the Credential Manager, click "Windows Credentials" and then
 "Add a generic credential" with the following:
