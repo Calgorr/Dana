@@ -90,7 +90,7 @@ func (ki *KubernetesInventory) Init() error {
 	}
 
 	if ki.BearerTokenString != "" {
-		ki.Log.Warn("Telegraf cannot auto-refresh a bearer token string, use BearerToken file instead")
+		ki.Log.Warn("Dana2 cannot auto-refresh a bearer token string, use BearerToken file instead")
 	}
 
 	var err error

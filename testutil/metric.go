@@ -96,43 +96,43 @@ func lessFunc(lhs, rhs *metricDiff) bool {
 	return false
 }
 
-func newMetricDiff(telegrafMetric Dana.Metric) *metricDiff {
-	if telegrafMetric == nil {
+func newMetricDiff(Dana2Metric Dana.Metric) *metricDiff {
+	if Dana2Metric == nil {
 		return nil
 	}
 
 	m := &metricDiff{}
-	m.Measurement = telegrafMetric.Name()
+	m.Measurement = Dana2Metric.Name()
 
-	m.Tags = append(m.Tags, telegrafMetric.TagList()...)
+	m.Tags = append(m.Tags, Dana2Metric.TagList()...)
 	sort.Slice(m.Tags, func(i, j int) bool {
 		return m.Tags[i].Key < m.Tags[j].Key
 	})
 
-	m.Fields = append(m.Fields, telegrafMetric.FieldList()...)
+	m.Fields = append(m.Fields, Dana2Metric.FieldList()...)
 	sort.Slice(m.Fields, func(i, j int) bool {
 		return m.Fields[i].Key < m.Fields[j].Key
 	})
 
-	m.Type = telegrafMetric.Type()
-	m.Time = telegrafMetric.Time()
+	m.Type = Dana2Metric.Type()
+	m.Time = Dana2Metric.Time()
 	return m
 }
 
-func newMetricStructureDiff(telegrafMetric Dana.Metric) *metricDiff {
-	if telegrafMetric == nil {
+func newMetricStructureDiff(Dana2Metric Dana.Metric) *metricDiff {
+	if Dana2Metric == nil {
 		return nil
 	}
 
 	m := &metricDiff{}
-	m.Measurement = telegrafMetric.Name()
+	m.Measurement = Dana2Metric.Name()
 
-	m.Tags = append(m.Tags, telegrafMetric.TagList()...)
+	m.Tags = append(m.Tags, Dana2Metric.TagList()...)
 	sort.Slice(m.Tags, func(i, j int) bool {
 		return m.Tags[i].Key < m.Tags[j].Key
 	})
 
-	for _, f := range telegrafMetric.FieldList() {
+	for _, f := range Dana2Metric.FieldList() {
 		sf := &Dana.Field{
 			Key:   f.Key,
 			Value: reflect.Zero(reflect.TypeOf(f.Value)).Interface(),
@@ -143,8 +143,8 @@ func newMetricStructureDiff(telegrafMetric Dana.Metric) *metricDiff {
 		return m.Fields[i].Key < m.Fields[j].Key
 	})
 
-	m.Type = telegrafMetric.Type()
-	m.Time = telegrafMetric.Time()
+	m.Type = Dana2Metric.Type()
+	m.Time = Dana2Metric.Time()
 	return m
 }
 
@@ -219,7 +219,7 @@ func RequireMetricEqual(t testing.TB, expected, actual Dana.Metric, opts ...cmp.
 
 	opts = append(opts, cmpopts.EquateNaNs())
 	if diff := cmp.Diff(lhs, rhs, opts...); diff != "" {
-		t.Fatalf("telegraf.Metric\n--- expected\n+++ actual\n%s", diff)
+		t.Fatalf("Dana2.Metric\n--- expected\n+++ actual\n%s", diff)
 	}
 }
 
@@ -241,7 +241,7 @@ func RequireMetricsEqual(t testing.TB, expected, actual []Dana.Metric, opts ...c
 
 	opts = append(opts, cmpopts.EquateNaNs())
 	if diff := cmp.Diff(lhs, rhs, opts...); diff != "" {
-		t.Fatalf("[]telegraf.Metric\n--- expected\n+++ actual\n%s", diff)
+		t.Fatalf("[]Dana2.Metric\n--- expected\n+++ actual\n%s", diff)
 	}
 }
 
@@ -284,7 +284,7 @@ func RequireMetricsSubset(t testing.TB, expected, actual []Dana.Metric, opts ...
 
 	opts = append(opts, cmpopts.EquateNaNs())
 	if diff := cmp.Diff(lhs, rhsFiltered, opts...); diff != "" {
-		t.Fatalf("[]telegraf.Metric\n--- expected\n+++ actual\n%s", diff)
+		t.Fatalf("[]Dana2.Metric\n--- expected\n+++ actual\n%s", diff)
 	}
 }
 
@@ -308,7 +308,7 @@ func RequireMetricsStructureEqual(t testing.TB, expected, actual []Dana.Metric, 
 
 	opts = append(opts, cmpopts.EquateNaNs())
 	if diff := cmp.Diff(lhs, rhs, opts...); diff != "" {
-		t.Fatalf("[]telegraf.Metric\n--- expected\n+++ actual\n%s", diff)
+		t.Fatalf("[]Dana2.Metric\n--- expected\n+++ actual\n%s", diff)
 	}
 }
 
@@ -353,7 +353,7 @@ func RequireMetricsStructureSubset(t testing.TB, expected, actual []Dana.Metric,
 
 	opts = append(opts, cmpopts.EquateNaNs())
 	if diff := cmp.Diff(lhs, rhsFiltered, opts...); diff != "" {
-		t.Fatalf("[]telegraf.Metric\n--- expected\n+++ actual\n%s", diff)
+		t.Fatalf("[]Dana2.Metric\n--- expected\n+++ actual\n%s", diff)
 	}
 }
 

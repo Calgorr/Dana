@@ -766,7 +766,7 @@ func Test_parseV2(t *testing.T) {
 			if err := ipmi.parseV2(&acc, tt.args.hostname, tt.args.cmdOut, tt.args.measuredAt); (err != nil) != tt.wantErr {
 				t.Errorf("parseV2() error = %v, wantErr %v", err, tt.wantErr)
 			}
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }
@@ -825,7 +825,7 @@ func Test_parsePowerStatus(t *testing.T) {
 			var acc testutil.Accumulator
 			err := parseChassisPowerStatus(&acc, tt.args.hostname, tt.args.cmdOut, tt.args.measuredAt)
 			require.NoError(t, err)
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }
@@ -886,7 +886,7 @@ Power reading state is:                   activated
 	var acc testutil.Accumulator
 	err := ipmi.parseDCMIPowerReading(&acc, "host", []byte(output), time.Now())
 	require.NoError(t, err)
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestSanitizeIPMICmd(t *testing.T) {

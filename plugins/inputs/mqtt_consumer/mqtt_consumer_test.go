@@ -205,7 +205,7 @@ func TestTopicTag(t *testing.T) {
 	}{
 		{
 			name:  "default topic when topic tag is unset for backwards compatibility",
-			topic: "telegraf",
+			topic: "Dana2",
 			topicTag: func() *string {
 				return nil
 			},
@@ -213,7 +213,7 @@ func TestTopicTag(t *testing.T) {
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
-						"topic": "telegraf",
+						"topic": "Dana2",
 					},
 					map[string]interface{}{
 						"time_idle": 42,
@@ -224,7 +224,7 @@ func TestTopicTag(t *testing.T) {
 		},
 		{
 			name:  "use topic tag when set",
-			topic: "telegraf",
+			topic: "Dana2",
 			topicTag: func() *string {
 				tag := "topic_tag"
 				return &tag
@@ -233,7 +233,7 @@ func TestTopicTag(t *testing.T) {
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
-						"topic_tag": "telegraf",
+						"topic_tag": "Dana2",
 					},
 					map[string]interface{}{
 						"time_idle": 42,
@@ -244,7 +244,7 @@ func TestTopicTag(t *testing.T) {
 		},
 		{
 			name:  "no topic tag is added when topic tag is set to the empty string",
-			topic: "telegraf",
+			topic: "Dana2",
 			topicTag: func() *string {
 				tag := ""
 				return &tag
@@ -262,14 +262,14 @@ func TestTopicTag(t *testing.T) {
 		},
 		{
 			name:  "topic parsing configured",
-			topic: "telegraf/123/test",
+			topic: "Dana2/123/test",
 			topicTag: func() *string {
 				tag := ""
 				return &tag
 			},
 			topicParsing: []topicParsingConfig{
 				{
-					Topic:       "telegraf/123/test",
+					Topic:       "Dana2/123/test",
 					Measurement: "_/_/measurement",
 					Tags:        "testTag/_/_",
 					Fields:      "_/testNumber/_",
@@ -282,7 +282,7 @@ func TestTopicTag(t *testing.T) {
 				testutil.MustMetric(
 					"test",
 					map[string]string{
-						"testTag": "telegraf",
+						"testTag": "Dana2",
 					},
 					map[string]interface{}{
 						"testNumber": 123,
@@ -294,14 +294,14 @@ func TestTopicTag(t *testing.T) {
 		},
 		{
 			name:  "topic parsing configured with a mqtt wild card `+`",
-			topic: "telegraf/123/test/hello",
+			topic: "Dana2/123/test/hello",
 			topicTag: func() *string {
 				tag := ""
 				return &tag
 			},
 			topicParsing: []topicParsingConfig{
 				{
-					Topic:       "telegraf/+/test/hello",
+					Topic:       "Dana2/+/test/hello",
 					Measurement: "_/_/measurement/_",
 					Tags:        "testTag/_/_/_",
 					Fields:      "_/testNumber/_/testString",
@@ -314,7 +314,7 @@ func TestTopicTag(t *testing.T) {
 				testutil.MustMetric(
 					"test",
 					map[string]string{
-						"testTag": "telegraf",
+						"testTag": "Dana2",
 					},
 					map[string]interface{}{
 						"testNumber": 123,
@@ -327,7 +327,7 @@ func TestTopicTag(t *testing.T) {
 		},
 		{
 			name:  "topic parsing configured incorrectly",
-			topic: "telegraf/123/test/hello",
+			topic: "Dana2/123/test/hello",
 			topicTag: func() *string {
 				tag := ""
 				return &tag
@@ -335,7 +335,7 @@ func TestTopicTag(t *testing.T) {
 			expectedError: "config error topic parsing: fields length does not equal topic length",
 			topicParsing: []topicParsingConfig{
 				{
-					Topic:       "telegraf/+/test/hello",
+					Topic:       "Dana2/+/test/hello",
 					Measurement: "_/_/measurement/_",
 					Tags:        "testTag/_/_/_",
 					Fields:      "_/_/testNumber:int/_/testString:string",
@@ -348,7 +348,7 @@ func TestTopicTag(t *testing.T) {
 				testutil.MustMetric(
 					"test",
 					map[string]string{
-						"testTag": "telegraf",
+						"testTag": "Dana2",
 					},
 					map[string]interface{}{
 						"testNumber": 123,
@@ -361,14 +361,14 @@ func TestTopicTag(t *testing.T) {
 		},
 		{
 			name:  "topic parsing configured without fields",
-			topic: "telegraf/123/test/hello",
+			topic: "Dana2/123/test/hello",
 			topicTag: func() *string {
 				tag := ""
 				return &tag
 			},
 			topicParsing: []topicParsingConfig{
 				{
-					Topic:       "telegraf/+/test/hello",
+					Topic:       "Dana2/+/test/hello",
 					Measurement: "_/_/measurement/_",
 					Tags:        "testTag/_/_/_",
 					FieldTypes: map[string]string{
@@ -380,7 +380,7 @@ func TestTopicTag(t *testing.T) {
 				testutil.MustMetric(
 					"test",
 					map[string]string{
-						"testTag": "telegraf",
+						"testTag": "Dana2",
 					},
 					map[string]interface{}{
 						"time_idle": 42,
@@ -391,14 +391,14 @@ func TestTopicTag(t *testing.T) {
 		},
 		{
 			name:  "topic parsing configured without measurement",
-			topic: "telegraf/123/test/hello",
+			topic: "Dana2/123/test/hello",
 			topicTag: func() *string {
 				tag := ""
 				return &tag
 			},
 			topicParsing: []topicParsingConfig{
 				{
-					Topic:  "telegraf/+/test/hello",
+					Topic:  "Dana2/+/test/hello",
 					Tags:   "testTag/_/_/_",
 					Fields: "_/testNumber/_/testString",
 					FieldTypes: map[string]string{
@@ -410,7 +410,7 @@ func TestTopicTag(t *testing.T) {
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
-						"testTag": "telegraf",
+						"testTag": "Dana2",
 					},
 					map[string]interface{}{
 						"testNumber": 123,
@@ -423,14 +423,14 @@ func TestTopicTag(t *testing.T) {
 		},
 		{
 			name:  "topic parsing configured topic with a prefix `/`",
-			topic: "/telegraf/123/test/hello",
+			topic: "/Dana2/123/test/hello",
 			topicTag: func() *string {
 				tag := ""
 				return &tag
 			},
 			topicParsing: []topicParsingConfig{
 				{
-					Topic:       "/telegraf/+/test/hello",
+					Topic:       "/Dana2/+/test/hello",
 					Measurement: "/_/_/measurement/_",
 					Tags:        "/testTag/_/_/_",
 					Fields:      "/_/testNumber/_/testString",
@@ -443,7 +443,7 @@ func TestTopicTag(t *testing.T) {
 				testutil.MustMetric(
 					"test",
 					map[string]string{
-						"testTag": "telegraf",
+						"testTag": "Dana2",
 					},
 					map[string]interface{}{
 						"testNumber": 123,
@@ -456,14 +456,14 @@ func TestTopicTag(t *testing.T) {
 		},
 		{
 			name:  "topic parsing with variable length",
-			topic: "/telegraf/123/foo/test/hello",
+			topic: "/Dana2/123/foo/test/hello",
 			topicTag: func() *string {
 				tag := ""
 				return &tag
 			},
 			topicParsing: []topicParsingConfig{
 				{
-					Topic:       "/telegraf/#/test/hello",
+					Topic:       "/Dana2/#/test/hello",
 					Measurement: "/#/measurement/_",
 					Tags:        "/testTag/#/moreTag/_/_",
 					Fields:      "/_/testNumber/#/testString",
@@ -476,7 +476,7 @@ func TestTopicTag(t *testing.T) {
 				testutil.MustMetric(
 					"test",
 					map[string]string{
-						"testTag": "telegraf",
+						"testTag": "Dana2",
 						"moreTag": "foo",
 					},
 					map[string]interface{}{
@@ -490,14 +490,14 @@ func TestTopicTag(t *testing.T) {
 		},
 		{
 			name:  "topic parsing with variable length too short",
-			topic: "/telegraf/123",
+			topic: "/Dana2/123",
 			topicTag: func() *string {
 				tag := ""
 				return &tag
 			},
 			topicParsing: []topicParsingConfig{
 				{
-					Topic:       "/telegraf/#",
+					Topic:       "/Dana2/#",
 					Measurement: "/#/measurement/_",
 					Tags:        "/testTag/#/moreTag/_/_",
 					Fields:      "/_/testNumber/#/testString",
@@ -564,7 +564,7 @@ func TestTopicTag(t *testing.T) {
 
 			plugin.Stop()
 
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }
@@ -678,7 +678,7 @@ func TestIntegration(t *testing.T) {
 
 	// Setup the plugin and connect to the broker
 	url := fmt.Sprintf("tcp://%s:%s", container.Address, container.Ports[servicePort])
-	topic := "/telegraf/test"
+	topic := "/Dana2/test"
 	factory := func(o *mqtt.ClientOptions) client { return mqtt.NewClient(o) }
 	plugin := &MQTTConsumer{
 		Servers:                []string{url},
@@ -737,7 +737,7 @@ func TestIntegration(t *testing.T) {
 
 	client.Disconnect(100)
 	plugin.Stop()
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestStartupErrorBehaviorErrorIntegration(t *testing.T) {
@@ -767,7 +767,7 @@ func TestStartupErrorBehaviorErrorIntegration(t *testing.T) {
 
 	// Setup the plugin and connect to the broker
 	url := fmt.Sprintf("tcp://%s:%s", container.Address, container.Ports[servicePort])
-	topic := "/telegraf/test"
+	topic := "/Dana2/test"
 	factory := func(o *mqtt.ClientOptions) client { return mqtt.NewClient(o) }
 	plugin := &MQTTConsumer{
 		Servers:                []string{url},
@@ -826,7 +826,7 @@ func TestStartupErrorBehaviorIgnoreIntegration(t *testing.T) {
 
 	// Setup the plugin and connect to the broker
 	url := fmt.Sprintf("tcp://%s:%s", container.Address, container.Ports[servicePort])
-	topic := "/telegraf/test"
+	topic := "/Dana2/test"
 	factory := func(o *mqtt.ClientOptions) client { return mqtt.NewClient(o) }
 	plugin := &MQTTConsumer{
 		Servers:                []string{url},
@@ -891,7 +891,7 @@ func TestStartupErrorBehaviorRetryIntegration(t *testing.T) {
 
 	// Setup the plugin and connect to the broker
 	url := fmt.Sprintf("tcp://%s:%s", container.Address, container.Ports[servicePort])
-	topic := "/telegraf/test"
+	topic := "/Dana2/test"
 	factory := func(o *mqtt.ClientOptions) client { return mqtt.NewClient(o) }
 	plugin := &MQTTConsumer{
 		Servers:                []string{url},
@@ -923,7 +923,7 @@ func TestStartupErrorBehaviorRetryIntegration(t *testing.T) {
 	require.NoError(t, model.Start(&acc))
 
 	// There should be no metrics as the plugin is not fully started up yet
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 	require.ErrorIs(t, model.Gather(&acc), internal.ErrNotConnected)
 	require.Equal(t, int64(2), model.StartupErrors.Get())
 
@@ -970,7 +970,7 @@ func TestStartupErrorBehaviorRetryIntegration(t *testing.T) {
 
 	client.Disconnect(100)
 	plugin.Stop()
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestReconnectIntegration(t *testing.T) {
@@ -996,7 +996,7 @@ func TestReconnectIntegration(t *testing.T) {
 
 	// Setup the plugin and connect to the broker
 	url := fmt.Sprintf("tcp://%s:%s", container.Address, container.Ports[servicePort])
-	topic := "/telegraf/test"
+	topic := "/Dana2/test"
 	factory := func(o *mqtt.ClientOptions) client { return mqtt.NewClient(o) }
 	plugin := &MQTTConsumer{
 		Servers:                []string{url},

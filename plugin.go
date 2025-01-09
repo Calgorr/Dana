@@ -20,7 +20,7 @@ type Initializer interface {
 }
 
 // PluginDescriber contains the functions all plugins must implement to describe
-// themselves to Telegraf. Note that all plugins may define a logger that is
+// themselves to Dana2. Note that all plugins may define a logger that is
 // not part of the interface, but will receive an injected logger if it's set.
 // eg: Log Dana.Logger `toml:"-"`
 type PluginDescriber interface {
@@ -38,11 +38,11 @@ type PluginWithID interface {
 }
 
 // StatefulPlugin contains the functions that plugins must implement to
-// persist an internal state across Telegraf runs.
+// persist an internal state across Dana2 runs.
 // Note that plugins may define a persister that is not part of the
 // interface, but can be used to trigger state updates by the plugin if
 // it exists in the plugin struct,
-// eg: Persister telegraf.StatePersister `toml:"-"`
+// eg: Persister Dana2.StatePersister `toml:"-"`
 type StatefulPlugin interface {
 	// GetState returns the current state of the plugin to persist
 	// The returned state can be of any time as long as it can be

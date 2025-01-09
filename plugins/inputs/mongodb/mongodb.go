@@ -143,7 +143,7 @@ func (m *MongoDB) Stop() {
 func (m *MongoDB) setupConnection(connURL string) error {
 	if !strings.HasPrefix(connURL, "mongodb://") && !strings.HasPrefix(connURL, "mongodb+srv://") {
 		// Preserve backwards compatibility for hostnames without a
-		// scheme, broken in go 1.8. Remove in Telegraf 2.0
+		// scheme, broken in go 1.8. Remove in Dana2 2.0
 		connURL = "mongodb://" + connURL
 		m.Log.Warnf("Using %q as connection URL; please update your configuration to use an URL", connURL)
 	}

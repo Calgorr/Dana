@@ -215,7 +215,7 @@ func TestTracking(t *testing.T) {
 		return int(acc.NMetrics()) >= len(expected)
 	}, 3*time.Second, 100*time.Microsecond)
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual)
 
 	// Simulate output acknowledging delivery

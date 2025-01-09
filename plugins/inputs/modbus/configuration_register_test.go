@@ -205,7 +205,7 @@ func TestRegisterCoils(t *testing.T) {
 			require.NoError(t, modbus.Gather(&acc))
 			acc.Wait(len(expected))
 
-			testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }
@@ -932,7 +932,7 @@ func TestRegisterHoldingRegisters(t *testing.T) {
 			require.NoError(t, modbus.Gather(&acc))
 			acc.Wait(len(expected))
 
-			testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }
@@ -1019,7 +1019,7 @@ func TestRegisterReadMultipleCoilWithHole(t *testing.T) {
 	require.NoError(t, modbus.Gather(&acc))
 	acc.Wait(len(expected))
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestRegisterReadMultipleCoilLimit(t *testing.T) {
@@ -1078,7 +1078,7 @@ func TestRegisterReadMultipleCoilLimit(t *testing.T) {
 	require.NoError(t, modbus.Gather(&acc))
 	acc.Wait(len(expected))
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestRegisterReadMultipleHoldingRegisterWithHole(t *testing.T) {
@@ -1152,7 +1152,7 @@ func TestRegisterReadMultipleHoldingRegisterWithHole(t *testing.T) {
 	require.NoError(t, modbus.Gather(&acc))
 	acc.Wait(len(expected))
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestRegisterReadMultipleHoldingRegisterLimit(t *testing.T) {
@@ -1209,11 +1209,11 @@ func TestRegisterReadMultipleHoldingRegisterLimit(t *testing.T) {
 	require.NoError(t, modbus.Gather(&acc))
 	acc.Wait(len(expected))
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestRegisterHighAddresses(t *testing.T) {
-	// Test case for issue https://github.com/influxdata/telegraf/issues/15138
+	// Test case for issue https://github.com/influxdata/Dana2/issues/15138
 
 	// Setup a server
 	serv := mbserver.NewServer()
@@ -1279,5 +1279,5 @@ func TestRegisterHighAddresses(t *testing.T) {
 	require.NotEmpty(t, modbus.requests)
 	require.Len(t, modbus.requests[1].holding, 1)
 	require.NoError(t, modbus.Gather(&acc))
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }

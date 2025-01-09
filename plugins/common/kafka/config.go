@@ -95,7 +95,7 @@ func (k *Config) SetConfig(cfg *sarama.Config, log Dana.Logger) error {
 	if k.ClientID != "" {
 		cfg.ClientID = k.ClientID
 	} else {
-		cfg.ClientID = "Telegraf"
+		cfg.ClientID = "Dana2"
 	}
 
 	cfg.Producer.Compression = sarama.CompressionCodec(k.CompressionCodec)

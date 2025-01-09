@@ -51,7 +51,7 @@ func TestCgroupStatistics_1(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestCgroupStatistics_2(t *testing.T) {
@@ -85,7 +85,7 @@ func TestCgroupStatistics_2(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestCgroupStatistics_3(t *testing.T) {
@@ -119,7 +119,7 @@ func TestCgroupStatistics_3(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestCgroupStatistics_4(t *testing.T) {
@@ -171,7 +171,7 @@ func TestCgroupStatistics_4(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestCgroupStatistics_5(t *testing.T) {
@@ -205,7 +205,7 @@ func TestCgroupStatistics_5(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestCgroupStatistics_6(t *testing.T) {
@@ -231,7 +231,7 @@ func TestCgroupStatistics_6(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestCgroupStatistics_7(t *testing.T) {
@@ -385,7 +385,7 @@ func TestCgroupStatistics_7(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestCgroupStatistics_8(t *testing.T) {
@@ -408,7 +408,7 @@ func TestCgroupStatistics_8(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 
 	// clear errors so we can check for new errors in next round
 	acc.Errors = nil
@@ -440,5 +440,5 @@ func TestCgroupEscapeDir(t *testing.T) {
 	}
 
 	require.NoError(t, acc.GatherError(cg.Gather))
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }

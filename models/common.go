@@ -27,12 +27,12 @@ func SetLoggerOnPlugin(i interface{}, logger Dana.Logger) {
 	}
 
 	switch field.Type().String() {
-	case "telegraf.Logger":
+	case "Dana2.Logger":
 		if field.CanSet() {
 			field.Set(reflect.ValueOf(logger))
 		}
 	default:
-		logger.Debugf("Plugin %q defines a 'Log' field on its struct of an unexpected type %q. Expected telegraf.Logger",
+		logger.Debugf("Plugin %q defines a 'Log' field on its struct of an unexpected type %q. Expected Dana2.Logger",
 			valI.Type().Name(), field.Type().String())
 	}
 }

@@ -27,7 +27,7 @@ func TestSyslogMapperWithDefaults(t *testing.T) {
 	require.NoError(t, err)
 	str, err := syslogMessage.String()
 	require.NoError(t, err)
-	require.Equal(t, "<13>1 2010-11-10T23:00:00Z "+hostname+" Telegraf - testmetric -", str, "Wrong syslog message")
+	require.Equal(t, "<13>1 2010-11-10T23:00:00Z "+hostname+" Dana2 - testmetric -", str, "Wrong syslog message")
 }
 
 func TestSyslogMapperWithHostname(t *testing.T) {
@@ -49,7 +49,7 @@ func TestSyslogMapperWithHostname(t *testing.T) {
 	require.NoError(t, err)
 	str, err := syslogMessage.String()
 	require.NoError(t, err)
-	require.Equal(t, "<13>1 2010-11-10T23:00:00Z testhost Telegraf - testmetric -", str, "Wrong syslog message")
+	require.Equal(t, "<13>1 2010-11-10T23:00:00Z testhost Dana2 - testmetric -", str, "Wrong syslog message")
 }
 func TestSyslogMapperWithHostnameSourceFallback(t *testing.T) {
 	s := newSyslog()
@@ -69,7 +69,7 @@ func TestSyslogMapperWithHostnameSourceFallback(t *testing.T) {
 	require.NoError(t, err)
 	str, err := syslogMessage.String()
 	require.NoError(t, err)
-	require.Equal(t, "<13>1 2010-11-10T23:00:00Z sourcevalue Telegraf - testmetric -", str, "Wrong syslog message")
+	require.Equal(t, "<13>1 2010-11-10T23:00:00Z sourcevalue Dana2 - testmetric -", str, "Wrong syslog message")
 }
 
 func TestSyslogMapperWithHostnameHostFallback(t *testing.T) {
@@ -89,7 +89,7 @@ func TestSyslogMapperWithHostnameHostFallback(t *testing.T) {
 	require.NoError(t, err)
 	str, err := syslogMessage.String()
 	require.NoError(t, err)
-	require.Equal(t, "<13>1 2010-11-10T23:00:00Z hostvalue Telegraf - testmetric -", str, "Wrong syslog message")
+	require.Equal(t, "<13>1 2010-11-10T23:00:00Z hostvalue Dana2 - testmetric -", str, "Wrong syslog message")
 }
 
 func TestSyslogMapperWithDefaultSdid(t *testing.T) {

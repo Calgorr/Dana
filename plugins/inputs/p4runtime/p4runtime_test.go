@@ -253,7 +253,7 @@ func TestOneCounterRead(t *testing.T) {
 		testutil.RequireMetricsEqual(
 			t,
 			tt.expected,
-			acc.GetTelegrafMetrics(),
+			acc.GetDana2Metrics(),
 			testutil.IgnoreTime(),
 		)
 	}
@@ -342,7 +342,7 @@ func TestMultipleEntitiesSingleCounterRead(t *testing.T) {
 		testutil.RequireMetricsEqual(
 			t,
 			expected,
-			acc.GetTelegrafMetrics(),
+			acc.GetDana2Metrics(),
 			testutil.IgnoreTime(),
 		)
 	}
@@ -434,7 +434,7 @@ func TestSingleEntitiesMultipleCounterRead(t *testing.T) {
 		testutil.RequireMetricsEqual(
 			t,
 			expected,
-			acc.GetTelegrafMetrics(),
+			acc.GetDana2Metrics(),
 			testutil.SortMetrics(),
 			testutil.IgnoreTime(),
 		)
@@ -493,7 +493,7 @@ func TestFilterCounters(t *testing.T) {
 	testutil.RequireMetricsEqual(
 		t,
 		nil,
-		acc.GetTelegrafMetrics(),
+		acc.GetDana2Metrics(),
 		testutil.IgnoreTime(),
 	)
 }
@@ -546,7 +546,7 @@ func TestFailReadCounterEntryFromEntry(t *testing.T) {
 	testutil.RequireMetricsEqual(
 		t,
 		nil,
-		acc.GetTelegrafMetrics(),
+		acc.GetDana2Metrics(),
 		testutil.IgnoreTime(),
 	)
 }
@@ -589,7 +589,7 @@ func TestFailReadAllEntries(t *testing.T) {
 	testutil.RequireMetricsEqual(
 		t,
 		nil,
-		acc.GetTelegrafMetrics(),
+		acc.GetDana2Metrics(),
 		testutil.IgnoreTime(),
 	)
 }

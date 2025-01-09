@@ -755,13 +755,13 @@ func TestMeasurement(t *testing.T) {
 				map[string]string{},
 				map[string]interface{}{
 					"v":     1,
-					"topic": "telegraf",
+					"topic": "Dana2",
 				},
 				time.Unix(0, 0),
 			),
 			expected: []Dana.Metric{
 				testutil.MustMetric(
-					"telegraf",
+					"Dana2",
 					map[string]string{},
 					map[string]interface{}{
 						"v": 1,
@@ -791,9 +791,9 @@ func TestEmptyConfigInitError(t *testing.T) {
 
 func TestTracking(t *testing.T) {
 	inputRaw := []Dana.Metric{
-		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42, "topic": "telegraf"}, time.Unix(0, 0)),
-		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42, "topic": "telegraf"}, time.Unix(0, 0)),
-		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42, "topic": "telegraf"}, time.Unix(0, 0)),
+		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42, "topic": "Dana2"}, time.Unix(0, 0)),
+		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42, "topic": "Dana2"}, time.Unix(0, 0)),
+		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42, "topic": "Dana2"}, time.Unix(0, 0)),
 	}
 
 	var mu sync.Mutex
@@ -811,9 +811,9 @@ func TestTracking(t *testing.T) {
 	}
 
 	expected := []Dana.Metric{
-		metric.New("telegraf", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
-		metric.New("telegraf", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
-		metric.New("telegraf", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
+		metric.New("Dana2", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
+		metric.New("Dana2", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
+		metric.New("Dana2", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
 	}
 
 	plugin := &Converter{

@@ -639,7 +639,7 @@ func TestRateLimitedConnectionAcceptsNewRequestOnDelivery(t *testing.T) {
 	require.NoError(t, resp.Body.Close())
 	require.EqualValues(t, 204, resp.StatusCode)
 
-	ms := acc.GetTelegrafMetrics()
+	ms := acc.GetDana2Metrics()
 	for _, m := range ms {
 		m.Accept()
 	}

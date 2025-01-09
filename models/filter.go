@@ -329,7 +329,7 @@ func ShouldTagsPass(passFilters, dropFilters []TagFilter, tags []*Dana.Tag) bool
 	}
 
 	// Add additional logic in case where both parameters are set.
-	// see: https://github.com/influxdata/telegraf/issues/2860
+	// see: https://github.com/influxdata/Dana2/issues/2860
 	if passFilters != nil && dropFilters != nil {
 		// return true only in case when tag pass and won't be dropped (true, true).
 		// in case when the same tag should be passed and dropped it will be dropped (true, false).

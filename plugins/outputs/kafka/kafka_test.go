@@ -202,7 +202,7 @@ func TestTopicTag(t *testing.T) {
 			name: "static topic",
 			plugin: &Kafka{
 				Brokers:      []string{"127.0.0.1"},
-				Topic:        "telegraf",
+				Topic:        "Dana2",
 				producerFunc: NewMockProducer,
 			},
 			input: []Dana.Metric{
@@ -215,14 +215,14 @@ func TestTopicTag(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			topic: "telegraf",
+			topic: "Dana2",
 			value: "cpu time_idle=42 0\n",
 		},
 		{
 			name: "topic tag overrides static topic",
 			plugin: &Kafka{
 				Brokers:      []string{"127.0.0.1"},
-				Topic:        "telegraf",
+				Topic:        "Dana2",
 				TopicTag:     "topic",
 				producerFunc: NewMockProducer,
 			},
@@ -245,7 +245,7 @@ func TestTopicTag(t *testing.T) {
 			name: "missing topic tag falls back to  static topic",
 			plugin: &Kafka{
 				Brokers:      []string{"127.0.0.1"},
-				Topic:        "telegraf",
+				Topic:        "Dana2",
 				TopicTag:     "topic",
 				producerFunc: NewMockProducer,
 			},
@@ -259,14 +259,14 @@ func TestTopicTag(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			topic: "telegraf",
+			topic: "Dana2",
 			value: "cpu time_idle=42 0\n",
 		},
 		{
 			name: "exclude topic tag removes tag",
 			plugin: &Kafka{
 				Brokers:         []string{"127.0.0.1"},
-				Topic:           "telegraf",
+				Topic:           "Dana2",
 				TopicTag:        "topic",
 				ExcludeTopicTag: true,
 				producerFunc:    NewMockProducer,

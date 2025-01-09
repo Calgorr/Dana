@@ -25,7 +25,7 @@ type DiskBuffer struct {
 	batchFirst uint64 // Index of the first metric in the batch
 	batchSize  uint64 // Number of metrics currently in the batch
 
-	// Ending point of metrics read from disk on telegraf launch.
+	// Ending point of metrics read from disk on Dana2 launch.
 	// Used to know whether to discard tracking metrics.
 	originalEnd uint64
 
@@ -160,7 +160,7 @@ func (b *DiskBuffer) BeginTransaction(batchSize int) *Transaction {
 			continue
 		}
 
-		// Validate that a tracking metric is from this instance of telegraf and skip ones from older instances.
+		// Validate that a tracking metric is from this instance of Dana2 and skip ones from older instances.
 		// A tracking metric can be skipped here because metric.Accept() is only called once data is successfully
 		// written to an output, so any tracking metrics from older instances can be dropped and reacquired to
 		// have an accurate tracking information.

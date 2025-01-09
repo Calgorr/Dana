@@ -61,7 +61,7 @@ type Elasticsearch struct {
 	Client *elastic.Client
 }
 
-const telegrafTemplate = `
+const Dana2Template = `
 {
 	{{ if (lt .Version 6) }}
 	"template": "{{.TemplatePattern}}",
@@ -273,7 +273,7 @@ func (a *Elasticsearch) Write(metrics []Dana.Metric) error {
 	for _, metric := range metrics {
 		var name = metric.Name()
 
-		// index name has to be re-evaluated each time for telegraf
+		// index name has to be re-evaluated each time for Dana2
 		// to send the metric to the correct time-based index
 		indexName := a.GetIndexName(a.IndexName, metric.Time(), a.tagKeys, metric.Tags())
 
@@ -415,7 +415,7 @@ func (a *Elasticsearch) createNewTemplate(templatePattern string) (*bytes.Buffer
 		IndexTemplate:   indexTemplate,
 	}
 
-	t := template.Must(template.New("template").Parse(telegrafTemplate))
+	t := template.Must(template.New("template").Parse(Dana2Template))
 	var tmpl bytes.Buffer
 
 	if err := t.Execute(&tmpl, tp); err != nil {

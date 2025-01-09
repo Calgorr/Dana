@@ -24,7 +24,7 @@ import (
 const sqlServerMemoryClerks = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -144,7 +144,7 @@ EXEC(@SqlStatement)
 const sqlServerDatabaseIO = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -156,7 +156,7 @@ DECLARE
 	,@Tables AS nvarchar(max) = ''
 
 IF CAST(SERVERPROPERTY('ProductVersion') AS varchar(50)) >= '10.50.2500.0' BEGIN
-	/*in [volume_mount_point] any trailing "\" char will be automatically removed by telegraf */
+	/*in [volume_mount_point] any trailing "\" char will be automatically removed by Dana2 */
 	SET @Columns += N'
 	,[volume_mount_point]'
 	SET @Tables += N'
@@ -194,7 +194,7 @@ EXEC sp_executesql @SqlStatement
 const sqlServerProperties = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -277,7 +277,7 @@ EXEC sp_executesql @SqlStatement
 const sqlServerSchedulers string = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -334,7 +334,7 @@ Some of the specific objects used are -
 const sqlServerPerformanceCounters string = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -503,7 +503,7 @@ OPTION(RECOMPILE)
 const sqlServerWaitStatsCategorized string = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -1070,7 +1070,7 @@ WHERE
 const sqlServerRequests string = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -1185,7 +1185,7 @@ END CATCH
 const sqlServerVolumeSpace string = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -1198,7 +1198,7 @@ IF CAST(SERVERPROPERTY('ProductVersion') AS varchar(50)) >= '10.50.2500.0' BEGIN
 		'sqlserver_volume_space' AS [measurement]
 		,SERVERPROPERTY('MachineName') AS [server_name]
 		,REPLACE(@@SERVERNAME,'\',':') AS [sql_instance]
-		/*in [volume_mount_point] any trailing "\" char will be removed by telegraf */
+		/*in [volume_mount_point] any trailing "\" char will be removed by Dana2 */
 		,vs.[volume_mount_point]
 		,vs.[total_bytes] AS [total_space_bytes]
 		,vs.[available_bytes] AS [available_space_bytes]
@@ -1211,7 +1211,7 @@ END
 const sqlServerRingBufferCPU string = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END;
@@ -1274,7 +1274,7 @@ FROM (
 const sqlServerAvailabilityReplicaStates string = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -1341,7 +1341,7 @@ EXEC sp_executesql @SqlStatement
 const sqlServerDatabaseReplicaStates string = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -1403,7 +1403,7 @@ const sqlServerRecentBackups string = `
 DECLARE @TimeZoneOffset INT = (SELECT DATEPART(TZOFFSET, SYSDATETIMEOFFSET()));
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END;
@@ -1453,7 +1453,7 @@ WHERE d.name <> 'tempdb' AND d.source_database_id IS NULL
 const sqlServerPersistentVersionStore string = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') NOT IN (2,3,4) BEGIN /*NOT IN Standard,Enterpris,Express*/
-    DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the telegraf configuration.';
+    DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@ServerName + ',Database:' + DB_NAME() +' is not a SQL Server Standard,Enterprise or Express. Check the database_type parameter in the Dana2 configuration.';
     RAISERROR (@ErrorMessage,11,1)
     RETURN
 END;

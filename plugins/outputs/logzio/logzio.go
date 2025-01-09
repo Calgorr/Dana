@@ -22,7 +22,7 @@ var sampleConfig string
 
 const (
 	defaultLogzioURL = "https://listener.logz.io:8071"
-	logzioType       = "telegraf"
+	logzioType       = "Dana2"
 )
 
 type Logzio struct {

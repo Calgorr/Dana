@@ -166,7 +166,7 @@ func TestOnMessage(t *testing.T) {
 			var acc testutil.Accumulator
 			require.NoError(t, plugin.onMessage(acc.WithTracking(tt.expectedNumber), tt.args))
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			require.Len(t, actual, tt.expectedNumber)
 
 			for _, metric := range actual {

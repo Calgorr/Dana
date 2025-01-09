@@ -168,7 +168,7 @@ func (r *Riemann) tags(tags map[string]string) []string {
 		return values
 	}
 
-	// otherwise add all values from telegraf tag key/value pairs
+	// otherwise add all values from Dana2 tag key/value pairs
 	keys := make([]string, 0, len(tags))
 	for key := range tags {
 		keys = append(keys, key)

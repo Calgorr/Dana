@@ -180,7 +180,7 @@ func TestWrite(t *testing.T) {
 	// Setup plugin and connect
 	plugin := &influxdb.InfluxDB{
 		URLs:             []string{"http://" + ts.Listener.Addr().String()},
-		Bucket:           "telegraf",
+		Bucket:           "Dana2",
 		BucketTag:        "bucket",
 		ExcludeBucketTag: true,
 		ContentEncoding:  "identity",
@@ -251,7 +251,7 @@ func TestWriteBucketTagWorksOnRetry(t *testing.T) {
 	// Setup plugin and connect
 	plugin := &influxdb.InfluxDB{
 		URLs:             []string{"http://" + ts.Listener.Addr().String()},
-		Bucket:           "telegraf",
+		Bucket:           "Dana2",
 		BucketTag:        "bucket",
 		ExcludeBucketTag: true,
 		ContentEncoding:  "identity",
@@ -316,7 +316,7 @@ func TestTooLargeWriteRetry(t *testing.T) {
 	// Setup plugin and connect
 	plugin := &influxdb.InfluxDB{
 		URLs:             []string{"http://" + ts.Listener.Addr().String()},
-		Bucket:           "telegraf",
+		Bucket:           "Dana2",
 		BucketTag:        "bucket",
 		ExcludeBucketTag: true,
 		ContentEncoding:  "identity",
@@ -410,7 +410,7 @@ func TestRateLimit(t *testing.T) {
 	// Setup plugin and connect
 	plugin := &influxdb.InfluxDB{
 		URLs:            []string{"http://" + ts.Listener.Addr().String()},
-		Bucket:          "telegraf",
+		Bucket:          "Dana2",
 		ContentEncoding: "identity",
 		RateLimitConfig: ratelimiter.RateLimitConfig{
 			Limit:  50,

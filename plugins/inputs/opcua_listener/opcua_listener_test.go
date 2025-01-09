@@ -49,7 +49,7 @@ func TestInitPluginWithBadConnectFailBehaviorValue(t *testing.T) {
 					RequestTimeout: config.Duration(10 * time.Second),
 				},
 				MetricName: "opcua",
-				Timestamp:  input.TimestampSourceTelegraf,
+				Timestamp:  input.TimestampSourceDana2,
 				RootNodes:  make([]input.NodeSettings, 0),
 			},
 			ConnectFailBehavior:  "notanoption",
@@ -79,7 +79,7 @@ func TestStartPlugin(t *testing.T) {
 					RequestTimeout: config.Duration(10 * time.Second),
 				},
 				MetricName: "opcua",
-				Timestamp:  input.TimestampSourceTelegraf,
+				Timestamp:  input.TimestampSourceDana2,
 				RootNodes:  make([]input.NodeSettings, 0),
 			},
 			SubscriptionInterval: config.Duration(100 * time.Millisecond),
@@ -393,8 +393,8 @@ subscription_interval = "200ms"
 connect_fail_behavior = "error"
 security_policy = "auto"
 security_mode = "auto"
-certificate = "/etc/telegraf/cert.pem"
-private_key = "/etc/telegraf/key.pem"
+certificate = "/etc/Dana2/cert.pem"
+private_key = "/etc/Dana2/key.pem"
 auth_method = "Anonymous"
 timestamp_format = "2006-01-02T15:04:05Z07:00"
 username = ""
@@ -442,8 +442,8 @@ additional_valid_status_codes = ["0xC0"]
 	require.Equal(t, "error", o.subscribeClientConfig.ConnectFailBehavior)
 	require.Equal(t, "auto", o.subscribeClientConfig.SecurityPolicy)
 	require.Equal(t, "auto", o.subscribeClientConfig.SecurityMode)
-	require.Equal(t, "/etc/telegraf/cert.pem", o.subscribeClientConfig.Certificate)
-	require.Equal(t, "/etc/telegraf/key.pem", o.subscribeClientConfig.PrivateKey)
+	require.Equal(t, "/etc/Dana2/cert.pem", o.subscribeClientConfig.Certificate)
+	require.Equal(t, "/etc/Dana2/key.pem", o.subscribeClientConfig.PrivateKey)
 	require.Equal(t, "Anonymous", o.subscribeClientConfig.AuthMethod)
 	require.True(t, o.subscribeClientConfig.Username.Empty())
 	require.True(t, o.subscribeClientConfig.Password.Empty())

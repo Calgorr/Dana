@@ -688,7 +688,7 @@ func TestGatherValidXML(t *testing.T) {
 
 			var acc testutil.Accumulator
 			require.NoError(t, plugin.parse(&acc, octets))
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }

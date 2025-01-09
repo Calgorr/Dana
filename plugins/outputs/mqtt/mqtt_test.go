@@ -213,7 +213,7 @@ func TestIntegrationMQTTv3(t *testing.T) {
 	require.NoError(t, plugin.Close())
 
 	require.Empty(t, acc.Errors)
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestMQTTv5Properties(t *testing.T) {
@@ -370,7 +370,7 @@ func TestIntegrationMQTTLayoutNonBatch(t *testing.T) {
 	require.NoError(t, plugin.Close())
 
 	require.Empty(t, acc.Errors)
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestIntegrationMQTTLayoutBatch(t *testing.T) {
@@ -460,7 +460,7 @@ func TestIntegrationMQTTLayoutBatch(t *testing.T) {
 	require.NoError(t, plugin.Close())
 
 	require.Empty(t, acc.Errors)
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.SortMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.SortMetrics())
 }
 
 func TestIntegrationMQTTLayoutField(t *testing.T) {
@@ -880,8 +880,8 @@ func TestGenerateTopicName(t *testing.T) {
 	}{
 		{
 			name:    "matches default legacy format",
-			pattern: "telegraf/{{ .Hostname }}/{{ .PluginName }}",
-			want:    "telegraf/hostname/metric-name",
+			pattern: "Dana2/{{ .Hostname }}/{{ .PluginName }}",
+			want:    "Dana2/hostname/metric-name",
 		},
 		{
 			name:    "respect hardcoded strings",

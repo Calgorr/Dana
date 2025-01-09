@@ -137,7 +137,7 @@ func MetricType(valueType Dana.ValueType) *dto.MetricType {
 	case Dana.Histogram:
 		return dto.MetricType_HISTOGRAM.Enum()
 	default:
-		panic("unknown telegraf.ValueType")
+		panic("unknown Dana2.ValueType")
 	}
 }
 

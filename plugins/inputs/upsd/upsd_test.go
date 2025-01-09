@@ -57,7 +57,7 @@ func TestCases(t *testing.T) {
 			continue
 		}
 		testcasePath := filepath.Join("testcases", f.Name())
-		configFilename := filepath.Join(testcasePath, "telegraf.conf")
+		configFilename := filepath.Join(testcasePath, "Dana2.conf")
 		expectedFilename := filepath.Join(testcasePath, "expected.out")
 
 		t.Run(f.Name(), func(t *testing.T) {
@@ -96,7 +96,7 @@ func TestCases(t *testing.T) {
 			require.NoError(t, plugin.Gather(&acc))
 
 			// Check the metric nevertheless as we might get some metrics despite errors.
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 			acc.Lock()
 			defer acc.Unlock()

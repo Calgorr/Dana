@@ -804,7 +804,7 @@ func TestGather(t *testing.T) {
 		require.NoError(t, p.Gather(acc))
 
 		require.Empty(t, acc.Errors)
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 	})
 
 	t.Run("WithDefaultPackageMetrics", func(t *testing.T) {
@@ -839,7 +839,7 @@ func TestGather(t *testing.T) {
 		require.NoError(t, p.Gather(acc))
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 3)
+		require.Len(t, acc.GetDana2Metrics(), 3)
 		require.True(t, acc.HasField("powerstat_package", "current_power_consumption_watts"))
 		require.True(t, acc.HasField("powerstat_package", "current_dram_power_consumption_watts"))
 		require.True(t, acc.HasField("powerstat_package", "thermal_design_power_watts"))
@@ -878,7 +878,7 @@ func TestGather(t *testing.T) {
 		require.NoError(t, p.Gather(acc))
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 8)
+		require.Len(t, acc.GetDana2Metrics(), 8)
 		require.True(t, acc.HasField("powerstat_package", "cpu_base_frequency_mhz"))
 		require.True(t, acc.HasField("powerstat_package", "current_power_consumption_watts"))
 		mFetcher.AssertExpectations(t)
@@ -933,7 +933,7 @@ func TestGather(t *testing.T) {
 		require.NoError(t, p.Gather(acc))
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 12)
+		require.Len(t, acc.GetDana2Metrics(), 12)
 		require.True(t, acc.HasField("powerstat_core", "cpu_frequency_mhz"))
 		require.True(t, acc.HasField("powerstat_core", "cpu_temperature_celsius"))
 		require.True(t, acc.HasField("powerstat_core", "cpu_busy_frequency_mhz"))
@@ -990,7 +990,7 @@ func TestGather(t *testing.T) {
 		require.NoError(t, p.Gather(acc))
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 9)
+		require.Len(t, acc.GetDana2Metrics(), 9)
 		require.True(t, acc.HasField("powerstat_core", "cpu_c0_substate_c01_percent"))
 		require.True(t, acc.HasField("powerstat_core", "cpu_c0_substate_c02_percent"))
 		require.True(t, acc.HasField("powerstat_core", "cpu_c0_substate_c0_wait_percent"))
@@ -1059,7 +1059,7 @@ func TestGather(t *testing.T) {
 		require.NoError(t, p.Gather(acc))
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 12)
+		require.Len(t, acc.GetDana2Metrics(), 12)
 		require.True(t, acc.HasField("powerstat_core", "cpu_c0_substate_c01_percent"))
 		require.True(t, acc.HasField("powerstat_core", "cpu_c0_substate_c02_percent"))
 		require.True(t, acc.HasField("powerstat_core", "cpu_c1_state_residency_percent"))
@@ -1140,7 +1140,7 @@ func TestGather(t *testing.T) {
 		require.NoError(t, p.Gather(acc))
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 18)
+		require.Len(t, acc.GetDana2Metrics(), 18)
 		require.True(t, acc.HasField("powerstat_core", "cpu_c7_state_residency_percent"))
 		require.True(t, acc.HasField("powerstat_package", "uncore_frequency_limit_mhz_min"))
 		require.True(t, acc.HasField("powerstat_package", "uncore_frequency_limit_mhz_max"))
@@ -1609,7 +1609,7 @@ func TestAddCPUMetrics(t *testing.T) {
 		p.addCPUMetrics(acc)
 
 		require.Empty(t, acc.Errors)
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		mFetcher.AssertExpectations(t)
 	})
 
@@ -1635,7 +1635,7 @@ func TestAddCPUMetrics(t *testing.T) {
 
 			require.Len(t, acc.Errors, 1)
 			require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get coreFreq and/or msr metrics for CPU ID %v", cpuID))
-			require.Empty(t, acc.GetTelegrafMetrics())
+			require.Empty(t, acc.GetDana2Metrics())
 			mFetcher.AssertExpectations(t)
 		})
 
@@ -1685,7 +1685,7 @@ func TestAddCPUMetrics(t *testing.T) {
 
 			require.Len(t, acc.Errors, 1)
 			require.ErrorContains(t, acc.FirstError(), "failed to get coreFreq and/or msr metrics for CPU ID 0")
-			require.Len(t, acc.GetTelegrafMetrics(), 1)
+			require.Len(t, acc.GetDana2Metrics(), 1)
 			acc.AssertContainsTaggedFields(
 				t,
 				// measurement
@@ -1748,7 +1748,7 @@ func TestAddCPUMetrics(t *testing.T) {
 
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID 1", cpuFrequency))
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -1811,7 +1811,7 @@ func TestAddCPUMetrics(t *testing.T) {
 
 			require.Len(t, acc.Errors, 1)
 			require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID 1", cpuTemperature))
-			require.Len(t, acc.GetTelegrafMetrics(), 1)
+			require.Len(t, acc.GetDana2Metrics(), 1)
 			acc.AssertContainsTaggedFields(
 				t,
 				// measurement
@@ -1877,7 +1877,7 @@ func TestAddCPUMetrics(t *testing.T) {
 
 			require.Len(t, acc.Errors, 1)
 			require.ErrorContains(t, acc.FirstError(), "failed to update MSR time-related metrics for CPU ID 0")
-			require.Len(t, acc.GetTelegrafMetrics(), 1)
+			require.Len(t, acc.GetDana2Metrics(), 1)
 			acc.AssertContainsTaggedFields(
 				t,
 				// measurement
@@ -1920,7 +1920,7 @@ func TestAddPerCPUMsrMetrics(t *testing.T) {
 		p.addPerCPUMsrMetrics(acc, cpuID, coreID, packageID)
 
 		require.Empty(t, acc.Errors)
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 	})
 
 	t.Run("WithSingleMsrReadMetrics", func(t *testing.T) {
@@ -1961,7 +1961,7 @@ func TestAddPerCPUMsrMetrics(t *testing.T) {
 			require.Len(t, acc.Errors, 1)
 			require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuTemperature, cpuID))
 			require.Empty(t, p.logOnce)
-			require.Empty(t, acc.GetTelegrafMetrics())
+			require.Empty(t, acc.GetDana2Metrics())
 			mFetcher.AssertExpectations(t)
 		})
 
@@ -1994,7 +1994,7 @@ func TestAddPerCPUMsrMetrics(t *testing.T) {
 
 			require.Len(t, acc.Errors, 1)
 			require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q: %v", cpuTemperature, mErr))
-			require.Empty(t, acc.GetTelegrafMetrics())
+			require.Empty(t, acc.GetDana2Metrics())
 
 			require.Len(t, p.logOnce, 1)
 			require.Contains(t, p.logOnce, "msr_cpu_temperature")
@@ -2025,7 +2025,7 @@ func TestAddPerCPUMsrMetrics(t *testing.T) {
 			p.addPerCPUMsrMetrics(acc, cpuID, coreID, packageID)
 
 			require.Empty(t, acc.Errors)
-			require.Len(t, acc.GetTelegrafMetrics(), 1)
+			require.Len(t, acc.GetDana2Metrics(), 1)
 			acc.AssertContainsTaggedFields(
 				t,
 				// measurement
@@ -2085,7 +2085,7 @@ func TestAddPerCPUMsrMetrics(t *testing.T) {
 
 			require.Len(t, acc.Errors, 1)
 			require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to update MSR time-related metrics for CPU ID %v", cpuID))
-			require.Empty(t, acc.GetTelegrafMetrics())
+			require.Empty(t, acc.GetDana2Metrics())
 			mFetcher.AssertExpectations(t)
 		})
 
@@ -2118,7 +2118,7 @@ func TestAddPerCPUMsrMetrics(t *testing.T) {
 
 			require.Len(t, acc.Errors, 1)
 			require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to update MSR time-related metrics: %v", mErr))
-			require.Empty(t, acc.GetTelegrafMetrics())
+			require.Empty(t, acc.GetDana2Metrics())
 
 			require.Len(t, p.logOnce, 1)
 			require.Contains(t, p.logOnce, "msr_time_related")
@@ -2153,7 +2153,7 @@ func TestAddPerCPUMsrMetrics(t *testing.T) {
 			p.addPerCPUMsrMetrics(acc, cpuID, coreID, packageID)
 
 			require.Empty(t, acc.Errors)
-			require.Len(t, acc.GetTelegrafMetrics(), 2)
+			require.Len(t, acc.GetDana2Metrics(), 2)
 			acc.AssertContainsTaggedFields(
 				t,
 				// measurement
@@ -2240,12 +2240,12 @@ func TestAddCPUTimeRelatedMsrMetrics(t *testing.T) {
 	}
 
 	require.NoError(t, p.parseConfig())
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 
 	p.addCPUTimeRelatedMsrMetrics(acc, cpuID, coreID, packageID)
 
 	require.Empty(t, acc.Errors)
-	require.Len(t, acc.GetTelegrafMetrics(), 5)
+	require.Len(t, acc.GetDana2Metrics(), 5)
 	acc.AssertContainsTaggedFields(
 		t,
 		// measurement
@@ -2342,7 +2342,7 @@ func TestAddCPUPerfMetrics(t *testing.T) {
 
 		p.addCPUPerfMetrics(acc)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), "failed to read perf events")
 		mFetcher.AssertExpectations(t)
@@ -2371,7 +2371,7 @@ func TestAddCPUPerfMetrics(t *testing.T) {
 
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to read perf events: %v", mErr))
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		require.Len(t, p.logOnce, 1)
 		require.Contains(t, p.logOnce, "perf_read")
@@ -2413,7 +2413,7 @@ func TestAddCPUPerfMetrics(t *testing.T) {
 		p.addCPUPerfMetrics(acc)
 
 		require.Empty(t, acc.Errors)
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		mFetcher.AssertExpectations(t)
 	})
 
@@ -2458,7 +2458,7 @@ func TestAddCPUPerfMetrics(t *testing.T) {
 
 			p.addCPUPerfMetrics(acc)
 
-			require.Empty(t, acc.GetTelegrafMetrics())
+			require.Empty(t, acc.GetDana2Metrics())
 			require.Len(t, acc.Errors, 1)
 			require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get perf metrics for CPU ID %v", cpuID))
 			mFetcher.AssertExpectations(t)
@@ -2518,7 +2518,7 @@ func TestAddCPUPerfMetrics(t *testing.T) {
 
 			require.Len(t, acc.Errors, 1)
 			require.ErrorContains(t, acc.FirstError(), "failed to get perf metrics for CPU ID 1")
-			require.Len(t, acc.GetTelegrafMetrics(), 1)
+			require.Len(t, acc.GetDana2Metrics(), 1)
 			acc.AssertContainsTaggedFields(
 				t,
 				// measurement
@@ -2595,7 +2595,7 @@ func TestAddCPUPerfMetrics(t *testing.T) {
 
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuC0SubstateC02Percent, cpuID))
-		require.Len(t, acc.GetTelegrafMetrics(), 2)
+		require.Len(t, acc.GetDana2Metrics(), 2)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -2665,11 +2665,11 @@ func TestAddPerCPUPerfMetrics(t *testing.T) {
 	}
 
 	require.NoError(t, p.parseConfig())
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 
 	p.addPerCPUPerfMetrics(acc, cpuID, coreID, packageID)
 
-	require.Len(t, acc.GetTelegrafMetrics(), 2)
+	require.Len(t, acc.GetDana2Metrics(), 2)
 	acc.AssertContainsTaggedFields(
 		t,
 		// measurement
@@ -2775,7 +2775,7 @@ func TestAddPackageMetrics(t *testing.T) {
 		p.addPackageMetrics(acc)
 
 		require.Empty(t, acc.Errors)
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 	})
 
 	t.Run("WithRaplMetrics", func(t *testing.T) {
@@ -2809,7 +2809,7 @@ func TestAddPackageMetrics(t *testing.T) {
 
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for package ID 1", packageThermalDesignPower))
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -2857,7 +2857,7 @@ func TestAddPackageMetrics(t *testing.T) {
 
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for package ID 0", packageCPUBaseFrequency))
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -2917,7 +2917,7 @@ func TestAddPackageMetrics(t *testing.T) {
 		require.Len(t, acc.Errors, 2)
 		require.ErrorContains(t, acc.Errors[0], fmt.Sprintf("failed to get current uncore frequency values for package ID 0 and die ID %v", dieID))
 		require.ErrorContains(t, acc.Errors[1], fmt.Sprintf("failed to get current uncore frequency values for package ID 1 and die ID %v", dieID))
-		require.Len(t, acc.GetTelegrafMetrics(), 2)
+		require.Len(t, acc.GetDana2Metrics(), 2)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -2972,7 +2972,7 @@ func TestAddPerPackageRaplMetrics(t *testing.T) {
 		p.addPerPackageRaplMetrics(acc, packageID)
 
 		require.Empty(t, acc.Errors)
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 	})
 
 	t.Run("WithModuleNotInitializedError", func(t *testing.T) {
@@ -3015,7 +3015,7 @@ func TestAddPerPackageRaplMetrics(t *testing.T) {
 		// Second call detects previous error in logOnce map and skips adding it to the accumulator.
 		p.addPerPackageRaplMetrics(acc, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 2)
 		require.ErrorContains(t, acc.Errors[0], fmt.Sprintf("failed to get %q: %v", packageCurrentDramPowerConsumption, raplNotInitErr))
 		require.ErrorContains(t, acc.Errors[1], fmt.Sprintf("failed to get %q: %v", packageThermalDesignPower, raplNotInitErr))
@@ -3066,7 +3066,7 @@ func TestAddPerPackageRaplMetrics(t *testing.T) {
 
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for package ID %v", packageCurrentDramPowerConsumption, packageID))
-		require.Len(t, acc.GetTelegrafMetrics(), 2)
+		require.Len(t, acc.GetDana2Metrics(), 2)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -3126,7 +3126,7 @@ func TestAddPerPackageRaplMetrics(t *testing.T) {
 		p.addPerPackageRaplMetrics(acc, packageID)
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -3162,7 +3162,7 @@ func TestAddPerPackageMsrMetrics(t *testing.T) {
 		p.addPerPackageMsrMetrics(acc, packageID)
 
 		require.Empty(t, acc.Errors)
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 	})
 
 	t.Run("WithModuleNotInitializedError", func(t *testing.T) {
@@ -3205,7 +3205,7 @@ func TestAddPerPackageMsrMetrics(t *testing.T) {
 		// Second call detects previous error in logOnce map and skips adding it to the accumulator.
 		p.addPerPackageMsrMetrics(acc, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 2)
 		require.ErrorContains(t, acc.Errors[0], fmt.Sprintf("failed to get %q: %v", packageCPUBaseFrequency, msrNotInitErr))
 		require.ErrorContains(t, acc.Errors[1], fmt.Sprintf("failed to get %q: %v", packageTurboLimit, msrNotInitErr))
@@ -3251,7 +3251,7 @@ func TestAddPerPackageMsrMetrics(t *testing.T) {
 
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for package ID %v", packageTurboLimit, packageID))
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -3308,7 +3308,7 @@ func TestAddPerPackageMsrMetrics(t *testing.T) {
 		p.addPerPackageMsrMetrics(acc, packageID)
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 2)
+		require.Len(t, acc.GetDana2Metrics(), 2)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -3370,11 +3370,11 @@ func TestAddCPUFrequency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUFrequency(acc, cpuID, coreID, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuFrequency, cpuID))
 		mFetcher.AssertExpectations(t)
@@ -3398,11 +3398,11 @@ func TestAddCPUFrequency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUFrequency(acc, cpuID, coreID, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_core", "cpu_frequency_mhz"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -3440,11 +3440,11 @@ func TestAddCPUTemperature(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUTemperature(acc, cpuID, coreID, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuTemperature, cpuID))
 		mFetcher.AssertExpectations(t)
@@ -3467,11 +3467,11 @@ func TestAddCPUTemperature(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUTemperature(acc, cpuID, coreID, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasUIntField("powerstat_core", "cpu_temperature_celsius"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -3509,11 +3509,11 @@ func TestAddCPUC0StateResidency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC0StateResidency(acc, cpuID, coreID, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuC0StateResidency, cpuID))
 		mFetcher.AssertExpectations(t)
@@ -3537,11 +3537,11 @@ func TestAddCPUC0StateResidency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC0StateResidency(acc, cpuID, coreID, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_core", "cpu_c0_state_residency_percent"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -3579,11 +3579,11 @@ func TestAddCPUC1StateResidency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC1StateResidency(acc, cpuID, coreID, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuC1StateResidency, cpuID))
 		mFetcher.AssertExpectations(t)
@@ -3607,11 +3607,11 @@ func TestAddCPUC1StateResidency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC1StateResidency(acc, cpuID, coreID, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_core", "cpu_c1_state_residency_percent"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -3649,11 +3649,11 @@ func TestAddCPUC3StateResidency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC3StateResidency(acc, cpuID, coreID, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuC3StateResidency, cpuID))
 		mFetcher.AssertExpectations(t)
@@ -3677,11 +3677,11 @@ func TestAddCPUC3StateResidency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC3StateResidency(acc, cpuID, coreID, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_core", "cpu_c3_state_residency_percent"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -3719,11 +3719,11 @@ func TestAddCPUC6StateResidency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC6StateResidency(acc, cpuID, coreID, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuC6StateResidency, cpuID))
 		mFetcher.AssertExpectations(t)
@@ -3747,11 +3747,11 @@ func TestAddCPUC6StateResidency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC6StateResidency(acc, cpuID, coreID, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_core", "cpu_c6_state_residency_percent"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -3789,11 +3789,11 @@ func TestAddCPUC7StateResidency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC7StateResidency(acc, cpuID, coreID, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuC7StateResidency, cpuID))
 		mFetcher.AssertExpectations(t)
@@ -3817,11 +3817,11 @@ func TestAddCPUC7StateResidency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC7StateResidency(acc, cpuID, coreID, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_core", "cpu_c7_state_residency_percent"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -3859,11 +3859,11 @@ func TestAddCPUBusyFrequency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUBusyFrequency(acc, cpuID, coreID, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuBusyFrequency, cpuID))
 		mFetcher.AssertExpectations(t)
@@ -3887,11 +3887,11 @@ func TestAddCPUBusyFrequency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUBusyFrequency(acc, cpuID, coreID, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_core", "cpu_busy_frequency_mhz"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -3929,11 +3929,11 @@ func TestAddCPUBusyCycles(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUBusyCycles(acc, cpuID, coreID, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuBusyCycles, cpuID))
 		mFetcher.AssertExpectations(t)
@@ -3957,11 +3957,11 @@ func TestAddCPUBusyCycles(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUBusyCycles(acc, cpuID, coreID, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_core", "cpu_busy_cycles_percent"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -3999,11 +3999,11 @@ func TestAddCPUC0SubstateC01Percent(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC0SubstateC01Percent(acc, cpuID, coreID, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuC0SubstateC01Percent, cpuID))
 		mFetcher.AssertExpectations(t)
@@ -4027,11 +4027,11 @@ func TestAddCPUC0SubstateC01Percent(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC0SubstateC01Percent(acc, cpuID, coreID, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_core", "cpu_c0_substate_c01_percent"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -4069,11 +4069,11 @@ func TestAddCPUC0SubstateC02Percent(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC0SubstateC02Percent(acc, cpuID, coreID, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuC0SubstateC02Percent, cpuID))
 		mFetcher.AssertExpectations(t)
@@ -4097,11 +4097,11 @@ func TestAddCPUC0SubstateC02Percent(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC0SubstateC02Percent(acc, cpuID, coreID, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_core", "cpu_c0_substate_c02_percent"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -4139,11 +4139,11 @@ func TestAddCPUC0SubstateC0WaitPercent(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC0SubstateC0WaitPercent(acc, cpuID, coreID, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics(), 0)
+		require.Empty(t, acc.GetDana2Metrics(), 0)
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for CPU ID %v", cpuC0SubstateC0WaitPercent, cpuID))
 		mFetcher.AssertExpectations(t)
@@ -4167,11 +4167,11 @@ func TestAddCPUC0SubstateC0WaitPercent(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUC0SubstateC0WaitPercent(acc, cpuID, coreID, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_core", "cpu_c0_substate_c0_wait_percent"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -4207,11 +4207,11 @@ func TestAddCurrentPackagePowerConsumption(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCurrentPackagePower(acc, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for package ID %v", packageCurrentPowerConsumption, packageID))
 		mFetcher.AssertExpectations(t)
@@ -4233,11 +4233,11 @@ func TestAddCurrentPackagePowerConsumption(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCurrentPackagePower(acc, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_package", "current_power_consumption_watts"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -4271,11 +4271,11 @@ func TestAddCurrentDramPowerConsumption(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCurrentDramPower(acc, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for package ID %v", packageCurrentDramPowerConsumption, packageID))
 		mFetcher.AssertExpectations(t)
@@ -4297,11 +4297,11 @@ func TestAddCurrentDramPowerConsumption(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCurrentDramPower(acc, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_package", "current_dram_power_consumption_watts"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -4335,11 +4335,11 @@ func TestAddThermalDesignPower(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addThermalDesignPower(acc, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for package ID %v", packageThermalDesignPower, packageID))
 		mFetcher.AssertExpectations(t)
@@ -4361,11 +4361,11 @@ func TestAddThermalDesignPower(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addThermalDesignPower(acc, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasFloatField("powerstat_package", "thermal_design_power_watts"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -4399,11 +4399,11 @@ func TestAddCPUBaseFrequency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUBaseFrequency(acc, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for package ID %v", packageCPUBaseFrequency, packageID))
 		mFetcher.AssertExpectations(t)
@@ -4424,11 +4424,11 @@ func TestAddCPUBaseFrequency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addCPUBaseFrequency(acc, packageID)
 
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		require.True(t, acc.HasUIntField("powerstat_package", "cpu_base_frequency_mhz"))
 		acc.AssertContainsTaggedFields(
 			t,
@@ -4462,11 +4462,11 @@ func TestAddUncoreFrequency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addUncoreFrequency(acc, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(
 			t,
@@ -4506,7 +4506,7 @@ func TestAddUncoreFrequency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addUncoreFrequency(acc, packageID)
 
@@ -4516,7 +4516,7 @@ func TestAddUncoreFrequency(t *testing.T) {
 			acc.FirstError(),
 			fmt.Sprintf("failed to get initial uncore frequency limits for package ID %v and die ID %v", packageID, dieID),
 		)
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -4567,7 +4567,7 @@ func TestAddUncoreFrequency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addUncoreFrequency(acc, packageID)
 
@@ -4577,7 +4577,7 @@ func TestAddUncoreFrequency(t *testing.T) {
 			acc.FirstError(),
 			fmt.Sprintf("failed to get current uncore frequency values for package ID %v and die ID %v", packageID, dieID),
 		)
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -4630,12 +4630,12 @@ func TestAddUncoreFrequency(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addUncoreFrequency(acc, packageID)
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 2)
+		require.Len(t, acc.GetDana2Metrics(), 2)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -4692,7 +4692,7 @@ func TestAddUncoreFrequencyInitialLimits(t *testing.T) {
 			logOnce: map[string]struct{}{},
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		// First call adds the error to the accumulator and logOnce map.
 		p.addUncoreFrequencyInitialLimits(acc, packageID, dieID)
@@ -4700,7 +4700,7 @@ func TestAddUncoreFrequencyInitialLimits(t *testing.T) {
 		// Second call detects previous error in logOnce map and skips adding it to the accumulator.
 		p.addUncoreFrequencyInitialLimits(acc, packageID, dieID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q initial limits", packageUncoreFrequency))
 		require.ErrorContains(t, acc.FirstError(), uncoreFreqErr.Error())
@@ -4724,11 +4724,11 @@ func TestAddUncoreFrequencyInitialLimits(t *testing.T) {
 			logOnce: map[string]struct{}{},
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addUncoreFrequencyInitialLimits(acc, packageID, dieID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(
 			t,
@@ -4757,12 +4757,12 @@ func TestAddUncoreFrequencyInitialLimits(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addUncoreFrequencyInitialLimits(acc, packageID, dieID)
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -4802,7 +4802,7 @@ func TestAddUncoreFrequencyCurrentValues(t *testing.T) {
 			logOnce: map[string]struct{}{},
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		// First call adds the error to the accumulator and logOnce map.
 		p.addUncoreFrequencyCurrentValues(acc, packageID, dieID)
@@ -4810,7 +4810,7 @@ func TestAddUncoreFrequencyCurrentValues(t *testing.T) {
 		// Second call detects previous error in logOnce map and skips adding it to the accumulator.
 		p.addUncoreFrequencyCurrentValues(acc, packageID, dieID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q current value and limits", packageUncoreFrequency))
 		require.ErrorContains(t, acc.FirstError(), uncoreFreqErr.Error())
@@ -4834,11 +4834,11 @@ func TestAddUncoreFrequencyCurrentValues(t *testing.T) {
 			logOnce: map[string]struct{}{},
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addUncoreFrequencyCurrentValues(acc, packageID, dieID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(
 			t,
@@ -4871,12 +4871,12 @@ func TestAddUncoreFrequencyCurrentValues(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addUncoreFrequencyCurrentValues(acc, packageID, dieID)
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 1)
+		require.Len(t, acc.GetDana2Metrics(), 1)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -5052,7 +5052,7 @@ func TestAddMaxTurboFreqLimits(t *testing.T) {
 			logOnce: map[string]struct{}{},
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		// First call adds the error to the accumulator and key to logOnce map.
 		p.addMaxTurboFreqLimits(acc, packageID)
@@ -5060,7 +5060,7 @@ func TestAddMaxTurboFreqLimits(t *testing.T) {
 		// Second call detects previous error in logOnce map and skips adding it to the accumulator.
 		p.addMaxTurboFreqLimits(acc, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q: %v", packageTurboLimit, mErr))
 
@@ -5084,11 +5084,11 @@ func TestAddMaxTurboFreqLimits(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addMaxTurboFreqLimits(acc, packageID)
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 		require.Len(t, acc.Errors, 1)
 		require.ErrorContains(t, acc.FirstError(), fmt.Sprintf("failed to get %q for package ID %v", packageTurboLimit, packageID))
 		mFetcher.AssertExpectations(t)
@@ -5120,12 +5120,12 @@ func TestAddMaxTurboFreqLimits(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addMaxTurboFreqLimits(acc, packageID)
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 2)
+		require.Len(t, acc.GetDana2Metrics(), 2)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement
@@ -5184,12 +5184,12 @@ func TestAddMaxTurboFreqLimits(t *testing.T) {
 			fetcher: mFetcher,
 		}
 
-		require.Empty(t, acc.GetTelegrafMetrics())
+		require.Empty(t, acc.GetDana2Metrics())
 
 		p.addMaxTurboFreqLimits(acc, packageID)
 
 		require.Empty(t, acc.Errors)
-		require.Len(t, acc.GetTelegrafMetrics(), 2)
+		require.Len(t, acc.GetDana2Metrics(), 2)
 		acc.AssertContainsTaggedFields(
 			t,
 			// measurement

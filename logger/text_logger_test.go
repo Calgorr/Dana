@@ -212,7 +212,7 @@ func TestTextWriteDerivedLoggerWithAttributes(t *testing.T) {
 	require.Equal(t, "Z I! [testing.test::myalias] TEST\n", string(buf[19:]))
 }
 
-func BenchmarkTelegrafTextLogWrite(b *testing.B) {
+func BenchmarkDana2TextLogWrite(b *testing.B) {
 	l, err := createTextLogger(&Config{})
 	require.NoError(b, err)
 

@@ -92,7 +92,7 @@ func (o *OpcUAClientConfig) validateEndpoint() error {
 	return nil
 }
 
-func (o *OpcUAClientConfig) CreateClient(telegrafLogger Dana.Logger) (*OpcUAClient, error) {
+func (o *OpcUAClientConfig) CreateClient(Dana2Logger Dana.Logger) (*OpcUAClient, error) {
 	err := o.Validate()
 	if err != nil {
 		return nil, err
@@ -100,12 +100,12 @@ func (o *OpcUAClientConfig) CreateClient(telegrafLogger Dana.Logger) (*OpcUAClie
 
 	if o.ClientTrace {
 		debug.Enable = true
-		debug.Logger = log.New(&DebugLogger{Log: telegrafLogger}, "", 0)
+		debug.Logger = log.New(&DebugLogger{Log: Dana2Logger}, "", 0)
 	}
 
 	c := &OpcUAClient{
 		Config: o,
-		Log:    telegrafLogger,
+		Log:    Dana2Logger,
 	}
 	c.Log.Debug("Initialising OpcUAClient")
 
@@ -136,7 +136,7 @@ func (o *OpcUAClient) SetupOptions() error {
 	if o.Config.Certificate == "" && o.Config.PrivateKey == "" {
 		if o.Config.SecurityPolicy != "None" || o.Config.SecurityMode != "None" {
 			o.Log.Debug("Generating self-signed certificate")
-			cert, privateKey, err := generateCert("urn:telegraf:gopcua:client", 2048,
+			cert, privateKey, err := generateCert("urn:Dana2:gopcua:client", 2048,
 				o.Config.Certificate, o.Config.PrivateKey, 365*24*time.Hour)
 			if err != nil {
 				return err

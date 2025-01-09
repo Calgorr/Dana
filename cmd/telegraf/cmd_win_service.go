@@ -20,12 +20,12 @@ func cliFlags() []cli.Flag {
 		},
 		&cli.StringFlag{
 			Name:  "service-name",
-			Value: "telegraf",
+			Value: "Dana2",
 			Usage: "service name (windows only)",
 		},
 		&cli.StringFlag{
 			Name:  "service-display-name",
-			Value: "Telegraf Data Collector Service",
+			Value: "Dana2 Data Collector Service",
 			Usage: "service display name (windows only)",
 		},
 		&cli.StringFlag{
@@ -52,28 +52,28 @@ func getServiceCommands(outputBuffer io.Writer) []*cli.Command {
 			Subcommands: []*cli.Command{
 				{
 					Name:  "install",
-					Usage: "install Telegraf as a Windows service",
+					Usage: "install Dana2 as a Windows service",
 					Description: `
 The 'install' command with create a Windows service for automatically starting
-Telegraf with the specified configuration and service parameters. If no
+Dana2 with the specified configuration and service parameters. If no
 configuration(s) is specified the service will use the file in
-"C:\Program Files\Telegraf\telegraf.conf".
+"C:\Program Files\Dana2\Dana2.conf".
 
-To install Telegraf as a service use
+To install Dana2 as a service use
 
-> telegraf service install
+> Dana2 service install
 
-In case you are planning to start multiple Telegraf instances as a service,
+In case you are planning to start multiple Dana2 instances as a service,
 you must use distinctive service-names for each instance. To install two
 services with different configurations use
 
-> telegraf --config "C:\Program Files\Telegraf\telegraf-machine.conf" --service-name telegraf-machine service install
-> telegraf --config "C:\Program Files\Telegraf\telegraf-service.conf" --service-name telegraf-service service install
+> Dana2 --config "C:\Program Files\Dana2\Dana2-machine.conf" --service-name Dana2-machine service install
+> Dana2 --config "C:\Program Files\Dana2\Dana2-service.conf" --service-name Dana2-service service install
 `,
 					Flags: []cli.Flag{
 						&cli.StringFlag{
 							Name:  "display-name",
-							Value: "Telegraf Data Collector Service",
+							Value: "Dana2 Data Collector Service",
 							Usage: "service name as displayed in the service manager",
 						},
 						&cli.StringFlag{
@@ -105,16 +105,16 @@ services with different configurations use
 				},
 				{
 					Name:  "uninstall",
-					Usage: "remove the Telegraf Windows service",
+					Usage: "remove the Dana2 Windows service",
 					Description: `
-The 'uninstall' command removes the Telegraf service with the given name. To
+The 'uninstall' command removes the Dana2 service with the given name. To
 remove a service use
 
-> telegraf service uninstall
+> Dana2 service uninstall
 
 In case you specified a custom service-name during install use
 
-> telegraf --service-name telegraf-machine service uninstall
+> Dana2 --service-name Dana2-machine service uninstall
 `,
 					Action: func(cCtx *cli.Context) error {
 						name := cCtx.String("service-name")
@@ -127,16 +127,16 @@ In case you specified a custom service-name during install use
 				},
 				{
 					Name:  "start",
-					Usage: "start the Telegraf Windows service",
+					Usage: "start the Dana2 Windows service",
 					Description: `
 The 'start' command triggers the start of the Windows service with the given
 name. To start the service either use the Windows service manager or run
 
-> telegraf service start
+> Dana2 service start
 
 In case you specified a custom service-name during install use
 
-> telegraf --service-name telegraf-machine service start
+> Dana2 --service-name Dana2-machine service start
 `,
 					Action: func(cCtx *cli.Context) error {
 						name := cCtx.String("service-name")
@@ -149,17 +149,17 @@ In case you specified a custom service-name during install use
 				},
 				{
 					Name:  "stop",
-					Usage: "stop the Telegraf Windows service",
+					Usage: "stop the Dana2 Windows service",
 					Description: `
 The 'stop' command triggers the stop of the Windows service with the given
 name and will wait until the service is actually stopped. To stop the service
 either use the Windows service manager or run
 
-> telegraf service stop
+> Dana2 service stop
 
 In case you specified a custom service-name during install use
 
-> telegraf --service-name telegraf-machine service stop
+> Dana2 --service-name Dana2-machine service stop
 `,
 					Action: func(cCtx *cli.Context) error {
 						name := cCtx.String("service-name")
@@ -176,16 +176,16 @@ In case you specified a custom service-name during install use
 				},
 				{
 					Name:  "status",
-					Usage: "query the Telegraf Windows service status",
+					Usage: "query the Dana2 Windows service status",
 					Description: `
 The 'status' command queries the current state of the Windows service with the
 given name. To query the service either check the Windows service manager or run
 
-> telegraf service status
+> Dana2 service status
 
 In case you specified a custom service-name during install use
 
-> telegraf --service-name telegraf-machine service status
+> Dana2 --service-name Dana2-machine service status
 `,
 					Action: func(cCtx *cli.Context) error {
 						name := cCtx.String("service-name")

@@ -108,7 +108,7 @@ func TestConnectAndWriteIntegration(t *testing.T) {
 
 	// Setup common config params
 	workspace := "test"
-	topic := "telegraf"
+	topic := "Dana2"
 
 	// Setup a kafka container
 	ctx := context.Background()

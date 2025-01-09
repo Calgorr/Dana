@@ -8,7 +8,7 @@ import (
 
 func (o *OS) createKeyringConfig() (keyring.Config, error) {
 	if o.Keyring == "" {
-		o.Keyring = "telegraf"
+		o.Keyring = "Dana2"
 	}
 	return keyring.Config{
 		ServiceName:     o.Keyring,

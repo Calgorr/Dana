@@ -302,7 +302,7 @@ type rawCollection map[string]rawPerfCounter
 type perfSchemaMap map[string]map[string]Dana.ValueType
 
 // Parses the output of ceph perf schema into a useful format, mapping metrics
-// in collections to their Telegraf metric type.  This is made a little more
+// in collections to their Dana2 metric type.  This is made a little more
 // complicated by the need to expand averages into their component metrics.
 func parseSchema(rawSchema string) (perfSchemaMap, error) {
 	rawMap := make(map[string]rawCollection)

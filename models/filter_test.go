@@ -466,7 +466,7 @@ func TestFilterTagsMatches(t *testing.T) {
 
 // TestFilter_FilterNamePassAndDrop used for check case when
 // both parameters were defined
-// see: https://github.com/influxdata/telegraf/issues/2860
+// see: https://github.com/influxdata/Dana2/issues/2860
 func TestFilterNamePassAndDrop(t *testing.T) {
 	inputData := []string{"name1", "name2", "name3", "name4"}
 	expectedResult := []bool{false, true, false, false}
@@ -485,7 +485,7 @@ func TestFilterNamePassAndDrop(t *testing.T) {
 
 // TestFilter_FieldIncludeAndExclude used for check case when
 // both parameters were defined
-// see: https://github.com/influxdata/telegraf/issues/2860
+// see: https://github.com/influxdata/Dana2/issues/2860
 func TestFilterFieldIncludeAndExclude(t *testing.T) {
 	inputData := []string{"field1", "field2", "field3", "field4"}
 	expectedResult := []bool{false, true, false, false}
@@ -504,7 +504,7 @@ func TestFilterFieldIncludeAndExclude(t *testing.T) {
 
 // TestFilter_FilterTagsPassAndDrop used for check case when
 // both parameters were defined
-// see: https://github.com/influxdata/telegraf/issues/2860
+// see: https://github.com/influxdata/Dana2/issues/2860
 func TestFilterTagsPassAndDrop(t *testing.T) {
 	inputData := [][]*Dana.Tag{
 		{{Key: "tag1", Value: "1"}, {Key: "tag2", Value: "3"}},

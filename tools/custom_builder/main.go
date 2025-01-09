@@ -24,18 +24,18 @@ var categories = []string{
 }
 
 const description = `
-This is a tool build Telegraf with a custom set of plugins. The plugins are
-select according to the specified Telegraf configuration files. This allows
+This is a tool build Dana2 with a custom set of plugins. The plugins are
+select according to the specified Dana2 configuration files. This allows
 to shrink the binary size by only selecting the plugins you really need.
 A more detailed documentation is available at
-http://github.com/influxdata/telegraf/tools/custom_builder/README.md
+http://github.com/influxdata/Dana2/tools/custom_builder/README.md
 `
 
 const examples = `
-The following command with customize Telegraf to fit the configuration found
+The following command with customize Dana2 to fit the configuration found
 at the default locations
 
-  custom_builder --config /etc/telegraf/telegraf.conf --config-dir /etc/telegraf/telegraf.d
+  custom_builder --config /etc/Dana2/Dana2.conf --config-dir /etc/Dana2/Dana2.d
 
 You can the --config and --config-dir multiple times
 
@@ -148,7 +148,7 @@ func process(cmdcfg *cmdConfig) ([]string, error) {
 		return nil, fmt.Errorf("collecting plugins failed: %w", err)
 	}
 
-	// Import the plugin list from Telegraf configuration files
+	// Import the plugin list from Dana2 configuration files
 	log.Println("Importing configuration file(s)...")
 	cfg, nfiles, err := ImportConfigurations(cmdcfg.configFiles, cmdcfg.configDirs)
 	if err != nil {

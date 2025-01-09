@@ -42,7 +42,7 @@ func (o *OS) Init() error {
 
 	// Set defaults
 	if o.Keyring == "" {
-		o.Keyring = "telegraf"
+		o.Keyring = "Dana2"
 	}
 
 	// Setup the actual keyring

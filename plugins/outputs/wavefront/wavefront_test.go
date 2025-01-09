@@ -237,17 +237,17 @@ func TestBuildTagsWithSource(t *testing.T) {
 		{
 			map[string]string{"snmp_host": "realHost", "host": "origHost"},
 			"realHost",
-			map[string]string{"telegraf_host": "origHost"},
+			map[string]string{"Dana2_host": "origHost"},
 		},
 		{
 			map[string]string{"hostagent": "realHost", "host": "origHost"},
 			"realHost",
-			map[string]string{"telegraf_host": "origHost"},
+			map[string]string{"Dana2_host": "origHost"},
 		},
 		{
 			map[string]string{"hostagent": "abc", "snmp_host": "realHost", "host": "origHost"},
 			"realHost",
-			map[string]string{"hostagent": "abc", "telegraf_host": "origHost"},
+			map[string]string{"hostagent": "abc", "Dana2_host": "origHost"},
 		},
 		{
 			map[string]string{"something": "abc", "host": "r*@l\"Ho/st"},

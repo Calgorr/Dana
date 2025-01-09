@@ -78,7 +78,7 @@ func (s *Serializer) createObject(metric Dana.Metric) OIMetrics {
 	*/
 	var allmetrics OIMetrics //nolint:prealloc // Pre-allocating may change format of marshaled JSON
 	var oimetric OIMetric
-	oimetric.Source = "Telegraf"
+	oimetric.Source = "Dana2"
 
 	// Process Tags to extract node & resource name info
 	for _, tag := range metric.TagList() {

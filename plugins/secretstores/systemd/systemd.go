@@ -133,6 +133,6 @@ func getSystemdMajorVersion() (int, error) {
 // Register the secret-store on load.
 func init() {
 	secretstores.Add("systemd", func(_ string) Dana.SecretStore {
-		return &Systemd{Prefix: "telegraf."}
+		return &Systemd{Prefix: "Dana2."}
 	})
 }

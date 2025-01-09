@@ -97,7 +97,7 @@ func (sc *subscribeClientConfig) createSubscribeClient(log Dana.Logger) (*subscr
 		Config:             *sc,
 		monitoredItemsReqs: make([]*ua.MonitoredItemCreateRequest, len(client.NodeIDs)),
 		// 100 was chosen to make sure that the channels will not block when multiple changes come in at the same time.
-		// The channel size should be increased if reports come in on Telegraf blocking when many changes come in at
+		// The channel size should be increased if reports come in on Dana2 blocking when many changes come in at
 		// the same time. It could be made dependent on the number of nodes subscribed to and the subscription interval.
 		dataNotifications: make(chan *opcua.PublishNotificationData, 100),
 		metrics:           make(chan Dana.Metric, 100),

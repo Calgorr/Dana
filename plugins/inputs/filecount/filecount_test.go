@@ -1,7 +1,7 @@
 //go:build !windows
 
 // TODO: Windows - should be enabled for Windows when super asterisk is fixed on Windows
-// https://github.com/influxdata/telegraf/issues/6248
+// https://github.com/influxdata/Dana2/issues/6248
 
 package filecount
 
@@ -172,7 +172,7 @@ func TestDirectoryWithTrailingSlash(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func getNoFilterFileCount() FileCount {

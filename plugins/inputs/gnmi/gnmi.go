@@ -34,7 +34,7 @@ var supportedExtensions = []string{"juniper_header"}
 // Define the warning to show if we cannot get a metric name.
 const emptyNameWarning = `Got empty metric-name for response (field %q), usually
 indicating configuration issues as the response cannot be related to any
-subscription.Please open an issue on https://github.com/influxdata/telegraf
+subscription.Please open an issue on https://github.com/influxdata/Dana2
 including your device model and the following response data:
 %+v
 This message is only printed once.`
@@ -367,7 +367,7 @@ func (c *GNMI) newSubscribeRequest() (*gnmi.SubscribeRequest, error) {
 	}
 
 	// Do not provide an empty prefix. Required for Huawei NE40 router v8.21
-	// (and possibly others). See https://github.com/influxdata/telegraf/issues/12273.
+	// (and possibly others). See https://github.com/influxdata/Dana2/issues/12273.
 	if gnmiPath.Origin == "" && gnmiPath.Target == "" && len(gnmiPath.Elem) == 0 {
 		gnmiPath = nil
 	}

@@ -40,25 +40,25 @@ var secrets = map[string]map[string][]byte{
 	},
 }
 
-type MockTelegraf struct {
+type MockDana2 struct {
 	GlobalFlags
 	WindowFlags
 }
 
-func NewMockTelegraf() *MockTelegraf {
-	return &MockTelegraf{}
+func NewMockDana2() *MockDana2 {
+	return &MockDana2{}
 }
 
-func (m *MockTelegraf) Init(_ <-chan error, _ Filters, g GlobalFlags, w WindowFlags) {
+func (m *MockDana2) Init(_ <-chan error, _ Filters, g GlobalFlags, w WindowFlags) {
 	m.GlobalFlags = g
 	m.WindowFlags = w
 }
 
-func (m *MockTelegraf) Run() error {
+func (m *MockDana2) Run() error {
 	return nil
 }
 
-func (m *MockTelegraf) ListSecretStores() ([]string, error) {
+func (m *MockDana2) ListSecretStores() ([]string, error) {
 	ids := make([]string, 0, len(secrets))
 	for k := range secrets {
 		ids = append(ids, k)
@@ -66,7 +66,7 @@ func (m *MockTelegraf) ListSecretStores() ([]string, error) {
 	return ids, nil
 }
 
-func (m *MockTelegraf) GetSecretStore(id string) (Dana.SecretStore, error) {
+func (m *MockDana2) GetSecretStore(id string) (Dana.SecretStore, error) {
 	v, found := secrets[id]
 	if !found {
 		return nil, errors.New("unknown secret store")
@@ -186,7 +186,7 @@ func TestUsageFlag(t *testing.T) {
 		buf := new(bytes.Buffer)
 		args := os.Args[0:1]
 		args = append(args, "--usage", test.PluginName)
-		err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockTelegraf())
+		err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockDana2())
 		if test.ExpectedError != "" {
 			require.ErrorContains(t, err, test.ExpectedError)
 			continue
@@ -206,9 +206,9 @@ func TestInputListFlag(t *testing.T) {
 	inputs.Inputs = map[string]inputs.Creator{
 		"test": func() Dana.Input { return nil },
 	}
-	err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockTelegraf())
+	err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockDana2())
 	require.NoError(t, err)
-	expectedOutput := `DEPRECATED: use telegraf plugins inputs
+	expectedOutput := `DEPRECATED: use Dana2 plugins inputs
 Available Input Plugins:
   test
 `
@@ -224,9 +224,9 @@ func TestOutputListFlag(t *testing.T) {
 	outputs.Outputs = map[string]outputs.Creator{
 		"test": func() Dana.Output { return nil },
 	}
-	err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockTelegraf())
+	err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockDana2())
 	require.NoError(t, err)
-	expectedOutput := `DEPRECATED: use telegraf plugins outputs
+	expectedOutput := `DEPRECATED: use Dana2 plugins outputs
 Available Output Plugins:
   test
 `
@@ -248,7 +248,7 @@ func TestDeprecationListFlag(t *testing.T) {
 			},
 		},
 	}
-	err := runApp(args, buf, mS, mC, NewMockTelegraf())
+	err := runApp(args, buf, mS, mC, NewMockDana2())
 	require.NoError(t, err)
 	expectedOutput := `Deprecated Input Plugins:
 plugin name: test
@@ -266,7 +266,7 @@ func TestPprofAddressFlag(t *testing.T) {
 	address := "localhost:6060"
 	args = append(args, "--pprof-addr", address)
 	m := NewMockServer()
-	err := runApp(args, buf, m, NewMockConfig(buf), NewMockTelegraf())
+	err := runApp(args, buf, m, NewMockConfig(buf), NewMockDana2())
 	require.NoError(t, err)
 	require.Equal(t, address, m.Address)
 }
@@ -277,7 +277,7 @@ func TestPluginDirectoryFlag(t *testing.T) {
 	buf := new(bytes.Buffer)
 	args := os.Args[0:1]
 	args = append(args, "--plugin-directory", ".")
-	err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockTelegraf())
+	err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockDana2())
 	require.ErrorContains(t, err, "go plugin support is not enabled")
 }
 
@@ -409,7 +409,7 @@ func TestCommandConfig(t *testing.T) {
 			buf := new(bytes.Buffer)
 			args := os.Args[0:1]
 			args = append(args, test.commands...)
-			err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockTelegraf())
+			err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockDana2())
 			require.NoError(t, err)
 			output := buf.String()
 			for _, e := range test.expectedHeaders {
@@ -437,26 +437,26 @@ func TestCommandVersion(t *testing.T) {
 	}{
 		{
 			Version:        "v2.0.0",
-			ExpectedOutput: "Telegraf v2.0.0\n",
+			ExpectedOutput: "Dana2 v2.0.0\n",
 		},
 		{
-			ExpectedOutput: "Telegraf unknown\n",
+			ExpectedOutput: "Dana2 unknown\n",
 		},
 		{
 			Version:        "v2.0.0",
 			Branch:         "master",
-			ExpectedOutput: "Telegraf v2.0.0 (git: master@unknown)\n",
+			ExpectedOutput: "Dana2 v2.0.0 (git: master@unknown)\n",
 		},
 		{
 			Version:        "v2.0.0",
 			Branch:         "master",
 			Commit:         "123",
-			ExpectedOutput: "Telegraf v2.0.0 (git: master@123)\n",
+			ExpectedOutput: "Dana2 v2.0.0 (git: master@123)\n",
 		},
 		{
 			Version:        "v2.0.0",
 			Commit:         "123",
-			ExpectedOutput: "Telegraf v2.0.0 (git: unknown@123)\n",
+			ExpectedOutput: "Dana2 v2.0.0 (git: unknown@123)\n",
 		},
 	}
 
@@ -467,7 +467,7 @@ func TestCommandVersion(t *testing.T) {
 		internal.Version = test.Version
 		internal.Branch = test.Branch
 		internal.Commit = test.Commit
-		err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockTelegraf())
+		err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockDana2())
 		require.NoError(t, err)
 		require.Equal(t, test.ExpectedOutput, buf.String())
 	}
@@ -483,26 +483,26 @@ func TestFlagVersion(t *testing.T) {
 	}{
 		{
 			Version:        "v2.0.0",
-			ExpectedOutput: "Telegraf v2.0.0\n",
+			ExpectedOutput: "Dana2 v2.0.0\n",
 		},
 		{
-			ExpectedOutput: "Telegraf unknown\n",
+			ExpectedOutput: "Dana2 unknown\n",
 		},
 		{
 			Version:        "v2.0.0",
 			Branch:         "master",
-			ExpectedOutput: "Telegraf v2.0.0 (git: master@unknown)\n",
+			ExpectedOutput: "Dana2 v2.0.0 (git: master@unknown)\n",
 		},
 		{
 			Version:        "v2.0.0",
 			Branch:         "master",
 			Commit:         "123",
-			ExpectedOutput: "Telegraf v2.0.0 (git: master@123)\n",
+			ExpectedOutput: "Dana2 v2.0.0 (git: master@123)\n",
 		},
 		{
 			Version:        "v2.0.0",
 			Commit:         "123",
-			ExpectedOutput: "Telegraf v2.0.0 (git: unknown@123)\n",
+			ExpectedOutput: "Dana2 v2.0.0 (git: unknown@123)\n",
 		},
 	}
 
@@ -513,7 +513,7 @@ func TestFlagVersion(t *testing.T) {
 		internal.Version = test.Version
 		internal.Branch = test.Branch
 		internal.Commit = test.Commit
-		err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockTelegraf())
+		err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), NewMockDana2())
 		require.NoError(t, err)
 		require.Equal(t, test.ExpectedOutput, buf.String())
 	}
@@ -530,7 +530,7 @@ func TestGlobablBoolFlags(t *testing.T) {
 	buf := new(bytes.Buffer)
 	args := os.Args[0:1]
 	args = append(args, commands...)
-	m := NewMockTelegraf()
+	m := NewMockDana2()
 	err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), m)
 	require.NoError(t, err)
 
@@ -559,7 +559,7 @@ func TestFlagsAreSet(t *testing.T) {
 	buf := new(bytes.Buffer)
 	args := os.Args[0:1]
 	args = append(args, commands...)
-	m := NewMockTelegraf()
+	m := NewMockDana2()
 	err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), m)
 	require.NoError(t, err)
 

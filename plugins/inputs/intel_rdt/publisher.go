@@ -24,7 +24,7 @@ type parsedProcessMeasurement struct {
 	time    time.Time
 }
 
-// publisher for publish new RDT metrics to telegraf accumulator
+// publisher for publish new RDT metrics to Dana2 accumulator
 type publisher struct {
 	acc               Dana.Accumulator
 	log               Dana.Logger

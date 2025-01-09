@@ -226,7 +226,7 @@ func (p *Parser) createMetric(data map[string]interface{}, schema string) (Dana.
 		tags[k] = v
 	}
 	// Avro doesn't have a Tag/Field distinction, so we have to tell
-	// Telegraf which items are our tags.
+	// Dana2 which items are our tags.
 	for _, tag := range p.Tags {
 		flat, flattenErr := p.flattenItem(tag, data[tag])
 		if flattenErr != nil {
@@ -270,7 +270,7 @@ func (p *Parser) createMetric(data map[string]interface{}, schema string) (Dana.
 		return nil, fmt.Errorf("unmarshalling schema failed: %w", err)
 	}
 	if len(fields) == 0 {
-		// A telegraf metric needs at least one field.
+		// A Dana2 metric needs at least one field.
 		return nil, errors.New("number of fields is 0; unable to create metric")
 	}
 

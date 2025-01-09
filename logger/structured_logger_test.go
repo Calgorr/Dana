@@ -345,7 +345,7 @@ func TestStructuredLogMessageKey(t *testing.T) {
 	require.Equal(t, expected, actual)
 }
 
-func BenchmarkTelegrafStructuredLogWrite(b *testing.B) {
+func BenchmarkDana2StructuredLogWrite(b *testing.B) {
 	// Discard all logging output
 	l := &structuredLogger{
 		handler: slog.NewJSONHandler(io.Discard, defaultStructuredHandlerOptions),

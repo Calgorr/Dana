@@ -40,7 +40,7 @@ func TestMultipleConfigs(t *testing.T) {
 			continue
 		}
 		testdataPath := filepath.Join("testdata", f.Name())
-		configFilename := filepath.Join(testdataPath, "telegraf.conf")
+		configFilename := filepath.Join(testdataPath, "Dana2.conf")
 		expectedFilename := filepath.Join(testdataPath, "expected.out")
 		expectedErrorFilename := filepath.Join(testdataPath, "expected.err")
 
@@ -84,7 +84,7 @@ func TestMultipleConfigs(t *testing.T) {
 			}
 
 			// Process expected metrics and compare with resulting metrics
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 
 			// Folder with timestamp prefixed will also check for matching timestamps to make sure they are parsed correctly

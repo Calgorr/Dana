@@ -642,7 +642,7 @@ func TestElasticsearchQueryIntegration(t *testing.T) {
 	for _, result := range testEsAggregationData {
 		expectedMetrics = append(expectedMetrics, result.expectedMetrics...)
 	}
-	testutil.RequireMetricsEqual(t, expectedMetrics, acc.GetTelegrafMetrics(), testutil.SortMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expectedMetrics, acc.GetDana2Metrics(), testutil.SortMetrics(), testutil.IgnoreTime())
 
 	// aggregations that should return an error
 	for _, agg := range testEsAggregationData {

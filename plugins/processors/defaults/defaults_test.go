@@ -135,7 +135,7 @@ func TestDefaults(t *testing.T) {
 
 func TestTracking(t *testing.T) {
 	inputRaw := []Dana.Metric{
-		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42, "topic": "telegraf"}, time.Unix(0, 0)),
+		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42, "topic": "Dana2"}, time.Unix(0, 0)),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"hours": 23}, time.Unix(0, 0)),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"status": "fixed"}, time.Unix(0, 0)),
 	}
@@ -158,7 +158,7 @@ func TestTracking(t *testing.T) {
 		metric.New(
 			"foo",
 			map[string]string{},
-			map[string]interface{}{"value": 42, "status": "unknown", "topic": "telegraf"},
+			map[string]interface{}{"value": 42, "status": "unknown", "topic": "Dana2"},
 			time.Unix(0, 0),
 		),
 		metric.New(

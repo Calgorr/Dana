@@ -56,11 +56,11 @@ var (
 	// Password specified via command-line
 	Password Secret
 
-	// telegrafVersion contains the parsed semantic Telegraf version
-	telegrafVersion *semver.Version = semver.New("0.0.0-unknown")
+	// Dana2Version contains the parsed semantic Dana2 version
+	Dana2Version *semver.Version = semver.New("0.0.0-unknown")
 )
 
-// Config specifies the URL/user/password for the database that telegraf
+// Config specifies the URL/user/password for the database that Dana2
 // will be logging to, as well as all the plugins that the user has
 // specified
 type Config struct {
@@ -126,7 +126,7 @@ func (op OrderedPlugins) Len() int           { return len(op) }
 func (op OrderedPlugins) Swap(i, j int)      { op[i], op[j] = op[j], op[i] }
 func (op OrderedPlugins) Less(i, j int) bool { return op[i].Line < op[j].Line }
 
-// NewConfig creates a new struct to hold the Telegraf config.
+// NewConfig creates a new struct to hold the Dana2 config.
 // For historical reasons, It holds the actual instances of the running plugins
 // once the configuration is parsed.
 func NewConfig() *Config {
@@ -158,7 +158,7 @@ func NewConfig() *Config {
 
 	// Handle unknown version
 	if internal.Version != "" && internal.Version != "unknown" {
-		telegrafVersion = semver.New(internal.Version)
+		Dana2Version = semver.New(internal.Version)
 	}
 
 	tomlCfg := &toml.Config{
@@ -171,7 +171,7 @@ func NewConfig() *Config {
 	return c
 }
 
-// AgentConfig defines configuration that will be used by the Telegraf agent
+// AgentConfig defines configuration that will be used by the Dana2 agent
 type AgentConfig struct {
 	// Interval at which to gather information
 	Interval Duration
@@ -209,7 +209,7 @@ type AgentConfig struct {
 
 	// FlushJitter Jitters the flush interval by a random amount.
 	// This is primarily to avoid large write spikes for users running a large
-	// number of telegraf instances.
+	// number of Dana2 instances.
 	// ie, a jitter of 5s and interval 10s means flushes will happen every 10-15s
 	FlushJitter Duration
 
@@ -224,7 +224,7 @@ type AgentConfig struct {
 	// not be less than 2 times MetricBatchSize.
 	MetricBufferLimit int
 
-	// FlushBufferWhenFull tells Telegraf to flush the metric buffer whenever
+	// FlushBufferWhenFull tells Dana2 to flush the metric buffer whenever
 	// it fills up, regardless of FlushInterval. Setting this option to true
 	// does _not_ deactivate FlushInterval.
 	FlushBufferWhenFull bool `toml:"flush_buffer_when_full" deprecated:"0.13.0;1.35.0;option is ignored"`
@@ -280,7 +280,7 @@ type AgentConfig struct {
 
 	// Name of the file to load the state of plugins from and store the state to.
 	// If uncommented and not empty, this file will be used to save the state of
-	// stateful plugins on termination of Telegraf. If the file exists on start,
+	// stateful plugins on termination of Dana2. If the file exists on start,
 	// the state in the file will be restored for the plugins.
 	Statefile string `toml:"statefile"`
 
@@ -402,7 +402,7 @@ func WalkDirectory(path string) ([]string, error) {
 	var files []string
 	walkfn := func(thispath string, info os.FileInfo, _ error) error {
 		if info == nil {
-			log.Printf("W! Telegraf is not permitted to read %s", thispath)
+			log.Printf("W! Dana2 is not permitted to read %s", thispath)
 			return nil
 		}
 
@@ -425,22 +425,22 @@ func WalkDirectory(path string) ([]string, error) {
 }
 
 // Try to find a default config file at these locations (in order):
-//  1. $TELEGRAF_CONFIG_PATH
-//  2. $HOME/.telegraf/telegraf.conf
-//  3. /etc/telegraf/telegraf.conf and /etc/telegraf/telegraf.d/*.conf
+//  1. $Dana2_CONFIG_PATH
+//  2. $HOME/.Dana2/Dana2.conf
+//  3. /etc/Dana2/Dana2.conf and /etc/Dana2/Dana2.d/*.conf
 func GetDefaultConfigPath() ([]string, error) {
-	envfile := os.Getenv("TELEGRAF_CONFIG_PATH")
-	homefile := os.ExpandEnv("${HOME}/.telegraf/telegraf.conf")
-	etcfile := "/etc/telegraf/telegraf.conf"
-	etcfolder := "/etc/telegraf/telegraf.d"
+	envfile := os.Getenv("Dana2_CONFIG_PATH")
+	homefile := os.ExpandEnv("${HOME}/.Dana2/Dana2.conf")
+	etcfile := "/etc/Dana2/Dana2.conf"
+	etcfolder := "/etc/Dana2/Dana2.d"
 
 	if runtime.GOOS == "windows" {
 		programFiles := os.Getenv("ProgramFiles")
 		if programFiles == "" { // Should never happen
 			programFiles = `C:\Program Files`
 		}
-		etcfile = programFiles + `\Telegraf\telegraf.conf`
-		etcfolder = programFiles + `\Telegraf\telegraf.d\`
+		etcfile = programFiles + `\Dana2\Dana2.conf`
+		etcfolder = programFiles + `\Dana2\Dana2.d\`
 	}
 
 	for _, path := range []string{envfile, homefile} {
@@ -452,7 +452,7 @@ func GetDefaultConfigPath() ([]string, error) {
 		}
 	}
 
-	// At this point we need to check if the files under /etc/telegraf are
+	// At this point we need to check if the files under /etc/Dana2 are
 	// populated and return them all.
 	confFiles := make([]string, 0)
 	if _, err := os.Stat(etcfile); err == nil {
@@ -471,7 +471,7 @@ func GetDefaultConfigPath() ([]string, error) {
 
 	// if we got here, we didn't find a file in a default location
 	return nil, fmt.Errorf("no config file specified, and could not find one"+
-		" in $TELEGRAF_CONFIG_PATH, %s, %s, or %s/*.conf", homefile, etcfile, etcfolder)
+		" in $Dana2_CONFIG_PATH, %s, %s, or %s/*.conf", homefile, etcfile, etcfolder)
 }
 
 // isURL checks if string is valid url
@@ -753,7 +753,7 @@ func (c *Config) LoadConfigData(data []byte) error {
 
 // trimBOM trims the Byte-Order-Marks from the beginning of the file.
 // this is for Windows compatibility only.
-// see https://github.com/influxdata/telegraf/issues/1378
+// see https://github.com/influxdata/Dana2/issues/1378
 func trimBOM(f []byte) []byte {
 	return bytes.TrimPrefix(f, []byte("\xef\xbb\xbf"))
 }

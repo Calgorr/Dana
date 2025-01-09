@@ -230,7 +230,7 @@ func (w *Wavefront) buildTags(mTags map[string]string) (string, map[string]strin
 				if k == s {
 					source = v
 					if mTags["host"] != "" {
-						mTags["telegraf_host"] = mTags["host"]
+						mTags["Dana2_host"] = mTags["host"]
 					}
 
 					sourceTagFound = true

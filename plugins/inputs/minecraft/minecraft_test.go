@@ -116,7 +116,7 @@ func TestGather(t *testing.T) {
 			err := plugin.Gather(&acc)
 
 			require.Equal(t, tt.err, err)
-			testutil.RequireMetricsEqual(t, tt.metrics, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, tt.metrics, acc.GetDana2Metrics())
 		})
 	}
 }

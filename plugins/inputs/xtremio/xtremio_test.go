@@ -165,7 +165,7 @@ func TestFixedValue(t *testing.T) {
 			require.NoError(t, tt.plugin.Gather(&acc))
 			require.Empty(t, acc.Errors, "found errors accumulated by acc.AddError()")
 			acc.Wait(len(tt.expected))
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }

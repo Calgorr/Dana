@@ -893,7 +893,7 @@ func TestIntegrationArtemis(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsStructureEqual(t, expected, actual, testutil.SortMetrics(), testutil.IgnoreTime())
 }
 

@@ -1412,7 +1412,7 @@ func TestMultipleConfigs(t *testing.T) {
 			continue
 		}
 		testcasePath := filepath.Join("testcases", f.Name())
-		configFilename := filepath.Join(testcasePath, "telegraf.conf")
+		configFilename := filepath.Join(testcasePath, "Dana2.conf")
 		expectedFilename := filepath.Join(testcasePath, "expected.out")
 		expectedErrorFilename := filepath.Join(testcasePath, "expected.err")
 
@@ -1472,7 +1472,7 @@ func TestMultipleConfigs(t *testing.T) {
 			}
 
 			// Process expected metrics and compare with resulting metrics
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, options...)
 		})
 	}

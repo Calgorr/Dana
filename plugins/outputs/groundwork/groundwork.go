@@ -82,7 +82,7 @@ func (g *Groundwork) Init() error {
 		return fmt.Errorf("getting password failed: %w", err)
 	}
 	g.client = clients.GWClient{
-		AppName: "telegraf",
+		AppName: "Dana2",
 		AppType: g.DefaultAppType,
 		GWConnection: &clients.GWConnection{
 			HostName:           g.Server,
@@ -198,8 +198,8 @@ func init() {
 		return &Groundwork{
 			GroupTag:            "group",
 			ResourceTag:         "host",
-			DefaultHost:         "telegraf",
-			DefaultAppType:      "TELEGRAF",
+			DefaultHost:         "Dana2",
+			DefaultAppType:      "Dana2",
 			DefaultServiceState: string(transit.ServiceOk),
 		}
 	})

@@ -220,7 +220,7 @@ func TestCloud1(t *testing.T) {
 
 	// Check the output
 	opts := []cmp.Option{testutil.IgnoreTags("url"), testutil.IgnoreTime()}
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, opts...)
 }
 

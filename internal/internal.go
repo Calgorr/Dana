@@ -46,7 +46,7 @@ type ReadWaitCloser struct {
 }
 
 func FormatFullVersion() string {
-	var parts = []string{"Telegraf"}
+	var parts = []string{"Dana2"}
 
 	if Version != "" {
 		parts = append(parts, Version)
@@ -68,9 +68,9 @@ func FormatFullVersion() string {
 	return strings.Join(parts, " ")
 }
 
-// ProductToken returns a tag for Telegraf that can be used in user agents.
+// ProductToken returns a tag for Dana2 that can be used in user agents.
 func ProductToken() string {
-	return fmt.Sprintf("Telegraf/%s Go/%s",
+	return fmt.Sprintf("Dana2/%s Go/%s",
 		Version, strings.TrimPrefix(runtime.Version(), "go"))
 }
 
@@ -234,7 +234,7 @@ func CompressWithGzip(data io.Reader) io.ReadCloser {
 	return pipeReader
 }
 
-// ParseTimestamp parses a Time according to the standard Telegraf options.
+// ParseTimestamp parses a Time according to the standard Dana2 options.
 // These are generally displayed in the toml similar to:
 //
 //	json_time_key= "timestamp"
@@ -418,7 +418,7 @@ func parseTime(format, timestamp string, location *time.Location) (time.Time, er
 		const msg = `Your config is using abbreviated timezones and parsing was changed in v1.27.0!
 		Please see the change log, remove any workarounds in place, and carefully
 		check your data timestamps! If case you experience any problems, please
-		file an issue on https://github.com/influxdata/telegraf/issues!`
+		file an issue on https://github.com/influxdata/Dana2/issues!`
 		log.Print("W! " + msg)
 	})
 

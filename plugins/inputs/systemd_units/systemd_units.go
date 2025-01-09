@@ -13,7 +13,7 @@ import (
 //go:embed sample.conf
 var sampleConfig string
 
-// SystemdUnits is a telegraf plugin to gather systemd unit status
+// SystemdUnits is a Dana2 plugin to gather systemd unit status
 type SystemdUnits struct {
 	Pattern         string          `toml:"pattern"`
 	UnitType        string          `toml:"unittype"`

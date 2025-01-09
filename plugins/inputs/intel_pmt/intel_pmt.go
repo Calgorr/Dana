@@ -279,11 +279,11 @@ func getTelemSample(s sample, buf []byte, offset uint64) (uint64, error) {
 	return value, nil
 }
 
-// aggregateSamples outputs transformed metrics to Telegraf.
+// aggregateSamples outputs transformed metrics to Dana2.
 //
 // This method transforms low level samples
 // into high-level samples with appropriate transformation equation.
-// Then it creates fields and tags and adds them to Telegraf Accumulator.
+// Then it creates fields and tags and adds them to Dana2 Accumulator.
 //
 // Parameters:
 //
@@ -291,7 +291,7 @@ func getTelemSample(s sample, buf []byte, offset uint64) (uint64, error) {
 // data - contents of the "telem" file.
 // numaNode - which NUMA node this sample belongs to.
 // pciBdf - PCI Bus:Device.Function (BDF) this sample belongs to.
-// acc - Telegraf Accumulator.
+// acc - Dana2 Accumulator.
 //
 // Returns:
 //

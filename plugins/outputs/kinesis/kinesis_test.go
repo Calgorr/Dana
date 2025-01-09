@@ -60,7 +60,7 @@ func TestPartitionKey(t *testing.T) {
 			Key:    "doesnotexist",
 		},
 	}
-	require.Equal(t, "telegraf", k.getPartitionKey(testPoint), "PartitionKey should be telegraf")
+	require.Equal(t, "Dana2", k.getPartitionKey(testPoint), "PartitionKey should be Dana2")
 
 	k = KinesisOutput{
 		Log: testutil.Logger{},

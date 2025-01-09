@@ -172,11 +172,11 @@ disk I/O size          ios   % cum % |  ios         % cum %
 `
 
 func TestLustre2GeneratesHealth(t *testing.T) {
-	tmpDir, err := os.MkdirTemp("", "telegraf-lustre")
+	tmpDir, err := os.MkdirTemp("", "Dana2-lustre")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpDir)
 
-	rootdir := tmpDir + "/telegraf"
+	rootdir := tmpDir + "/Dana2"
 	sysdir := rootdir + "/sys/fs/lustre/"
 	err = os.MkdirAll(sysdir, 0750)
 	require.NoError(t, err)
@@ -202,11 +202,11 @@ func TestLustre2GeneratesHealth(t *testing.T) {
 }
 
 func TestLustre2GeneratesMetrics(t *testing.T) {
-	tmpDir, err := os.MkdirTemp("", "telegraf-lustre")
+	tmpDir, err := os.MkdirTemp("", "Dana2-lustre")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpDir)
 
-	rootdir := tmpDir + "/telegraf"
+	rootdir := tmpDir + "/Dana2"
 	tempdir := rootdir + "/proc/fs/lustre/"
 	ostName := "OST0001"
 
@@ -273,11 +273,11 @@ func TestLustre2GeneratesMetrics(t *testing.T) {
 }
 
 func TestLustre2GeneratesClientMetrics(t *testing.T) {
-	tmpDir, err := os.MkdirTemp("", "telegraf-lustre-client")
+	tmpDir, err := os.MkdirTemp("", "Dana2-lustre-client")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpDir)
 
-	rootdir := tmpDir + "/telegraf"
+	rootdir := tmpDir + "/Dana2"
 	tempdir := rootdir + "/proc/fs/lustre/"
 	ostName := "OST0001"
 	clientName := "10.2.4.27@o2ib1"
@@ -338,11 +338,11 @@ func TestLustre2GeneratesClientMetrics(t *testing.T) {
 }
 
 func TestLustre2GeneratesJobstatsMetrics(t *testing.T) {
-	tmpDir, err := os.MkdirTemp("", "telegraf-lustre-jobstats")
+	tmpDir, err := os.MkdirTemp("", "Dana2-lustre-jobstats")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpDir)
 
-	rootdir := tmpDir + "/telegraf"
+	rootdir := tmpDir + "/Dana2"
 	tempdir := rootdir + "/proc/fs/lustre/"
 	ostName := "OST0001"
 	jobNames := []string{"cluster-testjob1", "testjob2"}
@@ -499,11 +499,11 @@ func TestLustre2CanParseConfiguration(t *testing.T) {
 }
 
 func TestLustre2GeneratesBrwstatsMetrics(t *testing.T) {
-	tmpdir, err := os.MkdirTemp("", "telegraf-lustre-brwstats")
+	tmpdir, err := os.MkdirTemp("", "Dana2-lustre-brwstats")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpdir)
 
-	rootdir := tmpdir + "/telegraf"
+	rootdir := tmpdir + "/Dana2"
 	tempdir := rootdir + "/proc/fs/lustre"
 	ostname := "OST0001"
 
@@ -574,7 +574,7 @@ func TestLustre2GeneratesBrwstatsMetrics(t *testing.T) {
 }
 
 func TestLustre2GeneratesEvictionMetrics(t *testing.T) {
-	rootdir, err := os.MkdirTemp("", "telegraf-lustre-evictions")
+	rootdir, err := os.MkdirTemp("", "Dana2-lustre-evictions")
 	require.NoError(t, err)
 	defer os.RemoveAll(rootdir)
 

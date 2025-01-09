@@ -23,7 +23,7 @@ import (
 
 const (
 	defaultRequestTimeout            = time.Second * 5
-	defaultDatabase                  = "telegraf"
+	defaultDatabase                  = "Dana2"
 	errStringDatabaseNotFound        = "database not found"
 	errStringRetentionPolicyNotFound = "retention policy not found"
 	errStringHintedHandoffNotEmpty   = "hinted handoff queue not empty"
@@ -429,7 +429,7 @@ func (c *httpClient) writeBatch(ctx context.Context, db, rp string, metrics []Da
 		return nil
 	}
 
-	// This error indicates a bug in either Telegraf line protocol
+	// This error indicates a bug in either Dana2 line protocol
 	// serialization, retries would not be successful.
 	if strings.Contains(desc, errStringUnableToParse) {
 		c.log.Errorf("When writing to [%s]: received error %v; discarding points",

@@ -35,7 +35,7 @@ func TestUriOverride(t *testing.T) {
 	defer ts.Close()
 
 	l := newTestLibrato(ts.URL)
-	l.APIUser = config.NewSecret([]byte("telegraf@influxdb.com"))
+	l.APIUser = config.NewSecret([]byte("Dana2@influxdb.com"))
 	l.APIToken = config.NewSecret([]byte("123456"))
 	require.NoError(t, l.Connect())
 	require.NoError(t, l.Write([]Dana.Metric{newHostMetric(int32(0), "name", "host")}))
@@ -49,7 +49,7 @@ func TestBadStatusCode(t *testing.T) {
 	defer ts.Close()
 
 	l := newTestLibrato(ts.URL)
-	l.APIUser = config.NewSecret([]byte("telegraf@influxdb.com"))
+	l.APIUser = config.NewSecret([]byte("Dana2@influxdb.com"))
 	l.APIToken = config.NewSecret([]byte("123456"))
 	require.NoError(t, l.Connect())
 	err := l.Write([]Dana.Metric{newHostMetric(int32(0), "name", "host")})

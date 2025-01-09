@@ -368,7 +368,7 @@ func TestAdd(t *testing.T) {
 			}, 3*time.Second, 100*time.Millisecond)
 			plugin.Stop()
 
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics())
 		})
 	}
 
@@ -456,7 +456,7 @@ func TestExpiry(t *testing.T) {
 	require.Eventually(t, func() bool {
 		return int(acc.NMetrics()) >= len(expected)
 	}, 3*time.Second, 100*time.Millisecond)
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 	require.EqualValues(t, 1, tsc.calls.Load())
 
 	// clear cache to simulate expiry
@@ -483,7 +483,7 @@ func TestExpiry(t *testing.T) {
 	require.Eventually(t, func() bool {
 		return int(acc.NMetrics()) >= len(expected)
 	}, 3*time.Second, 100*time.Millisecond)
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 	require.EqualValues(t, 2, tsc.calls.Load())
 }
 
@@ -627,6 +627,6 @@ func TestOrdered(t *testing.T) {
 	require.Eventually(t, func() bool {
 		return int(acc.NMetrics()) >= len(expected)
 	}, 3*time.Second, 100*time.Millisecond)
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 	require.EqualValues(t, len(input), tsc.calls.Load())
 }

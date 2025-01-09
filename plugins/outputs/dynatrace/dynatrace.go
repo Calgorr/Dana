@@ -51,7 +51,7 @@ func (*Dynatrace) SampleConfig() string {
 	return sampleConfig
 }
 
-// Connect Connects the Dynatrace output plugin to the Telegraf stream
+// Connect Connects the Dynatrace output plugin to the Dana2 stream
 func (d *Dynatrace) Connect() error {
 	return nil
 }
@@ -163,7 +163,7 @@ func (d *Dynatrace) send(msg string) error {
 		token.Destroy()
 	}
 	// add user-agent header to identify metric source
-	req.Header.Add("User-Agent", "telegraf")
+	req.Header.Add("User-Agent", "Dana2")
 
 	resp, err := d.client.Do(req)
 	if err != nil {
@@ -215,7 +215,7 @@ func (d *Dynatrace) Init() error {
 		dims = append(dims, dimensions.NewDimension(key, value))
 	}
 	d.normalizedDefaultDimensions = dimensions.NewNormalizedDimensionList(dims...)
-	d.normalizedStaticDimensions = dimensions.NewNormalizedDimensionList(dimensions.NewDimension("dt.metrics.source", "telegraf"))
+	d.normalizedStaticDimensions = dimensions.NewNormalizedDimensionList(dimensions.NewDimension("dt.metrics.source", "Dana2"))
 	d.loggedMetrics = make(map[string]bool)
 
 	return nil

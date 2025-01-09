@@ -10,7 +10,7 @@ import (
 // ------------------------------------------------------------------------------------------------
 const sqlAzureArcMIProperties = `
 IF SERVERPROPERTY('EngineEdition') <> 10 BEGIN /*not Azure Arc-enabled Managed Instance*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -38,7 +38,7 @@ SELECT TOP 1
 const sqlAzureArcMIDatabaseIO = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') <> 10 BEGIN /*not Azure Arc-enabled Managed Instance*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -69,7 +69,7 @@ WHERE
 
 const sqlAzureArcMIMemoryClerks = `
 IF SERVERPROPERTY('EngineEdition') <> 10 BEGIN /*not Azure Arc-enabled Managed Instance*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -90,7 +90,7 @@ OPTION(RECOMPILE);
 
 const sqlAzureArcMIOsWaitStats = `
 IF SERVERPROPERTY('EngineEdition') <> 10 BEGIN /*not Azure Arc-enabled Managed Instance*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -207,7 +207,7 @@ AND [wait_time_ms] > 100;
 const sqlAzureArcMIPerformanceCounters = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') <> 10 BEGIN /*not Azure Arc-enabled Managed Instance*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -389,7 +389,7 @@ OPTION (RECOMPILE);
 
 const sqlAzureArcMIRequests string = `
 IF SERVERPROPERTY('EngineEdition') <> 10 BEGIN /*not Azure Arc-enabled Managed Instance*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -486,7 +486,7 @@ END CATCH
 
 const sqlAzureArcMISchedulers string = `
 IF SERVERPROPERTY('EngineEdition') <> 10 BEGIN /*not Azure Arc-enabled Managed Instance*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure Arc-enabled Managed Instance. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END

@@ -25,7 +25,7 @@ type sink interface {
 	Print(Dana.LogLevel, time.Time, string, map[string]interface{}, ...interface{})
 }
 
-// logger is the actual implementation of the telegraf logger interface
+// logger is the actual implementation of the Dana2 logger interface
 type logger struct {
 	level    *Dana.LogLevel
 	category string
@@ -244,7 +244,7 @@ func SetupLogging(cfg *Config) error {
 	}
 
 	if cfg.InstanceName == "" {
-		cfg.InstanceName = "telegraf"
+		cfg.InstanceName = "Dana2"
 	}
 
 	if cfg.LogFormat == "" {

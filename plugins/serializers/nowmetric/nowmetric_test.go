@@ -29,7 +29,7 @@ func TestSerializeMetricFloat(t *testing.T) {
 	require.NoError(t, err)
 	expS := []byte(
 		fmt.Sprintf(
-			`[{"metric_type":"usage_idle","resource":"","node":"","value":91.5,"timestamp":%d,"ci2metric_id":null,"source":"Telegraf"}]`,
+			`[{"metric_type":"usage_idle","resource":"","node":"","value":91.5,"timestamp":%d,"ci2metric_id":null,"source":"Dana2"}]`,
 			now.UnixNano()/int64(time.Millisecond),
 		),
 	)
@@ -45,22 +45,22 @@ func TestSerialize_TimestampUnits(t *testing.T) {
 		{
 			name:           "1ms",
 			timestampUnits: 1 * time.Millisecond,
-			expected:       `[{"metric_type":"value","resource":"","node":"","value":42,"timestamp":1525478795123,"ci2metric_id":null,"source":"Telegraf"}]`,
+			expected:       `[{"metric_type":"value","resource":"","node":"","value":42,"timestamp":1525478795123,"ci2metric_id":null,"source":"Dana2"}]`,
 		},
 		{
 			name:           "10ms",
 			timestampUnits: 10 * time.Millisecond,
-			expected:       `[{"metric_type":"value","resource":"","node":"","value":42,"timestamp":1525478795123,"ci2metric_id":null,"source":"Telegraf"}]`,
+			expected:       `[{"metric_type":"value","resource":"","node":"","value":42,"timestamp":1525478795123,"ci2metric_id":null,"source":"Dana2"}]`,
 		},
 		{
 			name:           "15ms is reduced to 10ms",
 			timestampUnits: 15 * time.Millisecond,
-			expected:       `[{"metric_type":"value","resource":"","node":"","value":42,"timestamp":1525478795123,"ci2metric_id":null,"source":"Telegraf"}]`,
+			expected:       `[{"metric_type":"value","resource":"","node":"","value":42,"timestamp":1525478795123,"ci2metric_id":null,"source":"Dana2"}]`,
 		},
 		{
 			name:           "65ms is reduced to 10ms",
 			timestampUnits: 65 * time.Millisecond,
-			expected:       `[{"metric_type":"value","resource":"","node":"","value":42,"timestamp":1525478795123,"ci2metric_id":null,"source":"Telegraf"}]`,
+			expected:       `[{"metric_type":"value","resource":"","node":"","value":42,"timestamp":1525478795123,"ci2metric_id":null,"source":"Dana2"}]`,
 		},
 	}
 	for _, tt := range tests {
@@ -98,7 +98,7 @@ func TestSerializeMetricInt(t *testing.T) {
 
 	expS := []byte(
 		fmt.Sprintf(
-			`[{"metric_type":"usage_idle","resource":"","node":"","value":90,"timestamp":%d,"ci2metric_id":null,"source":"Telegraf"}]`,
+			`[{"metric_type":"usage_idle","resource":"","node":"","value":90,"timestamp":%d,"ci2metric_id":null,"source":"Dana2"}]`,
 			now.UnixNano()/int64(time.Millisecond),
 		),
 	)
@@ -146,8 +146,8 @@ func TestSerializeMultiFields(t *testing.T) {
 
 	expS := []byte(
 		fmt.Sprintf(
-			`[{"metric_type":"usage_idle","resource":"","node":"","value":90,"timestamp":%d,"ci2metric_id":null,"source":"Telegraf"},`+
-				`{"metric_type":"usage_total","resource":"","node":"","value":8559615,"timestamp":%d,"ci2metric_id":null,"source":"Telegraf"}]`,
+			`[{"metric_type":"usage_idle","resource":"","node":"","value":90,"timestamp":%d,"ci2metric_id":null,"source":"Dana2"},`+
+				`{"metric_type":"usage_total","resource":"","node":"","value":8559615,"timestamp":%d,"ci2metric_id":null,"source":"Dana2"}]`,
 			now.UnixNano()/int64(time.Millisecond),
 			now.UnixNano()/int64(time.Millisecond),
 		),
@@ -171,7 +171,7 @@ func TestSerializeMetricWithEscapes(t *testing.T) {
 
 	expS := []byte(
 		fmt.Sprintf(
-			`[{"metric_type":"U,age=Idle","resource":"","node":"","value":90,"timestamp":%d,"ci2metric_id":null,"source":"Telegraf"}]`,
+			`[{"metric_type":"U,age=Idle","resource":"","node":"","value":90,"timestamp":%d,"ci2metric_id":null,"source":"Dana2"}]`,
 			now.UnixNano()/int64(time.Millisecond),
 		),
 	)
@@ -193,8 +193,8 @@ func TestSerializeBatch(t *testing.T) {
 	require.NoError(t, err)
 	require.JSONEq(
 		t,
-		`[{"metric_type":"value","resource":"","node":"","value":42,"timestamp":0,"ci2metric_id":null,"source":"Telegraf"},`+
-			`{"metric_type":"value","resource":"","node":"","value":42,"timestamp":0,"ci2metric_id":null,"source":"Telegraf"}]`,
+		`[{"metric_type":"value","resource":"","node":"","value":42,"timestamp":0,"ci2metric_id":null,"source":"Dana2"},`+
+			`{"metric_type":"value","resource":"","node":"","value":42,"timestamp":0,"ci2metric_id":null,"source":"Dana2"}]`,
 		string(buf),
 	)
 }
@@ -213,7 +213,7 @@ func TestSerializeJSONv2Format(t *testing.T) {
 	require.NoError(t, err)
 	require.JSONEq(
 		t,
-		`{"records":[{"metric_type":"value","resource":"","node":"","value":42,"timestamp":0,"ci2metric_id":null,"source":"Telegraf"}]}`,
+		`{"records":[{"metric_type":"value","resource":"","node":"","value":42,"timestamp":0,"ci2metric_id":null,"source":"Dana2"}]}`,
 		string(buf),
 	)
 }
@@ -234,8 +234,8 @@ func TestSerializeJSONv2FormatBatch(t *testing.T) {
 	require.JSONEq(
 		t,
 		`{"records":[`+
-			`{"metric_type":"value","resource":"","node":"","value":42,"timestamp":0,"ci2metric_id":null,"source":"Telegraf"},`+
-			`{"metric_type":"value","resource":"","node":"","value":42,"timestamp":0,"ci2metric_id":null,"source":"Telegraf"}`+
+			`{"metric_type":"value","resource":"","node":"","value":42,"timestamp":0,"ci2metric_id":null,"source":"Dana2"},`+
+			`{"metric_type":"value","resource":"","node":"","value":42,"timestamp":0,"ci2metric_id":null,"source":"Dana2"}`+
 			`]}`,
 		string(buf),
 	)

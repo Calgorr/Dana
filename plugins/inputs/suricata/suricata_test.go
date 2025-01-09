@@ -110,7 +110,7 @@ func TestSuricataAlerts(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestSuricata(t *testing.T) {
@@ -154,7 +154,7 @@ func TestSuricata(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestThreadStats(t *testing.T) {
@@ -202,7 +202,7 @@ func TestThreadStats(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestSuricataInvalid(t *testing.T) {
@@ -377,7 +377,7 @@ func TestSuricataParse(t *testing.T) {
 		err = s.parse(&acc, data)
 		require.NoError(t, err)
 
-		testutil.RequireMetricsEqual(t, tc.expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+		testutil.RequireMetricsEqual(t, tc.expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 	}
 }
 
@@ -565,6 +565,6 @@ func TestSuricataParseVersion2(t *testing.T) {
 		acc := testutil.Accumulator{}
 		require.NoError(t, s.parse(&acc, data))
 
-		testutil.RequireMetricsEqual(t, tc.expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+		testutil.RequireMetricsEqual(t, tc.expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 	}
 }

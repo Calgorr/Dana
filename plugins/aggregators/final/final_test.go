@@ -44,7 +44,7 @@ func TestSimple(t *testing.T) {
 			time.Unix(1530939938, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestTwoTags(t *testing.T) {
@@ -90,7 +90,7 @@ func TestTwoTags(t *testing.T) {
 			time.Unix(1530939938, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.SortMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.SortMetrics())
 }
 
 func TestLongDifference(t *testing.T) {
@@ -144,7 +144,7 @@ func TestLongDifference(t *testing.T) {
 			now.Add(time.Second*-100),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.SortMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.SortMetrics())
 }
 
 func TestOutputStrategyInvalid(t *testing.T) {
@@ -208,7 +208,7 @@ func TestOutputStrategyTimeout(t *testing.T) {
 			now.Add(time.Second*-100),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.SortMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.SortMetrics())
 }
 
 func TestOutputStrategyPeriodic(t *testing.T) {
@@ -272,7 +272,7 @@ func TestOutputStrategyPeriodic(t *testing.T) {
 			now.Add(time.Second*-20),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.SortMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.SortMetrics())
 }
 
 func TestKeepOriginalFieldNames(t *testing.T) {
@@ -303,5 +303,5 @@ func TestKeepOriginalFieldNames(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.SortMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.SortMetrics())
 }

@@ -41,7 +41,7 @@ import (
 )
 
 func TestReadBinaryFile(t *testing.T) {
-	// Create a temporary binary file using the Telegraf tool custom_builder to pass as a config
+	// Create a temporary binary file using the Dana2 tool custom_builder to pass as a config
 	wd, err := os.Getwd()
 	require.NoError(t, err)
 	t.Cleanup(func() {
@@ -354,9 +354,9 @@ func TestConfig_LoadSpecialTypes(t *testing.T) {
 
 	input, ok := c.Inputs[0].Input.(*MockupInputPlugin)
 	require.True(t, ok)
-	// Tests telegraf config.Duration parsing.
+	// Tests Dana2 config.Duration parsing.
 	require.Equal(t, config.Duration(time.Second), input.WriteTimeout)
-	// Tests telegraf size parsing.
+	// Tests Dana2 size parsing.
 	require.Equal(t, config.Size(1024*1024), input.MaxBodySize)
 	// Tests toml multiline basic strings on single line.
 	require.Equal(t, "./testdata/special_types.pem", input.TLSCert)
@@ -507,7 +507,7 @@ func TestConfig_AzureMonitorNamespacePrefix(t *testing.T) {
 	require.NoError(t, c.LoadConfig("./testdata/azure_monitor.toml"))
 	require.Len(t, c.Outputs, 2)
 
-	expectedPrefix := []string{"Telegraf/", ""}
+	expectedPrefix := []string{"Dana2/", ""}
 	for i, plugin := range c.Outputs {
 		output, ok := plugin.Output.(*MockupOutputPlugin)
 		require.True(t, ok)
@@ -527,7 +527,7 @@ func TestGetDefaultConfigPathFromEnvURL(t *testing.T) {
 	defer ts.Close()
 
 	c := config.NewConfig()
-	t.Setenv("TELEGRAF_CONFIG_PATH", ts.URL)
+	t.Setenv("Dana2_CONFIG_PATH", ts.URL)
 	configPath, err := config.GetDefaultConfigPath()
 	require.NoError(t, err)
 	require.Equal(t, []string{ts.URL}, configPath)
@@ -607,7 +607,7 @@ func TestConfig_Filtering(t *testing.T) {
 	for _, m := range in {
 		require.NoError(t, plugin.Add(m, &acc))
 	}
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.SortMetrics())
 }
 
@@ -1090,7 +1090,7 @@ func TestConfigPluginIDsSame(t *testing.T) {
 
 func TestPersisterInputStoreLoad(t *testing.T) {
 	// Reserve a temporary state file
-	file, err := os.CreateTemp("", "telegraf_state-*.json")
+	file, err := os.CreateTemp("", "Dana2_state-*.json")
 	require.NoError(t, err)
 	filename := file.Name()
 	require.NoError(t, file.Close())
@@ -1532,7 +1532,7 @@ func init() {
 
 	// Register the mockup output plugin for the required names
 	outputs.Add("azure_monitor", func() Dana.Output {
-		return &MockupOutputPlugin{NamespacePrefix: "Telegraf/"}
+		return &MockupOutputPlugin{NamespacePrefix: "Dana2/"}
 	})
 	outputs.Add("http", func() Dana.Output {
 		return &MockupOutputPlugin{}

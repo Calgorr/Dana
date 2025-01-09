@@ -150,7 +150,7 @@ func TestInitServiceAddress(t *testing.T) {
 		{
 			name: "path without scheme is not allowed",
 			plugin: &health.Health{
-				ServiceAddress: "/tmp/telegraf",
+				ServiceAddress: "/tmp/Dana2",
 				Log:            testutil.Logger{},
 			},
 			err: true,

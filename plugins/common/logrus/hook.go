@@ -15,7 +15,7 @@ type LogHook struct {
 }
 
 // InstallHook installs a logging hook into the logrus standard logger, diverting all logs
-// through the Telegraf logger at debug level.  This is useful for libraries
+// through the Dana2 logger at debug level.  This is useful for libraries
 // that directly log to the logrus system without providing an override method.
 func InstallHook() {
 	once.Do(func() {

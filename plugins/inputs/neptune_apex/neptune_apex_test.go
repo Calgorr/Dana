@@ -371,7 +371,7 @@ func TestParseXML(t *testing.T) {
 			require.Equalf(t, test.wantAccErr, len(acc.Errors) > 0,
 				"Accumulator errors. got=%v, want=%t", acc.Errors, test.wantAccErr)
 
-			testutil.RequireMetricsEqual(t, acc.GetTelegrafMetrics(), test.wantMetrics)
+			testutil.RequireMetricsEqual(t, acc.GetDana2Metrics(), test.wantMetrics)
 		})
 	}
 }

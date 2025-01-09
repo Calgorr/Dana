@@ -462,12 +462,12 @@ func TestHTTPWithCSVFormat(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Init())
 	require.NoError(t, acc.GatherError(plugin.Gather))
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 
 	// Run the parser a second time to test for correct stateful handling
 	acc.ClearMetrics()
 	require.NoError(t, acc.GatherError(plugin.Gather))
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 const (
@@ -537,10 +537,10 @@ func TestConnectionOverUnixSocket(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Init())
 	require.NoError(t, acc.GatherError(plugin.Gather))
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 
 	// Run the parser a second time to test for correct stateful handling
 	acc.ClearMetrics()
 	require.NoError(t, acc.GatherError(plugin.Gather))
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }

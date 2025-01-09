@@ -48,7 +48,7 @@ func init() {
 		firstSection,
 		noLongLinesInParagraphs(80),
 		configSection,
-		relativeTelegrafLinks,
+		relativeDana2Links,
 	}
 	for i := pluginInput; i <= pluginParser; i++ {
 		rules[i] = all

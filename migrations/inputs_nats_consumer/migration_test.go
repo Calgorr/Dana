@@ -23,34 +23,34 @@ func TestNoMigration(t *testing.T) {
   ## subject(s) to consume
   ## If you use jetstream you need to set the subjects
   ## in jetstream_subjects
-  subjects = ["telegraf"]
+  subjects = ["Dana2"]
 
   ## jetstream subjects
   ## jetstream is a streaming technology inside of nats.
   ## With jetstream the nats-server persists messages and
   ## a consumer can consume historical messages. This is
-  ## useful when telegraf needs to restart it don't miss a
+  ## useful when Dana2 needs to restart it don't miss a
   ## message. You need to configure the nats-server.
   ## https://docs.nats.io/nats-concepts/jetstream.
-  jetstream_subjects = ["js_telegraf"]
+  jetstream_subjects = ["js_Dana2"]
 
   ## name a queue group
-  queue_group = "telegraf_consumers"
+  queue_group = "Dana2_consumers"
 
   ## Optional credentials
   # username = ""
   # password = ""
 
   ## Optional NATS 2.0 and NATS NGS compatible user credentials
-  # credentials = "/etc/telegraf/nats.creds"
+  # credentials = "/etc/Dana2/nats.creds"
 
   ## Use Transport Layer Security
   # secure = false
 
   ## Optional TLS Config
-  # tls_ca = "/etc/telegraf/ca.pem"
-  # tls_cert = "/etc/telegraf/cert.pem"
-  # tls_key = "/etc/telegraf/key.pem"
+  # tls_ca = "/etc/Dana2/ca.pem"
+  # tls_cert = "/etc/Dana2/cert.pem"
+  # tls_key = "/etc/Dana2/key.pem"
   ## Use TLS but skip chain & host verification
   # insecure_skip_verify = false
 
@@ -74,7 +74,7 @@ func TestNoMigration(t *testing.T) {
   ## Data format to consume.
   ## Each data format has its own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  ## https://github.com/influxdata/Dana2/blob/master/docs/DATA_FORMATS_INPUT.md
   data_format = "influx"
 `)
 
@@ -99,7 +99,7 @@ func TestCases(t *testing.T) {
 
 		t.Run(f.Name(), func(t *testing.T) {
 			testcasePath := filepath.Join("testcases", f.Name())
-			inputFile := filepath.Join(testcasePath, "telegraf.conf")
+			inputFile := filepath.Join(testcasePath, "Dana2.conf")
 			expectedFile := filepath.Join(testcasePath, "expected.conf")
 
 			// Read the expected output

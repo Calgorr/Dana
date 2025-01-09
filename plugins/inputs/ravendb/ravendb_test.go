@@ -206,7 +206,7 @@ func TestRavenDBGeneratesMetricsFull(t *testing.T) {
 	indexExpected := testutil.MustMetric("ravendb_indexes", indexTags, indexFields, defaultTime)
 	collectionsExpected := testutil.MustMetric("ravendb_collections", collectionTags, collectionFields, defaultTime)
 
-	for _, metric := range acc.GetTelegrafMetrics() {
+	for _, metric := range acc.GetDana2Metrics() {
 		switch metric.Name() {
 		case "ravendb_server":
 			testutil.RequireMetricEqual(t, serverExpected, metric, testutil.IgnoreTime())
@@ -395,7 +395,7 @@ func TestRavenDBGeneratesMetricsMin(t *testing.T) {
 	indexExpected := testutil.MustMetric("ravendb_indexes", indexTags, indexFields, defaultTime)
 	collectionsExpected := testutil.MustMetric("ravendb_collections", collectionTags, collectionFields, defaultTime)
 
-	for _, metric := range acc.GetTelegrafMetrics() {
+	for _, metric := range acc.GetDana2Metrics() {
 		switch metric.Name() {
 		case "ravendb_server":
 			testutil.RequireMetricEqual(t, serverExpected, metric, testutil.IgnoreTime())

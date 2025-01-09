@@ -73,8 +73,8 @@ func Test(t *testing.T) {
 					return []types.Container{
 						{
 							ID:    "deadbeef",
-							Names: []string{"/telegraf"},
-							Image: "influxdata/telegraf:1.11.0",
+							Names: []string{"/Dana2"},
+							Image: "influxdata/Dana2:1.11.0",
 						},
 					}, nil
 				},
@@ -93,8 +93,8 @@ func Test(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",
@@ -114,8 +114,8 @@ func Test(t *testing.T) {
 					return []types.Container{
 						{
 							ID:    "deadbeef",
-							Names: []string{"/telegraf"},
-							Image: "influxdata/telegraf:1.11.0",
+							Names: []string{"/Dana2"},
+							Image: "influxdata/Dana2:1.11.0",
 						},
 					}, nil
 				},
@@ -137,8 +137,8 @@ func Test(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "stdout",
 						"source":            "deadbeef",
@@ -173,7 +173,7 @@ func Test(t *testing.T) {
 
 			require.Nil(t, acc.Errors) // no errors during gathering
 
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics())
 		})
 	}
 }

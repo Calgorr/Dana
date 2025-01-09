@@ -86,7 +86,7 @@ func (p *Parser) Parse(data []byte) ([]Dana.Metric, error) {
 		metricFamilies = metricSet.GetMetricFamilies()
 	}
 
-	// Convert the OpenMetrics metrics into Telegraf metrics
+	// Convert the OpenMetrics metrics into Dana2 metrics
 	var metrics []Dana.Metric
 	for _, mf := range metricFamilies {
 		switch p.MetricVersion {

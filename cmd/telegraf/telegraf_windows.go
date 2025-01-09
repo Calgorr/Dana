@@ -28,7 +28,7 @@ func getLockedMemoryLimit() uint64 {
 	return uint64(high)
 }
 
-func (t *Telegraf) Run() error {
+func (t *Dana2) Run() error {
 	// Process the service commands
 	if t.service != "" {
 		fmt.Println("The use of --service is deprecated, please use the 'service' command instead!")
@@ -73,7 +73,7 @@ func (t *Telegraf) Run() error {
 		return nil
 	}
 
-	// Determine if Telegraf is started as a Windows service.
+	// Determine if Dana2 is started as a Windows service.
 	isWinService, err := svc.IsWindowsService()
 	if err != nil {
 		return fmt.Errorf("cannot determine if run as Windows service: %w", err)
@@ -95,7 +95,7 @@ func (t *Telegraf) Run() error {
 }
 
 // Handler for the Windows service framework
-func (t *Telegraf) Execute(_ []string, r <-chan svc.ChangeRequest, changes chan<- svc.Status) (bool, uint32) {
+func (t *Dana2) Execute(_ []string, r <-chan svc.ChangeRequest, changes chan<- svc.Status) (bool, uint32) {
 	// Mark the status as startup pending until we are fully started
 	const accepted = svc.AcceptStop | svc.AcceptShutdown
 	changes <- svc.Status{State: svc.StartPending}
@@ -168,7 +168,7 @@ type serviceConfig struct {
 	restartDelay string
 	autoRestart  bool
 
-	// Telegraf parameters
+	// Dana2 parameters
 	configs     []string
 	configDirs  []string
 	watchConfig string
@@ -196,7 +196,7 @@ func installService(name string, cfg *serviceConfig) error {
 		args = append(args, "--config-directory", dn)
 	}
 	if len(args) == 0 {
-		args = append(args, "--config", filepath.Join(programFiles, "Telegraf", "telegraf.conf"))
+		args = append(args, "--config", filepath.Join(programFiles, "Dana2", "Dana2.conf"))
 	}
 	if cfg.watchConfig != "" {
 		args = append(args, "--watch-config", cfg.watchConfig)

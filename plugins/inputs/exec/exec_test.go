@@ -1,7 +1,7 @@
 //go:build !windows
 
 // TODO: Windows - should be enabled for Windows when super asterisk is fixed on Windows
-// https://github.com/influxdata/telegraf/issues/6248
+// https://github.com/influxdata/Dana2/issues/6248
 
 package exec
 
@@ -400,7 +400,7 @@ func TestCSVBehavior(t *testing.T) {
 		testutil.SortMetrics(),
 		testutil.IgnoreTime(),
 	}
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, options...)
 }
 
@@ -477,6 +477,6 @@ func TestCases(t *testing.T) {
 		testutil.SortMetrics(),
 		testutil.IgnoreTime(),
 	}
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, options...)
 }

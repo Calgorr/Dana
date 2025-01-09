@@ -144,7 +144,7 @@ func (q *Quix) Write(metrics []Dana.Metric) error {
 			Topic:     q.kakfaTopic,
 			Value:     sarama.ByteEncoder(serialized),
 			Timestamp: m.Time(),
-			Key:       sarama.StringEncoder("telegraf"),
+			Key:       sarama.StringEncoder("Dana2"),
 		}
 
 		if _, _, err = q.producer.SendMessage(msg); err != nil {

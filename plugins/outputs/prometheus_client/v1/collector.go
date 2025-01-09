@@ -43,9 +43,9 @@ type Sample struct {
 type MetricFamily struct {
 	// Samples are the Sample belonging to this MetricFamily.
 	Samples map[SampleID]*Sample
-	// Need the telegraf ValueType because there isn't a Prometheus ValueType
+	// Need the Dana2 ValueType because there isn't a Prometheus ValueType
 	// representing Histogram or Summary
-	TelegrafValueType Dana.ValueType
+	Dana2ValueType Dana.ValueType
 	// LabelSet is the label counts for all Samples.
 	LabelSet map[string]int
 }
@@ -107,7 +107,7 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 				labelNames = append(labelNames, k)
 			}
 		}
-		desc := prometheus.NewDesc(name, "Telegraf collected metric", labelNames, nil)
+		desc := prometheus.NewDesc(name, "Dana2 collected metric", labelNames, nil)
 
 		for _, sample := range family.Samples {
 			// Get labels for this sample; unset labels will be set to the
@@ -120,13 +120,13 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 
 			var metric prometheus.Metric
 			var err error
-			switch family.TelegrafValueType {
+			switch family.Dana2ValueType {
 			case Dana.Summary:
 				metric, err = prometheus.NewConstSummary(desc, sample.Count, sample.Sum, sample.SummaryValue, labels...)
 			case Dana.Histogram:
 				metric, err = prometheus.NewConstHistogram(desc, sample.Count, sample.Sum, sample.HistogramValue, labels...)
 			default:
-				metric, err = prometheus.NewConstMetric(desc, getPromValueType(family.TelegrafValueType), sample.Value, labels...)
+				metric, err = prometheus.NewConstMetric(desc, getPromValueType(family.Dana2ValueType), sample.Value, labels...)
 			}
 			if err != nil {
 				c.Log.Errorf("Error creating prometheus metric: "+
@@ -186,9 +186,9 @@ func (c *Collector) addMetricFamily(point Dana.Metric, sample *Sample, mname str
 	if fam, ok = c.fam[mname]; !ok {
 		pointType := c.TypeMapping.DetermineType(mname, point)
 		fam = &MetricFamily{
-			Samples:           make(map[SampleID]*Sample),
-			TelegrafValueType: pointType,
-			LabelSet:          make(map[string]int),
+			Samples:        make(map[SampleID]*Sample),
+			Dana2ValueType: pointType,
+			LabelSet:       make(map[string]int),
 		}
 		c.fam[mname] = fam
 	}

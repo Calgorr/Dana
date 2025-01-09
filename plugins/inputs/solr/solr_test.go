@@ -43,7 +43,7 @@ func TestCases(t *testing.T) {
 		fname := f.Name()
 		t.Run(fname, func(t *testing.T) {
 			testdataPath := filepath.Join("testcases", fname)
-			configFilename := filepath.Join(testdataPath, "telegraf.conf")
+			configFilename := filepath.Join(testdataPath, "Dana2.conf")
 			expectedFilename := filepath.Join(testdataPath, "expected.out")
 
 			// Load the expected output
@@ -94,7 +94,7 @@ func TestCases(t *testing.T) {
 			require.NoError(t, plugin.Gather(&acc))
 			plugin.Stop()
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, options...)
 		})
 	}
@@ -170,7 +170,7 @@ func TestIntegration(t *testing.T) {
 			require.NoError(t, plugin.Gather(&acc))
 			plugin.Stop()
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsStructureEqual(t, expected, actual, options...)
 		})
 	}

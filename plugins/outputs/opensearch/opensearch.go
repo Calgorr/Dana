@@ -224,7 +224,7 @@ func (o *Opensearch) Write(metrics []Dana.Metric) error {
 	for _, metric := range metrics {
 		var name = metric.Name()
 
-		// index name has to be re-evaluated each time for telegraf
+		// index name has to be re-evaluated each time for Dana2
 		// to send the metric to the correct time-based index
 		indexName, err := o.GetIndexName(metric)
 		if err != nil {

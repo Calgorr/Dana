@@ -12,7 +12,7 @@ import (
 	"Dana/plugins/outputs/postgresql/utils"
 )
 
-// This is an arbitrary constant value shared between multiple telegraf processes used for locking schema updates.
+// This is an arbitrary constant value shared between multiple Dana2 processes used for locking schema updates.
 const schemaAdvisoryLockID int64 = 5705450890675909945
 
 type tableState struct {
@@ -164,7 +164,7 @@ func (tm *TableManager) EnsureStructure(
 	metricsTable, tagsTable *tableState,
 ) ([]utils.Column, error) {
 	// Sort so that:
-	//   * When we create/alter the table the columns are in a sane order (telegraf gives us the fields in random order)
+	//   * When we create/alter the table the columns are in a sane order (Dana2 gives us the fields in random order)
 	//   * When we display errors about missing columns, the order is also sane, and consistent
 	utils.ColumnList(columns).Sort()
 
@@ -264,7 +264,7 @@ func (tm *TableManager) EnsureStructure(
 		return append(addColumns, invalidColumns...), err
 	}
 	defer tx.Rollback(ctx) //nolint:errcheck // In case of failure during commit, "err" from commit will be returned
-	// It's possible to have multiple telegraf processes, in which we can't ensure they all lock tables in the same
+	// It's possible to have multiple Dana2 processes, in which we can't ensure they all lock tables in the same
 	// order. So to prevent possible deadlocks, we have to have a single lock for all schema modifications.
 	if _, err := tx.Exec(ctx, "SELECT pg_advisory_xact_lock($1)", schemaAdvisoryLockID); err != nil {
 		return append(addColumns, invalidColumns...), err

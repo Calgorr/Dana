@@ -201,7 +201,7 @@ BEGIN
 	DECLARE @Tables as nvarchar(max) = ''
 
 	IF @MajorMinorVersion >= 1050 BEGIN
-		/*in [volume_mount_point] any trailing "\" char will be removed by telegraf */
+		/*in [volume_mount_point] any trailing "\" char will be removed by Dana2 */
 		SET @Columns += N',[volume_mount_point]'
 		SET @Tables += N'CROSS APPLY sys.dm_os_volume_stats(vfs.[database_id], vfs.[file_id]) AS vs'
 	END
@@ -1353,7 +1353,7 @@ IF @EngineEdition IN (2,3,4) AND @MajorMinorVersion >= 1050
 		'sqlserver_volume_space' AS [measurement]
 		,SERVERPROPERTY('machinename') AS [server_name]
 		,REPLACE(@@SERVERNAME,'\',':') AS [sql_instance]
-		/*in [volume_mount_point] any trailing "\" char will be removed by telegraf */
+		/*in [volume_mount_point] any trailing "\" char will be removed by Dana2 */
 		,[volume_mount_point]
 		,vs.[total_bytes] AS [total_space_bytes]
 		,vs.[available_bytes] AS [available_space_bytes]

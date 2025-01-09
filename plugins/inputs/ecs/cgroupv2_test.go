@@ -34,7 +34,7 @@ func TestParseCgroupV2Stats(t *testing.T) {
 	netstats(cgroupID, parsedStats[cgroupID], &acc, tags, time.Now())
 	blkstats(cgroupID, parsedStats[cgroupID], &acc, tags, time.Now())
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 }
 
@@ -56,6 +56,6 @@ func TestParseCgroupV2Meta(t *testing.T) {
 	var acc testutil.Accumulator
 	metastats(cgroupID, &validMeta.Containers[0], &acc, tags, time.Now())
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 }

@@ -84,7 +84,7 @@ func TestNoConnection(t *testing.T) {
 	// Collect the metrics and compare
 	var acc testutil.Accumulator
 	require.ErrorContains(t, plugin.Gather(&acc), "connection failed")
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 }
 
 func TestOpenLDAPIntegration(t *testing.T) {
@@ -174,7 +174,7 @@ func TestOpenLDAPIntegration(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsStructureEqual(t, expected, actual, testutil.IgnoreTime())
 }
 
@@ -266,7 +266,7 @@ func TestOpenLDAPReverseDNIntegration(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsStructureEqual(t, expected, actual, testutil.IgnoreTime())
 }
 
@@ -374,7 +374,7 @@ func TestOpenLDAPStartTLSIntegration(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsStructureEqual(t, expected, actual, testutil.IgnoreTime())
 }
 
@@ -481,7 +481,7 @@ func TestOpenLDAPLDAPSIntegration(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsStructureEqual(t, expected, actual, testutil.IgnoreTime())
 }
 
@@ -574,6 +574,6 @@ func Test389dsIntegration(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsStructureEqual(t, expected, actual, testutil.IgnoreTime())
 }

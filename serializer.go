@@ -6,7 +6,7 @@ package Dana
 // Implementations of this interface should be reentrant but are not required
 // to be thread-safe.
 type Serializer interface {
-	// Serialize takes a single telegraf metric and turns it into a byte buffer.
+	// Serialize takes a single Dana2 metric and turns it into a byte buffer.
 	// separate metrics should be separated by a newline, and there should be
 	// a newline at the end of the buffer.
 	//
@@ -14,7 +14,7 @@ type Serializer interface {
 	// delimited metrics.
 	Serialize(metric Metric) ([]byte, error)
 
-	// SerializeBatch takes an array of telegraf metric and serializes it into
+	// SerializeBatch takes an array of Dana2 metric and serializes it into
 	// a byte buffer.  This method is not required to be suitable for use with
 	// line oriented framing.
 	SerializeBatch(metrics []Metric) ([]byte, error)
@@ -24,7 +24,7 @@ type Serializer interface {
 type SerializerFunc func() (Serializer, error)
 
 // SerializerPlugin is an interface for plugins that are able to
-// serialize telegraf metrics into arbitrary data formats.
+// serialize Dana2 metrics into arbitrary data formats.
 type SerializerPlugin interface {
 	// SetSerializer sets the serializer function for the interface.
 	SetSerializer(serializer Serializer)

@@ -46,7 +46,7 @@ type Instrumental struct {
 const (
 	DefaultHost     = "collector.instrumentalapp.com"
 	DefaultPort     = 8000
-	HelloMessage    = "hello version go/telegraf/1.1\n"
+	HelloMessage    = "hello version go/Dana2/1.1\n"
 	AuthFormat      = "authenticate %s\n"
 	HandshakeFormat = HelloMessage + AuthFormat
 )

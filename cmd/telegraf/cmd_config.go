@@ -26,7 +26,7 @@ func getConfigCommands(configHandlingFlags []cli.Flag, outputBuffer io.Writer) [
 			Flags: configHandlingFlags,
 			Action: func(cCtx *cli.Context) error {
 				// The sub_Filters are populated when the filter flags are set after the subcommand config
-				// e.g. telegraf config --section-filter inputs
+				// e.g. Dana2 config --section-filter inputs
 				filters := processFilterFlags(cCtx)
 
 				printSampleConfig(outputBuffer, filters)
@@ -46,7 +46,7 @@ func getConfigCommands(configHandlingFlags []cli.Flag, outputBuffer io.Writer) [
 
 		To check the file 'mysettings.conf' use
 
-		> telegraf config check --config mysettings.conf
+		> Dana2 config check --config mysettings.conf
 		`,
 					Flags: configHandlingFlags,
 					Action: func(cCtx *cli.Context) error {
@@ -98,12 +98,12 @@ to reduce the output to the plugins you need
 
 Create the full configuration
 
-> telegraf config create
+> Dana2 config create
 
 To produce a configuration only containing a Modbus input plugin and an
 InfluxDB v2 output plugin use
 
-> telegraf config create --section-filter "inputs:outputs" --input-filter "modbus" --output-filter "influxdb_v2"
+> Dana2 config create --section-filter "inputs:outputs" --input-filter "modbus" --output-filter "influxdb_v2"
 `,
 					Flags: configHandlingFlags,
 					Action: func(cCtx *cli.Context) error {
@@ -130,7 +130,7 @@ those files unattended!
 
 To migrate the file 'mysettings.conf' use
 
-> telegraf config migrate --config mysettings.conf
+> Dana2 config migrate --config mysettings.conf
 `,
 					Flags: []cli.Flag{
 						&cli.BoolFlag{

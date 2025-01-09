@@ -431,7 +431,7 @@ func (monitor *DirectoryMonitor) moveFile(srcPath, dstBaseDir string) {
 
 	// We need to close the file for remove on Windows as we otherwise
 	// will run into a "being used by another process" error
-	// (see https://github.com/influxdata/telegraf/issues/12287)
+	// (see https://github.com/influxdata/Dana2/issues/12287)
 	if err := inputFile.Close(); err != nil {
 		monitor.Log.Errorf("Could not close input file: %s", err)
 	}

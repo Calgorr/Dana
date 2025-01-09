@@ -110,7 +110,7 @@ func TestGatherEnrichStats(t *testing.T) {
 	require.NoError(t, acc.GatherError(es.Gather))
 	require.False(t, es.serverInfo[es.Servers[0]].isMaster(), "IsMaster set incorrectly")
 
-	metrics := acc.GetTelegrafMetrics()
+	metrics := acc.GetDana2Metrics()
 	require.Len(t, metrics, 8)
 }
 
@@ -142,7 +142,7 @@ func TestGatherClusterHealthEmptyClusterHealth(t *testing.T) {
 
 	acc.AssertContainsTaggedFields(t, "elasticsearch_cluster_health",
 		clusterHealthExpected,
-		map[string]string{"name": "elasticsearch_telegraf"})
+		map[string]string{"name": "elasticsearch_Dana2"})
 
 	acc.AssertDoesNotContainsTaggedFields(t, "elasticsearch_cluster_health_indices",
 		v1IndexExpected,
@@ -168,7 +168,7 @@ func TestGatherClusterHealthSpecificClusterHealth(t *testing.T) {
 
 	acc.AssertContainsTaggedFields(t, "elasticsearch_cluster_health",
 		clusterHealthExpected,
-		map[string]string{"name": "elasticsearch_telegraf"})
+		map[string]string{"name": "elasticsearch_Dana2"})
 
 	acc.AssertDoesNotContainsTaggedFields(t, "elasticsearch_cluster_health_indices",
 		v1IndexExpected,
@@ -194,15 +194,15 @@ func TestGatherClusterHealthAlsoIndicesHealth(t *testing.T) {
 
 	acc.AssertContainsTaggedFields(t, "elasticsearch_cluster_health",
 		clusterHealthExpected,
-		map[string]string{"name": "elasticsearch_telegraf"})
+		map[string]string{"name": "elasticsearch_Dana2"})
 
 	acc.AssertContainsTaggedFields(t, "elasticsearch_cluster_health_indices",
 		v1IndexExpected,
-		map[string]string{"index": "v1", "name": "elasticsearch_telegraf"})
+		map[string]string{"index": "v1", "name": "elasticsearch_Dana2"})
 
 	acc.AssertContainsTaggedFields(t, "elasticsearch_cluster_health_indices",
 		v2IndexExpected,
-		map[string]string{"index": "v2", "name": "elasticsearch_telegraf"})
+		map[string]string{"index": "v2", "name": "elasticsearch_Dana2"})
 }
 
 func TestGatherClusterStatsMaster(t *testing.T) {

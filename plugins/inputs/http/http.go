@@ -116,7 +116,7 @@ func (h *HTTP) Stop() {
 // Gathers data from a particular URL
 // Parameters:
 //
-//	acc    : The telegraf Accumulator to use
+//	acc    : The Dana2 Accumulator to use
 //	url    : endpoint to send request to
 //
 // Returns:

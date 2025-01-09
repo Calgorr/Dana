@@ -471,7 +471,7 @@ func (g *Graylog) serialize(metric Dana.Metric) ([]string, error) {
 	m := make(map[string]interface{})
 	m["version"] = "1.1"
 	m["timestamp"] = float64(metric.Time().UnixNano()) / 1_000_000_000
-	m["short_message"] = "telegraf"
+	m["short_message"] = "Dana2"
 	if g.NameFieldNoPrefix {
 		m["name"] = metric.Name()
 	} else {

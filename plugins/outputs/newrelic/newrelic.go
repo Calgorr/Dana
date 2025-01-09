@@ -53,7 +53,7 @@ func (nr *NewRelic) Connect() error {
 	nr.harvestor, err = telemetry.NewHarvester(telemetry.ConfigAPIKey(nr.InsightsKey),
 		telemetry.ConfigHarvestPeriod(0),
 		func(cfg *telemetry.Config) {
-			cfg.Product = "NewRelic-Telegraf-Plugin"
+			cfg.Product = "NewRelic-Dana2-Plugin"
 			cfg.ProductVersion = "1.0"
 			cfg.HarvestTimeout = time.Duration(nr.Timeout)
 			cfg.Client = &nr.client

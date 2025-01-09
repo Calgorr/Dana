@@ -108,7 +108,7 @@ func (*S7comm) SampleConfig() string {
 }
 
 // Init checks the config settings and prepares the plugin. It's called
-// once by the Telegraf agent after parsing the config settings.
+// once by the Dana2 agent after parsing the config settings.
 func (s *S7comm) Init() error {
 	// Check settings
 	if s.Server == "" {
@@ -426,7 +426,7 @@ func (l *tracelogger) Write(b []byte) (n int, err error) {
 	return len(b), nil
 }
 
-// Add this plugin to telegraf
+// Add this plugin to Dana2
 func init() {
 	inputs.Add("s7comm", func() Dana.Input {
 		return &S7comm{

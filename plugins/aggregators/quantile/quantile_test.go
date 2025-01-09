@@ -110,7 +110,7 @@ func TestSingleMetricTDigest(t *testing.T) {
 	q.Push(&acc)
 
 	epsilon := cmpopts.EquateApprox(0, 1e-3)
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), epsilon)
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), epsilon)
 }
 
 func TestMultipleMetricsTDigest(t *testing.T) {
@@ -172,7 +172,7 @@ func TestMultipleMetricsTDigest(t *testing.T) {
 
 	epsilon := cmpopts.EquateApprox(0, 1e-3)
 	sort := testutil.SortMetrics()
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), epsilon, sort)
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), epsilon, sort)
 }
 
 func TestSingleMetricExactR7(t *testing.T) {
@@ -242,7 +242,7 @@ func TestSingleMetricExactR7(t *testing.T) {
 	q.Push(&acc)
 
 	epsilon := cmpopts.EquateApprox(0, 1e-3)
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), epsilon)
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), epsilon)
 }
 
 func TestMultipleMetricsExactR7(t *testing.T) {
@@ -304,7 +304,7 @@ func TestMultipleMetricsExactR7(t *testing.T) {
 
 	epsilon := cmpopts.EquateApprox(0, 1e-3)
 	sort := testutil.SortMetrics()
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), epsilon, sort)
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), epsilon, sort)
 }
 
 func TestSingleMetricExactR8(t *testing.T) {
@@ -374,7 +374,7 @@ func TestSingleMetricExactR8(t *testing.T) {
 	q.Push(&acc)
 
 	epsilon := cmpopts.EquateApprox(0, 1e-3)
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), epsilon)
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), epsilon)
 }
 
 func TestMultipleMetricsExactR8(t *testing.T) {
@@ -436,7 +436,7 @@ func TestMultipleMetricsExactR8(t *testing.T) {
 
 	epsilon := cmpopts.EquateApprox(0, 1e-3)
 	sort := testutil.SortMetrics()
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), epsilon, sort)
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), epsilon, sort)
 }
 
 func BenchmarkDefaultTDigest(b *testing.B) {

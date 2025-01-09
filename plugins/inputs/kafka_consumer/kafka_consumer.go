@@ -29,7 +29,7 @@ var once sync.Once
 const (
 	defaultMaxUndeliveredMessages = 1000
 	defaultMaxProcessingTime      = config.Duration(100 * time.Millisecond)
-	defaultConsumerGroup          = "telegraf_metrics_consumers"
+	defaultConsumerGroup          = "Dana2_metrics_consumers"
 	reconnectDelay                = 5 * time.Second
 )
 

@@ -198,7 +198,7 @@ func getCmmdsMap(ctx context.Context, client *vim25.Client, clusterObj *object.C
 	return cmmdsMap, nil
 }
 
-// queryPerformance adds performance metrics to telegraf accumulator
+// queryPerformance adds performance metrics to Dana2 accumulator
 func (e *Endpoint) queryPerformance(ctx context.Context, vsanClient *soap.Client, clusterRef *objectRef, metrics map[string]string,
 	cmmds map[string]CmmdsEntity, acc Dana.Accumulator) error {
 	end := time.Now().UTC()
@@ -308,7 +308,7 @@ func (e *Endpoint) queryPerformance(ctx context.Context, vsanClient *soap.Client
 	return commonError
 }
 
-// queryDiskUsage adds 'FreeCapacityB' and 'TotalCapacityB' metrics to telegraf accumulator
+// queryDiskUsage adds 'FreeCapacityB' and 'TotalCapacityB' metrics to Dana2 accumulator
 func (e *Endpoint) queryDiskUsage(ctx context.Context, vsanClient *soap.Client, clusterRef *objectRef, acc Dana.Accumulator) error {
 	spaceManagerRef := types.ManagedObjectReference{
 		Type:  "VsanSpaceReportSystem",
@@ -331,7 +331,7 @@ func (e *Endpoint) queryDiskUsage(ctx context.Context, vsanClient *soap.Client, 
 	return nil
 }
 
-// queryDiskUsage adds 'OverallHealth' metric to telegraf accumulator
+// queryDiskUsage adds 'OverallHealth' metric to Dana2 accumulator
 func (e *Endpoint) queryHealthSummary(ctx context.Context, vsanClient *soap.Client, clusterRef *objectRef, acc Dana.Accumulator) error {
 	healthSystemRef := types.ManagedObjectReference{
 		Type:  "VsanVcClusterHealthSystem",

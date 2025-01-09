@@ -10,7 +10,7 @@ import (
 	gopsprocess "github.com/shirou/gopsutil/v4/process"
 
 	"Dana"
-	telegraf_filter "Dana/filter"
+	Dana2_filter "Dana/filter"
 )
 
 type filter struct {
@@ -29,9 +29,9 @@ type filter struct {
 
 	filterSupervisorUnit string
 	filterCmds           []*regexp.Regexp
-	filterUser           telegraf_filter.Filter
-	filterExecutable     telegraf_filter.Filter
-	filterProcessName    telegraf_filter.Filter
+	filterUser           Dana2_filter.Filter
+	filterExecutable     Dana2_filter.Filter
+	filterProcessName    Dana2_filter.Filter
 	finder               *processFinder
 }
 
@@ -74,13 +74,13 @@ func (f *filter) init() error {
 	f.filterSupervisorUnit = strings.TrimSpace(strings.Join(f.SupervisorUnits, " "))
 
 	var err error
-	if f.filterUser, err = telegraf_filter.Compile(f.Users); err != nil {
+	if f.filterUser, err = Dana2_filter.Compile(f.Users); err != nil {
 		return fmt.Errorf("compiling users filter for %q failed: %w", f.Name, err)
 	}
-	if f.filterExecutable, err = telegraf_filter.Compile(f.Executables); err != nil {
+	if f.filterExecutable, err = Dana2_filter.Compile(f.Executables); err != nil {
 		return fmt.Errorf("compiling executables filter for %q failed: %w", f.Name, err)
 	}
-	if f.filterProcessName, err = telegraf_filter.Compile(f.ProcessNames); err != nil {
+	if f.filterProcessName, err = Dana2_filter.Compile(f.ProcessNames); err != nil {
 		return fmt.Errorf("compiling process-names filter for %q failed: %w", f.Name, err)
 	}
 

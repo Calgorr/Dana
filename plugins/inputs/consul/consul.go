@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/consul/api"
 
 	"Dana"
-	telegraf_config "Dana/config"
+	Dana2_config "Dana/config"
 	"Dana/plugins/common/tls"
 	"Dana/plugins/inputs"
 )
@@ -40,7 +40,7 @@ func (*Consul) SampleConfig() string {
 
 func (c *Consul) Init() error {
 	if c.MetricVersion != 2 {
-		telegraf_config.PrintOptionValueDeprecationNotice("inputs.consul", "metric_version", 1,
+		Dana2_config.PrintOptionValueDeprecationNotice("inputs.consul", "metric_version", 1,
 			Dana.DeprecationInfo{
 				Since:     "1.16.0",
 				RemovalIn: "1.40.0",

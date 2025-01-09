@@ -76,7 +76,7 @@ A very complex example for versions of TimescaleDB which don't support adding co
 using views and unions to emulate the functionality, would be:
 
 	[outputs.postgresql]
-	  schema = "telegraf"
+	  schema = "Dana2"
 	  create_templates = [
 	    '''CREATE TABLE {{ .table }} ({{ .allColumns }})''',
 	    '''SELECT create_hypertable({{ .table|quoteLiteral }}, 'time', chunk_time_interval => INTERVAL '1d')''',

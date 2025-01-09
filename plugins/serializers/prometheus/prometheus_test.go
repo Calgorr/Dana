@@ -32,7 +32,7 @@ func TestSerialize(t *testing.T) {
 				time.Unix(0, 0),
 			),
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{host="example.org"} 42
 `),
@@ -52,7 +52,7 @@ cpu_time_idle{host="example.org"} 42
 				Dana.Untyped,
 			),
 			expected: []byte(`
-# HELP http_requests_total Telegraf collected metric
+# HELP http_requests_total Dana2 collected metric
 # TYPE http_requests_total untyped
 http_requests_total{code="400",method="post"} 3
 `),
@@ -72,7 +72,7 @@ http_requests_total{code="400",method="post"} 3
 				Dana.Counter,
 			),
 			expected: []byte(`
-# HELP http_requests_total Telegraf collected metric
+# HELP http_requests_total Dana2 collected metric
 # TYPE http_requests_total counter
 http_requests_total{code="400",method="post"} 3
 `),
@@ -92,7 +92,7 @@ http_requests_total{code="400",method="post"} 3
 				Dana.Gauge,
 			),
 			expected: []byte(`
-# HELP http_requests_total Telegraf collected metric
+# HELP http_requests_total Dana2 collected metric
 # TYPE http_requests_total gauge
 http_requests_total{code="400",method="post"} 3
 `),
@@ -110,7 +110,7 @@ http_requests_total{code="400",method="post"} 3
 				Dana.Histogram,
 			),
 			expected: []byte(`
-# HELP http_request_duration_seconds Telegraf collected metric
+# HELP http_request_duration_seconds Dana2 collected metric
 # TYPE http_request_duration_seconds histogram
 http_request_duration_seconds_bucket{le="+Inf"} 144320
 http_request_duration_seconds_sum 53423
@@ -131,7 +131,7 @@ http_request_duration_seconds_count 144320
 				Dana.Histogram,
 			),
 			expected: []byte(`
-# HELP http_request_duration_seconds Telegraf collected metric
+# HELP http_request_duration_seconds Dana2 collected metric
 # TYPE http_request_duration_seconds histogram
 http_request_duration_seconds_bucket{le="0.5"} 129389
 http_request_duration_seconds_bucket{le="+Inf"} 0
@@ -155,7 +155,7 @@ http_request_duration_seconds_count 0
 				time.Unix(1574279268, 0),
 			),
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{host="example.org"} 42 1574279268000
 `),
@@ -196,7 +196,7 @@ cpu_time_idle{host="example.org"} 42
 				time.Unix(0, 0),
 			),
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle counter
 cpu_time_idle{host="example.org"} 42
 `),
@@ -217,7 +217,7 @@ cpu_time_idle{host="example.org"} 42
 				time.Unix(0, 0),
 			),
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle gauge
 cpu_time_idle{host="example.org"} 42
 `),
@@ -277,7 +277,7 @@ func TestSerializeBatch(t *testing.T) {
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{host="one.example.org"} 42
 cpu_time_idle{host="two.example.org"} 42
@@ -299,10 +299,10 @@ cpu_time_idle{host="two.example.org"} 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_guest Telegraf collected metric
+# HELP cpu_time_guest Dana2 collected metric
 # TYPE cpu_time_guest untyped
 cpu_time_guest{host="one.example.org"} 42
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{host="one.example.org"} 42
 `),
@@ -376,7 +376,7 @@ cpu_time_idle{host="one.example.org"} 42
 				),
 			},
 			expected: []byte(`
-# HELP http_request_duration_seconds Telegraf collected metric
+# HELP http_request_duration_seconds Dana2 collected metric
 # TYPE http_request_duration_seconds histogram
 http_request_duration_seconds_bucket{le="0.05"} 24054
 http_request_duration_seconds_bucket{le="0.1"} 33444
@@ -448,7 +448,7 @@ http_request_duration_seconds_count 144320
 				),
 			},
 			expected: []byte(`
-# HELP rpc_duration_seconds Telegraf collected metric
+# HELP rpc_duration_seconds Dana2 collected metric
 # TYPE rpc_duration_seconds summary
 rpc_duration_seconds{quantile="0.01"} 3102
 rpc_duration_seconds{quantile="0.05"} 3272
@@ -480,7 +480,7 @@ rpc_duration_seconds_count 2693
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle 43
 `),
@@ -498,7 +498,7 @@ cpu_time_idle 43
 				),
 			},
 			expected: []byte(`
-# HELP cpu::xyzzy_time_idle Telegraf collected metric
+# HELP cpu::xyzzy_time_idle Dana2 collected metric
 # TYPE cpu::xyzzy_time_idle untyped
 cpu::xyzzy_time_idle 42
 `),
@@ -516,7 +516,7 @@ cpu::xyzzy_time_idle 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time:idle Telegraf collected metric
+# HELP cpu_time:idle Dana2 collected metric
 # TYPE cpu_time:idle untyped
 cpu_time:idle 42
 `),
@@ -536,7 +536,7 @@ cpu_time:idle 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{host_name="example.org"} 42
 `),
@@ -556,7 +556,7 @@ cpu_time_idle{host_name="example.org"} 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{host_name="example.org"} 42
 `),
@@ -575,7 +575,7 @@ cpu_time_idle{host_name="example.org"} 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle 42
 `),
@@ -597,7 +597,7 @@ cpu_time_idle 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{cpu="cpu0"} 42
 `),
@@ -621,7 +621,7 @@ cpu_time_idle{cpu="cpu0"} 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{cpu="cpu0"} 42
 `),
@@ -643,7 +643,7 @@ cpu_time_idle{cpu="cpu0"} 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{host_name="example.org"} 42
 `),
@@ -701,19 +701,19 @@ cpu_time_idle{host_name="example.org"} 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_guest Telegraf collected metric
+# HELP cpu_time_guest Dana2 collected metric
 # TYPE cpu_time_guest untyped
 cpu_time_guest{cpu="cpu0"} 8106.04
 cpu_time_guest{cpu="cpu1"} 8181.63
 cpu_time_guest{cpu="cpu2"} 7470.04
 cpu_time_guest{cpu="cpu3"} 7517.95
-# HELP cpu_time_system Telegraf collected metric
+# HELP cpu_time_system Dana2 collected metric
 # TYPE cpu_time_system untyped
 cpu_time_system{cpu="cpu0"} 26271.4
 cpu_time_system{cpu="cpu1"} 25351.49
 cpu_time_system{cpu="cpu2"} 24998.43
 cpu_time_system{cpu="cpu3"} 24970.82
-# HELP cpu_time_user Telegraf collected metric
+# HELP cpu_time_user Dana2 collected metric
 # TYPE cpu_time_user untyped
 cpu_time_user{cpu="cpu0"} 92904.33
 cpu_time_user{cpu="cpu1"} 96912.57
@@ -736,7 +736,7 @@ cpu_time_user{cpu="cpu3"} 94148
 				),
 			},
 			expected: []byte(`
-# HELP rpc_duration_seconds Telegraf collected metric
+# HELP rpc_duration_seconds Dana2 collected metric
 # TYPE rpc_duration_seconds summary
 rpc_duration_seconds_sum 1.7560473e+07
 rpc_duration_seconds_count 2693

@@ -6,15 +6,15 @@ import (
 	"Dana"
 )
 
-type telegrafLoggerWrapper struct {
+type Dana2LoggerWrapper struct {
 	Dana.Logger
 }
 
-func (t *telegrafLoggerWrapper) Log(args ...interface{}) {
+func (t *Dana2LoggerWrapper) Log(args ...interface{}) {
 	t.Trace(args...)
 }
 
-func (t *telegrafLoggerWrapper) Logf(classification logging.Classification, format string, v ...interface{}) {
+func (t *Dana2LoggerWrapper) Logf(classification logging.Classification, format string, v ...interface{}) {
 	switch classification {
 	case logging.Debug:
 		format = "DEBUG " + format

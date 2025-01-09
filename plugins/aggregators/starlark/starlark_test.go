@@ -224,7 +224,7 @@ func TestSimple(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestNanosecondPrecision(t *testing.T) {
@@ -278,7 +278,7 @@ func TestNanosecondPrecision(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestReset(t *testing.T) {
@@ -344,7 +344,7 @@ func TestReset(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func newMerge() (*Starlark, error) {

@@ -77,6 +77,6 @@ func TestCPUStats(t *testing.T) {
 	require.NoError(t, acc.GatherError(plugin.Gather))
 
 	// Test the result
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 }

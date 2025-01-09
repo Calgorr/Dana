@@ -45,7 +45,7 @@ func TestNameCollisions(t *testing.T) {
 
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
-	require.Len(t, acc.GetTelegrafMetrics(), 8)
+	require.Len(t, acc.GetDana2Metrics(), 8)
 }
 
 func TestCases(t *testing.T) {
@@ -76,7 +76,7 @@ func TestCases(t *testing.T) {
 		// Test v1
 		t.Run(f.Name()+"_v1", func(t *testing.T) {
 			testcasePath := filepath.Join("testcases", f.Name())
-			configFilename := filepath.Join(testcasePath, "telegraf.conf")
+			configFilename := filepath.Join(testcasePath, "Dana2.conf")
 			expectedFilename := filepath.Join(testcasePath, "expected_v1.out")
 
 			// Read the expected output if any
@@ -102,14 +102,14 @@ func TestCases(t *testing.T) {
 			require.NoError(t, plugin.Gather(&acc))
 
 			// Check the metric nevertheless as we might get some metrics despite errors.
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, options...)
 		})
 
 		// Test v2
 		t.Run(f.Name()+"_v2", func(t *testing.T) {
 			testcasePath := filepath.Join("testcases", f.Name())
-			configFilename := filepath.Join(testcasePath, "telegraf.conf")
+			configFilename := filepath.Join(testcasePath, "Dana2.conf")
 			expectedFilename := filepath.Join(testcasePath, "expected_v2.out")
 
 			// Read the expected output if any
@@ -135,7 +135,7 @@ func TestCases(t *testing.T) {
 			require.NoError(t, plugin.Gather(&acc))
 
 			// Check the metric nevertheless as we might get some metrics despite errors.
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, options...)
 		})
 	}
@@ -199,7 +199,7 @@ func TestRegression(t *testing.T) {
 				acc.AddFields("temp", fields, tags)
 			}
 
-			expected := acc.GetTelegrafMetrics()
+			expected := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, options...)
 		})
 
@@ -238,7 +238,7 @@ func TestRegression(t *testing.T) {
 				acc.AddFields("temp", fields, tags)
 			}
 
-			expected := acc.GetTelegrafMetrics()
+			expected := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, options...)
 		})
 	}

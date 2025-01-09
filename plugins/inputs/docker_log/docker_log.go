@@ -448,7 +448,7 @@ func tailMultiplexed(
 	return tsStderr, nil
 }
 
-// Following few functions have been inherited from telegraf docker input plugin
+// Following few functions have been inherited from Dana2 docker input plugin
 func (d *DockerLogs) createContainerFilters() error {
 	containerFilter, err := filter.NewIncludeExcludeFilter(d.ContainerInclude, d.ContainerExclude)
 	if err != nil {

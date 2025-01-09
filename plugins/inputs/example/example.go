@@ -36,8 +36,8 @@ type Example struct {
 	UserName config.Secret `toml:"username"`
 	Password config.Secret `toml:"password"`
 
-	// Telegraf logging facility
-	// The exact name is important to allow automatic initialization by telegraf.
+	// Dana2 logging facility
+	// The exact name is important to allow automatic initialization by Dana2.
 	Log Dana.Logger `toml:"-"`
 
 	// This is a non-exported internal state.

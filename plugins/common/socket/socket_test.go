@@ -222,7 +222,7 @@ func TestListenData(t *testing.T) {
 				return acc.NMetrics() >= uint64(len(expected))
 			}, time.Second, 100*time.Millisecond, "did not receive metrics (%d)", acc.NMetrics())
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.SortMetrics())
 		})
 	}
@@ -427,7 +427,7 @@ func TestListenConnection(t *testing.T) {
 				return acc.NMetrics() >= uint64(len(expected))
 			}, time.Second, 100*time.Millisecond, "did not receive metrics (%d)", acc.NMetrics())
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.SortMetrics())
 		})
 	}
@@ -727,12 +727,12 @@ func TestNoSplitter(t *testing.T) {
 		return acc.NMetrics() >= uint64(len(expected))
 	}, time.Second, 100*time.Millisecond, "did not receive metrics (%d)", acc.NMetrics())
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.SortMetrics())
 }
 
 func TestTLSMemLeak(t *testing.T) {
-	// For issue https://github.com/influxdata/telegraf/issues/15509
+	// For issue https://github.com/influxdata/Dana2/issues/15509
 
 	// Prepare the address and socket if needed
 	serviceAddress := "tcp://127.0.0.1:0"

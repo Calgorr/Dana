@@ -78,9 +78,9 @@ type NodeGroupSettings struct {
 type TimestampSource string
 
 const (
-	TimestampSourceServer   TimestampSource = "server"
-	TimestampSourceSource   TimestampSource = "source"
-	TimestampSourceTelegraf TimestampSource = "gather"
+	TimestampSourceServer TimestampSource = "server"
+	TimestampSourceSource TimestampSource = "source"
+	TimestampSourceDana2  TimestampSource = "gather"
 )
 
 // InputClientConfig a configuration for the input client

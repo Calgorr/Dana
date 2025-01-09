@@ -50,7 +50,7 @@ func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 			if !math.IsNaN(s.Value) {
 				fields[metricName] = s.Value
 			}
-			// converting to telegraf metric
+			// converting to Dana2 metric
 			if len(fields) > 0 {
 				if s.Timestamp > 0 {
 					t = time.Unix(0, s.Timestamp*1000000)

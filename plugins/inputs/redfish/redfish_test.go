@@ -434,7 +434,7 @@ func TestDellApis(t *testing.T) {
 	err = plugin.Gather(&acc)
 	require.NoError(t, err)
 	require.True(t, acc.HasMeasurement("redfish_thermal_temperatures"))
-	testutil.RequireMetricsEqual(t, expectedMetrics, acc.GetTelegrafMetrics(),
+	testutil.RequireMetricsEqual(t, expectedMetrics, acc.GetDana2Metrics(),
 		testutil.IgnoreTime())
 }
 
@@ -613,7 +613,7 @@ func TestHPApis(t *testing.T) {
 	err = hpPlugin.Gather(&hpAcc)
 	require.NoError(t, err)
 	require.True(t, hpAcc.HasMeasurement("redfish_thermal_temperatures"))
-	testutil.RequireMetricsEqual(t, expectedMetricsHp, hpAcc.GetTelegrafMetrics(),
+	testutil.RequireMetricsEqual(t, expectedMetricsHp, hpAcc.GetDana2Metrics(),
 		testutil.IgnoreTime())
 }
 
@@ -710,7 +710,7 @@ func TestHPilo4Apis(t *testing.T) {
 	err = hpPlugin.Gather(&hpAcc)
 	require.NoError(t, err)
 	require.True(t, hpAcc.HasMeasurement("redfish_thermal_temperatures"))
-	testutil.RequireMetricsEqual(t, expectedMetricsHp, hpAcc.GetTelegrafMetrics(),
+	testutil.RequireMetricsEqual(t, expectedMetricsHp, hpAcc.GetDana2Metrics(),
 		testutil.IgnoreTime())
 }
 
@@ -1209,6 +1209,6 @@ func TestIncludeTagSetsConfiguration(t *testing.T) {
 	err = hpPlugin.Gather(&hpAcc)
 	require.NoError(t, err)
 	require.True(t, hpAcc.HasMeasurement("redfish_thermal_temperatures"))
-	testutil.RequireMetricsEqual(t, expectedMetricsHp, hpAcc.GetTelegrafMetrics(),
+	testutil.RequireMetricsEqual(t, expectedMetricsHp, hpAcc.GetDana2Metrics(),
 		testutil.IgnoreTime())
 }

@@ -204,7 +204,7 @@ func TestRetrySuccessful(t *testing.T) {
 	require.NoError(t, modbus.Gather(&acc))
 	acc.Wait(len(expected))
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestRetryFailExhausted(t *testing.T) {
@@ -343,7 +343,7 @@ func TestCases(t *testing.T) {
 			continue
 		}
 		testcasePath := filepath.Join("testcases", f.Name())
-		configFilename := filepath.Join(testcasePath, "telegraf.conf")
+		configFilename := filepath.Join(testcasePath, "Dana2.conf")
 		expectedOutputFilename := filepath.Join(testcasePath, "expected.out")
 		expectedErrorFilename := filepath.Join(testcasePath, "expected.err")
 		initErrorFilename := filepath.Join(testcasePath, "init.err")
@@ -405,7 +405,7 @@ func TestCases(t *testing.T) {
 			}
 
 			// Check the metric nevertheless as we might get some metrics despite errors.
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, options...)
 		})
 	}
@@ -726,7 +726,7 @@ func TestWorkaroundsStringRegisterLocation(t *testing.T) {
 			require.NoError(t, plugin.Gather(&acc))
 
 			// Compare
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 		})
 	}

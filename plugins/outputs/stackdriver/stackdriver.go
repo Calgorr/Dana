@@ -505,7 +505,7 @@ func getStackdriverMetricKind(vt Dana.ValueType) (metricpb.MetricDescriptor_Metr
 	case Dana.Summary:
 		fallthrough
 	default:
-		return metricpb.MetricDescriptor_METRIC_KIND_UNSPECIFIED, fmt.Errorf("unsupported telegraf value type: %T", vt)
+		return metricpb.MetricDescriptor_METRIC_KIND_UNSPECIFIED, fmt.Errorf("unsupported Dana2 value type: %T", vt)
 	}
 }
 

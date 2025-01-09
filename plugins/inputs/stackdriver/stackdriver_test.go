@@ -137,7 +137,7 @@ func TestGather(t *testing.T) {
 		{
 			name: "int64",
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_INT64,
 			},
 			timeseries: createTimeSeries(
@@ -156,7 +156,7 @@ func TestGather(t *testing.T) {
 				metricpb.MetricDescriptor_INT64,
 			),
 			expected: []Dana.Metric{
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -170,7 +170,7 @@ func TestGather(t *testing.T) {
 		{
 			name: "double",
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DOUBLE,
 			},
 			timeseries: createTimeSeries(
@@ -189,7 +189,7 @@ func TestGather(t *testing.T) {
 				metricpb.MetricDescriptor_DOUBLE,
 			),
 			expected: []Dana.Metric{
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -203,7 +203,7 @@ func TestGather(t *testing.T) {
 		{
 			name: "int64",
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_INT64,
 			},
 			timeseries: createTimeSeries(
@@ -222,7 +222,7 @@ func TestGather(t *testing.T) {
 				metricpb.MetricDescriptor_INT64,
 			),
 			expected: []Dana.Metric{
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -236,7 +236,7 @@ func TestGather(t *testing.T) {
 		{
 			name: "bool",
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_BOOL,
 			},
 			timeseries: createTimeSeries(
@@ -255,7 +255,7 @@ func TestGather(t *testing.T) {
 				metricpb.MetricDescriptor_BOOL,
 			),
 			expected: []Dana.Metric{
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -269,7 +269,7 @@ func TestGather(t *testing.T) {
 		{
 			name: "string",
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_STRING,
 			},
 			timeseries: createTimeSeries(
@@ -288,7 +288,7 @@ func TestGather(t *testing.T) {
 				metricpb.MetricDescriptor_STRING,
 			),
 			expected: []Dana.Metric{
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -302,7 +302,7 @@ func TestGather(t *testing.T) {
 		{
 			name: "metric labels",
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DOUBLE,
 			},
 			timeseries: &monitoringpb.TimeSeries{
@@ -334,7 +334,7 @@ func TestGather(t *testing.T) {
 				ValueType: metricpb.MetricDescriptor_DOUBLE,
 			},
 			expected: []Dana.Metric{
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "instance",
 						"project_id":    "test",
@@ -348,7 +348,7 @@ func TestGather(t *testing.T) {
 		{
 			name: "linear buckets",
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DISTRIBUTION,
 			},
 			timeseries: createTimeSeries(
@@ -385,7 +385,7 @@ func TestGather(t *testing.T) {
 				metricpb.MetricDescriptor_DISTRIBUTION,
 			),
 			expected: []Dana.Metric{
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -398,7 +398,7 @@ func TestGather(t *testing.T) {
 						"usage_sum_of_squared_deviation": 1.0,
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -408,7 +408,7 @@ func TestGather(t *testing.T) {
 						"usage_bucket": int64(0),
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -418,7 +418,7 @@ func TestGather(t *testing.T) {
 						"usage_bucket": int64(1),
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -428,7 +428,7 @@ func TestGather(t *testing.T) {
 						"usage_bucket": int64(4),
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -443,7 +443,7 @@ func TestGather(t *testing.T) {
 		{
 			name: "exponential buckets",
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DISTRIBUTION,
 			},
 			timeseries: createTimeSeries(
@@ -480,7 +480,7 @@ func TestGather(t *testing.T) {
 				metricpb.MetricDescriptor_DISTRIBUTION,
 			),
 			expected: []Dana.Metric{
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -493,7 +493,7 @@ func TestGather(t *testing.T) {
 						"usage_sum_of_squared_deviation": 1.0,
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -503,7 +503,7 @@ func TestGather(t *testing.T) {
 						"usage_bucket": int64(0),
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -513,7 +513,7 @@ func TestGather(t *testing.T) {
 						"usage_bucket": int64(1),
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -523,7 +523,7 @@ func TestGather(t *testing.T) {
 						"usage_bucket": int64(4),
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -538,7 +538,7 @@ func TestGather(t *testing.T) {
 		{
 			name: "explicit buckets",
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DISTRIBUTION,
 			},
 			timeseries: createTimeSeries(
@@ -573,7 +573,7 @@ func TestGather(t *testing.T) {
 				metricpb.MetricDescriptor_DISTRIBUTION,
 			),
 			expected: []Dana.Metric{
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -586,7 +586,7 @@ func TestGather(t *testing.T) {
 						"usage_sum_of_squared_deviation": 1.0,
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -596,7 +596,7 @@ func TestGather(t *testing.T) {
 						"usage_bucket": int64(0),
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -606,7 +606,7 @@ func TestGather(t *testing.T) {
 						"usage_bucket": int64(1),
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -621,7 +621,7 @@ func TestGather(t *testing.T) {
 		{
 			name: "implicit buckets are zero",
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DISTRIBUTION,
 			},
 			timeseries: createTimeSeries(
@@ -658,7 +658,7 @@ func TestGather(t *testing.T) {
 				metricpb.MetricDescriptor_DISTRIBUTION,
 			),
 			expected: []Dana.Metric{
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -671,7 +671,7 @@ func TestGather(t *testing.T) {
 						"usage_sum_of_squared_deviation": 1.0,
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -681,7 +681,7 @@ func TestGather(t *testing.T) {
 						"usage_bucket": int64(0),
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -691,7 +691,7 @@ func TestGather(t *testing.T) {
 						"usage_bucket": int64(1),
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -701,7 +701,7 @@ func TestGather(t *testing.T) {
 						"usage_bucket": int64(1),
 					},
 					now),
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -771,7 +771,7 @@ func TestGatherAlign(t *testing.T) {
 		{
 			name: "align",
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DISTRIBUTION,
 			},
 			timeseries: []*monitoringpb.TimeSeries{
@@ -822,7 +822,7 @@ func TestGatherAlign(t *testing.T) {
 				),
 			},
 			expected: []Dana.Metric{
-				testutil.MustMetric("telegraf/cpu",
+				testutil.MustMetric("Dana2/cpu",
 					map[string]string{
 						"resource_type": "global",
 						"project_id":    "test",
@@ -899,20 +899,20 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 			name: "simple",
 			stackdriver: &stackdriver{
 				Project:                 "test",
-				MetricTypePrefixInclude: []string{"telegraf/cpu/usage"},
+				MetricTypePrefixInclude: []string{"Dana2/cpu/usage"},
 				RateLimit:               1,
 			},
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DOUBLE,
 			},
 			calls: []call{
 				{
 					name:   "ListMetricDescriptors",
-					filter: `metric.type = starts_with("telegraf/cpu/usage")`,
+					filter: `metric.type = starts_with("Dana2/cpu/usage")`,
 				}, {
 					name:   "ListTimeSeries",
-					filter: `metric.type = "telegraf/cpu/usage"`,
+					filter: `metric.type = "Dana2/cpu/usage"`,
 				},
 			},
 		},
@@ -920,7 +920,7 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 			name: "single resource labels string",
 			stackdriver: &stackdriver{
 				Project:                 "test",
-				MetricTypePrefixInclude: []string{"telegraf/cpu/usage"},
+				MetricTypePrefixInclude: []string{"Dana2/cpu/usage"},
 				Filter: &listTimeSeriesFilter{
 					ResourceLabels: []*label{
 						{
@@ -932,16 +932,16 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 				RateLimit: 1,
 			},
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DOUBLE,
 			},
 			calls: []call{
 				{
 					name:   "ListMetricDescriptors",
-					filter: `metric.type = starts_with("telegraf/cpu/usage")`,
+					filter: `metric.type = starts_with("Dana2/cpu/usage")`,
 				}, {
 					name:   "ListTimeSeries",
-					filter: `metric.type = "telegraf/cpu/usage" AND resource.labels.instance_name = "localhost"`,
+					filter: `metric.type = "Dana2/cpu/usage" AND resource.labels.instance_name = "localhost"`,
 				},
 			},
 		},
@@ -949,7 +949,7 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 			name: "single resource labels function",
 			stackdriver: &stackdriver{
 				Project:                 "test",
-				MetricTypePrefixInclude: []string{"telegraf/cpu/usage"},
+				MetricTypePrefixInclude: []string{"Dana2/cpu/usage"},
 				Filter: &listTimeSeriesFilter{
 					ResourceLabels: []*label{
 						{
@@ -961,16 +961,16 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 				RateLimit: 1,
 			},
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DOUBLE,
 			},
 			calls: []call{
 				{
 					name:   "ListMetricDescriptors",
-					filter: `metric.type = starts_with("telegraf/cpu/usage")`,
+					filter: `metric.type = starts_with("Dana2/cpu/usage")`,
 				}, {
 					name:   "ListTimeSeries",
-					filter: `metric.type = "telegraf/cpu/usage" AND resource.labels.instance_name = starts_with("localhost")`,
+					filter: `metric.type = "Dana2/cpu/usage" AND resource.labels.instance_name = starts_with("localhost")`,
 				},
 			},
 		},
@@ -978,7 +978,7 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 			name: "multiple resource labels",
 			stackdriver: &stackdriver{
 				Project:                 "test",
-				MetricTypePrefixInclude: []string{"telegraf/cpu/usage"},
+				MetricTypePrefixInclude: []string{"Dana2/cpu/usage"},
 				Filter: &listTimeSeriesFilter{
 					ResourceLabels: []*label{
 						{
@@ -994,16 +994,16 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 				RateLimit: 1,
 			},
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DOUBLE,
 			},
 			calls: []call{
 				{
 					name:   "ListMetricDescriptors",
-					filter: `metric.type = starts_with("telegraf/cpu/usage")`,
+					filter: `metric.type = starts_with("Dana2/cpu/usage")`,
 				}, {
 					name:   "ListTimeSeries",
-					filter: `metric.type = "telegraf/cpu/usage" AND (resource.labels.instance_name = "localhost" OR resource.labels.zone = starts_with("us-"))`,
+					filter: `metric.type = "Dana2/cpu/usage" AND (resource.labels.instance_name = "localhost" OR resource.labels.zone = starts_with("us-"))`,
 				},
 			},
 		},
@@ -1011,7 +1011,7 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 			name: "single metric label string",
 			stackdriver: &stackdriver{
 				Project:                 "test",
-				MetricTypePrefixInclude: []string{"telegraf/cpu/usage"},
+				MetricTypePrefixInclude: []string{"Dana2/cpu/usage"},
 				Filter: &listTimeSeriesFilter{
 					MetricLabels: []*label{
 						{
@@ -1023,16 +1023,16 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 				RateLimit: 1,
 			},
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DOUBLE,
 			},
 			calls: []call{
 				{
 					name:   "ListMetricDescriptors",
-					filter: `metric.type = starts_with("telegraf/cpu/usage")`,
+					filter: `metric.type = starts_with("Dana2/cpu/usage")`,
 				}, {
 					name:   "ListTimeSeries",
-					filter: `metric.type = "telegraf/cpu/usage" AND metric.labels.resource_type = "instance"`,
+					filter: `metric.type = "Dana2/cpu/usage" AND metric.labels.resource_type = "instance"`,
 				},
 			},
 		},
@@ -1040,7 +1040,7 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 			name: "single metric label function",
 			stackdriver: &stackdriver{
 				Project:                 "test",
-				MetricTypePrefixInclude: []string{"telegraf/cpu/usage"},
+				MetricTypePrefixInclude: []string{"Dana2/cpu/usage"},
 				Filter: &listTimeSeriesFilter{
 					MetricLabels: []*label{
 						{
@@ -1052,16 +1052,16 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 				RateLimit: 1,
 			},
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DOUBLE,
 			},
 			calls: []call{
 				{
 					name:   "ListMetricDescriptors",
-					filter: `metric.type = starts_with("telegraf/cpu/usage")`,
+					filter: `metric.type = starts_with("Dana2/cpu/usage")`,
 				}, {
 					name:   "ListTimeSeries",
-					filter: `metric.type = "telegraf/cpu/usage" AND metric.labels.resource_id = starts_with("abc-")`,
+					filter: `metric.type = "Dana2/cpu/usage" AND metric.labels.resource_id = starts_with("abc-")`,
 				},
 			},
 		},
@@ -1069,7 +1069,7 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 			name: "multiple metric labels",
 			stackdriver: &stackdriver{
 				Project:                 "test",
-				MetricTypePrefixInclude: []string{"telegraf/cpu/usage"},
+				MetricTypePrefixInclude: []string{"Dana2/cpu/usage"},
 				Filter: &listTimeSeriesFilter{
 					MetricLabels: []*label{
 						{
@@ -1085,16 +1085,16 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 				RateLimit: 1,
 			},
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DOUBLE,
 			},
 			calls: []call{
 				{
 					name:   "ListMetricDescriptors",
-					filter: `metric.type = starts_with("telegraf/cpu/usage")`,
+					filter: `metric.type = starts_with("Dana2/cpu/usage")`,
 				}, {
 					name: "ListTimeSeries",
-					filter: `metric.type = "telegraf/cpu/usage" AND ` +
+					filter: `metric.type = "Dana2/cpu/usage" AND ` +
 						`(metric.labels.resource_type = "instance" OR metric.labels.resource_id = starts_with("abc-"))`,
 				},
 			},
@@ -1103,7 +1103,7 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 			name: "all labels filters",
 			stackdriver: &stackdriver{
 				Project:                 "test",
-				MetricTypePrefixInclude: []string{"telegraf/cpu/usage"},
+				MetricTypePrefixInclude: []string{"Dana2/cpu/usage"},
 				Filter: &listTimeSeriesFilter{
 					ResourceLabels: []*label{
 						{
@@ -1149,16 +1149,16 @@ func TestListMetricDescriptorFilter(t *testing.T) {
 				RateLimit: 1,
 			},
 			descriptor: &metricpb.MetricDescriptor{
-				Type:      "telegraf/cpu/usage",
+				Type:      "Dana2/cpu/usage",
 				ValueType: metricpb.MetricDescriptor_DOUBLE,
 			},
 			calls: []call{
 				{
 					name:   "ListMetricDescriptors",
-					filter: `metric.type = starts_with("telegraf/cpu/usage")`,
+					filter: `metric.type = starts_with("Dana2/cpu/usage")`,
 				}, {
 					name: "ListTimeSeries",
-					filter: `metric.type = "telegraf/cpu/usage" AND ` +
+					filter: `metric.type = "Dana2/cpu/usage" AND ` +
 						`(resource.labels.instance_name = "localhost" OR resource.labels.zone = starts_with("us-")) AND ` +
 						`(metric.labels.resource_type = "instance" OR metric.labels.resource_id = starts_with("abc-")) AND ` +
 						`(metadata.user_labels."team" = "badgers" OR metadata.user_labels."environment" = starts_with("prod-")) AND ` +

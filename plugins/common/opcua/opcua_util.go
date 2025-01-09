@@ -67,7 +67,7 @@ func generateCert(host string, rsaBits int, certFile, keyFile string, dur time.D
 	template := x509.Certificate{
 		SerialNumber: serialNumber,
 		Subject: pkix.Name{
-			Organization: []string{"Telegraf OPC UA Client"},
+			Organization: []string{"Dana2 OPC UA Client"},
 		},
 		NotBefore: notBefore,
 		NotAfter:  notAfter,
@@ -151,8 +151,8 @@ func pemBlockForKey(priv interface{}) (*pem.Block, error) {
 }
 
 func (o *OpcUAClient) generateClientOpts(endpoints []*ua.EndpointDescription) ([]opcua.Option, error) {
-	appuri := "urn:telegraf:gopcua:client"
-	appname := "Telegraf"
+	appuri := "urn:Dana2:gopcua:client"
+	appname := "Dana2"
 
 	// ApplicationURI is automatically read from the cert so is not required if a cert if provided
 	opts := []opcua.Option{

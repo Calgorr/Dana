@@ -34,7 +34,7 @@ func getEventLog(t *testing.T, since time.Time) []Event {
 		"qe",
 		"Application",
 		"/rd:true",
-		fmt.Sprintf("/q:Event[System[TimeCreated[@SystemTime >= %q] and Provider[@Name='telegraf']]]", timeStr)}
+		fmt.Sprintf("/q:Event[System[TimeCreated[@SystemTime >= %q] and Provider[@Name='Dana2']]]", timeStr)}
 	cmd := exec.Command("wevtutil", args...)
 	var out bytes.Buffer
 	cmd.Stdout = &out

@@ -21,8 +21,8 @@ import (
 
 const (
 	defaultTestAgentID = "ec1676cc-583d-48ee-b035-7fb5ed0fcf88"
-	defaultHost        = "telegraf"
-	defaultAppType     = "TELEGRAF"
+	defaultHost        = "Dana2"
+	defaultAppType     = "Dana2"
 	customAppType      = "SYSLOG"
 )
 
@@ -167,7 +167,7 @@ func TestWriteWithDefaults(t *testing.T) {
 		DefaultHost:    defaultHost,
 		DefaultAppType: customAppType,
 		client: clients.GWClient{
-			AppName: "telegraf",
+			AppName: "Dana2",
 			AppType: customAppType,
 			GWConnection: &clients.GWConnection{
 				HostName: server.URL,
@@ -252,7 +252,7 @@ func TestWriteWithFields(t *testing.T) {
 		GroupTag:       "group",
 		ResourceTag:    "host",
 		client: clients.GWClient{
-			AppName: "telegraf",
+			AppName: "Dana2",
 			AppType: defaultAppType,
 			GWConnection: &clients.GWConnection{
 				HostName: server.URL,
@@ -386,7 +386,7 @@ func TestWriteWithTags(t *testing.T) {
 		GroupTag:       "group-tag",
 		ResourceTag:    "resource-tag",
 		client: clients.GWClient{
-			AppName: "telegraf",
+			AppName: "Dana2",
 			AppType: defaultAppType,
 			GWConnection: &clients.GWConnection{
 				HostName: server.URL,

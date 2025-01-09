@@ -667,7 +667,7 @@ func TestOpensearchQueryIntegration(t *testing.T) {
 
 					require.NoError(t, err)
 
-					testutil.RequireMetricsEqual(t, tt.expectedMetrics, acc.GetTelegrafMetrics(), testutil.SortMetrics(), testutil.IgnoreTime())
+					testutil.RequireMetricsEqual(t, tt.expectedMetrics, acc.GetDana2Metrics(), testutil.SortMetrics(), testutil.IgnoreTime())
 				})
 			}
 		}()

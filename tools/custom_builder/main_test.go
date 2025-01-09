@@ -24,7 +24,7 @@ func TestCases(t *testing.T) {
 		if !f.IsDir() {
 			continue
 		}
-		configFilename := filepath.Join("testcases", f.Name(), "telegraf.conf")
+		configFilename := filepath.Join("testcases", f.Name(), "Dana2.conf")
 		expecedFilename := filepath.Join("testcases", f.Name(), "expected.tags")
 
 		t.Run(f.Name(), func(t *testing.T) {

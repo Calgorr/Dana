@@ -228,7 +228,7 @@ func TestTags(t *testing.T) {
 	require.Equal(t, "RSA", acc.TagValue("x509_cert", "public_key_algorithm"))
 
 	require.True(t, acc.HasTag("x509_cert", "issuer_common_name"))
-	require.Equal(t, "Telegraf Test CA", acc.TagValue("x509_cert", "issuer_common_name"))
+	require.Equal(t, "Dana2 Test CA", acc.TagValue("x509_cert", "issuer_common_name"))
 
 	require.True(t, acc.HasTag("x509_cert", "san"))
 	require.Equal(t, "localhost,127.0.0.1", acc.TagValue("x509_cert", "san"))
@@ -487,7 +487,7 @@ func TestServerName(t *testing.T) {
 func TestClassification(t *testing.T) {
 	start := time.Now()
 	end := time.Now().AddDate(0, 0, 1)
-	tmpDir, err := os.MkdirTemp("", "telegraf-x509-*")
+	tmpDir, err := os.MkdirTemp("", "Dana2-x509-*")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpDir)
 
@@ -675,6 +675,6 @@ func TestClassification(t *testing.T) {
 		// We need to ignore those fields as they are timing sensitive.
 		testutil.IgnoreFields("age", "expiry"),
 	}
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, opts...)
 }

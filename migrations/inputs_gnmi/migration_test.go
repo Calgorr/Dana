@@ -37,7 +37,7 @@ func TestCases(t *testing.T) {
 
 		t.Run(f.Name(), func(t *testing.T) {
 			testcasePath := filepath.Join("testcases", f.Name())
-			inputFile := filepath.Join(testcasePath, "telegraf.conf")
+			inputFile := filepath.Join(testcasePath, "Dana2.conf")
 			expectedFile := filepath.Join(testcasePath, "expected.conf")
 
 			// Read the expected output

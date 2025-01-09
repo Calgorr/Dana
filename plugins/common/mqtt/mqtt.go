@@ -79,7 +79,7 @@ func NewClient(cfg *MqttConfig) (Client, error) {
 func parseServers(servers []string) ([]*url.URL, error) {
 	urls := make([]*url.URL, 0, len(servers))
 	for _, svr := range servers {
-		// Preserve support for host:port style servers; deprecated in Telegraf 1.4.4
+		// Preserve support for host:port style servers; deprecated in Dana2 1.4.4
 		if !strings.Contains(svr, "://") {
 			urls = append(urls, &url.URL{Scheme: "tcp", Host: svr})
 			continue

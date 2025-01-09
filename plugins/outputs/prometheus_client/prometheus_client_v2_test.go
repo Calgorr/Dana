@@ -27,7 +27,7 @@ func TestMetricVersion2(t *testing.T) {
 		expected []byte
 	}{
 		{
-			name: "untyped telegraf metric",
+			name: "untyped Dana2 metric",
 			output: &PrometheusClient{
 				Listen:            ":0",
 				MetricVersion:     2,
@@ -48,7 +48,7 @@ func TestMetricVersion2(t *testing.T) {
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{host="example.org"} 42
 `),
@@ -75,7 +75,7 @@ cpu_time_idle{host="example.org"} 42
 				),
 			},
 			expected: []byte(`
-# HELP rpc_duration_seconds Telegraf collected metric
+# HELP rpc_duration_seconds Dana2 collected metric
 # TYPE rpc_duration_seconds summary
 rpc_duration_seconds_sum 1.7560473e+07
 rpc_duration_seconds_count 2693
@@ -104,7 +104,7 @@ rpc_duration_seconds_count 2693
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{host="example.org"} 42 0
 `),
@@ -131,7 +131,7 @@ cpu_time_idle{host="example.org"} 42 0
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{host="example.org"} 42
 `),
@@ -158,7 +158,7 @@ cpu_time_idle{host="example.org"} 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle 42
 `),
@@ -185,13 +185,13 @@ cpu_time_idle 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{host="example.org"} 42
 `),
 		},
 		{
-			name: "telegraf histogram",
+			name: "Dana2 histogram",
 			output: &PrometheusClient{
 				Listen:            ":0",
 				MetricVersion:     2,
@@ -262,7 +262,7 @@ cpu_time_idle{host="example.org"} 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_usage_idle Telegraf collected metric
+# HELP cpu_usage_idle Dana2 collected metric
 # TYPE cpu_usage_idle histogram
 cpu_usage_idle_bucket{cpu="cpu1",le="0"} 0
 cpu_usage_idle_bucket{cpu="cpu1",le="50"} 7
@@ -296,7 +296,7 @@ cpu_usage_idle_count{cpu="cpu1"} 20
 				),
 			},
 			expected: []byte(`
-# HELP cpu_usage_idle Telegraf collected metric
+# HELP cpu_usage_idle Dana2 collected metric
 # TYPE cpu_usage_idle histogram
 cpu_usage_idle_bucket{cpu="cpu1",le="+Inf"} 20
 cpu_usage_idle_sum{cpu="cpu1"} 2000
@@ -326,7 +326,7 @@ cpu_usage_idle_count{cpu="cpu1"} 20
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle counter
 cpu_time_idle{host="example.org"} 42
 `),
@@ -354,7 +354,7 @@ cpu_time_idle{host="example.org"} 42
 				),
 			},
 			expected: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle gauge
 cpu_time_idle{host="example.org"} 42
 `),
@@ -395,7 +395,7 @@ func TestRoundTripMetricVersion2(t *testing.T) {
 		{
 			name: "untyped",
 			data: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle untyped
 cpu_time_idle{host="example.org"} 42
 `),
@@ -403,7 +403,7 @@ cpu_time_idle{host="example.org"} 42
 		{
 			name: "counter",
 			data: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle counter
 cpu_time_idle{host="example.org"} 42
 `),
@@ -411,7 +411,7 @@ cpu_time_idle{host="example.org"} 42
 		{
 			name: "gauge",
 			data: []byte(`
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle gauge
 cpu_time_idle{host="example.org"} 42
 `),
@@ -419,11 +419,11 @@ cpu_time_idle{host="example.org"} 42
 		{
 			name: "multi",
 			data: []byte(`
-# HELP cpu_time_guest Telegraf collected metric
+# HELP cpu_time_guest Dana2 collected metric
 # TYPE cpu_time_guest gauge
 cpu_time_guest{host="one.example.org"} 42
 cpu_time_guest{host="two.example.org"} 42
-# HELP cpu_time_idle Telegraf collected metric
+# HELP cpu_time_idle Dana2 collected metric
 # TYPE cpu_time_idle gauge
 cpu_time_idle{host="one.example.org"} 42
 cpu_time_idle{host="two.example.org"} 42
@@ -432,7 +432,7 @@ cpu_time_idle{host="two.example.org"} 42
 		{
 			name: "histogram",
 			data: []byte(`
-# HELP http_request_duration_seconds Telegraf collected metric
+# HELP http_request_duration_seconds Dana2 collected metric
 # TYPE http_request_duration_seconds histogram
 http_request_duration_seconds_bucket{le="0.05"} 24054
 http_request_duration_seconds_bucket{le="0.1"} 33444
@@ -447,7 +447,7 @@ http_request_duration_seconds_count 144320
 		{
 			name: "summary",
 			data: []byte(`
-# HELP rpc_duration_seconds Telegraf collected metric
+# HELP rpc_duration_seconds Dana2 collected metric
 # TYPE rpc_duration_seconds summary
 rpc_duration_seconds{quantile="0.01"} 3102
 rpc_duration_seconds{quantile="0.05"} 3272
@@ -492,7 +492,7 @@ rpc_duration_seconds_count 2693
 			require.NoError(t, err)
 			input.Stop()
 
-			metrics := acc.GetTelegrafMetrics()
+			metrics := acc.GetDana2Metrics()
 
 			output := &PrometheusClient{
 				Listen:            "127.0.0.1:0",

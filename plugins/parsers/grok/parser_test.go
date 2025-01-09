@@ -109,7 +109,7 @@ func TestCustomInfluxdbHttpd(t *testing.T) {
 	// Parse an influxdb POST request
 	m, err := p.ParseLine(
 		`[httpd] ::1 - - [14/Jun/2016:11:33:29 +0100] ` +
-			`"POST /write?consistency=any&db=telegraf&precision=ns&rp= HTTP/1.1" 204 0 "-" "InfluxDBClient" 6f61bc44-321b-11e6-8050-000000000000 2513`,
+			`"POST /write?consistency=any&db=Dana2&precision=ns&rp= HTTP/1.1" 204 0 "-" "InfluxDBClient" 6f61bc44-321b-11e6-8050-000000000000 2513`,
 	)
 	require.NotNil(t, m)
 	require.NoError(t, err)
@@ -121,7 +121,7 @@ func TestCustomInfluxdbHttpd(t *testing.T) {
 			"http_version":     float64(1.1),
 			"ident":            "-",
 			"referrer":         "-",
-			"request":          "/write?consistency=any&db=telegraf&precision=ns&rp=",
+			"request":          "/write?consistency=any&db=Dana2&precision=ns&rp=",
 			"response_time_us": int64(2513),
 			"agent":            "InfluxDBClient",
 		},
@@ -131,7 +131,7 @@ func TestCustomInfluxdbHttpd(t *testing.T) {
 	// Parse an influxdb GET request
 	m, err = p.ParseLine(
 		`[httpd] ::1 - - [14/Jun/2016:12:10:02 +0100] ` +
-			`"GET /query?db=telegraf&q=SELECT+bytes%2Cresponse_time_us+FROM+logparser_grok+` +
+			`"GET /query?db=Dana2&q=SELECT+bytes%2Cresponse_time_us+FROM+logparser_grok+` +
 			`WHERE+http_method+%3D+%27GET%27+AND+response_time_us+%3E+0+AND+time+%3E+now%28%29+-+1h HTTP/1.1" 200 578 ` +
 			`"http://localhost:8083/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) ` +
 			`Chrome/51.0.2704.84 Safari/537.36" 8a3806f1-3220-11e6-8006-000000000000 988`,
@@ -146,7 +146,7 @@ func TestCustomInfluxdbHttpd(t *testing.T) {
 			"http_version": float64(1.1),
 			"ident":        "-",
 			"referrer":     "http://localhost:8083/",
-			"request": "/query?db=telegraf&q=" +
+			"request": "/query?db=Dana2&q=" +
 				"SELECT+bytes%2Cresponse_time_us+FROM+logparser_grok+WHERE+http_method+%3D+%27GET%27+AND+response_time_us+%3E+0+AND+time+%3E+now%28%29+-+1h",
 			"response_time_us": int64(988),
 			"agent":            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36",
@@ -1150,7 +1150,7 @@ func TestEmptyYearInTimestamp(t *testing.T) {
 }
 
 func TestTrimRegression(t *testing.T) {
-	// https://github.com/influxdata/telegraf/issues/4998
+	// https://github.com/influxdata/Dana2/issues/4998
 	p := &Parser{
 		Patterns: []string{`%{GREEDYDATA:message:string}`},
 	}

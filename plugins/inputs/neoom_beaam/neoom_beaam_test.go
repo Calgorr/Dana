@@ -38,7 +38,7 @@ func TestCases(t *testing.T) {
 			continue
 		}
 		testcasePath := filepath.Join("testcases", f.Name())
-		configFilename := filepath.Join(testcasePath, "telegraf.conf")
+		configFilename := filepath.Join(testcasePath, "Dana2.conf")
 		inputFiles := filepath.Join(testcasePath, "*.json")
 		expectedFilename := filepath.Join(testcasePath, "expected.out")
 		expectedErrorFilename := filepath.Join(testcasePath, "expected.err")
@@ -108,7 +108,7 @@ func TestCases(t *testing.T) {
 			require.Empty(t, acc.Errors)
 
 			// Check the metric nevertheless as we might get some metrics despite errors.
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.SortMetrics())
 		})
 	}

@@ -41,8 +41,8 @@ func TestConnectAndWriteIntegration(t *testing.T) {
 				WaitingFor:   wait.ForListeningPort(nat.Port(natsServicePort)),
 			},
 			nats: &NATS{
-				Name:       "telegraf",
-				Subject:    "telegraf",
+				Name:       "Dana2",
+				Subject:    "Dana2",
 				serializer: &influx.Serializer{},
 				Log:        testutil.Logger{},
 			},
@@ -56,17 +56,17 @@ func TestConnectAndWriteIntegration(t *testing.T) {
 				WaitingFor:   wait.ForListeningPort(nat.Port(natsServicePort)),
 			},
 			nats: &NATS{
-				Name:    "telegraf",
-				Subject: "telegraf",
+				Name:    "Dana2",
+				Subject: "Dana2",
 				Jetstream: &StreamConfig{
-					Name: "my-telegraf-stream",
+					Name: "my-Dana2-stream",
 				},
 				serializer: &influx.Serializer{},
 				Log:        testutil.Logger{},
 			},
 			streamConfigCompareFunc: func(t *testing.T, si *jetstream.StreamInfo) {
-				require.Equal(t, "my-telegraf-stream", si.Config.Name)
-				require.Equal(t, []string{"telegraf"}, si.Config.Subjects)
+				require.Equal(t, "my-Dana2-stream", si.Config.Name)
+				require.Equal(t, []string{"Dana2"}, si.Config.Subjects)
 			},
 		},
 		{
@@ -78,10 +78,10 @@ func TestConnectAndWriteIntegration(t *testing.T) {
 				WaitingFor:   wait.ForListeningPort(nat.Port(natsServicePort)),
 			},
 			nats: &NATS{
-				Name:    "telegraf",
+				Name:    "Dana2",
 				Subject: "my-tel-sub-outer",
 				Jetstream: &StreamConfig{
-					Name:              "telegraf-stream-with-cfg",
+					Name:              "Dana2-stream-with-cfg",
 					Subjects:          []string{"my-tel-sub0", "my-tel-sub1", "my-tel-sub2"},
 					Retention:         "workqueue",
 					MaxConsumers:      10,
@@ -98,7 +98,7 @@ func TestConnectAndWriteIntegration(t *testing.T) {
 				Log:        testutil.Logger{},
 			},
 			streamConfigCompareFunc: func(t *testing.T, si *jetstream.StreamInfo) {
-				require.Equal(t, "telegraf-stream-with-cfg", si.Config.Name)
+				require.Equal(t, "Dana2-stream-with-cfg", si.Config.Name)
 				require.Equal(t, []string{"my-tel-sub0", "my-tel-sub1", "my-tel-sub2", "my-tel-sub-outer"}, si.Config.Subjects)
 				require.Equal(t, jetstream.WorkQueuePolicy, si.Config.Retention)
 				require.Equal(t, 10, si.Config.MaxConsumers)

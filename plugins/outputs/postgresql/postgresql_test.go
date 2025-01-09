@@ -238,7 +238,7 @@ func newPostgresqlTest(tb testing.TB) (*PostgresqlTest, error) {
 	servicePort := "5432"
 	username := "postgres"
 	password := "postgres"
-	testDatabaseName := "telegraf_test"
+	testDatabaseName := "Dana2_test"
 
 	container := testutil.Container{
 		Image:        "postgres:alpine",
@@ -246,7 +246,7 @@ func newPostgresqlTest(tb testing.TB) (*PostgresqlTest, error) {
 		Env: map[string]string{
 			"POSTGRES_USER":     username,
 			"POSTGRES_PASSWORD": password,
-			"POSTGRES_DB":       "telegraf_test",
+			"POSTGRES_DB":       "Dana2_test",
 		},
 		WaitingFor: wait.ForAll(
 			// the database comes up twice, once right away, then again a second
@@ -308,7 +308,7 @@ func TestPostgresqlConnectIntegration(t *testing.T) {
 }
 
 func TestConnectionIssueAtStartup(t *testing.T) {
-	// Test case for https://github.com/influxdata/telegraf/issues/14365
+	// Test case for https://github.com/influxdata/Dana2/issues/14365
 	if testing.Short() {
 		t.Skip("Skipping integration test in short mode")
 	}
@@ -316,7 +316,7 @@ func TestConnectionIssueAtStartup(t *testing.T) {
 	servicePort := "5432"
 	username := "postgres"
 	password := "postgres"
-	testDatabaseName := "telegraf_test"
+	testDatabaseName := "Dana2_test"
 
 	container := testutil.Container{
 		Image:        "postgres:alpine",
@@ -324,7 +324,7 @@ func TestConnectionIssueAtStartup(t *testing.T) {
 		Env: map[string]string{
 			"POSTGRES_USER":     username,
 			"POSTGRES_PASSWORD": password,
-			"POSTGRES_DB":       "telegraf_test",
+			"POSTGRES_DB":       "Dana2_test",
 		},
 		WaitingFor: wait.ForAll(
 			// the database comes up twice, once right away, then again a second
@@ -600,7 +600,7 @@ func TestWriteIntegration_concurrentPermError(t *testing.T) {
 	require.Len(t, dumpB, 1)
 }
 
-// Verify that in sequential mode, errors are returned allowing telegraf agent to handle & retry
+// Verify that in sequential mode, errors are returned allowing Dana2 agent to handle & retry
 func TestWriteIntegration_sequentialTempError(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping integration test in short mode")

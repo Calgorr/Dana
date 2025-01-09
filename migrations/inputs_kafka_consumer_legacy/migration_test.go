@@ -13,10 +13,10 @@ import (
 func TestNoMigration(t *testing.T) {
 	input := []byte(`
 [[inputs.kafka_consumer_legacy]]
-  topics = ["telegraf"]
+  topics = ["Dana2"]
   zookeeper_peers = ["localhost:2181"]
   zookeeper_chroot = ""
-  consumer_group = "telegraf_metrics_consumers"
+  consumer_group = "Dana2_metrics_consumers"
   offset = "oldest"
   data_format = "influx"
   max_message_len = 65536

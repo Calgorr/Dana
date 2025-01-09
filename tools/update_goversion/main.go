@@ -146,7 +146,7 @@ func main() {
 	files := []FileInfo{
 		{
 			FileName: ".circleci/config.yml",
-			Regex:    `(quay\.io\/influxdb\/telegraf-ci):(\d.\d*.\d)`,
+			Regex:    `(quay\.io\/influxdb\/Dana2-ci):(\d.\d*.\d)`,
 			Replace:  "$1:" + version,
 		},
 		{
@@ -156,12 +156,12 @@ func main() {
 		},
 		{
 			FileName: "Makefile",
-			Regex:    `(quay\.io\/influxdb\/telegraf-ci):(\d.\d*.\d)`,
+			Regex:    `(quay\.io\/influxdb\/Dana2-ci):(\d.\d*.\d)`,
 			Replace:  "$1:" + version,
 		},
 		{
 			FileName: "README.md",
-			Regex:    `(Telegraf requires Go version) (\d.\d*)`,
+			Regex:    `(Dana2 requires Go version) (\d.\d*)`,
 			Replace:  "$1 " + noPatchVersion,
 		},
 		{

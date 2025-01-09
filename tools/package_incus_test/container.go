@@ -104,7 +104,7 @@ func (c *Container) CheckStatus(serviceName string) error {
 		"-c",
 		"--",
 		"echo '[[inputs.cpu]]\n[[outputs.file]]' | "+
-			"tee /etc/telegraf/telegraf.conf",
+			"tee /etc/Dana2/Dana2.conf",
 	)
 	if err != nil {
 		return err
@@ -115,7 +115,7 @@ func (c *Container) CheckStatus(serviceName string) error {
 		"bash",
 		"-c",
 		"--",
-		"ls -la /etc/telegraf/",
+		"ls -la /etc/Dana2/",
 	)
 	if err != nil {
 		return err

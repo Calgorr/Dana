@@ -173,7 +173,7 @@ func (kl *KNXListener) listen(acc Dana.Accumulator) {
 		kl.Log.Debugf("Matched GA %q to measurement %q with value %v", ga, target.measurement, target.datapoint)
 
 		// Convert the DatapointValue interface back to its basic type again
-		// as otherwise telegraf will not push out the metrics and eat it
+		// as otherwise Dana2 will not push out the metrics and eat it
 		// silently.
 		var value interface{}
 		if !target.asstring {

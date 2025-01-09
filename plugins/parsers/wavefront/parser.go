@@ -116,7 +116,7 @@ func (p *PointParser) Parse(buf []byte) ([]Dana.Metric, error) {
 		points = append(points, point)
 	}
 
-	metrics, err := p.convertPointToTelegrafMetric(points)
+	metrics, err := p.convertPointToDana2Metric(points)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 	p.DefaultTags = tags
 }
 
-func (p *PointParser) convertPointToTelegrafMetric(points []Point) ([]Dana.Metric, error) {
+func (p *PointParser) convertPointToDana2Metric(points []Point) ([]Dana.Metric, error) {
 	metrics := make([]Dana.Metric, 0)
 
 	for _, point := range points {

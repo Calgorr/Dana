@@ -32,8 +32,8 @@ type (
 		DescribeDatabaseOnStart bool   `toml:"describe_database_on_start"`
 		DatabaseName            string `toml:"database_name"`
 
-		SingleTableName                                    string `toml:"single_table_name"`
-		SingleTableDimensionNameForTelegrafMeasurementName string `toml:"single_table_dimension_name_for_telegraf_measurement_name"`
+		SingleTableName                                 string `toml:"single_table_name"`
+		SingleTableDimensionNameForDana2MeasurementName string `toml:"single_table_dimension_name_for_Dana2_measurement_name"`
 
 		UseMultiMeasureRecords            bool   `toml:"use_multi_measure_records"`
 		MeasureNameForMultiMeasureRecords string `toml:"measure_name_for_multi_measure_records"`
@@ -61,7 +61,7 @@ type (
 	}
 )
 
-// Mapping modes specify how Telegraf model should be represented in Timestream model.
+// Mapping modes specify how Dana2 model should be represented in Timestream model.
 // See sample config for more details.
 const (
 	MappingModeSingleTable = "single-table"
@@ -131,8 +131,8 @@ func (t *Timestream) Connect() error {
 			return fmt.Errorf("in %q mapping mode, SingleTableName key is required", MappingModeSingleTable)
 		}
 
-		if t.SingleTableDimensionNameForTelegrafMeasurementName == "" && !t.UseMultiMeasureRecords {
-			return fmt.Errorf("in %q mapping mode, SingleTableDimensionNameForTelegrafMeasurementName key is required",
+		if t.SingleTableDimensionNameForDana2MeasurementName == "" && !t.UseMultiMeasureRecords {
+			return fmt.Errorf("in %q mapping mode, SingleTableDimensionNameForDana2MeasurementName key is required",
 				MappingModeSingleTable)
 		}
 
@@ -148,8 +148,8 @@ func (t *Timestream) Connect() error {
 			return fmt.Errorf("in %q mapping mode, do not specify SingleTableName key", MappingModeMultiTable)
 		}
 
-		if t.SingleTableDimensionNameForTelegrafMeasurementName != "" {
-			return fmt.Errorf("in %q mapping mode, do not specify SingleTableDimensionNameForTelegrafMeasurementName key", MappingModeMultiTable)
+		if t.SingleTableDimensionNameForDana2MeasurementName != "" {
+			return fmt.Errorf("in %q mapping mode, do not specify SingleTableDimensionNameForDana2MeasurementName key", MappingModeMultiTable)
 		}
 
 		// When using MappingModeMultiTable ( data is ingested to multiple tables ) with
@@ -162,11 +162,11 @@ func (t *Timestream) Connect() error {
 
 	if t.CreateTableIfNotExists {
 		if t.CreateTableMagneticStoreRetentionPeriodInDays < 1 {
-			return errors.New("if Telegraf should create tables, CreateTableMagneticStoreRetentionPeriodInDays key should have a value greater than 0")
+			return errors.New("if Dana2 should create tables, CreateTableMagneticStoreRetentionPeriodInDays key should have a value greater than 0")
 		}
 
 		if t.CreateTableMemoryStoreRetentionPeriodInHours < 1 {
-			return errors.New("if Telegraf should create tables, CreateTableMemoryStoreRetentionPeriodInHours key should have a value greater than 0")
+			return errors.New("if Dana2 should create tables, CreateTableMemoryStoreRetentionPeriodInHours key should have a value greater than 0")
 		}
 	}
 
@@ -252,7 +252,7 @@ func (t *Timestream) Write(metrics []Dana.Metric) error {
 	t.Log.Infof("##WriteToTimestream - Metrics size: %d request size: %d time(ms): %d",
 		len(metrics), len(writeRecordsInputs), elapsed.Milliseconds())
 
-	// On partial failures, Telegraf will reject the entire batch of metrics and
+	// On partial failures, Dana2 will reject the entire batch of metrics and
 	// retry. writeToTimestream will return retryable exceptions only.
 	for err := range errs {
 		if err != nil {
@@ -266,7 +266,7 @@ func (t *Timestream) Write(metrics []Dana.Metric) error {
 func (t *Timestream) writeToTimestream(writeRecordsInput *timestreamwrite.WriteRecordsInput, resourceNotFoundRetry bool) error {
 	_, err := t.svc.WriteRecords(context.Background(), writeRecordsInput)
 	if err != nil {
-		// Telegraf will retry ingesting the metrics if an error is returned from the plugin.
+		// Dana2 will retry ingesting the metrics if an error is returned from the plugin.
 		// Therefore, return error only for retryable exceptions: ThrottlingException and 5xx exceptions.
 		var notFound *types.ResourceNotFoundException
 		if errors.As(err, &notFound) {
@@ -276,7 +276,7 @@ func (t *Timestream) writeToTimestream(writeRecordsInput *timestreamwrite.WriteR
 				return t.createTableAndRetry(writeRecordsInput)
 			}
 			t.logWriteToTimestreamError(notFound, writeRecordsInput.TableName)
-			// log error and return error to telegraf to retry in next flush interval
+			// log error and return error to Dana2 to retry in next flush interval
 			// We need this is to avoid data drop when there are no tables present in the database
 			return fmt.Errorf("failed to write to Timestream database %q table %q: %w", t.DatabaseName, *writeRecordsInput.TableName, err)
 		}
@@ -369,8 +369,8 @@ func (t *Timestream) createTable(tableName *string) error {
 	return nil
 }
 
-// TransformMetrics transforms a collection of Telegraf Metrics into write requests to Timestream.
-// Telegraf Metrics are grouped by Name, Tag Keys and Time to use Timestream CommonAttributes.
+// TransformMetrics transforms a collection of Dana2 Metrics into write requests to Timestream.
+// Dana2 Metrics are grouped by Name, Tag Keys and Time to use Timestream CommonAttributes.
 // Returns collection of write requests to be performed to Timestream.
 func (t *Timestream) TransformMetrics(metrics []Dana.Metric) []*timestreamwrite.WriteRecordsInput {
 	writeRequests := make(map[string]*timestreamwrite.WriteRecordsInput, len(metrics))
@@ -436,7 +436,7 @@ func (t *Timestream) buildDimensions(point Dana.Metric) []types.Dimension {
 	}
 	if t.MappingMode == MappingModeSingleTable && !t.UseMultiMeasureRecords {
 		dimension := types.Dimension{
-			Name:  aws.String(t.SingleTableDimensionNameForTelegrafMeasurementName),
+			Name:  aws.String(t.SingleTableDimensionNameForDana2MeasurementName),
 			Value: aws.String(point.Name()),
 		}
 		dimensions = append(dimensions, dimension)
@@ -566,7 +566,7 @@ func getTimestreamTime(t time.Time) (timeUnit types.TimeUnit, timeValue string) 
 	return timeUnit, timeValue
 }
 
-// convertValue converts single Field value from Telegraf Metric and produces
+// convertValue converts single Field value from Dana2 Metric and produces
 // value, valueType Timestream representation.
 func convertValue(v interface{}) (value string, valueType types.MeasureValueType, ok bool) {
 	ok = true

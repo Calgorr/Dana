@@ -875,7 +875,7 @@ func TestStartupErrorBehaviorRetry(t *testing.T) {
 	require.NoError(t, model.Start(&acc))
 
 	// The gather should fail as the server does not accept connections (yet)
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 	require.ErrorIs(t, model.Gather(&acc), internal.ErrNotConnected)
 	require.Equal(t, int64(2), model.StartupErrors.Get())
 

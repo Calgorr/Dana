@@ -120,9 +120,9 @@ func (r *RunningAggregator) UpdateWindow(start, until time.Time) {
 	r.log.Debugf("Updated aggregation range [%s, %s]", start, until)
 }
 
-func (r *RunningAggregator) MakeMetric(telegrafMetric Dana.Metric) Dana.Metric {
+func (r *RunningAggregator) MakeMetric(Dana2Metric Dana.Metric) Dana.Metric {
 	m := makeMetric(
-		telegrafMetric,
+		Dana2Metric,
 		r.Config.NameOverride,
 		r.Config.MeasurementPrefix,
 		r.Config.MeasurementSuffix,

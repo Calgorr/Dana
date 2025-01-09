@@ -111,7 +111,7 @@ func TCPServer(t *testing.T, wg *sync.WaitGroup) int {
 		reader := bufio.NewReader(conn)
 		tp := textproto.NewReader(reader)
 
-		helloExpected := "hello version go/telegraf/1.1"
+		helloExpected := "hello version go/Dana2/1.1"
 		hello, err := tp.ReadLine()
 		if err != nil {
 			t.Error(err)
@@ -172,7 +172,7 @@ func TCPServer(t *testing.T, wg *sync.WaitGroup) int {
 		reader = bufio.NewReader(conn)
 		tp = textproto.NewReader(reader)
 
-		helloExpected = "hello version go/telegraf/1.1"
+		helloExpected = "hello version go/Dana2/1.1"
 		hello, err = tp.ReadLine()
 		if err != nil {
 			t.Error(err)

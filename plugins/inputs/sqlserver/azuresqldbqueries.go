@@ -11,7 +11,7 @@ import (
 // Only executed if AzureDB flag is set
 const sqlAzureDBResourceStats string = `
 IF SERVERPROPERTY('EngineEdition') <> 5 BEGIN /*not Azure SQL DB*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -43,7 +43,7 @@ ORDER BY
 // This will only be collected for Azure SQL Database.
 const sqlAzureDBResourceGovernance string = `
 IF SERVERPROPERTY('EngineEdition') <> 5 BEGIN /*not Azure SQL DB*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -91,7 +91,7 @@ FROM
 // This will only be collected for Azure SQL Database.
 const sqlAzureDBWaitStats string = `
 IF SERVERPROPERTY('EngineEdition') <> 5 BEGIN /*not Azure SQL DB*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -151,7 +151,7 @@ WHERE
 const sqlAzureDBDatabaseIO = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') <> 5 BEGIN /*not Azure SQL DB*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -216,7 +216,7 @@ WHERE
 
 const sqlAzureDBProperties = `
 IF SERVERPROPERTY('EngineEdition') <> 5 BEGIN /*not Azure SQL DB*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -256,7 +256,7 @@ WHERE
 
 const sqlAzureDBOsWaitStats = `
 IF SERVERPROPERTY('EngineEdition') <> 5 BEGIN /*not Azure SQL DB*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -373,7 +373,7 @@ AND [wait_time_ms] > 100;
 
 const sqlAzureDBMemoryClerks = `
 IF SERVERPROPERTY('EngineEdition') <> 5 BEGIN /*not Azure SQL DB*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -396,7 +396,7 @@ OPTION(RECOMPILE);
 const sqlAzureDBPerformanceCounters = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') <> 5 BEGIN /*not Azure SQL DB*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -582,7 +582,7 @@ OPTION (RECOMPILE);
 
 const sqlAzureDBRequests string = `
 IF SERVERPROPERTY('EngineEdition') <> 5 BEGIN /*not Azure SQL DB*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -673,7 +673,7 @@ OPTION(MAXDOP 1);
 
 const sqlAzureDBSchedulers string = `
 IF SERVERPROPERTY('EngineEdition') <> 5 BEGIN /*not Azure SQL DB*/
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL DB. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END

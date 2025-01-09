@@ -50,7 +50,7 @@ func TestCompile(t *testing.T) {
 }
 
 func TestIncludeExclude(t *testing.T) {
-	labels := []string{"best", "com_influxdata", "timeseries", "com_influxdata_telegraf", "ever"}
+	labels := []string{"best", "com_influxdata", "timeseries", "com_influxdata_Dana2", "ever"}
 	tags := make([]string, 0, len(labels))
 
 	filter, err := NewIncludeExcludeFilter(nil, []string{"com_influx*"})

@@ -136,7 +136,7 @@ var synproxyResultOverflow = map[string]interface{}{
 	"conn_reopened":  uint32(0x00000000),
 }
 
-func testSynproxyFileData(t *testing.T, fileData string, telegrafData map[string]interface{}) {
+func testSynproxyFileData(t *testing.T, fileData string, Dana2Data map[string]interface{}) {
 	tmpfile := makeFakeSynproxyFile([]byte(fileData))
 	defer os.Remove(tmpfile)
 
@@ -148,7 +148,7 @@ func testSynproxyFileData(t *testing.T, fileData string, telegrafData map[string
 	err := k.Gather(&acc)
 	require.NoError(t, err)
 
-	acc.AssertContainsFields(t, "synproxy", telegrafData)
+	acc.AssertContainsFields(t, "synproxy", Dana2Data)
 }
 
 func makeFakeSynproxyFile(content []byte) string {

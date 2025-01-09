@@ -40,7 +40,7 @@ func TestCases(t *testing.T) {
 
 		t.Run(f.Name(), func(t *testing.T) {
 			testcasePath := filepath.Join(testpath, f.Name())
-			configFilename := filepath.Join(testcasePath, "telegraf.conf")
+			configFilename := filepath.Join(testcasePath, "Dana2.conf")
 			inputSysctlFilename := filepath.Join(testcasePath, "sysctl.json")
 			inputZPoolFilename := filepath.Join(testcasePath, "zpool.txt")
 			inputZDatasetFilename := filepath.Join(testcasePath, "zdataset.txt")
@@ -97,7 +97,7 @@ func TestCases(t *testing.T) {
 			var acc testutil.Accumulator
 			require.NoError(t, plugin.Gather(&acc))
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 		})
 	}

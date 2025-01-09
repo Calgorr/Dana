@@ -27,7 +27,7 @@ const (
 	DefaultAuthMethod      = "PLAIN"
 	DefaultExchangeType    = "topic"
 	DefaultRetentionPolicy = "default"
-	DefaultDatabase        = "telegraf"
+	DefaultDatabase        = "Dana2"
 )
 
 type externalAuth struct{}

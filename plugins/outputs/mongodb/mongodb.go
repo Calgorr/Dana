@@ -73,7 +73,7 @@ func (*MongoDB) SampleConfig() string {
 
 func (s *MongoDB) Init() error {
 	if s.MetricDatabase == "" {
-		s.MetricDatabase = "telegraf"
+		s.MetricDatabase = "Dana2"
 	}
 	switch s.MetricGranularity {
 	case "":

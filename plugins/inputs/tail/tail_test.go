@@ -354,7 +354,7 @@ cpu,42
 	require.Eventuallyf(t, func() bool {
 		return acc.NMetrics() >= uint64(len(expected))
 	}, time.Second, 100*time.Millisecond, "Expected %d metrics found %d", len(expected), acc.NMetrics())
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestCSVMultiHeaderWithSkipRowANDColumn(t *testing.T) {
@@ -413,7 +413,7 @@ skip2,mem,100
 	}, time.Second, 100*time.Millisecond, "Expected %d metrics found %d", len(expected), acc.NMetrics())
 	plugin.Stop()
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 // Ensure that the first line can produce multiple metrics (#6138)
@@ -466,7 +466,7 @@ func TestMultipleMetricsOnFirstLine(t *testing.T) {
 	}, time.Second, 100*time.Millisecond, "Expected %d metrics found %d", len(expected), acc.NMetrics())
 	plugin.Stop()
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestCharacterEncoding(t *testing.T) {
@@ -594,7 +594,7 @@ func TestCharacterEncoding(t *testing.T) {
 			}, time.Second, 100*time.Millisecond, "Expected %d metrics found %d", len(tt.expected), acc.NMetrics())
 			plugin.Stop()
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			for _, m := range actual {
 				m.RemoveTag("path")
 			}
@@ -725,7 +725,7 @@ func TestCSVBehavior(t *testing.T) {
 		testutil.SortMetrics(),
 		testutil.IgnoreTime(),
 	}
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, options...)
 
 	// Close the input file
@@ -792,7 +792,7 @@ func TestStatePersistence(t *testing.T) {
 		testutil.SortMetrics(),
 		testutil.IgnoreTime(),
 	}
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, options...)
 
 	// Check getting the persisted state

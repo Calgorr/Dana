@@ -42,7 +42,7 @@ type jsonView struct {
 	Resolver map[string]map[string]int
 }
 
-// addJSONCounter adds a counter array to a Telegraf Accumulator, with the specified tags.
+// addJSONCounter adds a counter array to a Dana2 Accumulator, with the specified tags.
 func addJSONCounter(acc Dana.Accumulator, commonTags map[string]string, stats map[string]int) {
 	grouper := metric.NewSeriesGrouper()
 	ts := time.Now()

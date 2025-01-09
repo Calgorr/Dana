@@ -30,8 +30,8 @@ func TestStartStop(t *testing.T) {
 
 	plugin := &NatsConsumer{
 		Servers:                []string{fmt.Sprintf("nats://%s:%s", container.Address, container.Ports["4222"])},
-		Subjects:               []string{"telegraf"},
-		QueueGroup:             "telegraf_consumers",
+		Subjects:               []string{"Dana2"},
+		QueueGroup:             "Dana2_consumers",
 		PendingBytesLimit:      nats.DefaultSubPendingBytesLimit,
 		PendingMessageLimit:    nats.DefaultSubPendingMsgsLimit,
 		MaxUndeliveredMessages: defaultMaxUndeliveredMessages,
@@ -65,14 +65,14 @@ func TestSendReceive(t *testing.T) {
 		{
 			name: "single message",
 			msgs: map[string][]string{
-				"telegraf": {"test,source=foo value=42i"},
+				"Dana2": {"test,source=foo value=42i"},
 			},
 			expected: []Dana.Metric{
 				metric.New(
 					"test",
 					map[string]string{
 						"source":  "foo",
-						"subject": "telegraf",
+						"subject": "Dana2",
 					},
 					map[string]interface{}{"value": int64(42)},
 					time.Unix(0, 0),
@@ -82,7 +82,7 @@ func TestSendReceive(t *testing.T) {
 		{
 			name: "multiple message",
 			msgs: map[string][]string{
-				"telegraf": {
+				"Dana2": {
 					"test,source=foo value=42i",
 					"test,source=bar value=23i",
 				},
@@ -96,7 +96,7 @@ func TestSendReceive(t *testing.T) {
 					"test",
 					map[string]string{
 						"source":  "foo",
-						"subject": "telegraf",
+						"subject": "Dana2",
 					},
 					map[string]interface{}{"value": int64(42)},
 					time.Unix(0, 0),
@@ -105,7 +105,7 @@ func TestSendReceive(t *testing.T) {
 					"test",
 					map[string]string{
 						"source":  "bar",
-						"subject": "telegraf",
+						"subject": "Dana2",
 					},
 					map[string]interface{}{"value": int64(23)},
 					time.Unix(0, 0),
@@ -143,7 +143,7 @@ func TestSendReceive(t *testing.T) {
 			plugin := &NatsConsumer{
 				Servers:                []string{addr},
 				Subjects:               subjects,
-				QueueGroup:             "telegraf_consumers",
+				QueueGroup:             "Dana2_consumers",
 				PendingBytesLimit:      nats.DefaultSubPendingBytesLimit,
 				PendingMessageLimit:    nats.DefaultSubPendingMsgsLimit,
 				MaxUndeliveredMessages: defaultMaxUndeliveredMessages,
@@ -178,7 +178,7 @@ func TestSendReceive(t *testing.T) {
 				return acc.NMetrics() >= uint64(len(tt.expected))
 			}, time.Second, 100*time.Millisecond)
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, tt.expected, actual, testutil.IgnoreTime(), testutil.SortMetrics())
 		})
 	}

@@ -115,7 +115,7 @@ func TestSqlServerIntegration_MultipleInstance(t *testing.T) {
 	//  confirm they don't interfere with each other
 	t.Skip("Skipping as unable to open tcp connection with host '127.0.0.1:1433")
 
-	testServer := "Server=127.0.0.1;Port=1433;User Id=SA;Password=ABCabc01;app name=telegraf;log=1"
+	testServer := "Server=127.0.0.1;Port=1433;User Id=SA;Password=ABCabc01;app name=Dana2;log=1"
 	sl := config.NewSecret([]byte(testServer))
 	s := &SQLServer{
 		Servers:      []*config.Secret{&sl},
@@ -154,7 +154,7 @@ func TestSqlServerIntegration_MultipleInstanceWithHealthMetric(t *testing.T) {
 	// It is separated to ensure that the health metric code does not affect other metrics
 	t.Skip("Skipping as unable to open tcp connection with host '127.0.0.1:1433")
 
-	testServer := "Server=127.0.0.1;Port=1433;User Id=SA;Password=ABCabc01;app name=telegraf;log=1"
+	testServer := "Server=127.0.0.1;Port=1433;User Id=SA;Password=ABCabc01;app name=Dana2;log=1"
 	sl := config.NewSecret([]byte(testServer))
 	s := &SQLServer{
 		Servers:      []*config.Secret{&sl},

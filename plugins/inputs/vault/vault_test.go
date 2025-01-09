@@ -104,7 +104,7 @@ func TestVaultStats(t *testing.T) {
 			err = plugin.Gather(&acc)
 			require.NoError(t, err)
 
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics())
 		})
 	}
 }
@@ -184,7 +184,7 @@ func TestRedirect(t *testing.T) {
 
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual)
 }
 
@@ -223,6 +223,6 @@ func TestIntegration(t *testing.T) {
 	var acc testutil.Accumulator
 	require.Eventually(t, func() bool {
 		require.NoError(t, plugin.Gather(&acc))
-		return len(acc.GetTelegrafMetrics()) > 50
+		return len(acc.GetDana2Metrics()) > 50
 	}, 5*time.Second, 100*time.Millisecond)
 }

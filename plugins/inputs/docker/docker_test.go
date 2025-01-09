@@ -903,7 +903,7 @@ func TestContainerStatus(t *testing.T) {
 			err := d.Gather(&acc)
 			require.NoError(t, err)
 
-			actual := filterMetrics(acc.GetTelegrafMetrics(), func(m Dana.Metric) bool {
+			actual := filterMetrics(acc.GetDana2Metrics(), func(m Dana.Metric) bool {
 				return m.Name() == "docker_container_status"
 			})
 			testutil.RequireMetricsEqual(t, tt.expected, actual)
@@ -1450,7 +1450,7 @@ func Test_parseContainerStatsPerDeviceAndTotal(t *testing.T) {
 			}
 			d.parseContainerStats(tt.args.stat, &acc, tt.args.tags, tt.args.id, tt.args.daemonOSType)
 
-			actual := filterMetrics(acc.GetTelegrafMetrics(), func(m Dana.Metric) bool {
+			actual := filterMetrics(acc.GetDana2Metrics(), func(m Dana.Metric) bool {
 				return choice.Contains(m.Name(),
 					[]string{"docker_container_cpu", "docker_container_net", "docker_container_blkio"})
 			})
@@ -1600,7 +1600,7 @@ func TestDockerGatherDiskUsage(t *testing.T) {
 			"shared_size": int64(0)},
 		map[string]string{
 			"image_id":       "7f4a1cc74046",
-			"image_name":     "telegraf",
+			"image_name":     "Dana2",
 			"image_version":  "latest",
 			"engine_host":    "absol",
 			"server_version": "17.09.0-ce",

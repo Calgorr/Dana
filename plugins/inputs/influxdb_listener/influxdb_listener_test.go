@@ -346,7 +346,7 @@ func TestWriteRetentionPolicyTag(t *testing.T) {
 	}
 
 	acc.Wait(1)
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 // http listener should add a newline at the end of the buffer if it's not there

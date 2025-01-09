@@ -44,13 +44,13 @@ func main() {
 	flag.Parse()
 
 	if help || flag.NArg() > 1 {
-		fmt.Fprintf(flag.CommandLine.Output(), "Usage of %s [options] [telegraf root dir]\n", os.Args[0])
+		fmt.Fprintf(flag.CommandLine.Output(), "Usage of %s [options] [Dana2 root dir]\n", os.Args[0])
 		fmt.Fprintf(flag.CommandLine.Output(), "Options:\n")
 		flag.PrintDefaults()
 		fmt.Fprintf(flag.CommandLine.Output(), "\n")
 		fmt.Fprintf(flag.CommandLine.Output(), "Arguments:\n")
-		fmt.Fprintf(flag.CommandLine.Output(), "  telegraf root dir (optional)\n")
-		fmt.Fprintf(flag.CommandLine.Output(), "		path to the root directory of telegraf (default: .)\n")
+		fmt.Fprintf(flag.CommandLine.Output(), "  Dana2 root dir (optional)\n")
+		fmt.Fprintf(flag.CommandLine.Output(), "		path to the root directory of Dana2 (default: .)\n")
 		os.Exit(1)
 	}
 

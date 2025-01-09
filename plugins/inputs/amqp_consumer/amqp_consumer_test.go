@@ -75,7 +75,7 @@ func TestIntegration(t *testing.T) {
 	// Define common properties
 	servicePort := "5672"
 	vhost := "/"
-	exchange := "telegraf"
+	exchange := "Dana2"
 	exchangeType := "direct"
 	queueName := "test"
 	bindingKey := "test"
@@ -146,7 +146,7 @@ func TestIntegration(t *testing.T) {
 
 	client.close()
 	plugin.Stop()
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestStartupErrorBehaviorError(t *testing.T) {
@@ -157,7 +157,7 @@ func TestStartupErrorBehaviorError(t *testing.T) {
 	// Define common properties
 	servicePort := "5672"
 	vhost := "/"
-	exchange := "telegraf"
+	exchange := "Dana2"
 	exchangeType := "direct"
 	queueName := "test"
 	bindingKey := "test"
@@ -219,7 +219,7 @@ func TestStartupErrorBehaviorIgnore(t *testing.T) {
 	// Define common properties
 	servicePort := "5672"
 	vhost := "/"
-	exchange := "telegraf"
+	exchange := "Dana2"
 	exchangeType := "direct"
 	queueName := "test"
 	bindingKey := "test"
@@ -286,7 +286,7 @@ func TestStartupErrorBehaviorRetry(t *testing.T) {
 	// Define common properties
 	servicePort := "5672"
 	vhost := "/"
-	exchange := "telegraf"
+	exchange := "Dana2"
 	exchangeType := "direct"
 	queueName := "test"
 	bindingKey := "test"
@@ -353,7 +353,7 @@ func TestStartupErrorBehaviorRetry(t *testing.T) {
 	require.NoError(t, model.Start(&acc))
 
 	// There should be no metrics as the plugin is not fully started up yet
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 	require.ErrorIs(t, model.Gather(&acc), internal.ErrNotConnected)
 	require.Equal(t, int64(2), model.StartupErrors.Get())
 
@@ -379,7 +379,7 @@ func TestStartupErrorBehaviorRetry(t *testing.T) {
 
 	client.close()
 	plugin.Stop()
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 type producer struct {

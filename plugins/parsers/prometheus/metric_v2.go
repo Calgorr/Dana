@@ -14,7 +14,7 @@ import (
 func (p *Parser) extractMetricsV2(prommetrics *dto.MetricFamily) []Dana.Metric {
 	now := time.Now()
 
-	// Convert each prometheus metric to a corresponding telegraf metric
+	// Convert each prometheus metric to a corresponding Dana2 metric
 	// with one field each. The process will filter NaNs in values and skip
 	// the corresponding metrics.
 	var metrics []Dana.Metric

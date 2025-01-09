@@ -2,7 +2,7 @@ package elasticsearch
 
 const clusterHealthResponse = `
 {
-   "cluster_name": "elasticsearch_telegraf",
+   "cluster_name": "elasticsearch_Dana2",
    "status": "green",
    "timed_out": false,
    "number_of_nodes": 3,
@@ -22,7 +22,7 @@ const clusterHealthResponse = `
 
 const clusterHealthResponseWithIndices = `
 {
-   "cluster_name": "elasticsearch_telegraf",
+   "cluster_name": "elasticsearch_Dana2",
    "status": "green",
    "timed_out": false,
    "number_of_nodes": 3,

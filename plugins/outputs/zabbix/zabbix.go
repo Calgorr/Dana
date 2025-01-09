@@ -58,7 +58,7 @@ func (*Zabbix) SampleConfig() string {
 }
 
 // Connect does nothing, Write() would initiate connection in each call.
-// Checking if Zabbix server is alive in this step does not allow Telegraf
+// Checking if Zabbix server is alive in this step does not allow Dana2
 // to start if there is a temporal connection problem with the server.
 func (z *Zabbix) Connect() error {
 	return nil
@@ -161,7 +161,7 @@ func (z *Zabbix) sendZabbixMetrics(zbxMetrics []*zabbix.Metric) error {
 	return err
 }
 
-// processMetric converts a Telegraf metric to a list of Zabbix metrics.
+// processMetric converts a Dana2 metric to a list of Zabbix metrics.
 // Ignore metrics with no hostname.
 func (z Zabbix) processMetric(metric Dana.Metric) []*zabbix.Metric {
 	zbxMetrics := make([]*zabbix.Metric, 0, len(metric.FieldList()))
@@ -169,7 +169,7 @@ func (z Zabbix) processMetric(metric Dana.Metric) []*zabbix.Metric {
 	for _, field := range metric.FieldList() {
 		zbxMetric, err := z.buildZabbixMetric(metric, field.Key, field.Value)
 		if err != nil {
-			z.Log.Errorf("Error converting telegraf metric to Zabbix format: %v", err)
+			z.Log.Errorf("Error converting Dana2 metric to Zabbix format: %v", err)
 			continue
 		}
 
@@ -179,7 +179,7 @@ func (z Zabbix) processMetric(metric Dana.Metric) []*zabbix.Metric {
 	return zbxMetrics
 }
 
-// buildZabbixMetric builds a Zabbix metric from a Telegraf metric, for one particular value.
+// buildZabbixMetric builds a Zabbix metric from a Dana2 metric, for one particular value.
 func (z Zabbix) buildZabbixMetric(metric Dana.Metric, fieldName string, value interface{}) (*zabbix.Metric, error) {
 	hostname, err := getHostname(z.HostTag, metric)
 	if err != nil {
@@ -221,7 +221,7 @@ func (z Zabbix) buildZabbixMetric(metric Dana.Metric, fieldName string, value in
 func init() {
 	outputs.Add("zabbix", func() Dana.Output {
 		return &Zabbix{
-			KeyPrefix:                  "telegraf.",
+			KeyPrefix:                  "Dana2.",
 			HostTag:                    "host",
 			AutoregisterResendInterval: config.Duration(time.Minute * 30),
 			LLDSendInterval:            config.Duration(time.Minute * 10),

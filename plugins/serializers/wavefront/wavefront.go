@@ -91,7 +91,7 @@ func (s *Serializer) findSourceTag(mTags map[string]string) string {
 	for _, src := range s.SourceOverride {
 		if source, ok := mTags[src]; ok {
 			delete(mTags, src)
-			mTags["telegraf_host"] = mTags["host"]
+			mTags["Dana2_host"] = mTags["host"]
 			return source
 		}
 	}

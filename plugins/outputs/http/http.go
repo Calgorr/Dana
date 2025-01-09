@@ -32,7 +32,7 @@ var sampleConfig string
 
 const (
 	maxErrMsgLen = 1024
-	defaultURL   = "http://127.0.0.1:8080/telegraf"
+	defaultURL   = "http://127.0.0.1:8080/Dana2"
 )
 
 const (

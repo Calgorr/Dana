@@ -127,7 +127,7 @@ func (p *Postgresql) Init() error {
 	}
 
 	if _, ok := p.dbConfig.ConnConfig.RuntimeParams["application_name"]; !ok {
-		p.dbConfig.ConnConfig.RuntimeParams["application_name"] = "telegraf"
+		p.dbConfig.ConnConfig.RuntimeParams["application_name"] = "Dana2"
 	}
 
 	if p.LogLevel != "" {
@@ -275,7 +275,7 @@ func (p *Postgresql) writeSequential(tableSources map[string]*TableSource) error
 		err := p.writeMetricsFromMeasure(p.dbContext, sp, tableSource)
 		if err != nil {
 			if isTempError(err) {
-				// return so that telegraf will retry the whole batch
+				// return so that Dana2 will retry the whole batch
 				return err
 			}
 			p.Logger.Errorf("write error (permanent, dropping sub-batch): %v", err)

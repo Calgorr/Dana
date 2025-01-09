@@ -59,7 +59,7 @@ func (*AzureDataExplorer) SampleConfig() string {
 func (adx *AzureDataExplorer) Connect() error {
 	conn := kusto.NewConnectionStringBuilder(adx.Endpoint).WithDefaultAzureCredential()
 	// Since init is called before connect, we can set the connector details here including the type. This will be used for telemetry and tracing.
-	conn.SetConnectorDetails("Telegraf", internal.ProductToken(), "", "", false, "")
+	conn.SetConnectorDetails("Dana2", internal.ProductToken(), "", "", false, "")
 	client, err := kusto.New(conn)
 	if err != nil {
 		return err

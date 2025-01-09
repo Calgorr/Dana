@@ -136,7 +136,7 @@ func (a *chimpAPI) runChimp(params reportsParams) ([]byte, error) {
 		return nil, err
 	}
 	req.URL.RawQuery = params.String()
-	req.Header.Set("User-Agent", "Telegraf-MailChimp-Plugin")
+	req.Header.Set("User-Agent", "Dana2-MailChimp-Plugin")
 	if a.debug {
 		a.log.Debugf("request URL: %s", req.URL.String())
 	}

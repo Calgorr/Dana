@@ -174,7 +174,7 @@ func TestLibvirt_Gather(t *testing.T) {
 			err = l.Gather(&acc)
 			require.NoError(t, err)
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			expected := test.expectedMetrics
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.SortMetrics(), testutil.IgnoreTime())
 			mockUtils.AssertExpectations(t)
@@ -227,7 +227,7 @@ func TestLibvirt_GatherMetrics(t *testing.T) {
 			err := l.Gather(&acc)
 			require.NoError(t, err)
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			expected := test.expectedMetrics
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.SortMetrics(), testutil.IgnoreTime())
 			mockUtils.AssertExpectations(t)

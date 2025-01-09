@@ -165,6 +165,6 @@ func TestPSIStats(t *testing.T) {
 		),
 	}
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime(), testutil.SortMetrics())
 }

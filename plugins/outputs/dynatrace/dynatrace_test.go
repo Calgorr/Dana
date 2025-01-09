@@ -183,8 +183,8 @@ func TestSendMetrics(t *testing.T) {
 
 	// Simple metrics are exported as a gauge unless in additional_counters
 	expected = append(expected,
-		"simple_metric.value,dt.metrics.source=telegraf gauge,3.14 1289430000000",
-		"simple_metric.counter,dt.metrics.source=telegraf count,delta=5 1289430000000",
+		"simple_metric.value,dt.metrics.source=Dana2 gauge,3.14 1289430000000",
+		"simple_metric.counter,dt.metrics.source=Dana2 count,delta=5 1289430000000",
 	)
 	d.AddCounterMetrics = append(d.AddCounterMetrics, "simple_metric.counter")
 	m1 := metric.New(
@@ -196,8 +196,8 @@ func TestSendMetrics(t *testing.T) {
 
 	// Even if Type() returns counter, all metrics are treated as a gauge unless explicitly added to additional_counters
 	expected = append(expected,
-		"counter_type.value,dt.metrics.source=telegraf gauge,3.14 1289430000000",
-		"counter_type.counter,dt.metrics.source=telegraf count,delta=5 1289430000000",
+		"counter_type.value,dt.metrics.source=Dana2 gauge,3.14 1289430000000",
+		"counter_type.counter,dt.metrics.source=Dana2 count,delta=5 1289430000000",
 	)
 	d.AddCounterMetrics = append(d.AddCounterMetrics, "counter_type.counter")
 	m2 := metric.New(
@@ -209,12 +209,12 @@ func TestSendMetrics(t *testing.T) {
 	)
 
 	expected = append(expected,
-		"complex_metric.int,dt.metrics.source=telegraf gauge,1 1289430000000",
-		"complex_metric.int64,dt.metrics.source=telegraf gauge,2 1289430000000",
-		"complex_metric.float,dt.metrics.source=telegraf gauge,3 1289430000000",
-		"complex_metric.float64,dt.metrics.source=telegraf gauge,4 1289430000000",
-		"complex_metric.true,dt.metrics.source=telegraf gauge,1 1289430000000",
-		"complex_metric.false,dt.metrics.source=telegraf gauge,0 1289430000000",
+		"complex_metric.int,dt.metrics.source=Dana2 gauge,1 1289430000000",
+		"complex_metric.int64,dt.metrics.source=Dana2 gauge,2 1289430000000",
+		"complex_metric.float,dt.metrics.source=Dana2 gauge,3 1289430000000",
+		"complex_metric.float64,dt.metrics.source=Dana2 gauge,4 1289430000000",
+		"complex_metric.true,dt.metrics.source=Dana2 gauge,1 1289430000000",
+		"complex_metric.false,dt.metrics.source=Dana2 gauge,0 1289430000000",
 	)
 	m3 := metric.New(
 		"complex_metric",
@@ -279,10 +279,10 @@ func TestSendMetricsWithPatterns(t *testing.T) {
 
 	// Simple metrics are exported as a gauge unless pattern match in additional_counters_patterns
 	expected = append(expected,
-		"simple_abc_metric.value,dt.metrics.source=telegraf gauge,3.14 1289430000000",
-		"simple_abc_metric.counter,dt.metrics.source=telegraf count,delta=5 1289430000000",
-		"simple_xyz_metric.value,dt.metrics.source=telegraf gauge,3.14 1289430000000",
-		"simple_xyz_metric.counter,dt.metrics.source=telegraf count,delta=5 1289430000000",
+		"simple_abc_metric.value,dt.metrics.source=Dana2 gauge,3.14 1289430000000",
+		"simple_abc_metric.counter,dt.metrics.source=Dana2 count,delta=5 1289430000000",
+		"simple_xyz_metric.value,dt.metrics.source=Dana2 gauge,3.14 1289430000000",
+		"simple_xyz_metric.counter,dt.metrics.source=Dana2 count,delta=5 1289430000000",
 	)
 	// Add pattern to match all metrics that match simple_[a-z]+_metric.counter
 	d.AddCounterMetricsPatterns = append(d.AddCounterMetricsPatterns, "simple_[a-z]+_metric.counter")
@@ -303,10 +303,10 @@ func TestSendMetricsWithPatterns(t *testing.T) {
 
 	// Even if Type() returns counter, all metrics are treated as a gauge unless pattern match with additional_counters_patterns
 	expected = append(expected,
-		"counter_fan01_type.value,dt.metrics.source=telegraf gauge,3.14 1289430000000",
-		"counter_fan01_type.counter,dt.metrics.source=telegraf count,delta=5 1289430000000",
-		"counter_fanNaN_type.counter,dt.metrics.source=telegraf gauge,5 1289430000000",
-		"counter_fanNaN_type.value,dt.metrics.source=telegraf gauge,3.14 1289430000000",
+		"counter_fan01_type.value,dt.metrics.source=Dana2 gauge,3.14 1289430000000",
+		"counter_fan01_type.counter,dt.metrics.source=Dana2 count,delta=5 1289430000000",
+		"counter_fanNaN_type.counter,dt.metrics.source=Dana2 gauge,5 1289430000000",
+		"counter_fanNaN_type.value,dt.metrics.source=Dana2 gauge,3.14 1289430000000",
 	)
 	d.AddCounterMetricsPatterns = append(d.AddCounterMetricsPatterns, "counter_fan[0-9]+_type.counter")
 	m3 := metric.New(
@@ -326,12 +326,12 @@ func TestSendMetricsWithPatterns(t *testing.T) {
 	)
 
 	expected = append(expected,
-		"complex_metric.int,dt.metrics.source=telegraf gauge,1 1289430000000",
-		"complex_metric.int64,dt.metrics.source=telegraf gauge,2 1289430000000",
-		"complex_metric.float,dt.metrics.source=telegraf gauge,3 1289430000000",
-		"complex_metric.float64,dt.metrics.source=telegraf gauge,4 1289430000000",
-		"complex_metric.true,dt.metrics.source=telegraf gauge,1 1289430000000",
-		"complex_metric.false,dt.metrics.source=telegraf gauge,0 1289430000000",
+		"complex_metric.int,dt.metrics.source=Dana2 gauge,1 1289430000000",
+		"complex_metric.int64,dt.metrics.source=Dana2 gauge,2 1289430000000",
+		"complex_metric.float,dt.metrics.source=Dana2 gauge,3 1289430000000",
+		"complex_metric.float64,dt.metrics.source=Dana2 gauge,4 1289430000000",
+		"complex_metric.true,dt.metrics.source=Dana2 gauge,1 1289430000000",
+		"complex_metric.false,dt.metrics.source=Dana2 gauge,0 1289430000000",
 	)
 
 	m5 := metric.New(
@@ -384,9 +384,9 @@ func TestSendSingleMetricWithUnorderedTags(t *testing.T) {
 			t.Errorf("Expect \"%v\" to match \"%v\"", bodyString, `a=test`)
 			return
 		}
-		if regexp.MustCompile("dt.metrics.source=telegraf").FindStringIndex(bodyString) == nil {
+		if regexp.MustCompile("dt.metrics.source=Dana2").FindStringIndex(bodyString) == nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			t.Errorf("Expect \"%v\" to match \"%v\"", bodyString, "dt.metrics.source=telegraf")
+			t.Errorf("Expect \"%v\" to match \"%v\"", bodyString, "dt.metrics.source=Dana2")
 			return
 		}
 		if regexp.MustCompile("gauge,3.14 1289430000000$").FindStringIndex(bodyString) == nil {
@@ -439,7 +439,7 @@ func TestSendMetricWithoutTags(t *testing.T) {
 		}
 
 		bodyString := string(bodyBytes)
-		expected := "mymeasurement.myfield,dt.metrics.source=telegraf gauge,3.14 1289430000000"
+		expected := "mymeasurement.myfield,dt.metrics.source=Dana2 gauge,3.14 1289430000000"
 		if bodyString != expected {
 			t.Errorf("Metric encoding failed. expected: %#v but got: %#v", expected, bodyString)
 			return
@@ -516,9 +516,9 @@ func TestSendMetricWithUpperCaseTagKeys(t *testing.T) {
 			t.Errorf("Expect \"%v\" to match \"%v\"", bodyString, `ccc=test`)
 			return
 		}
-		if regexp.MustCompile("dt.metrics.source=telegraf").FindStringIndex(bodyString) == nil {
+		if regexp.MustCompile("dt.metrics.source=Dana2").FindStringIndex(bodyString) == nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			t.Errorf("Expect \"%v\" to match \"%v\"", bodyString, "dt.metrics.source=telegraf")
+			t.Errorf("Expect \"%v\" to match \"%v\"", bodyString, "dt.metrics.source=Dana2")
 			return
 		}
 		if regexp.MustCompile("gauge,3.14 1289430000000$").FindStringIndex(bodyString) == nil {
@@ -578,14 +578,14 @@ func TestSendBooleanMetricWithoutTags(t *testing.T) {
 			t.Errorf("'bodyString' should have %d item(s), but has %d", 132, len(bodyString))
 			return
 		}
-		if !strings.Contains(bodyString, "mymeasurement.yes,dt.metrics.source=telegraf gauge,1 1289430000000") {
+		if !strings.Contains(bodyString, "mymeasurement.yes,dt.metrics.source=Dana2 gauge,1 1289430000000") {
 			w.WriteHeader(http.StatusInternalServerError)
-			t.Errorf("'bodyString' should contain %q", "mymeasurement.yes,dt.metrics.source=telegraf gauge,1 1289430000000")
+			t.Errorf("'bodyString' should contain %q", "mymeasurement.yes,dt.metrics.source=Dana2 gauge,1 1289430000000")
 			return
 		}
-		if !strings.Contains(bodyString, "mymeasurement.no,dt.metrics.source=telegraf gauge,0 1289430000000") {
+		if !strings.Contains(bodyString, "mymeasurement.no,dt.metrics.source=Dana2 gauge,0 1289430000000") {
 			w.WriteHeader(http.StatusInternalServerError)
-			t.Errorf("'bodyString' should contain %q", "mymeasurement.no,dt.metrics.source=telegraf gauge,0 1289430000000")
+			t.Errorf("'bodyString' should contain %q", "mymeasurement.no,dt.metrics.source=Dana2 gauge,0 1289430000000")
 			return
 		}
 		w.WriteHeader(http.StatusOK)
@@ -644,9 +644,9 @@ func TestSendMetricWithDefaultDimensions(t *testing.T) {
 			t.Errorf("Expect \"%v\" to match \"%v\"", bodyString, "^mymeasurement.value")
 			return
 		}
-		if regexp.MustCompile("dt.metrics.source=telegraf").FindStringIndex(bodyString) == nil {
+		if regexp.MustCompile("dt.metrics.source=Dana2").FindStringIndex(bodyString) == nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			t.Errorf("Expect \"%v\" to match \"%v\"", bodyString, "dt.metrics.source=telegraf")
+			t.Errorf("Expect \"%v\" to match \"%v\"", bodyString, "dt.metrics.source=Dana2")
 			return
 		}
 		if regexp.MustCompile("dim=value").FindStringIndex(bodyString) == nil {
@@ -714,9 +714,9 @@ func TestMetricDimensionsOverrideDefault(t *testing.T) {
 			t.Errorf("Expect \"%v\" to match \"%v\"", bodyString, "^mymeasurement.value")
 			return
 		}
-		if regexp.MustCompile("dt.metrics.source=telegraf").FindStringIndex(bodyString) == nil {
+		if regexp.MustCompile("dt.metrics.source=Dana2").FindStringIndex(bodyString) == nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			t.Errorf("Expect \"%v\" to match \"%v\"", bodyString, "dt.metrics.source=telegraf")
+			t.Errorf("Expect \"%v\" to match \"%v\"", bodyString, "dt.metrics.source=Dana2")
 			return
 		}
 		if regexp.MustCompile("dim=metric").FindStringIndex(bodyString) == nil {

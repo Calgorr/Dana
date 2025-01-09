@@ -30,7 +30,7 @@ func TestStaticFileCreation(t *testing.T) {
 	}
 	expected := "test,source=localhost value=42i 1719410485000000000\n"
 
-	tmpdir, err := os.MkdirTemp("", "telegraf-remotefile-*")
+	tmpdir, err := os.MkdirTemp("", "Dana2-remotefile-*")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpdir)
 
@@ -77,7 +77,7 @@ func TestStaticFileAppend(t *testing.T) {
 	expected := "test,source=remotehost value=23i 1719410465000000000\n"
 	expected += "test,source=localhost value=42i 1719410485000000000\n"
 
-	tmpdir, err := os.MkdirTemp("", "telegraf-remotefile-*")
+	tmpdir, err := os.MkdirTemp("", "Dana2-remotefile-*")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpdir)
 
@@ -174,7 +174,7 @@ func TestDynamicFiles(t *testing.T) {
 		},
 	}
 
-	tmpdir, err := os.MkdirTemp("", "telegraf-remotefile-*")
+	tmpdir, err := os.MkdirTemp("", "Dana2-remotefile-*")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpdir)
 
@@ -242,7 +242,7 @@ func TestCustomTemplateFunctions(t *testing.T) {
 
 	expectedFilename := fmt.Sprintf("test-%d", time.Now().Year())
 
-	tmpdir, err := os.MkdirTemp("", "telegraf-remotefile-*")
+	tmpdir, err := os.MkdirTemp("", "Dana2-remotefile-*")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpdir)
 
@@ -297,7 +297,7 @@ func TestCSVSerialization(t *testing.T) {
 		"test-b.csv": "timestamp,measurement,source,value\n1587686400,test,b,23\n",
 	}
 
-	tmpdir, err := os.MkdirTemp("", "telegraf-remotefile-*")
+	tmpdir, err := os.MkdirTemp("", "Dana2-remotefile-*")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpdir)
 
@@ -357,7 +357,7 @@ func TestForgettingFiles(t *testing.T) {
 		),
 	}
 
-	tmpdir, err := os.MkdirTemp("", "telegraf-remotefile-*")
+	tmpdir, err := os.MkdirTemp("", "Dana2-remotefile-*")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpdir)
 
@@ -467,7 +467,7 @@ func TestTrackingMetrics(t *testing.T) {
 	}
 
 	// Prepare the output filesystem
-	tmpdir, err := os.MkdirTemp("", "telegraf-remotefile-*")
+	tmpdir, err := os.MkdirTemp("", "Dana2-remotefile-*")
 	require.NoError(t, err)
 	defer os.RemoveAll(tmpdir)
 

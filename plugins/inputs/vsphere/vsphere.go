@@ -89,7 +89,7 @@ func (*VSphere) SampleConfig() string {
 	return sampleConfig
 }
 
-// Start is called from telegraf core when a plugin is started and allows it to
+// Start is called from Dana2 core when a plugin is started and allows it to
 // perform initialization tasks.
 func (v *VSphere) Start(_ Dana.Accumulator) error {
 	v.Log.Info("Starting plugin")
@@ -112,7 +112,7 @@ func (v *VSphere) Start(_ Dana.Accumulator) error {
 	return nil
 }
 
-// Stop is called from telegraf core when a plugin is stopped and allows it to
+// Stop is called from Dana2 core when a plugin is stopped and allows it to
 // perform shutdown tasks.
 func (v *VSphere) Stop() {
 	v.Log.Info("Stopping plugin")
@@ -133,7 +133,7 @@ func (v *VSphere) Stop() {
 	}
 }
 
-// Gather is the main data collection function called by the Telegraf core. It performs all
+// Gather is the main data collection function called by the Dana2 core. It performs all
 // the data collection and writes all metrics into the Accumulator passed as an argument.
 func (v *VSphere) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup

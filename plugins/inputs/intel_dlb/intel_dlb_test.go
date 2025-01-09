@@ -491,7 +491,7 @@ func TestDLB_processCommandResult(t *testing.T) {
 				time.Unix(0, 0),
 			),
 		}
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 
 		testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 		mockConn.AssertExpectations(t)
@@ -525,9 +525,9 @@ func TestDLB_processCommandResult(t *testing.T) {
 			On("readFromFile", mock.AnythingOfType("string")).Return([]byte(aerNonFatalData), nil).Once()
 		err := dlb.Gather(mockAcc)
 		require.NoError(t, err)
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.SortMetrics()
-		ex := expectedTelegrafMetrics
+		ex := expectedDana2Metrics
 		testutil.RequireMetricsEqual(t, ex, actual, testutil.IgnoreTime())
 		mockConn.AssertExpectations(t)
 	})
@@ -869,7 +869,7 @@ func Test_gatherRasMetrics(t *testing.T) {
 
 		require.NoError(t, err)
 
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.SortMetrics()
 		testutil.RequireMetricsEqual(t, expectedRasMetrics, actual, testutil.IgnoreTime())
 		fileMock.AssertExpectations(t)
@@ -1115,7 +1115,7 @@ var (
 		),
 	}
 
-	expectedTelegrafMetrics = []Dana.Metric{
+	expectedDana2Metrics = []Dana.Metric{
 		testutil.MustMetric(
 			"intel_dlb",
 			map[string]string{

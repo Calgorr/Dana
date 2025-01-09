@@ -73,11 +73,11 @@ func TestZabbix(t *testing.T) {
 		KeyPrefix             string
 		AgentActive           bool
 		SkipMeasurementPrefix bool
-		telegrafMetrics       []Dana.Metric
+		Dana2Metrics          []Dana.Metric
 		zabbixMetrics         []zabbixRequestData
 	}{
 		"send one metric with one field and no extra tags, generates one zabbix metric": {
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host": "hostname",
@@ -98,7 +98,7 @@ func TestZabbix(t *testing.T) {
 			},
 		},
 		"string values representing a float number should be sent in the exact same format": {
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host": "hostname",
@@ -119,7 +119,7 @@ func TestZabbix(t *testing.T) {
 			},
 		},
 		"send one metric with one string field and no extra tags, generates one zabbix metric": {
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host": "hostname",
@@ -140,7 +140,7 @@ func TestZabbix(t *testing.T) {
 			},
 		},
 		"boolean values are converted to 1 (true) or 0 (false)": {
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host": "hostname",
@@ -168,7 +168,7 @@ func TestZabbix(t *testing.T) {
 			},
 		},
 		"invalid value data is ignored and not sent": {
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host": "hostname",
@@ -181,7 +181,7 @@ func TestZabbix(t *testing.T) {
 			},
 		},
 		"metrics without host tag use the system hostname": {
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{},
 					map[string]interface{}{
@@ -200,7 +200,7 @@ func TestZabbix(t *testing.T) {
 			},
 		},
 		"send one metric with extra tags, zabbix metric should be generated with a parameter": {
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host": "hostname",
@@ -222,7 +222,7 @@ func TestZabbix(t *testing.T) {
 			},
 		},
 		"send one metric with two extra tags, zabbix parameters should be alphabetically ordered": {
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host":   "hostname",
@@ -245,7 +245,7 @@ func TestZabbix(t *testing.T) {
 			},
 		},
 		"send one metric with two fields and no extra tags, generates two zabbix metrics": {
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host": "hostname",
@@ -273,7 +273,7 @@ func TestZabbix(t *testing.T) {
 			},
 		},
 		"send two metrics with one field and no extra tags, generates two zabbix metrics": {
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("nameA",
 					map[string]string{
 						"host": "hostname",
@@ -309,7 +309,7 @@ func TestZabbix(t *testing.T) {
 			},
 		},
 		"send two metrics with different hostname, generates two zabbix metrics for different hosts": {
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host": "hostnameA",
@@ -345,8 +345,8 @@ func TestZabbix(t *testing.T) {
 			},
 		},
 		"if key_prefix is configured, zabbix metrics should have that prefix in the key": {
-			KeyPrefix: "telegraf.",
-			telegrafMetrics: []Dana.Metric{
+			KeyPrefix: "Dana2.",
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host": "hostname",
@@ -360,7 +360,7 @@ func TestZabbix(t *testing.T) {
 			zabbixMetrics: []zabbixRequestData{
 				{
 					Host:  "hostname",
-					Key:   "telegraf.name.value",
+					Key:   "Dana2.name.value",
 					Value: "0",
 					Clock: 1522082244,
 				},
@@ -368,7 +368,7 @@ func TestZabbix(t *testing.T) {
 		},
 		"if skip_measurement_prefix is configured, zabbix metrics should have to skip that prefix in the key": {
 			SkipMeasurementPrefix: true,
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host": "hostname",
@@ -390,7 +390,7 @@ func TestZabbix(t *testing.T) {
 		},
 		"if AgentActive is configured, zabbix metrics should be sent respecting that protocol": {
 			AgentActive: true,
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host": "hostname",
@@ -411,7 +411,7 @@ func TestZabbix(t *testing.T) {
 			},
 		},
 		"metrics should be time sorted, oldest to newest, to avoid zabbix doing extra work when generating trends": {
-			telegrafMetrics: []Dana.Metric{
+			Dana2Metrics: []Dana.Metric{
 				testutil.MustMetric("name",
 					map[string]string{
 						"host": "hostnameD",
@@ -501,7 +501,7 @@ func TestZabbix(t *testing.T) {
 				resCh <- server.listenForSingleRequest()
 			}()
 
-			require.NoError(t, z.Write(test.telegrafMetrics))
+			require.NoError(t, z.Write(test.Dana2Metrics))
 
 			// By default, we use trappers
 			requestType := "sender data"
@@ -525,7 +525,7 @@ func TestZabbix(t *testing.T) {
 // LLD is sent each LLDSendInterval. Only new data.
 // LLD data is cleared LLDClearInterval.
 func TestLLD(t *testing.T) {
-	// Telegraf metric which will be sent repeatedly
+	// Dana2 metric which will be sent repeatedly
 	m := testutil.MustMetric(
 		"name",
 		map[string]string{"host": "hostA", "foo": "bar"},
@@ -543,7 +543,7 @@ func TestLLD(t *testing.T) {
 	// Expected Zabbix metric generated
 	zabbixMetric := zabbixRequestData{
 		Host:  "hostA",
-		Key:   "telegraf.name.value[bar]",
+		Key:   "Dana2.name.value[bar]",
 		Value: "0",
 		Clock: 0,
 	}
@@ -551,7 +551,7 @@ func TestLLD(t *testing.T) {
 	// Expected Zabbix metric generated
 	zabbixMetricNew := zabbixRequestData{
 		Host:  "hostA",
-		Key:   "telegraf.name.value[moo]",
+		Key:   "Dana2.name.value[moo]",
 		Value: "0",
 		Clock: 0,
 	}
@@ -559,7 +559,7 @@ func TestLLD(t *testing.T) {
 	// Expected Zabbix LLD metric generated
 	zabbixLLDMetric := zabbixRequestData{
 		Host:  "hostA",
-		Key:   "telegraf.lld.name.foo",
+		Key:   "Dana2.lld.name.foo",
 		Value: `{"data":[{"{#FOO}":"bar"}]}`,
 		Clock: 0,
 	}
@@ -567,7 +567,7 @@ func TestLLD(t *testing.T) {
 	// Expected Zabbix LLD metric generated
 	zabbixLLDMetricNew := zabbixRequestData{
 		Host:  "hostA",
-		Key:   "telegraf.lld.name.foo",
+		Key:   "Dana2.lld.name.foo",
 		Value: `{"data":[{"{#FOO}":"bar"},{"{#FOO}":"moo"}]}`,
 		Clock: 0,
 	}
@@ -579,7 +579,7 @@ func TestLLD(t *testing.T) {
 
 	z := &Zabbix{
 		Address:          server.addr(),
-		KeyPrefix:        "telegraf.",
+		KeyPrefix:        "Dana2.",
 		HostTag:          "host",
 		LLDSendInterval:  config.Duration(10 * time.Minute),
 		LLDClearInterval: config.Duration(1 * time.Hour),
@@ -696,7 +696,7 @@ func TestAutoRegister(t *testing.T) {
 
 	z := &Zabbix{
 		Address:                    server.addr(),
-		KeyPrefix:                  "telegraf.",
+		KeyPrefix:                  "Dana2.",
 		HostTag:                    "host",
 		SkipMeasurementPrefix:      false,
 		AgentActive:                false,

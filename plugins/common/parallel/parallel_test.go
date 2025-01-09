@@ -32,7 +32,7 @@ func TestOrderedJobsStayOrdered(t *testing.T) {
 
 	i := 0
 	require.Len(t, acc.Metrics, 20000)
-	for _, m := range acc.GetTelegrafMetrics() {
+	for _, m := range acc.GetDana2Metrics() {
 		v, ok := m.GetField("val")
 		require.True(t, ok)
 		require.EqualValues(t, i, v)
@@ -64,7 +64,7 @@ func TestUnorderedJobsDontDropAnyJobs(t *testing.T) {
 
 	actualTotal := int64(0)
 	require.Len(t, acc.Metrics, 20000)
-	for _, m := range acc.GetTelegrafMetrics() {
+	for _, m := range acc.GetDana2Metrics() {
 		v, ok := m.GetField("val")
 		require.True(t, ok)
 		actualTotal += v.(int64)

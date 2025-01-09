@@ -228,7 +228,7 @@ func (p *Phpfpm) gatherHTTP(addr string, acc Dana.Accumulator) error {
 	return nil
 }
 
-// Import stat data into Telegraf system
+// Import stat data into Dana2 system
 func (p *Phpfpm) importMetric(r io.Reader, acc Dana.Accumulator, addr string) {
 	if p.Format == "json" {
 		p.parseJSON(r, acc, addr)
