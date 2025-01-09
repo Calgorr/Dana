@@ -33,7 +33,7 @@ func TestCases(t *testing.T) {
 
 		t.Run(f.Name(), func(t *testing.T) {
 			testcasePath := filepath.Join("testcases", f.Name())
-			inputFile := filepath.Join(testcasePath, "telegraf.conf")
+			inputFile := filepath.Join(testcasePath, "Dana2.conf")
 			expectedFile := filepath.Join(testcasePath, "expected.conf")
 
 			// Read the expected output
@@ -134,7 +134,7 @@ func TestParsing(t *testing.T) {
 			for i := range expected {
 				expected[i].AddTag("url", addr)
 			}
-			raw := acc.GetTelegrafMetrics()
+			raw := acc.GetDana2Metrics()
 			actual := make([]Dana.Metric, 0, len(raw))
 			for _, m := range raw {
 				actual = append(actual, cfg.Inputs[0].MakeMetric(m))

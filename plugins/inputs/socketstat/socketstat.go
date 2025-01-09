@@ -27,7 +27,7 @@ var sampleConfig string
 
 const measurement = "socketstat"
 
-// Socketstat is a telegraf plugin to gather indicators from established connections, using iproute2's  `ss` command.
+// Socketstat is a Dana2 plugin to gather indicators from established connections, using iproute2's  `ss` command.
 type Socketstat struct {
 	SocketProto []string        `toml:"protocols"`
 	Timeout     config.Duration `toml:"timeout"`

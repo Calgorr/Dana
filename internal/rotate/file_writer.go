@@ -120,7 +120,7 @@ func (w *FileWriter) openCurrent() (err error) {
 
 	// Goal here is to rotate old pre-existing files.
 	// For that we use fileInfo.ModTime, instead of time.Now().
-	// Example: telegraf is restarted every 23 hours and
+	// Example: Dana2 is restarted every 23 hours and
 	// the rotation interval is set to 24 hours.
 	// With time.now() as a reference we'd never rotate the file.
 	if fileInfo, err := w.current.Stat(); err == nil {

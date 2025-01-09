@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	EventTypeSingle = "com.influxdata.telegraf.metric"
-	EventTypeBatch  = "com.influxdata.telegraf.metrics"
+	EventTypeSingle = "com.influxdata.Dana2.metric"
+	EventTypeBatch  = "com.influxdata.Dana2.metrics"
 )
 
 type Serializer struct {
@@ -57,7 +57,7 @@ func (s *Serializer) Init() error {
 	}
 
 	if s.Source == "" {
-		s.Source = "telegraf"
+		s.Source = "Dana2"
 	}
 
 	s.idgen = uuid.NewGen()

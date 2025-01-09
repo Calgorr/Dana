@@ -155,7 +155,7 @@ test{handler="execd",quantile="0.5"} 42.0
 	e.outputReader(strings.NewReader(lines))
 	check := func() bool { return acc.NMetrics() == uint64(len(expected)) }
 	require.Eventually(t, check, 1*time.Second, 100*time.Millisecond)
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 }
 
@@ -254,7 +254,7 @@ func TestLoggingNoPrefix(t *testing.T) {
 	expected := []Dana.Metric{
 		metric.New("test", map[string]string{}, map[string]interface{}{"value": int64(0)}, time.Unix(0, 0)),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 
 	// Check the error message type
 	expectedLevel := byte(testutil.LevelError)
@@ -326,7 +326,7 @@ func TestLoggingWithPrefix(t *testing.T) {
 			expected := []Dana.Metric{
 				metric.New("test", map[string]string{}, map[string]interface{}{"value": int64(0)}, time.Unix(0, 0)),
 			}
-			testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 
 			// Check the error message type
 			expectedLevel := tt.level

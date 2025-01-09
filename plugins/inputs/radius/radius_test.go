@@ -340,7 +340,7 @@ func TestRadiusIntegrationInvalidSourceIP(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Init())
 	require.NoError(t, plugin.Gather(&acc))
-	metrics := acc.GetTelegrafMetrics()
+	metrics := acc.GetDana2Metrics()
 	require.Len(t, metrics, 1)
 	testutil.RequireMetricEqual(t, expected, metrics[0], testutil.IgnoreTime())
 }

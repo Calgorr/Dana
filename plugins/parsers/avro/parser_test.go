@@ -31,7 +31,7 @@ func TestCases(t *testing.T) {
 	for _, f := range folders {
 		fname := f.Name()
 		testdataPath := filepath.Join("testcases", fname)
-		configFilename := filepath.Join(testdataPath, "telegraf.conf")
+		configFilename := filepath.Join(testdataPath, "Dana2.conf")
 		expectedFilename := filepath.Join(testdataPath, "expected.out")
 		expectedErrorFilename := filepath.Join(testdataPath, "expected.err")
 
@@ -75,7 +75,7 @@ func TestCases(t *testing.T) {
 				}
 			}
 			require.ElementsMatch(t, actualErrors, expectedErrors)
-			actual = acc.GetTelegrafMetrics()
+			actual = acc.GetDana2Metrics()
 			// Process expected metrics and compare with resulting metrics
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 		})

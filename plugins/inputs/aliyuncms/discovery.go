@@ -44,7 +44,7 @@ type discoveryTool struct {
 	interval time.Duration               // Discovery interval
 	done     chan bool                   // Done channel to stop primary discovery goroutine
 	dataChan chan map[string]interface{} // Discovery data
-	lg       Dana.Logger                 // Telegraf logger (should be provided)
+	lg       Dana.Logger                 // Dana2 logger (should be provided)
 }
 
 type parsedDResp struct {

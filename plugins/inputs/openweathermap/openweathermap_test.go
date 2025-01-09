@@ -68,7 +68,7 @@ func TestCases(t *testing.T) {
 			continue
 		}
 		testcasePath := filepath.Join("testcases", f.Name())
-		configFilename := filepath.Join(testcasePath, "telegraf.conf")
+		configFilename := filepath.Join(testcasePath, "Dana2.conf")
 		expectedFilename := filepath.Join(testcasePath, "expected.out")
 		expectedErrorFilename := filepath.Join(testcasePath, "expected.err")
 
@@ -150,7 +150,7 @@ func TestCases(t *testing.T) {
 			}
 
 			// Check the metric nevertheless as we might get some metrics despite errors.
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.SortMetrics())
 		})
 	}

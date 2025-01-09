@@ -57,7 +57,7 @@ func makeWsProto(s string) string {
 }
 
 const (
-	testHeaderName  = "X-Telegraf-Test"
+	testHeaderName  = "X-Dana2-Test"
 	testHeaderValue = "1"
 )
 

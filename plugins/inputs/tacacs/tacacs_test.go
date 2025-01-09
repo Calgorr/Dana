@@ -229,11 +229,11 @@ func TestTacacsLocal(t *testing.T) {
 					testutil.IgnoreTime(),
 					testutil.IgnoreFields("responsetime_ms"),
 				}
-				testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), options...)
+				testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), options...)
 			} else {
 				require.Len(t, acc.Errors, 1)
 				require.ErrorContains(t, acc.FirstError(), tt.errContains)
-				require.Empty(t, acc.GetTelegrafMetrics())
+				require.Empty(t, acc.GetDana2Metrics())
 			}
 		})
 	}
@@ -302,7 +302,7 @@ func TestTacacsLocalTimeout(t *testing.T) {
 	}
 
 	require.Empty(t, acc.Errors)
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), options...)
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), options...)
 }
 
 func TestTacacsIntegration(t *testing.T) {
@@ -383,7 +383,7 @@ func TestTacacsIntegration(t *testing.T) {
 				testutil.IgnoreTime(),
 				testutil.IgnoreFields("responsetime_ms"),
 			}
-			testutil.RequireMetricsStructureEqual(t, expected, acc.GetTelegrafMetrics(), options...)
+			testutil.RequireMetricsStructureEqual(t, expected, acc.GetDana2Metrics(), options...)
 		})
 	}
 }

@@ -72,7 +72,7 @@ func TestGatherAttributes(t *testing.T) {
 			require.NoError(t, err)
 			require.Equal(t, 32, acc.NFields(), "Wrong number of fields gathered")
 
-			testutil.RequireMetricsEqual(t, testSmartctlNVMeAttributes, acc.GetTelegrafMetrics(),
+			testutil.RequireMetricsEqual(t, testSmartctlNVMeAttributes, acc.GetDana2Metrics(),
 				testutil.SortMetrics(), testutil.IgnoreTime())
 		})
 	})
@@ -112,7 +112,7 @@ func TestGatherInParallelMode(t *testing.T) {
 		err := s.Gather(acc)
 		require.NoError(t, err)
 
-		result := acc.GetTelegrafMetrics()
+		result := acc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, testIntelNVMeNewFormatAttributes, result,
 			testutil.SortMetrics(), testutil.IgnoreTime())
 	})
@@ -124,7 +124,7 @@ func TestGatherInParallelMode(t *testing.T) {
 		err := s.Gather(acc)
 		require.NoError(t, err)
 
-		result := acc.GetTelegrafMetrics()
+		result := acc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, testIntelNVMeNewFormatAttributes, result,
 			testutil.SortMetrics(), testutil.IgnoreTime())
 	})
@@ -139,7 +139,7 @@ func TestGatherInParallelMode(t *testing.T) {
 		err = s.Gather(acc)
 		require.NoError(t, err)
 
-		result := acc.GetTelegrafMetrics()
+		result := acc.GetDana2Metrics()
 		require.Empty(t, result)
 	})
 }
@@ -262,7 +262,7 @@ func TestGatherHtSAS(t *testing.T) {
 	wg.Add(1)
 	sampleSmart.gatherDisk(acc, "", wg)
 
-	testutil.RequireMetricsEqual(t, testHtsasAtributtes, acc.GetTelegrafMetrics(), testutil.SortMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, testHtsasAtributtes, acc.GetDana2Metrics(), testutil.SortMetrics(), testutil.IgnoreTime())
 }
 
 func TestGatherLongFormEnduranceAttrib(t *testing.T) {
@@ -343,7 +343,7 @@ func TestGatherDeviceTypeTag(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, errors.Join(acc.Errors...))
 
-	result := acc.GetTelegrafMetrics()
+	result := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, testSmartctlDeviceTypeTag, result, testutil.SortMetrics(), testutil.IgnoreTime())
 }
 
@@ -360,7 +360,7 @@ func TestGatherNVMe(t *testing.T) {
 	wg.Add(1)
 	sampleSmart.gatherDisk(acc, "nvme0", wg)
 
-	testutil.RequireMetricsEqual(t, testSmartctlNVMeAttributes, acc.GetTelegrafMetrics(),
+	testutil.RequireMetricsEqual(t, testSmartctlNVMeAttributes, acc.GetDana2Metrics(),
 		testutil.SortMetrics(), testutil.IgnoreTime())
 }
 
@@ -377,7 +377,7 @@ func TestGatherNVMeWindows(t *testing.T) {
 	wg.Add(1)
 	sampleSmart.gatherDisk(acc, "nvme0", wg)
 
-	metrics := acc.GetTelegrafMetrics()
+	metrics := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, testSmartctlNVMeWindowsAttributes, metrics,
 		testutil.SortMetrics(), testutil.IgnoreTime())
 }
@@ -400,7 +400,7 @@ func TestGatherIntelNVMeMetrics(t *testing.T) {
 	wg.Add(1)
 	gatherIntelNVMeDisk(acc, config.Duration(time.Second*30), true, "", device, wg)
 
-	result := acc.GetTelegrafMetrics()
+	result := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, testIntelNVMeNewFormatAttributes, result,
 		testutil.SortMetrics(), testutil.IgnoreTime())
 }
@@ -423,7 +423,7 @@ func TestGatherIntelNVMeDeprecatedFormatMetrics(t *testing.T) {
 	wg.Add(1)
 	gatherIntelNVMeDisk(acc, config.Duration(time.Second*30), true, "", device, wg)
 
-	result := acc.GetTelegrafMetrics()
+	result := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, testIntelNVMeAttributes, result,
 		testutil.SortMetrics(), testutil.IgnoreTime())
 }
@@ -475,7 +475,7 @@ func Test_integerOverflow(t *testing.T) {
 
 		sampleSmart.gatherDisk(acc, "nvme0", wg)
 
-		result := acc.GetTelegrafMetrics()
+		result := acc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, testOverflowAttributes, result,
 			testutil.SortMetrics(), testutil.IgnoreTime())
 	})

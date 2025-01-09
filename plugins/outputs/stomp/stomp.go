@@ -113,7 +113,7 @@ func init() {
 	outputs.Add("stomp", func() Dana.Output {
 		return &STOMP{
 			Host:      "localhost:61613",
-			QueueName: "telegraf",
+			QueueName: "Dana2",
 		}
 	})
 }

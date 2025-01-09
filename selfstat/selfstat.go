@@ -1,5 +1,5 @@
 // Package selfstat is a package for tracking and collecting internal statistics
-// about telegraf. Metrics can be registered using this package, and then
+// about Dana2. Metrics can be registered using this package, and then
 // incremented or set within your code. If the inputs.internal plugin is enabled,
 // then all registered stats will be collected as they would by any other input
 // plugin.
@@ -19,7 +19,7 @@ var (
 	registry *Registry
 )
 
-// Stat is an interface for dealing with telegraf statistics collected
+// Stat is an interface for dealing with Dana2 statistics collected
 // on itself.
 type Stat interface {
 	// Name is the name of the measurement
@@ -50,7 +50,7 @@ type Stat interface {
 // already been registered.
 //
 // The returned Stat can be incremented by the consumer of Register(), and it's
-// value will be returned as a telegraf metric when Metrics() is called.
+// value will be returned as a Dana2 metric when Metrics() is called.
 func Register(measurement, field string, tags map[string]string) Stat {
 	return registry.register("internal_"+measurement, field, tags)
 }
@@ -70,12 +70,12 @@ func Register(measurement, field string, tags map[string]string) Stat {
 // to Get().
 //
 // The returned Stat can be incremented by the consumer of Register(), and it's
-// value will be returned as a telegraf metric when Metrics() is called.
+// value will be returned as a Dana2 metric when Metrics() is called.
 func RegisterTiming(measurement, field string, tags map[string]string) Stat {
 	return registry.registerTiming("internal_"+measurement, field, tags)
 }
 
-// Metrics returns all registered stats as telegraf metrics.
+// Metrics returns all registered stats as Dana2 metrics.
 func Metrics() []Dana.Metric {
 	registry.mu.Lock()
 	now := time.Now()

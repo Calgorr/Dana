@@ -653,7 +653,7 @@ func TestDiskUsageIssues(t *testing.T) {
 			plugin := &Disk{ps: &mps}
 			require.NoError(t, plugin.Gather(&acc))
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, tt.expected, actual, testutil.IgnoreTime(), testutil.SortMetrics())
 		})
 	}

@@ -219,7 +219,7 @@ test_counter{label="test"} 1 1685443805885`
 
 	var acc testutil.Accumulator
 	require.NoError(t, acc.GatherError(p.Gather))
-	testutil.RequireMetricsSubset(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsSubset(t, expected, acc.GetDana2Metrics())
 }
 
 func TestPrometheusGeneratesMetricsAlthoughFirstDNSFailsIntegration(t *testing.T) {
@@ -239,7 +239,7 @@ func TestPrometheusGeneratesMetricsAlthoughFirstDNSFailsIntegration(t *testing.T
 	p := &Prometheus{
 		Log:                testutil.Logger{},
 		URLs:               []string{ts.URL},
-		KubernetesServices: []string{"http://random.telegraf.local:88/metrics"},
+		KubernetesServices: []string{"http://random.Dana2.local:88/metrics"},
 	}
 	err := p.Init()
 	require.NoError(t, err)
@@ -509,7 +509,7 @@ go_gc_duration_seconds_count 42`
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(),
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(),
 		testutil.IgnoreTime(), testutil.SortMetrics(), testutil.IgnoreFields("content_length", "response_time"))
 }
 
@@ -680,10 +680,10 @@ test_counter{label="test"} 1 1685443805885`
 	}
 
 	var acc testutil.Accumulator
-	testutil.PrintMetrics(acc.GetTelegrafMetrics())
+	testutil.PrintMetrics(acc.GetDana2Metrics())
 
 	require.NoError(t, acc.GatherError(p.Gather))
-	testutil.RequireMetricsSubset(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreFields("content_length", "response_time"), testutil.IgnoreTime())
+	testutil.RequireMetricsSubset(t, expected, acc.GetDana2Metrics(), testutil.IgnoreFields("content_length", "response_time"), testutil.IgnoreTime())
 }
 
 func TestPrometheusInternalContentBadFormat(t *testing.T) {
@@ -725,7 +725,7 @@ func TestPrometheusInternalContentBadFormat(t *testing.T) {
 
 	var acc testutil.Accumulator
 	require.Error(t, acc.GatherError(p.Gather))
-	testutil.RequireMetricsSubset(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreFields("content_length", "response_time"), testutil.IgnoreTime())
+	testutil.RequireMetricsSubset(t, expected, acc.GetDana2Metrics(), testutil.IgnoreFields("content_length", "response_time"), testutil.IgnoreTime())
 }
 
 func TestPrometheusInternalNoWeb(t *testing.T) {
@@ -759,10 +759,10 @@ func TestPrometheusInternalNoWeb(t *testing.T) {
 	}
 
 	var acc testutil.Accumulator
-	testutil.PrintMetrics(acc.GetTelegrafMetrics())
+	testutil.PrintMetrics(acc.GetDana2Metrics())
 
 	require.Error(t, acc.GatherError(p.Gather))
-	testutil.RequireMetricsSubset(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreFields("content_length", "response_time"), testutil.IgnoreTime())
+	testutil.RequireMetricsSubset(t, expected, acc.GetDana2Metrics(), testutil.IgnoreFields("content_length", "response_time"), testutil.IgnoreTime())
 }
 
 func TestOpenmetricsText(t *testing.T) {
@@ -823,7 +823,7 @@ go_memstats_heap_alloc_bytes 1.581062048e+09
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), testutil.SortMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), testutil.SortMetrics())
 }
 
 func TestOpenmetricsProtobuf(t *testing.T) {
@@ -875,7 +875,7 @@ func TestOpenmetricsProtobuf(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), testutil.SortMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), testutil.SortMetrics())
 }
 
 func TestContentTypeOverride(t *testing.T) {
@@ -938,5 +938,5 @@ go_memstats_heap_alloc_bytes 1.581062048e+09
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), testutil.SortMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), testutil.SortMetrics())
 }

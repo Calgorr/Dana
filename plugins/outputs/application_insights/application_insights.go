@@ -267,7 +267,7 @@ func contains(set []string, val string) bool {
 }
 
 func toFloat64(value interface{}) (float64, error) {
-	// Out of all Golang numerical types Telegraf only uses int64, unit64 and float64 for fields
+	// Out of all Golang numerical types Dana2 only uses int64, unit64 and float64 for fields
 	switch v := value.(type) {
 	case int64:
 		return float64(v), nil
@@ -281,7 +281,7 @@ func toFloat64(value interface{}) (float64, error) {
 }
 
 func toInt(value interface{}) (int, error) {
-	// Out of all Golang numerical types Telegraf only uses int64, unit64 and float64 for fields
+	// Out of all Golang numerical types Dana2 only uses int64, unit64 and float64 for fields
 	switch v := value.(type) {
 	case uint64:
 		if strconv.IntSize == 32 {

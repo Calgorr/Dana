@@ -97,7 +97,7 @@ type aggregate struct {
 
 const (
 	defaultRequestTimeout  = time.Second * 5
-	defaultNamespacePrefix = "Telegraf/"
+	defaultNamespacePrefix = "Dana2/"
 	defaultAuthResource    = "https://monitoring.azure.com/"
 
 	vmInstanceMetadataURL      = "http://169.254.169.254/metadata/instance?api-version=2017-12-01"

@@ -14,9 +14,9 @@ import (
 func (p *Parser) extractMetricsV1(prommetrics *dto.MetricFamily) []Dana.Metric {
 	now := time.Now()
 
-	// Convert each prometheus metrics to the corresponding telegraf metrics.
-	// You will get one telegraf metric with one field per prometheus metric
-	// for "simple" types like Gauge and Counter but a telegraf metric with
+	// Convert each prometheus metrics to the corresponding Dana2 metrics.
+	// You will get one Dana2 metric with one field per prometheus metric
+	// for "simple" types like Gauge and Counter but a Dana2 metric with
 	// multiple fields for "complex" types like Summary or Histogram.
 	var metrics []Dana.Metric
 	metricName := prommetrics.GetName()

@@ -51,7 +51,7 @@ func TestFullProcFile(t *testing.T) {
 			1,
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestPartialProcFile(t *testing.T) {
@@ -167,7 +167,7 @@ func TestKsmEnabledValidKsmDirectory(t *testing.T) {
 			1,
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestKSMEnabledMissingFile(t *testing.T) {

@@ -18,13 +18,13 @@ func marshalMetric(buf []byte, metric Dana.Metric) ([]byte, error) {
 }
 
 // Serialize implements serializers.Serializer.Serialize
-// github.com/influxdata/telegraf/plugins/serializers/Serializer
+// github.com/influxdata/Dana2/plugins/serializers/Serializer
 func (s *Serializer) Serialize(metric Dana.Metric) ([]byte, error) {
 	return marshalMetric(nil, metric)
 }
 
 // SerializeBatch implements serializers.Serializer.SerializeBatch
-// github.com/influxdata/telegraf/plugins/serializers/Serializer
+// github.com/influxdata/Dana2/plugins/serializers/Serializer
 func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	buf := make([]byte, 0)
 	for _, m := range metrics {

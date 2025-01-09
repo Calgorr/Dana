@@ -27,7 +27,7 @@ var secretPattern = regexp.MustCompile(`@\{(\w+:\w+)\}`)
 // secretCandidatePattern is a regex to find secret candidates to warn users on invalid characters in references
 var secretCandidatePattern = regexp.MustCompile(`@\{.+?:.+?}`)
 
-// secretCount is the number of secrets use in Telegraf
+// secretCount is the number of secrets use in Dana2
 var secretCount atomic.Int64
 
 // selectedImpl is the configured implementation for secrets

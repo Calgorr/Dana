@@ -328,7 +328,7 @@ func TestPostgresqlDatabaseBlacklistTestIntegration(t *testing.T) {
 }
 
 func TestInitialConnectivityIssueIntegration(t *testing.T) {
-	// Test case for https://github.com/influxdata/telegraf/issues/8586
+	// Test case for https://github.com/influxdata/Dana2/issues/8586
 	if testing.Short() {
 		t.Skip("Skipping integration test in short mode")
 	}
@@ -375,5 +375,5 @@ func TestInitialConnectivityIssueIntegration(t *testing.T) {
 	// Unpause the container, now gather should succeed
 	require.NoError(t, container.Resume())
 	require.NoError(t, acc.GatherError(plugin.Gather))
-	require.NotEmpty(t, acc.GetTelegrafMetrics())
+	require.NotEmpty(t, acc.GetDana2Metrics())
 }

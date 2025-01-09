@@ -40,7 +40,7 @@ func TestIpsetEntries(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestIpsetEntriesCidr(t *testing.T) {
@@ -92,5 +92,5 @@ func TestIpsetEntriesCidr(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }

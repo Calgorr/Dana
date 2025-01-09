@@ -2,7 +2,7 @@
 //go:build linux
 
 // Package lustre2 (doesn't aim for Windows)
-// Lustre 2.x Telegraf plugin
+// Lustre 2.x Dana2 plugin
 // Lustre (http://lustre.org/) is an open-source, parallel file system
 // for HPC environments. It stores statistics about its activity in /proc
 package lustre2

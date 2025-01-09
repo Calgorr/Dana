@@ -29,7 +29,7 @@ type Field struct {
 	Value interface{}
 }
 
-// Metric is the type of data that is processed by Telegraf.  Input plugins,
+// Metric is the type of data that is processed by Dana2.  Input plugins,
 // and to a lesser degree, Processor and Aggregator plugins create new Metrics
 // and Output plugins write them.
 //

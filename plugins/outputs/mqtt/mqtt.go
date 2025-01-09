@@ -124,7 +124,7 @@ func (m *MQTT) SetSerializer(serializer Dana.Serializer) {
 func (m *MQTT) Close() error {
 	// Unregister devices if Homie layout was used. Usually we should do this
 	// using a "will" message, but this can only be done at connect time where,
-	// due to the dynamic nature of Telegraf messages, we do not know the topics
+	// due to the dynamic nature of Dana2 messages, we do not know the topics
 	// to issue that "will" yet.
 	if len(m.homieSeen) > 0 {
 		for topic := range m.homieSeen {

@@ -132,7 +132,7 @@ func listenUDP(network, address string) (*net.UDPConn, error) {
 	}
 }
 
-// init registers this SFlow input plug in with the Telegraf framework
+// init registers this SFlow input plug in with the Dana2 framework
 func init() {
 	inputs.Add("sflow", func() Dana.Input {
 		return &SFlow{}

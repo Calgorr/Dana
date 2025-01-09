@@ -75,7 +75,7 @@ func TestInit(t *testing.T) {
 			check: func(t *testing.T, plugin *KafkaConsumer) {
 				require.Equal(t, defaultConsumerGroup, plugin.ConsumerGroup)
 				require.Equal(t, defaultMaxUndeliveredMessages, plugin.MaxUndeliveredMessages)
-				require.Equal(t, "Telegraf", plugin.config.ClientID)
+				require.Equal(t, "Dana2", plugin.config.ClientID)
 				require.Equal(t, sarama.OffsetOldest, plugin.config.Consumer.Offsets.Initial)
 				require.Equal(t, 100*time.Millisecond, plugin.config.Consumer.MaxProcessingTime)
 			},
@@ -349,7 +349,7 @@ func TestConsumerGroupHandlerConsumeClaim(t *testing.T) {
 	require.NoError(t, err)
 
 	claim.messages <- &sarama.ConsumerMessage{
-		Topic: "telegraf",
+		Topic: "Dana2",
 		Value: []byte("42"),
 	}
 
@@ -382,7 +382,7 @@ func TestConsumerGroupHandlerConsumeClaim(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestConsumerGroupHandlerHandle(t *testing.T) {
@@ -397,7 +397,7 @@ func TestConsumerGroupHandlerHandle(t *testing.T) {
 		{
 			name: "happy path",
 			msg: &sarama.ConsumerMessage{
-				Topic: "telegraf",
+				Topic: "Dana2",
 				Value: []byte("42"),
 			},
 			expected: []Dana.Metric{
@@ -415,7 +415,7 @@ func TestConsumerGroupHandlerHandle(t *testing.T) {
 			name:          "message to long",
 			maxMessageLen: 4,
 			msg: &sarama.ConsumerMessage{
-				Topic: "telegraf",
+				Topic: "Dana2",
 				Value: []byte("12345"),
 			},
 			expectedHandleError: "message exceeds max_message_len (actual 5, max 4)",
@@ -423,7 +423,7 @@ func TestConsumerGroupHandlerHandle(t *testing.T) {
 		{
 			name: "parse error",
 			msg: &sarama.ConsumerMessage{
-				Topic: "telegraf",
+				Topic: "Dana2",
 				Value: []byte("not an integer"),
 			},
 			expectedHandleError: "strconv.Atoi: parsing \"integer\": invalid syntax",
@@ -432,14 +432,14 @@ func TestConsumerGroupHandlerHandle(t *testing.T) {
 			name:     "add topic tag",
 			topicTag: "topic",
 			msg: &sarama.ConsumerMessage{
-				Topic: "telegraf",
+				Topic: "Dana2",
 				Value: []byte("42"),
 			},
 			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
-						"topic": "telegraf",
+						"topic": "Dana2",
 					},
 					map[string]interface{}{
 						"value": 42,
@@ -473,7 +473,7 @@ func TestConsumerGroupHandlerHandle(t *testing.T) {
 				require.NoError(t, err)
 			}
 
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }
@@ -634,7 +634,7 @@ func TestKafkaRoundTripIntegration(t *testing.T) {
 			// Check that they were received
 			t.Logf("rt: expecting")
 			acc.Wait(len(expected))
-			testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 
 			t.Logf("rt: shutdown")
 			require.NoError(t, output.Close())
@@ -705,7 +705,7 @@ func TestKafkaTimestampSourceIntegration(t *testing.T) {
 			sendTimestamp := time.Now().Unix()
 			require.NoError(t, output.Write(metrics))
 			require.Eventually(t, func() bool { return acc.NMetrics() > 0 }, 5*time.Second, 100*time.Millisecond)
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, metrics, actual, testutil.IgnoreTime())
 
 			// Check the timestamp
@@ -890,7 +890,7 @@ func TestStartupErrorBehaviorRetryIntegration(t *testing.T) {
 	require.EqualValues(t, 1, model.StartupErrors.Get())
 
 	// There should be no metrics as the plugin is not fully started up yet
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 	require.ErrorIs(t, model.Gather(&acc), internal.ErrNotConnected)
 	require.Equal(t, int64(2), model.StartupErrors.Get())
 
@@ -931,5 +931,5 @@ func TestStartupErrorBehaviorRetryIntegration(t *testing.T) {
 	require.Eventually(t, func() bool {
 		return acc.NMetrics() >= 1
 	}, 3*time.Second, 100*time.Millisecond)
-	testutil.RequireMetricsEqual(t, metrics, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, metrics, acc.GetDana2Metrics())
 }

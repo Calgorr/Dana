@@ -22,7 +22,7 @@ func TestWriteWarp10(t *testing.T) {
 	}
 
 	payload := w.GenWarp10Payload(testutil.MockMetrics())
-	require.Exactly(t, "1257894000000000// unit.testtest1.value{source=telegraf,tag1=value1} 1.000000\n", payload)
+	require.Exactly(t, "1257894000000000// unit.testtest1.value{source=Dana2,tag1=value1} 1.000000\n", payload)
 }
 
 func TestWriteWarp10ValueNaN(t *testing.T) {
@@ -33,7 +33,7 @@ func TestWriteWarp10ValueNaN(t *testing.T) {
 	}
 
 	payload := w.GenWarp10Payload(testutil.MockMetricsWithValue(math.NaN()))
-	require.Exactly(t, "1257894000000000// unit.testtest1.value{source=telegraf,tag1=value1} NaN\n", payload)
+	require.Exactly(t, "1257894000000000// unit.testtest1.value{source=Dana2,tag1=value1} NaN\n", payload)
 }
 
 func TestWriteWarp10ValueInfinity(t *testing.T) {
@@ -44,7 +44,7 @@ func TestWriteWarp10ValueInfinity(t *testing.T) {
 	}
 
 	payload := w.GenWarp10Payload(testutil.MockMetricsWithValue(math.Inf(1)))
-	require.Exactly(t, "1257894000000000// unit.testtest1.value{source=telegraf,tag1=value1} Infinity\n", payload)
+	require.Exactly(t, "1257894000000000// unit.testtest1.value{source=Dana2,tag1=value1} Infinity\n", payload)
 }
 
 func TestWriteWarp10ValueMinusInfinity(t *testing.T) {
@@ -55,7 +55,7 @@ func TestWriteWarp10ValueMinusInfinity(t *testing.T) {
 	}
 
 	payload := w.GenWarp10Payload(testutil.MockMetricsWithValue(math.Inf(-1)))
-	require.Exactly(t, "1257894000000000// unit.testtest1.value{source=telegraf,tag1=value1} -Infinity\n", payload)
+	require.Exactly(t, "1257894000000000// unit.testtest1.value{source=Dana2,tag1=value1} -Infinity\n", payload)
 }
 
 func TestWriteWarp10EncodedTags(t *testing.T) {
@@ -71,7 +71,7 @@ func TestWriteWarp10EncodedTags(t *testing.T) {
 	}
 
 	payload := w.GenWarp10Payload(metrics)
-	require.Exactly(t, "1257894000000000// unit.testtest1.value{encoded%7Btag=value1%2Cvalue2,source=telegraf,tag1=value1} 1.000000\n", payload)
+	require.Exactly(t, "1257894000000000// unit.testtest1.value{encoded%7Btag=value1%2Cvalue2,source=Dana2,tag1=value1} 1.000000\n", payload)
 }
 
 func TestHandleWarp10Error(t *testing.T) {

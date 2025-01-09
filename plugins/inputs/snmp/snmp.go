@@ -31,7 +31,7 @@ type Snmp struct {
 	Tables []snmp.Table `toml:"table"`
 
 	// Name & Fields are the elements of a Table.
-	// Telegraf chokes if we try to embed a Table. So instead we have to embed the
+	// Dana2 chokes if we try to embed a Table. So instead we have to embed the
 	// fields of a Table, and construct a Table during runtime.
 	Name   string       `toml:"name"`
 	Fields []snmp.Field `toml:"field"`

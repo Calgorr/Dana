@@ -78,7 +78,7 @@ func launchTests(packageFile string, images []string) error {
 		fmt.Printf("starting test with %s\n", image)
 
 		uuidWithHyphen := uuid.New()
-		name := "telegraf-test-" + uuidWithHyphen.String()[0:8]
+		name := "Dana2-test-" + uuidWithHyphen.String()[0:8]
 
 		err := runTest(image, name, packageFile)
 		if err != nil {
@@ -100,11 +100,11 @@ func runTest(image, name, packageFile string) error {
 	}
 	defer c.Delete()
 
-	if err := c.Install("telegraf"); err != nil {
+	if err := c.Install("Dana2"); err != nil {
 		return err
 	}
 
-	if err := c.CheckStatus("telegraf"); err != nil {
+	if err := c.CheckStatus("Dana2"); err != nil {
 		return err
 	}
 
@@ -112,5 +112,5 @@ func runTest(image, name, packageFile string) error {
 		return err
 	}
 
-	return c.CheckStatus("telegraf")
+	return c.CheckStatus("Dana2")
 }

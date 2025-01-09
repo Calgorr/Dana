@@ -352,7 +352,7 @@ func TestRedisSentinelInfoAll(t *testing.T) {
 func createRedisContainer(networkName string) testutil.Container {
 	return testutil.Container{
 		Image:        "redis:7.0-alpine",
-		Name:         "telegraf-test-redis-sentinel-redis",
+		Name:         "Dana2-test-redis-sentinel-redis",
 		Networks:     []string{networkName},
 		ExposedPorts: []string{"6379"},
 		WaitingFor: wait.ForAll(

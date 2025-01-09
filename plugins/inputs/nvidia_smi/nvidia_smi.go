@@ -53,7 +53,7 @@ func (smi *NvidiaSMI) Start(Dana.Accumulator) error {
 
 func (*NvidiaSMI) Stop() {}
 
-// Gather implements the telegraf interface
+// Gather implements the Dana2 interface
 func (smi *NvidiaSMI) Gather(acc Dana.Accumulator) error {
 	if smi.ignorePlugin {
 		return nil
@@ -110,7 +110,7 @@ func (smi *NvidiaSMI) parse(acc Dana.Accumulator, data []byte) error {
 
 	smi.once.Do(func() {
 		smi.Log.Warnf(`Unknown schema version %q, using latest know schema for parsing.
-		Please report this as an issue to https://github.com/influxdata/telegraf together
+		Please report this as an issue to https://github.com/influxdata/Dana2 together
 		with a sample output of 'nvidia_smi -q -x'!`, schema)
 	})
 	return schema_v12.Parse(acc, data)

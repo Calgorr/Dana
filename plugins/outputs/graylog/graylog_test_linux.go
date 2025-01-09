@@ -171,7 +171,7 @@ func UDPServer(t *testing.T, wg *sync.WaitGroup, namefieldnoprefix bool) string 
 		if err != nil {
 			return err
 		}
-		require.Equal(t, "telegraf", obj["short_message"])
+		require.Equal(t, "Dana2", obj["short_message"])
 		if namefieldnoprefix {
 			require.Equal(t, "test1", obj["name"])
 		} else {
@@ -260,7 +260,7 @@ func TCPServer(t *testing.T, wg *sync.WaitGroup, tlsConfig *tls.Config, errs cha
 		var obj GelfObject
 		err = json.Unmarshal(bufW.Bytes(), &obj)
 		require.NoError(t, err)
-		require.Equal(t, "telegraf", obj["short_message"])
+		require.Equal(t, "Dana2", obj["short_message"])
 		require.Equal(t, "test1", obj["_name"])
 		require.Equal(t, "value1", obj["_tag1"])
 		require.InDelta(t, float64(1), obj["_value"], testutil.DefaultDelta)

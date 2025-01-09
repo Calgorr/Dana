@@ -35,7 +35,7 @@ func Test_LinkStatusCommand(t *testing.T) {
 			),
 		}
 
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 	})
 
@@ -62,7 +62,7 @@ func Test_LinkStatusCommand(t *testing.T) {
 			),
 		}
 
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 	})
 
@@ -74,7 +74,7 @@ func Test_LinkStatusCommand(t *testing.T) {
 		dpdkConn := dpdk.connectors[0]
 		dpdkConn.processCommand(mockAcc, testutil.Logger{}, ethdevLinkStatusCommand+",1", nil)
 
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, nil, actual, testutil.IgnoreTime())
 	})
 
@@ -99,7 +99,7 @@ func Test_LinkStatusCommand(t *testing.T) {
 			),
 		}
 
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 	})
 
@@ -125,7 +125,7 @@ func Test_LinkStatusCommand(t *testing.T) {
 			),
 		}
 
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 	})
 }

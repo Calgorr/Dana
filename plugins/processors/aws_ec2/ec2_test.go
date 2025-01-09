@@ -22,7 +22,7 @@ func TestBasicStartup(t *testing.T) {
 	acc := &testutil.Accumulator{}
 	require.NoError(t, p.Init())
 
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 	require.Empty(t, acc.Errors)
 }
 
@@ -34,7 +34,7 @@ func TestBasicStartupWithEC2Tags(t *testing.T) {
 	acc := &testutil.Accumulator{}
 	require.NoError(t, p.Init())
 
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 	require.Empty(t, acc.Errors)
 }
 
@@ -46,7 +46,7 @@ func TestBasicStartupWithCacheTTL(t *testing.T) {
 	acc := &testutil.Accumulator{}
 	require.NoError(t, p.Init())
 
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 	require.Empty(t, acc.Errors)
 }
 
@@ -58,7 +58,7 @@ func TestBasicStartupWithTagCacheSize(t *testing.T) {
 	acc := &testutil.Accumulator{}
 	require.NoError(t, p.Init())
 
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 	require.Empty(t, acc.Errors)
 }
 
@@ -167,7 +167,7 @@ func TestTracking(t *testing.T) {
 		return int(acc.NMetrics()) >= len(expected)
 	}, 3*time.Second, 100*time.Millisecond)
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual)
 
 	// Simulate output acknowledging delivery

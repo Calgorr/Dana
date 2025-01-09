@@ -27,7 +27,7 @@ import (
 	_ "Dana/plugins/secretstores/all"
 )
 
-type TelegrafConfig interface {
+type Dana2Config interface {
 	CollectDeprecationInfos([]string, []string, []string, []string) map[string][]config.PluginDeprecationInfo
 	PrintDeprecationList([]config.PluginDeprecationInfo)
 }
@@ -56,9 +56,9 @@ func processFilterFlags(ctx *cli.Context) Filters {
 
 	// Support defining filters before and after the command
 	// The old style was:
-	// ./telegraf --section-filter inputs --input-filter cpu config >test.conf
+	// ./Dana2 --section-filter inputs --input-filter cpu config >test.conf
 	// The new style is:
-	// ./telegraf config --section-filter inputs --input-filter cpu >test.conf
+	// ./Dana2 config --section-filter inputs --input-filter cpu >test.conf
 	// To support the old style, check if the parent context has the filter flags defined
 	if len(ctx.Lineage()) >= 2 {
 		parent := ctx.Lineage()[1] // ancestor contexts in order from child to parent
@@ -97,9 +97,9 @@ func deleteEmpty(s []string) []string {
 	return r
 }
 
-// runApp defines all the subcommands and flags for Telegraf
+// runApp defines all the subcommands and flags for Dana2
 // this abstraction is used for testing, so outputBuffer and args can be changed
-func runApp(args []string, outputBuffer io.Writer, pprof Server, c TelegrafConfig, m App) error {
+func runApp(args []string, outputBuffer io.Writer, pprof Server, c Dana2Config, m App) error {
 	configHandlingFlags := []cli.Flag{
 		&cli.StringSliceFlag{
 			Name:  "config",
@@ -138,7 +138,7 @@ func runApp(args []string, outputBuffer io.Writer, pprof Server, c TelegrafConfi
 
 	mainFlags := append(configHandlingFlags, cliFlags()...)
 
-	// This function is used when Telegraf is run with only flags
+	// This function is used when Dana2 is run with only flags
 	action := func(cCtx *cli.Context) error {
 		// We do not expect any arguments this is likely a misspelling of
 		// a command...
@@ -174,7 +174,7 @@ func runApp(args []string, outputBuffer io.Writer, pprof Server, c TelegrafConfi
 			return nil
 		// print available output plugins
 		case cCtx.Bool("output-list"):
-			outputBuffer.Write([]byte("DEPRECATED: use telegraf plugins outputs\n"))
+			outputBuffer.Write([]byte("DEPRECATED: use Dana2 plugins outputs\n"))
 			outputBuffer.Write([]byte("Available Output Plugins:\n"))
 			names := make([]string, 0, len(outputs.Outputs))
 			for k := range outputs.Outputs {
@@ -187,7 +187,7 @@ func runApp(args []string, outputBuffer io.Writer, pprof Server, c TelegrafConfi
 			return nil
 		// print available input plugins
 		case cCtx.Bool("input-list"):
-			outputBuffer.Write([]byte("DEPRECATED: use telegraf plugins inputs\n"))
+			outputBuffer.Write([]byte("DEPRECATED: use Dana2 plugins inputs\n"))
 			outputBuffer.Write([]byte("Available Input Plugins:\n"))
 			names := make([]string, 0, len(inputs.Inputs))
 			for k := range inputs.Inputs {
@@ -198,7 +198,7 @@ func runApp(args []string, outputBuffer io.Writer, pprof Server, c TelegrafConfi
 				fmt.Fprintf(outputBuffer, "  %s\n", k)
 			}
 			return nil
-		// print usage for a plugin, ie, 'telegraf --usage mysql'
+		// print usage for a plugin, ie, 'Dana2 --usage mysql'
 		case cCtx.String("usage") != "":
 			err := PrintInputConfig(cCtx.String("usage"), outputBuffer)
 			err2 := PrintOutputConfig(cCtx.String("usage"), outputBuffer)
@@ -264,7 +264,7 @@ func runApp(args []string, outputBuffer io.Writer, pprof Server, c TelegrafConfi
 	commands = append(commands, getServiceCommands(outputBuffer)...)
 
 	app := &cli.App{
-		Name:   "Telegraf",
+		Name:   "Dana2",
 		Usage:  "The plugin-driven server agent for collecting & reporting metrics.",
 		Writer: outputBuffer,
 		Flags: append(
@@ -284,7 +284,7 @@ func runApp(args []string, outputBuffer io.Writer, pprof Server, c TelegrafConfi
 				// String flags
 				&cli.StringFlag{
 					Name:  "usage",
-					Usage: "print usage for a plugin, ie, 'telegraf --usage mysql'",
+					Usage: "print usage for a plugin, ie, 'Dana2 --usage mysql'",
 				},
 				&cli.StringFlag{
 					Name:  "pprof-addr",
@@ -359,12 +359,12 @@ func runApp(args []string, outputBuffer io.Writer, pprof Server, c TelegrafConfi
 				},
 				//
 				// !!! The following flags are DEPRECATED !!!
-				// Already covered with the subcommand `./telegraf version`
+				// Already covered with the subcommand `./Dana2 version`
 				&cli.BoolFlag{
 					Name:  "version",
 					Usage: "DEPRECATED: display the version and exit",
 				},
-				// Already covered with the subcommand `./telegraf config`
+				// Already covered with the subcommand `./Dana2 config`
 				&cli.BoolFlag{
 					Name:  "sample-config",
 					Usage: "DEPRECATED: print out full sample configuration",
@@ -404,7 +404,7 @@ func main() {
 	// #13481: disables gh:99designs/keyring kwallet.go from connecting to dbus
 	os.Setenv("DISABLE_KWALLET", "1")
 
-	agent := Telegraf{}
+	agent := Dana2{}
 	pprof := NewPprofServer()
 	c := config.NewConfig()
 	if err := runApp(os.Args, os.Stdout, pprof, c, &agent); err != nil {

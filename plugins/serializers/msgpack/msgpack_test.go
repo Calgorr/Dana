@@ -11,7 +11,7 @@ import (
 	"Dana/testutil"
 )
 
-func toTelegrafMetric(m Metric) Dana.Metric {
+func toDana2Metric(m Metric) Dana.Metric {
 	tm := metric.New(m.Name, m.Tags, m.Fields, m.Time.time)
 	return tm
 }
@@ -30,7 +30,7 @@ func TestSerializeMetricInt(t *testing.T) {
 
 	require.Empty(t, left)
 
-	testutil.RequireMetricEqual(t, m, toTelegrafMetric(*m2))
+	testutil.RequireMetricEqual(t, m, toDana2Metric(*m2))
 }
 
 func TestSerializeMetricString(t *testing.T) {
@@ -47,7 +47,7 @@ func TestSerializeMetricString(t *testing.T) {
 
 	require.Empty(t, left)
 
-	testutil.RequireMetricEqual(t, m, toTelegrafMetric(*m2))
+	testutil.RequireMetricEqual(t, m, toDana2Metric(*m2))
 }
 
 func TestSerializeMultiFields(t *testing.T) {
@@ -65,7 +65,7 @@ func TestSerializeMultiFields(t *testing.T) {
 
 	require.Empty(t, left)
 
-	testutil.RequireMetricEqual(t, m, toTelegrafMetric(*m2))
+	testutil.RequireMetricEqual(t, m, toDana2Metric(*m2))
 }
 
 func TestSerializeMetricWithEscapes(t *testing.T) {
@@ -84,7 +84,7 @@ func TestSerializeMetricWithEscapes(t *testing.T) {
 
 	require.Empty(t, left)
 
-	testutil.RequireMetricEqual(t, m, toTelegrafMetric(*m2))
+	testutil.RequireMetricEqual(t, m, toDana2Metric(*m2))
 }
 
 func TestSerializeMultipleMetric(t *testing.T) {
@@ -108,7 +108,7 @@ func TestSerializeMultipleMetric(t *testing.T) {
 		left, err = decodeM.UnmarshalMsg(left)
 
 		require.NoError(t, err)
-		testutil.RequireMetricEqual(t, m, toTelegrafMetric(*decodeM))
+		testutil.RequireMetricEqual(t, m, toDana2Metric(*decodeM))
 	}
 }
 
@@ -128,7 +128,7 @@ func TestSerializeBatch(t *testing.T) {
 		left, err = decodeM.UnmarshalMsg(left)
 
 		require.NoError(t, err)
-		testutil.RequireMetricEqual(t, m, toTelegrafMetric(*decodeM))
+		testutil.RequireMetricEqual(t, m, toDana2Metric(*decodeM))
 	}
 }
 

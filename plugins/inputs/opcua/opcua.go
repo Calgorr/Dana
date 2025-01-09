@@ -45,7 +45,7 @@ func (o *OpcUA) Gather(acc Dana.Accumulator) error {
 	return nil
 }
 
-// Add this plugin to telegraf
+// Add this plugin to Dana2
 func init() {
 	inputs.Add("opcua", func() Dana.Input {
 		return &OpcUA{
@@ -55,14 +55,14 @@ func init() {
 						Endpoint:       "opc.tcp://localhost:4840",
 						SecurityPolicy: "auto",
 						SecurityMode:   "auto",
-						Certificate:    "/etc/telegraf/cert.pem",
-						PrivateKey:     "/etc/telegraf/key.pem",
+						Certificate:    "/etc/Dana2/cert.pem",
+						PrivateKey:     "/etc/Dana2/key.pem",
 						AuthMethod:     "Anonymous",
 						ConnectTimeout: config.Duration(5 * time.Second),
 						RequestTimeout: config.Duration(10 * time.Second),
 					},
 					MetricName: "opcua",
-					Timestamp:  input.TimestampSourceTelegraf,
+					Timestamp:  input.TimestampSourceDana2,
 				},
 			},
 		}

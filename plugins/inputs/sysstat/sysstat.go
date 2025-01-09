@@ -151,7 +151,7 @@ func (s *Sysstat) collect(tempfile string) error {
 		options = append(options, "-S", act)
 	}
 
-	// collectInterval has to be smaller than the telegraf data collection interval
+	// collectInterval has to be smaller than the Dana2 data collection interval
 	collectInterval := s.interval - parseInterval
 
 	// If true, interval is not defined yet and Gather is run for the first time.

@@ -453,7 +453,7 @@ func TestLabels(t *testing.T) {
 	acc := new(testutil.Accumulator)
 	j.gatherNodesData(acc)
 	require.NoError(t, acc.FirstError())
-	results := acc.GetTelegrafMetrics()
+	results := acc.GetDana2Metrics()
 	for _, metric := range results {
 		metric.RemoveTag("port")
 	}

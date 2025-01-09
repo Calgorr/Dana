@@ -32,7 +32,7 @@ const (
 	PollIntervalDisabled = time.Duration(0)
 )
 
-// Shim allows you to wrap your inputs and run them as if they were part of Telegraf,
+// Shim allows you to wrap your inputs and run them as if they were part of Dana2,
 // except built externally.
 type Shim struct {
 	Input     Dana.Input

@@ -11,7 +11,7 @@ import (
 const sqlAzurePoolResourceStats = `
 IF SERVERPROPERTY('EngineEdition') <> 5
    OR NOT EXISTS (SELECT 1 FROM sys.database_service_objectives WHERE database_id = DB_ID() AND elastic_pool_name IS NOT NULL) BEGIN
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -41,7 +41,7 @@ ORDER BY
 const sqlAzurePoolResourceGovernance = `
 IF SERVERPROPERTY('EngineEdition') <> 5
    OR NOT EXISTS (SELECT 1 FROM sys.database_service_objectives WHERE database_id = DB_ID() AND elastic_pool_name IS NOT NULL) BEGIN
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -89,7 +89,7 @@ WHERE database_id = DB_ID();
 const sqlAzurePoolDatabaseIO = `
 IF SERVERPROPERTY('EngineEdition') <> 5
    OR NOT EXISTS (SELECT 1 FROM sys.database_service_objectives WHERE database_id = DB_ID() AND elastic_pool_name IS NOT NULL) BEGIN
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -131,7 +131,7 @@ ON vfs.[database_id] = gov.[database_id];
 const sqlAzurePoolOsWaitStats = `
 IF SERVERPROPERTY('EngineEdition') <> 5
    OR NOT EXISTS (SELECT 1 FROM sys.database_service_objectives WHERE database_id = DB_ID() AND elastic_pool_name IS NOT NULL) BEGIN
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -245,7 +245,7 @@ AND [wait_time_ms] > 100;
 const sqlAzurePoolMemoryClerks = `
 IF SERVERPROPERTY('EngineEdition') <> 5
    OR NOT EXISTS (SELECT 1 FROM sys.database_service_objectives WHERE database_id = DB_ID() AND elastic_pool_name IS NOT NULL) BEGIN
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -276,7 +276,7 @@ const sqlAzurePoolPerformanceCounters = `
 SET DEADLOCK_PRIORITY -10;
 IF SERVERPROPERTY('EngineEdition') <> 5
    OR NOT EXISTS (SELECT 1 FROM sys.database_service_objectives WHERE database_id = DB_ID() AND elastic_pool_name IS NOT NULL) BEGIN
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END
@@ -442,7 +442,7 @@ OPTION(RECOMPILE)
 const sqlAzurePoolSchedulers = `
 IF SERVERPROPERTY('EngineEdition') <> 5
    OR NOT EXISTS (SELECT 1 FROM sys.database_service_objectives WHERE database_id = DB_ID() AND elastic_pool_name IS NOT NULL) BEGIN
-	DECLARE @ErrorMessage AS nvarchar(500) = 'Telegraf - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the telegraf configuration.';
+	DECLARE @ErrorMessage AS nvarchar(500) = 'Dana2 - Connection string Server:'+ @@SERVERNAME + ',Database:' + DB_NAME() +' is not an Azure SQL database in an elastic pool. Check the database_type parameter in the Dana2 configuration.';
 	RAISERROR (@ErrorMessage,11,1)
 	RETURN
 END

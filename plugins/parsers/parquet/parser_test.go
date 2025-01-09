@@ -20,7 +20,7 @@ func TestCases(t *testing.T) {
 
 	for _, f := range folders {
 		testcasePath := filepath.Join("testcases", f.Name())
-		configFilename := filepath.Join(testcasePath, "telegraf.conf")
+		configFilename := filepath.Join(testcasePath, "Dana2.conf")
 		t.Run(f.Name(), func(t *testing.T) {
 			// Configure the plugin
 			cfg := config.NewConfig()
@@ -55,7 +55,7 @@ func TestCases(t *testing.T) {
 			}
 
 			// Process expected metrics and compare with resulting metrics
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, plugin.Expected, actual, options...)
 		})
 	}

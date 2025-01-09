@@ -448,7 +448,7 @@ func TestRequestTypesCoil(t *testing.T) {
 			require.NoError(t, modbus.Gather(&acc))
 			acc.Wait(len(expected))
 
-			testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }
@@ -1077,7 +1077,7 @@ func TestRequestTypesHoldingABCD(t *testing.T) {
 			require.NoError(t, modbus.Gather(&acc))
 			acc.Wait(len(expected))
 
-			testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }
@@ -1697,7 +1697,7 @@ func TestRequestTypesHoldingDCBA(t *testing.T) {
 			require.NoError(t, modbus.Gather(&acc))
 			acc.Wait(len(expected))
 
-			testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }
@@ -2153,7 +2153,7 @@ func TestRequestStartingWithOmits(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, modbus.Gather(&acc))
 	acc.Wait(len(expected))
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestRequestWithOmittedFieldsOnly(t *testing.T) {
@@ -2352,7 +2352,7 @@ func TestRequestMultipleSlavesOneFail(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, modbus.Gather(&acc))
 	acc.Wait(len(expected))
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime(), testutil.SortMetrics())
 	require.Len(t, acc.Errors, 1)
 	require.ErrorContains(t, acc.FirstError(), `slave 2 on controller "tcp://localhost:1502": modbus: exception '11' (gateway target device failed to respond)`)

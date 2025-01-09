@@ -124,7 +124,7 @@ func TestDeployment(t *testing.T) {
 		require.NoErrorf(t, err, "%s failed, err: %v", v.name, err)
 
 		require.Len(t, acc.Metrics, len(v.output))
-		testutil.RequireMetricsEqual(t, acc.GetTelegrafMetrics(), v.output, testutil.IgnoreTime())
+		testutil.RequireMetricsEqual(t, acc.GetDana2Metrics(), v.output, testutil.IgnoreTime())
 	}
 }
 

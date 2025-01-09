@@ -25,7 +25,7 @@ func TestWindowsFlagsAreSet(t *testing.T) {
 	buf := new(bytes.Buffer)
 	args := os.Args[0:1]
 	args = append(args, commands...)
-	m := NewMockTelegraf()
+	m := NewMockDana2()
 	err := runApp(args, buf, NewMockServer(), NewMockConfig(buf), m)
 	require.NoError(t, err)
 

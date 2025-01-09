@@ -77,7 +77,7 @@ func TestNetIOStats(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestNetIOStatsSpeedUnsupported(t *testing.T) {
@@ -144,7 +144,7 @@ func TestNetIOStatsSpeedUnsupported(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestNetIOStatsNoSpeedFile(t *testing.T) {
@@ -211,5 +211,5 @@ func TestNetIOStatsNoSpeedFile(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }

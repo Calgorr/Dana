@@ -42,7 +42,7 @@ func GetLocalHost() string {
 }
 
 // MockMetrics returns a mock []Dana.Metric object for using in unit tests
-// of telegraf output sinks.
+// of Dana2 output sinks.
 func MockMetrics() []Dana.Metric {
 	metrics := make([]Dana.Metric, 0)
 	// Create a new point batch

@@ -187,7 +187,7 @@ func (a *Server) Run(ctx context.Context) error {
 
 	// Set the default for processor skipping
 	if a.Config.Agent.SkipProcessorsAfterAggregators == nil {
-		msg := `The default value of 'skip_processors_after_aggregators' will change to 'true' with Telegraf v1.40.0! `
+		msg := `The default value of 'skip_processors_after_aggregators' will change to 'true' with Dana2 v1.40.0! `
 		msg += `If you need the current default behavior, please explicitly set the option to 'false'!`
 		log.Print("W! [agent] ", color.YellowString(msg))
 		skipProcessorsAfterAggregators := false
@@ -1092,7 +1092,7 @@ func (a *Server) Test(ctx context.Context, wait time.Duration) error {
 func (a *Server) runTest(ctx context.Context, wait time.Duration, outputC chan<- Dana.Metric) error {
 	// Set the default for processor skipping
 	if a.Config.Agent.SkipProcessorsAfterAggregators == nil {
-		msg := `The default value of 'skip_processors_after_aggregators' will change to 'true' with Telegraf v1.40.0! `
+		msg := `The default value of 'skip_processors_after_aggregators' will change to 'true' with Dana2 v1.40.0! `
 		msg += `If you need the current default behavior, please explicitly set the option to 'false'!`
 		log.Print("W! [agent] ", color.YellowString(msg))
 		skipProcessorsAfterAggregators := false
@@ -1197,7 +1197,7 @@ func (a *Server) Once(ctx context.Context, wait time.Duration) error {
 func (a *Server) runOnce(ctx context.Context, wait time.Duration) error {
 	// Set the default for processor skipping
 	if a.Config.Agent.SkipProcessorsAfterAggregators == nil {
-		msg := `The default value of 'skip_processors_after_aggregators' will change to 'true' with Telegraf v1.40.0! `
+		msg := `The default value of 'skip_processors_after_aggregators' will change to 'true' with Dana2 v1.40.0! `
 		msg += `If you need the current default behavior, please explicitly set the option to 'false'!`
 		log.Print("W! [agent] ", color.YellowString(msg))
 		skipProcessorsAfterAggregators := false
@@ -1311,7 +1311,7 @@ func panicRecover(input *models.RunningInput) {
 			input.LogName(), err, trace)
 		log.Fatalln("E! PLEASE REPORT THIS PANIC ON GITHUB with " +
 			"stack trace, configuration, and OS information: " +
-			"https://github.com/influxdata/telegraf/issues/new/choose")
+			"https://github.com/influxdata/Dana2/issues/new/choose")
 	}
 }
 

@@ -123,7 +123,7 @@ func TestDecodeString(t *testing.T) {
 	require.NoError(t, err)
 	out, ok := v.(string)
 	require.True(t, ok)
-	require.Equal(t, "hello telegraf", out)
+	require.Equal(t, "hello Dana2", out)
 }
 
 func TestDecodeMAC(t *testing.T) {

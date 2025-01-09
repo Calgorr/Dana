@@ -530,7 +530,7 @@ func TestParseCompleteFile(t *testing.T) {
 
 	require.NoError(t, acc.FirstError())
 	require.Len(t, acc.Metrics, 1)
-	testutil.RequireMetricEqual(t, testutil.TestMetric(100.1), acc.GetTelegrafMetrics()[0], testutil.IgnoreTime())
+	testutil.RequireMetricEqual(t, testutil.TestMetric(100.1), acc.GetDana2Metrics()[0], testutil.IgnoreTime())
 }
 
 func TestParseSubdirectories(t *testing.T) {
@@ -596,7 +596,7 @@ func TestParseSubdirectories(t *testing.T) {
 
 	require.NoError(t, acc.FirstError())
 	require.Len(t, acc.Metrics, 2)
-	testutil.RequireMetricEqual(t, testutil.TestMetric(100.1), acc.GetTelegrafMetrics()[0], testutil.IgnoreTime())
+	testutil.RequireMetricEqual(t, testutil.TestMetric(100.1), acc.GetDana2Metrics()[0], testutil.IgnoreTime())
 
 	// File should have gone back to the test directory, as we configured.
 	_, err = os.Stat(filepath.Join(finishedDirectory, testJSONFile))
@@ -674,7 +674,7 @@ func TestParseSubdirectoriesFilesIgnore(t *testing.T) {
 
 	require.NoError(t, acc.FirstError())
 	require.Len(t, acc.Metrics, 1)
-	testutil.RequireMetricEqual(t, testutil.TestMetric(100.1), acc.GetTelegrafMetrics()[0], testutil.IgnoreTime())
+	testutil.RequireMetricEqual(t, testutil.TestMetric(100.1), acc.GetDana2Metrics()[0], testutil.IgnoreTime())
 
 	// File should have gone back to the test directory, as we configured.
 	_, err = os.Stat(filepath.Join(finishedDirectory, testJSONFile))

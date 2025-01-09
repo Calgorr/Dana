@@ -33,7 +33,7 @@ func TestCasesScan(t *testing.T) {
 			continue
 		}
 		testcasePath := filepath.Join("testcases_scan", f.Name())
-		configFilename := filepath.Join(testcasePath, "telegraf.toml")
+		configFilename := filepath.Join(testcasePath, "Dana2.toml")
 		scanFilename := filepath.Join(testcasePath, "response.json")
 		expectedFilename := filepath.Join(testcasePath, "expected.out")
 
@@ -151,7 +151,7 @@ func TestCasesDevices(t *testing.T) {
 			)
 
 			// Check the metric nevertheless as we might get some metrics despite errors.
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 			acc.Lock()
 			defer acc.Unlock()

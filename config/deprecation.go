@@ -52,9 +52,9 @@ func (di *DeprecationInfo) determineEscalation() error {
 
 	// Drop potential pre-release tags
 	version := semver.Version{
-		Major: telegrafVersion.Major,
-		Minor: telegrafVersion.Minor,
-		Patch: telegrafVersion.Patch,
+		Major: Dana2Version.Major,
+		Minor: Dana2Version.Minor,
+		Patch: Dana2Version.Patch,
 	}
 	if !version.LessThan(*removal) {
 		di.logLevel = Dana.Error

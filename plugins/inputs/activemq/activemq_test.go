@@ -182,5 +182,5 @@ func TestURLs(t *testing.T) {
 
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 }

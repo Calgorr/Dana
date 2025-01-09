@@ -1,7 +1,7 @@
 //go:build !windows
 
 // TODO: Windows - should be enabled for Windows when super asterisk is fixed on Windows
-// https://github.com/influxdata/telegraf/issues/6248
+// https://github.com/influxdata/Dana2/issues/6248
 
 package phpfpm
 
@@ -115,7 +115,7 @@ func TestPhpFpmGeneratesJSONMetrics_From_Http(t *testing.T) {
 
 	var acc testutil.Accumulator
 	require.NoError(t, acc.GatherError(input.Gather))
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), testutil.IgnoreTags("url"))
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), testutil.IgnoreTags("url"))
 }
 
 func TestPhpFpmGeneratesMetrics_From_Fcgi(t *testing.T) {
@@ -191,7 +191,7 @@ func TestPhpFpmTimeout_From_Fcgi(t *testing.T) {
 	var acc testutil.Accumulator
 	require.Error(t, acc.GatherError(r.Gather))
 
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 	require.GreaterOrEqual(t, time.Since(start), timeout)
 }
 
@@ -221,7 +221,7 @@ func TestPhpFpmCrashWithTimeout_From_Fcgi(t *testing.T) {
 	var acc testutil.Accumulator
 	require.Error(t, acc.GatherError(r.Gather))
 
-	require.Empty(t, acc.GetTelegrafMetrics())
+	require.Empty(t, acc.GetDana2Metrics())
 }
 
 func TestPhpFpmGeneratesMetrics_From_Socket(t *testing.T) {
@@ -491,5 +491,5 @@ func TestGatherDespiteUnavailable(t *testing.T) {
 
 	var acc testutil.Accumulator
 	require.ErrorContains(t, acc.GatherError(r.Gather), "socket doesn't exist")
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }

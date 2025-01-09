@@ -584,7 +584,7 @@ func TestGather(t *testing.T) {
 				require.Error(t, acc.GatherError(p.Gather))
 			} else {
 				require.NoError(t, acc.GatherError(p.Gather))
-				testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), testutil.SortMetrics())
+				testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), testutil.SortMetrics())
 			}
 		})
 	}

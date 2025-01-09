@@ -148,7 +148,7 @@ func TestUnixgram(t *testing.T) {
 	}, 3*time.Second, 100*time.Millisecond)
 	plugin.Stop()
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 }
 
@@ -173,7 +173,7 @@ func TestCases(t *testing.T) {
 
 		t.Run(f.Name(), func(t *testing.T) {
 			testcasePath := filepath.Join("testcases", f.Name())
-			configFilename := filepath.Join(testcasePath, "telegraf.conf")
+			configFilename := filepath.Join(testcasePath, "Dana2.conf")
 			inputFilenamePattern := filepath.Join(testcasePath, "input*.txt")
 			expectedFilename := filepath.Join(testcasePath, "expected.out")
 			expectedErrorFilename := filepath.Join(testcasePath, "expected.err")
@@ -270,7 +270,7 @@ func TestCases(t *testing.T) {
 			}, 3*time.Second, 100*time.Millisecond)
 			plugin.Stop()
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 
 			// Check for errors

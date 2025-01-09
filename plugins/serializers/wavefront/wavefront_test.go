@@ -41,27 +41,27 @@ func TestBuildTags(t *testing.T) {
 		},
 		{
 			map[string]string{"instanceid": "i-0123456789", "host": "aaa", "dc": "bbb"},
-			map[string]string{"dc": "bbb", "telegraf_host": "aaa"},
+			map[string]string{"dc": "bbb", "Dana2_host": "aaa"},
 			"i-0123456789",
 		},
 		{
 			map[string]string{"instance-id": "i-0123456789", "host": "aaa", "dc": "bbb"},
-			map[string]string{"dc": "bbb", "telegraf_host": "aaa"},
+			map[string]string{"dc": "bbb", "Dana2_host": "aaa"},
 			"i-0123456789",
 		},
 		{
 			map[string]string{"instanceid": "i-0123456789", "host": "aaa", "hostname": "ccc", "dc": "bbb"},
-			map[string]string{"dc": "bbb", "hostname": "ccc", "telegraf_host": "aaa"},
+			map[string]string{"dc": "bbb", "hostname": "ccc", "Dana2_host": "aaa"},
 			"i-0123456789",
 		},
 		{
 			map[string]string{"instanceid": "i-0123456789", "host": "aaa", "snmp_host": "ccc", "dc": "bbb"},
-			map[string]string{"dc": "bbb", "snmp_host": "ccc", "telegraf_host": "aaa"},
+			map[string]string{"dc": "bbb", "snmp_host": "ccc", "Dana2_host": "aaa"},
 			"i-0123456789",
 		},
 		{
 			map[string]string{"host": "aaa", "snmp_host": "ccc", "dc": "bbb"},
-			map[string]string{"dc": "bbb", "telegraf_host": "aaa"},
+			map[string]string{"dc": "bbb", "Dana2_host": "aaa"},
 			"ccc",
 		},
 	}
@@ -86,7 +86,7 @@ func TestBuildTagsHostTag(t *testing.T) {
 	}{
 		{
 			map[string]string{"one": "two", "host": "testHost", "snmp_host": "snmpHost"},
-			map[string]string{"telegraf_host": "testHost", "one": "two"},
+			map[string]string{"Dana2_host": "testHost", "one": "two"},
 			"snmpHost",
 		},
 	}
@@ -280,12 +280,12 @@ func TestSerializeMetricPrefix(t *testing.T) {
 	}
 	m := metric.New("cpu", tags, fields, now)
 
-	s := &Serializer{Prefix: "telegraf."}
+	s := &Serializer{Prefix: "Dana2."}
 	buf, err := s.Serialize(m)
 	require.NoError(t, err)
 	mS := strings.Split(strings.TrimSpace(string(buf)), "\n")
 
-	expS := []string{fmt.Sprintf("\"telegraf.cpu.usage.idle\" 91.000000 %d source=\"realHost\" \"cpu\"=\"cpu0\"", now.UnixNano()/1000000000)}
+	expS := []string{fmt.Sprintf("\"Dana2.cpu.usage.idle\" 91.000000 %d source=\"realHost\" \"cpu\"=\"cpu0\"", now.UnixNano()/1000000000)}
 	require.Equal(t, expS, mS)
 }
 

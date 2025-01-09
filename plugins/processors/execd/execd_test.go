@@ -67,7 +67,7 @@ func TestExternalProcessorWorks(t *testing.T) {
 	e.Stop()
 	acc.Wait(9)
 
-	metrics := acc.GetTelegrafMetrics()
+	metrics := acc.GetDana2Metrics()
 	m := metrics[0]
 
 	expected := testutil.MustMetric("test",
@@ -133,7 +133,7 @@ func TestParseLinesWithNewLines(t *testing.T) {
 	acc.Wait(1)
 	e.Stop()
 
-	processedMetric := acc.GetTelegrafMetrics()[0]
+	processedMetric := acc.GetDana2Metrics()[0]
 
 	expectedMetric := testutil.MustMetric("test",
 		map[string]string{
@@ -237,7 +237,7 @@ func TestCases(t *testing.T) {
 		fname := f.Name()
 		t.Run(fname, func(t *testing.T) {
 			testdataPath := filepath.Join("testcases", fname)
-			configFilename := filepath.Join(testdataPath, "telegraf.conf")
+			configFilename := filepath.Join(testdataPath, "Dana2.conf")
 			inputFilename := filepath.Join(testdataPath, "input.influx")
 			expectedFilename := filepath.Join(testdataPath, "expected.out")
 
@@ -272,7 +272,7 @@ func TestCases(t *testing.T) {
 			}, time.Second, 100*time.Millisecond)
 
 			// Check the expectations
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual)
 		})
 	}
@@ -380,7 +380,7 @@ func TestTracking(t *testing.T) {
 		return int(acc.NMetrics()) >= len(expected)
 	}, 3*time.Second, 100*time.Millisecond)
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual)
 
 	// Simulate output acknowledging delivery

@@ -50,10 +50,10 @@ func (c *Config) CreateService() (*Service, error) {
 	connConfig.Host = socketRegexp.ReplaceAllLiteralString(connConfig.Host, "")
 
 	// Specific support to make it work with PgBouncer too
-	// See https://github.com/influxdata/telegraf/issues/3253#issuecomment-357505343
+	// See https://github.com/influxdata/Dana2/issues/3253#issuecomment-357505343
 	if c.IsPgBouncer {
 		// Remove DriveConfig and revert it by the ParseConfig method
-		// See https://github.com/influxdata/telegraf/issues/9134
+		// See https://github.com/influxdata/Dana2/issues/9134
 		connConfig.PreferSimpleProtocol = true
 	}
 

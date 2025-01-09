@@ -163,7 +163,7 @@ func TestParkedProcess(t *testing.T) {
 		testutil.IgnoreTime(),
 		testutil.IgnoreFields("total", "total_threads"),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), options...)
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), options...)
 }
 
 func testExecPS(out string) func(_ bool) ([]byte, error) {

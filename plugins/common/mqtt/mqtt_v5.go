@@ -48,7 +48,7 @@ func NewMQTTv5Client(cfg *MqttConfig) (*mqttv5Client, error) {
 		if err != nil {
 			return nil, fmt.Errorf("generating random client ID failed: %w", err)
 		}
-		opts.ClientID = "Telegraf-Output-" + id
+		opts.ClientID = "Dana2-Output-" + id
 	}
 
 	tlsCfg, err := cfg.ClientConfig.TLSConfig()

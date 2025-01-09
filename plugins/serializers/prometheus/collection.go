@@ -13,7 +13,7 @@ import (
 	"Dana"
 )
 
-const helpString = "Telegraf collected metric"
+const helpString = "Dana2 collected metric"
 
 type TimeFunc func() time.Time
 
@@ -473,7 +473,7 @@ func (c *Collection) GetProto() []*dto.MetricFamily {
 					SampleSum:   proto.Float64(metric.Summary.Sum),
 				}
 			default:
-				panic("unknown telegraf.ValueType")
+				panic("unknown Dana2.ValueType")
 			}
 
 			mf.Metric = append(mf.Metric, m)

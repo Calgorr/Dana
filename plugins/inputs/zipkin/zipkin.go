@@ -29,7 +29,7 @@ const (
 	// defaultRoute is the default route zipkin uses, and zipkin implementations expect.
 	defaultRoute = "/api/v1/spans"
 
-	// defaultShutdownTimeout is the max amount of time telegraf will wait for the plugin to shut down
+	// defaultShutdownTimeout is the max amount of time Dana2 will wait for the plugin to shut down
 	defaultShutdownTimeout = 5 * time.Second
 
 	defaultReadTimeout  = 10 * time.Second
@@ -54,7 +54,7 @@ type Handler interface {
 	Register(router *mux.Router, recorder Recorder) error
 }
 
-// Zipkin is a telegraf configuration structure for the zipkin input plugin,
+// Zipkin is a Dana2 configuration structure for the zipkin input plugin,
 // but it also contains fields for the management of a separate, concurrent
 // zipkin http server
 type Zipkin struct {
@@ -142,7 +142,7 @@ func (z *Zipkin) Listen(ln net.Listener, acc Dana.Accumulator) {
 		// Because of the clean shutdown in `(*Zipkin).Stop()`
 		// We're expecting a server closed error at some point
 		// So we don't want to display it as an error.
-		// This interferes with telegraf's internal data collection,
+		// This interferes with Dana2's internal data collection,
 		// by making it appear as if a serious error occurred.
 		if err != http.ErrServerClosed {
 			acc.AddError(fmt.Errorf("error listening: %w", err))

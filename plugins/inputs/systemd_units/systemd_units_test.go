@@ -276,7 +276,7 @@ func TestListFiles(t *testing.T) {
 			require.NoError(t, err)
 
 			// Do the comparison
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, tt.expected, actual, testutil.IgnoreTime())
 		})
 	}
@@ -601,7 +601,7 @@ func TestShow(t *testing.T) {
 			require.NoError(t, err)
 
 			// Do the comparison
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, tt.expected, actual, testutil.IgnoreTime())
 		})
 	}
@@ -860,7 +860,7 @@ func TestMultiInstance(t *testing.T) {
 			require.NoError(t, acc.GatherError(plugin.Gather))
 
 			// Do the comparison
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, tt.expected, actual, testutil.IgnoreTime(), testutil.SortMetrics())
 		})
 	}

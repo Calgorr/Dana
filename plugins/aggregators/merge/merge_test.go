@@ -58,7 +58,7 @@ func TestSimple(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestNanosecondPrecision(t *testing.T) {
@@ -109,7 +109,7 @@ func TestNanosecondPrecision(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestNoRounding(t *testing.T) {
@@ -169,7 +169,7 @@ func TestNoRounding(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestWithRounding(t *testing.T) {
@@ -220,7 +220,7 @@ func TestWithRounding(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func TestReset(t *testing.T) {
@@ -283,7 +283,7 @@ func TestReset(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics())
 }
 
 func BenchmarkMergeOne(b *testing.B) {

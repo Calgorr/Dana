@@ -183,7 +183,7 @@ func newSyslog() *Syslog {
 		Separator:           "_",
 		DefaultSeverityCode: uint8(5), // notice
 		DefaultFacilityCode: uint8(1), // user-level
-		DefaultAppname:      "Telegraf",
+		DefaultAppname:      "Dana2",
 	}
 }
 

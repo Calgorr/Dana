@@ -560,7 +560,7 @@ func (m *Modbus) Printf(format string, v ...interface{}) {
 	m.Log.Tracef(format, v...)
 }
 
-// Add this plugin to telegraf
+// Add this plugin to Dana2
 func init() {
 	inputs.Add("modbus", func() Dana.Input { return &Modbus{} })
 }

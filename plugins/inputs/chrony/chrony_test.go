@@ -74,7 +74,7 @@ func TestGatherActivity(t *testing.T) {
 		cmpopts.EquateApprox(0.001, 0),
 	}
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, options...)
 }
 
@@ -150,7 +150,7 @@ func TestGatherTracking(t *testing.T) {
 		cmpopts.EquateApprox(0.001, 0),
 	}
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, options...)
 }
 
@@ -208,7 +208,7 @@ func TestGatherServerStats(t *testing.T) {
 		cmpopts.EquateApprox(0.001, 0),
 	}
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, options...)
 }
 
@@ -272,7 +272,7 @@ func TestGatherServerStats2(t *testing.T) {
 		cmpopts.EquateApprox(0.001, 0),
 	}
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, options...)
 }
 
@@ -342,7 +342,7 @@ func TestGatherServerStats3(t *testing.T) {
 		cmpopts.EquateApprox(0.001, 0),
 	}
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, options...)
 }
 
@@ -494,7 +494,7 @@ func TestGatherSources(t *testing.T) {
 		cmpopts.EquateApprox(0.001, 0),
 	}
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, options...)
 }
 
@@ -643,7 +643,7 @@ func TestGatherSourceStats(t *testing.T) {
 		cmpopts.EquateApprox(0.001, 0),
 	}
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, options...)
 }
 
@@ -657,8 +657,8 @@ func TestIntegration(t *testing.T) {
 		Image:        "dockurr/chrony",
 		ExposedPorts: []string{"323/udp"},
 		Files: map[string]string{
-			"/etc/telegraf-chrony.conf": "testdata/chrony.conf",
-			"/start.sh":                 "testdata/start.sh",
+			"/etc/Dana2-chrony.conf": "testdata/chrony.conf",
+			"/start.sh":              "testdata/start.sh",
 		},
 		Entrypoint: []string{"/start.sh"},
 		WaitingFor: wait.ForLog("Selected source"),
@@ -710,7 +710,7 @@ func TestIntegration(t *testing.T) {
 		testutil.IgnoreTime(),
 	}
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsStructureEqual(t, expected, actual, options...)
 }
 

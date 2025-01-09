@@ -424,7 +424,7 @@ func init() {
 		return &HTTPListenerV2{
 			ServiceAddress: ":8080",
 			timeFunc:       time.Now,
-			Paths:          []string{"/telegraf"},
+			Paths:          []string{"/Dana2"},
 			Methods:        []string{"POST", "PUT"},
 			DataSource:     body,
 			close:          make(chan struct{}),

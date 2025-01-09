@@ -115,7 +115,7 @@ func TestSFlow(t *testing.T) {
 		),
 	}
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(),
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(),
 		testutil.IgnoreTime())
 }
 

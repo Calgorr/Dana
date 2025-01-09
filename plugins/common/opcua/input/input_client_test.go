@@ -475,7 +475,7 @@ func TestInitNodeMetricMapping(t *testing.T) {
 			testname: "only root node",
 			config: InputClientConfig{
 				MetricName: "testmetric",
-				Timestamp:  TimestampSourceTelegraf,
+				Timestamp:  TimestampSourceDana2,
 				RootNodes: []NodeSettings{
 					{
 						FieldName:      "f",
@@ -506,7 +506,7 @@ func TestInitNodeMetricMapping(t *testing.T) {
 			testname: "root node and group node",
 			config: InputClientConfig{
 				MetricName: "testmetric",
-				Timestamp:  TimestampSourceTelegraf,
+				Timestamp:  TimestampSourceDana2,
 				RootNodes: []NodeSettings{
 					{
 						FieldName:      "f",
@@ -563,7 +563,7 @@ func TestInitNodeMetricMapping(t *testing.T) {
 			testname: "only group node",
 			config: InputClientConfig{
 				MetricName: "testmetric",
-				Timestamp:  TimestampSourceTelegraf,
+				Timestamp:  TimestampSourceDana2,
 				Groups: []NodeGroupSettings{
 					{
 						MetricName:     "groupmetric",
@@ -599,7 +599,7 @@ func TestInitNodeMetricMapping(t *testing.T) {
 			testname: "tags and default only default tags used",
 			config: InputClientConfig{
 				MetricName: "testmetric",
-				Timestamp:  TimestampSourceTelegraf,
+				Timestamp:  TimestampSourceDana2,
 				Groups: []NodeGroupSettings{
 					{
 						MetricName:     "groupmetric",
@@ -637,7 +637,7 @@ func TestInitNodeMetricMapping(t *testing.T) {
 			testname: "only root node default overrides slice",
 			config: InputClientConfig{
 				MetricName: "testmetric",
-				Timestamp:  TimestampSourceTelegraf,
+				Timestamp:  TimestampSourceDana2,
 				RootNodes: []NodeSettings{
 					{
 						FieldName:      "f",

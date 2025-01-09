@@ -1158,7 +1158,7 @@ func getColSlice(rows *sql.Rows) ([]interface{}, error) {
 			}
 
 			// Percona 8 has some special fields that are float instead of ints
-			// see: https://github.com/influxdata/telegraf/issues/7360
+			// see: https://github.com/influxdata/Dana2/issues/7360
 			switch ct.ScanType().Kind() {
 			case reflect.Float32, reflect.Float64:
 				cols = append(cols, new(float64))

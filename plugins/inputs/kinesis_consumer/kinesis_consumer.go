@@ -139,7 +139,7 @@ func (k *KinesisConsumer) connect(acc Dana.Accumulator) error {
 		cfg.BaseEndpoint = &k.EndpointURL
 	}
 
-	logWrapper := &telegrafLoggerWrapper{k.Log}
+	logWrapper := &Dana2LoggerWrapper{k.Log}
 	cfg.Logger = logWrapper
 	cfg.ClientLogMode = aws.LogRetries
 	client := kinesis.NewFromConfig(cfg)

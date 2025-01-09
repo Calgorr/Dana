@@ -42,7 +42,7 @@ func (l *structuredLogger) Print(level Dana.LogLevel, ts time.Time, _ string, at
 }
 
 var defaultReplaceAttr = func(_ []string, attr slog.Attr) slog.Attr {
-	// Translate the Telegraf log-levels to strings
+	// Translate the Dana2 log-levels to strings
 	if attr.Key == slog.LevelKey {
 		if level, ok := attr.Value.Any().(slog.Level); ok {
 			attr.Value = slog.StringValue(Dana.LogLevel(level).String())

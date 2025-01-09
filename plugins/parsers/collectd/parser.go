@@ -107,7 +107,7 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 	p.DefaultTags = tags
 }
 
-// unmarshalValueList translates a ValueList into a Telegraf metric.
+// unmarshalValueList translates a ValueList into a Dana2 metric.
 func (p *Parser) unmarshalValueList(vl *api.ValueList) []Dana.Metric {
 	timestamp := vl.Time.UTC()
 

@@ -282,7 +282,7 @@ func TestGather_CreateProcessErrorOk(t *testing.T) {
 
 	var acc testutil.Accumulator
 	require.NoError(t, p.Gather(&acc))
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestGather_ProcessName(t *testing.T) {
@@ -354,7 +354,7 @@ func TestGather_ProcessName(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, p.Gather(&acc))
 	require.Equal(t, "custom_name", acc.TagValue("procstat", "process_name"))
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestGather_NoProcessNameUsesReal(t *testing.T) {
@@ -606,7 +606,7 @@ func TestProcstatLookupMetric(t *testing.T) {
 
 	var acc testutil.Accumulator
 	require.NoError(t, p.Gather(&acc))
-	require.NotEmpty(t, acc.GetTelegrafMetrics())
+	require.NotEmpty(t, acc.GetDana2Metrics())
 }
 
 func TestGather_SameTimestamps(t *testing.T) {

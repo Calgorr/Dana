@@ -1,4 +1,4 @@
-// Package uwsgi implements a telegraf plugin for collecting uwsgi stats from
+// Package uwsgi implements a Dana2 plugin for collecting uwsgi stats from
 // the uwsgi stats server.
 //
 //go:generate ../../../tools/readme_config_includer/generator

@@ -60,7 +60,7 @@ func TestCases(t *testing.T) {
 
 		fname := f.Name()
 		testdataPath := filepath.Join("testcases", fname)
-		configFilename := filepath.Join(testdataPath, "telegraf.conf")
+		configFilename := filepath.Join(testdataPath, "Dana2.conf")
 		inputFilename := filepath.Join(testdataPath, "input.influx")
 		expectedFilename := filepath.Join(testdataPath, "expected.out")
 
@@ -116,7 +116,7 @@ func TestCasesTracking(t *testing.T) {
 
 		fname := f.Name()
 		testdataPath := filepath.Join("testcases", fname)
-		configFilename := filepath.Join(testdataPath, "telegraf.conf")
+		configFilename := filepath.Join(testdataPath, "Dana2.conf")
 		inputFilename := filepath.Join(testdataPath, "input.influx")
 		expectedFilename := filepath.Join(testdataPath, "expected.out")
 

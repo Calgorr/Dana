@@ -80,22 +80,22 @@ func TestMakeWriteURL(t *testing.T) {
 		{
 			name:     "http default",
 			addr:     "http://localhost:9999",
-			expected: "http://localhost:9999/api/v2/write?bucket=telegraf0&org=influx0",
-			bucket:   "telegraf0",
+			expected: "http://localhost:9999/api/v2/write?bucket=Dana20&org=influx0",
+			bucket:   "Dana20",
 			org:      "influx0",
 		},
 		{
 			name:     "http with param",
 			addr:     "http://localhost:9999?id=abc",
-			expected: "http://localhost:9999/api/v2/write?bucket=telegraf1&id=abc&org=influx1",
-			bucket:   "telegraf1",
+			expected: "http://localhost:9999/api/v2/write?bucket=Dana21&id=abc&org=influx1",
+			bucket:   "Dana21",
 			org:      "influx1",
 		},
 		{
 			name:     "unix socket default",
 			addr:     "unix://var/run/influxd.sock",
-			expected: "http://127.0.0.1/api/v2/write?bucket=telegraf2&org=influx2",
-			bucket:   "telegraf2",
+			expected: "http://127.0.0.1/api/v2/write?bucket=Dana22&org=influx2",
+			bucket:   "Dana22",
 			org:      "influx2",
 		},
 	}
@@ -189,12 +189,12 @@ func TestExponentialBackoffCalculationWithRetryAfter(t *testing.T) {
 
 // goos: linux
 // goarch: amd64
-// pkg: github.com/influxdata/telegraf/plugins/outputs/influxdb_v2
+// pkg: github.com/influxdata/Dana2/plugins/outputs/influxdb_v2
 // cpu: 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz
 // BenchmarkOldMakeWriteURL
 // BenchmarkOldMakeWriteURL-16    	 1556631	       683.2 ns/op	     424 B/op	      14 allocs/op
 // PASS
-// ok  	github.com/influxdata/telegraf/plugins/outputs/influxdb_v2	1.851s
+// ok  	github.com/influxdata/Dana2/plugins/outputs/influxdb_v2	1.851s
 func BenchmarkOldMakeWriteURL(b *testing.B) {
 	org := "org"
 
@@ -212,12 +212,12 @@ func BenchmarkOldMakeWriteURL(b *testing.B) {
 
 // goos: linux
 // goarch: amd64
-// pkg: github.com/influxdata/telegraf/plugins/outputs/influxdb_v2
+// pkg: github.com/influxdata/Dana2/plugins/outputs/influxdb_v2
 // cpu: 11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz
 // BenchmarkNewMakeWriteURL
 // BenchmarkNewMakeWriteURL-16    	 2084415	       496.5 ns/op	     280 B/op	       9 allocs/op
 // PASS
-// ok  	github.com/influxdata/telegraf/plugins/outputs/influxdb_v2	1.626s
+// ok  	github.com/influxdata/Dana2/plugins/outputs/influxdb_v2	1.626s
 func BenchmarkNewMakeWriteURL(b *testing.B) {
 	bucket := "bkt"
 	org := "org"

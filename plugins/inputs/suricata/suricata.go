@@ -29,7 +29,7 @@ const (
 	InBufSize = 10 * 1024 * 1024
 )
 
-// Suricata is a Telegraf input plugin for Suricata runtime statistics.
+// Suricata is a Dana2 input plugin for Suricata runtime statistics.
 type Suricata struct {
 	Source    string `toml:"source"`
 	Delimiter string `toml:"delimiter"`
@@ -139,7 +139,7 @@ func (s *Suricata) handleServerConnection(ctx context.Context, acc Dana.Accumula
 			err = s.readInput(ctx, acc, conn)
 			// we want to handle EOF as an opportunity to wait for a new
 			// connection -- this could, for example, happen when Suricata is
-			// restarted while Telegraf is running.
+			// restarted while Dana2 is running.
 			if !errors.Is(err, io.EOF) {
 				acc.AddError(err)
 				return
@@ -342,7 +342,7 @@ func (s *Suricata) parse(acc Dana.Accumulator, sjson []byte) error {
 	return nil
 }
 
-// Gather measures and submits one full set of telemetry to Telegraf.
+// Gather measures and submits one full set of telemetry to Dana2.
 // Not used here, submission is completely input-driven.
 func (*Suricata) Gather(Dana.Accumulator) error {
 	return nil

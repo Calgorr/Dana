@@ -259,7 +259,7 @@ func (m *WinPerfCounters) AddItem(counterPath, computer, objectName, instance, c
 
 			var newItem *counter
 			if !m.LocalizeWildcardsExpansion {
-				// On localized installations of Windows, Telegraf
+				// On localized installations of Windows, Dana2
 				// should return English metrics, but
 				// ExpandWildCardPath returns localized counters. Undo
 				// that by using the original object and counter

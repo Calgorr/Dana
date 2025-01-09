@@ -68,7 +68,7 @@ func TestPostgresqlGeneratesMetricsIntegration(t *testing.T) {
 		Withdbname: false,
 		Tagvalue:   "",
 	}})
-	testutil.PrintMetrics(acc.GetTelegrafMetrics())
+	testutil.PrintMetrics(acc.GetDana2Metrics())
 
 	intMetrics := []string{
 		"xact_commit",

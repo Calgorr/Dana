@@ -99,7 +99,7 @@ func TestAddDefaultStatsIntegration(t *testing.T) {
 	}
 }
 
-// Verify that when set to skip, telegraf will init, start, and collect while
+// Verify that when set to skip, Dana2 will init, start, and collect while
 // ignoring connection errors.
 func TestSkipBehaviorIntegration(t *testing.T) {
 	if testing.Short() {
@@ -122,7 +122,7 @@ func TestSkipBehaviorIntegration(t *testing.T) {
 	require.NoError(t, err)
 }
 
-// Verify that when set to error, telegraf will error out on start as expected
+// Verify that when set to error, Dana2 will error out on start as expected
 func TestErrorBehaviorIntegration(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping integration test in short mode")

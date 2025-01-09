@@ -80,7 +80,7 @@ func TestConnectAndWrite(t *testing.T) {
 
 	testURL := "http://" + ts.Listener.Addr().String()
 	testAPIKey := "a0b1c2d3-e4f5-g6h7-i8j9-k0l1m2n3o4p5"
-	testCheck := "telegraf"
+	testCheck := "Dana2"
 	testEntity := "entity1"
 	testNamespace := "default"
 	testHandler := "influxdb"

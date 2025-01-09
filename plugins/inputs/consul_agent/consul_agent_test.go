@@ -99,7 +99,7 @@ func TestConsulStats(t *testing.T) {
 			err = plugin.Gather(&acc)
 			require.NoError(t, err)
 
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics())
 		})
 	}
 }

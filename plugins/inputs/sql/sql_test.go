@@ -122,7 +122,7 @@ func TestMariaDBIntegration(t *testing.T) {
 			plugin.Stop()
 
 			// Do the comparison
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics())
 		})
 	}
 }
@@ -221,7 +221,7 @@ func TestPostgreSQLIntegration(t *testing.T) {
 			plugin.Stop()
 
 			// Do the comparison
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics())
 		})
 	}
 }
@@ -316,7 +316,7 @@ func TestClickHouseIntegration(t *testing.T) {
 			plugin.Stop()
 
 			// Do the comparison
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics())
 		})
 	}
 }

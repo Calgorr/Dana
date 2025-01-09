@@ -120,7 +120,7 @@ func TestGatheringRootDomain(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestMetricContainsServerAndDomainAndRecordTypeTags(t *testing.T) {
@@ -160,7 +160,7 @@ func TestMetricContainsServerAndDomainAndRecordTypeTags(t *testing.T) {
 			time.Unix(0, 0),
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestGatheringTimeout(t *testing.T) {

@@ -1324,7 +1324,7 @@ func TestReceiveTrap(t *testing.T) {
 
 			// Verify plugin output
 			testutil.RequireMetricsEqual(t,
-				tt.metrics, acc.GetTelegrafMetrics(),
+				tt.metrics, acc.GetDana2Metrics(),
 				testutil.SortMetrics())
 		})
 	}
@@ -1705,7 +1705,7 @@ func TestReceiveTrapMultipleConfig(t *testing.T) {
 
 			// Verify plugin output
 			testutil.RequireMetricsEqual(t,
-				tt.metrics, acc.GetTelegrafMetrics(),
+				tt.metrics, acc.GetDana2Metrics(),
 				testutil.SortMetrics())
 		})
 	}

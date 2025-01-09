@@ -1,4 +1,4 @@
-// Package openstack implements an OpenStack input plugin for Telegraf
+// Package openstack implements an OpenStack input plugin for Dana2
 //
 // The OpenStack input plug is a simple two phase metric collector.  In the first
 // pass a set of gatherers are run against the API to cache collections of resources.

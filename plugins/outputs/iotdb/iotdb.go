@@ -138,7 +138,7 @@ func (s *IoTDB) Close() error {
 }
 
 // Write should write immediately to the output, and not buffer writes
-// (Telegraf manages the buffer for you). Returning an error will fail this
+// (Dana2 manages the buffer for you). Returning an error will fail this
 // batch of writes and the entire batch will be retried automatically.
 func (s *IoTDB) Write(metrics []Dana.Metric) error {
 	// Convert Metrics to Records with Tags

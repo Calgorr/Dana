@@ -519,7 +519,7 @@ func TestParse_Sets_SetsAsFloat(t *testing.T) {
 
 	acc := &testutil.Accumulator{}
 	require.NoError(t, s.Gather(acc))
-	metrics := acc.GetTelegrafMetrics()
+	metrics := acc.GetDana2Metrics()
 	testutil.PrintMetrics(metrics)
 	testutil.RequireMetricsEqual(t, expected, metrics, testutil.IgnoreTime(), testutil.SortMetrics())
 }
@@ -687,7 +687,7 @@ func TestParse_CountersAsFloat(t *testing.T) {
 
 	acc := &testutil.Accumulator{}
 	require.NoError(t, s.Gather(acc))
-	metrics := acc.GetTelegrafMetrics()
+	metrics := acc.GetDana2Metrics()
 	testutil.PrintMetrics(metrics)
 	testutil.RequireMetricsEqual(t, expected, metrics, testutil.IgnoreTime(), testutil.SortMetrics())
 }
@@ -1282,7 +1282,7 @@ func TestParse_DataDogTags(t *testing.T) {
 			require.NoError(t, s.parseStatsdLine(tt.line))
 			require.NoError(t, s.Gather(&acc))
 
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics(),
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics(),
 				testutil.SortMetrics(), testutil.IgnoreTime())
 		})
 	}
@@ -1433,7 +1433,7 @@ func TestParse_DataDogContainerID(t *testing.T) {
 			require.NoError(t, s.parseStatsdLine(tt.line))
 			require.NoError(t, s.Gather(&acc))
 
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics(),
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics(),
 				testutil.SortMetrics(), testutil.IgnoreTime())
 		})
 	}
@@ -1568,7 +1568,7 @@ func TestCachesExpireAfterMaxTTL(t *testing.T) {
 				Dana.Counter,
 			),
 		},
-		acc.GetTelegrafMetrics(),
+		acc.GetDana2Metrics(),
 		testutil.IgnoreTime(),
 	)
 }
@@ -2105,7 +2105,7 @@ func TestTCP(t *testing.T) {
 				Dana.Counter,
 			),
 		},
-		acc.GetTelegrafMetrics(),
+		acc.GetDana2Metrics(),
 		testutil.IgnoreTime(),
 	)
 }
@@ -2150,7 +2150,7 @@ func TestUdp(t *testing.T) {
 				Dana.Counter,
 			),
 		},
-		acc.GetTelegrafMetrics(),
+		acc.GetDana2Metrics(),
 		testutil.IgnoreTime(),
 	)
 }
@@ -2333,7 +2333,7 @@ func TestParse_InvalidAndRecoverIntegration(t *testing.T) {
 			Dana.Counter,
 		),
 	}
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 
 	require.NoError(t, conn.Close())
 }
@@ -2383,7 +2383,7 @@ func TestParse_DeltaCounter(t *testing.T) {
 			Dana.Counter,
 		),
 	}
-	got := acc.GetTelegrafMetrics()
+	got := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, got, testutil.IgnoreTime(), testutil.IgnoreFields("start_time"))
 
 	startTime, ok := got[0].GetField("start_time")

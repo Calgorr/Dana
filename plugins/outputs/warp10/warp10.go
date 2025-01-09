@@ -164,7 +164,7 @@ func buildTags(tags []*Dana.Tag) []string {
 		value := url.QueryEscape(tag.Value)
 		tagsString = append(tagsString, fmt.Sprintf("%s=%s", key, value))
 	}
-	tagsString = append(tagsString, "source=telegraf")
+	tagsString = append(tagsString, "source=Dana2")
 	sort.Strings(tagsString)
 	return tagsString
 }

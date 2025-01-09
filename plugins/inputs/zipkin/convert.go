@@ -9,7 +9,7 @@ import (
 
 // LineProtocolConverter implements the Recorder interface; it is a
 // type meant to encapsulate the storage of zipkin tracing data in
-// telegraf as line protocol.
+// Dana2 as line protocol.
 type LineProtocolConverter struct {
 	acc Dana.Accumulator
 }

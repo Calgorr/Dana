@@ -189,7 +189,7 @@ func configSection(t *T, root ast.Node) error {
 }
 
 // Links from one markdown file to another in the repo should be relative
-func relativeTelegrafLinks(t *T, root ast.Node) error {
+func relativeDana2Links(t *T, root ast.Node) error {
 	for n := root.FirstChild(); n != nil; n = n.NextSibling() {
 		if _, ok := n.(*ast.Paragraph); !ok {
 			continue
@@ -202,7 +202,7 @@ func relativeTelegrafLinks(t *T, root ast.Node) error {
 				continue
 			}
 			link := string(l.Destination)
-			if strings.HasPrefix(link, "https://github.com/influxdata/telegraf/blob") {
+			if strings.HasPrefix(link, "https://github.com/influxdata/Dana2/blob") {
 				t.assertNodef(n, "in-repo link must be relative: %s", link)
 			}
 		}

@@ -350,8 +350,8 @@ func TestWrite(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",
@@ -365,8 +365,8 @@ func TestWrite(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",
@@ -388,8 +388,8 @@ func TestWrite(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",
@@ -403,8 +403,8 @@ func TestWrite(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",
@@ -425,8 +425,8 @@ func TestWrite(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",
@@ -440,8 +440,8 @@ func TestWrite(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",
@@ -462,8 +462,8 @@ func TestWrite(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",
@@ -486,8 +486,8 @@ func TestWrite(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",
@@ -502,8 +502,8 @@ func TestWrite(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",
@@ -518,8 +518,8 @@ func TestWrite(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",
@@ -534,8 +534,8 @@ func TestWrite(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",
@@ -550,8 +550,8 @@ func TestWrite(t *testing.T) {
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
-						"container_name":    "telegraf",
-						"container_image":   "influxdata/telegraf",
+						"container_name":    "Dana2",
+						"container_image":   "influxdata/Dana2",
 						"container_version": "1.11.0",
 						"stream":            "tty",
 						"source":            "deadbeef",

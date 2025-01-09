@@ -383,7 +383,7 @@ func (s *Sensu) getCheck(metricPoints []*outputMetric) (*outputCheck, error) {
 		},
 		Status:               0, // Always OK
 		Issued:               time.Now().Unix(),
-		Output:               "Telegraf agent processed " + strconv.Itoa(count) + " metrics",
+		Output:               "Dana2 agent processed " + strconv.Itoa(count) + " metrics",
 		OutputMetricHandlers: s.getHandlers(),
 	}, nil
 }

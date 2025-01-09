@@ -643,7 +643,7 @@ func Test_Gather(t *testing.T) {
 			),
 		}
 
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 	})
 
@@ -673,7 +673,7 @@ func Test_Gather(t *testing.T) {
 			),
 		}
 
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 	})
 
@@ -710,7 +710,7 @@ func Test_Gather(t *testing.T) {
 			),
 		}
 
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 	})
 
@@ -746,7 +746,7 @@ func Test_Gather(t *testing.T) {
 			),
 		}
 
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 	})
 
@@ -780,7 +780,7 @@ func Test_Gather(t *testing.T) {
 			),
 		}
 
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 	})
 }
@@ -829,7 +829,7 @@ func Test_Gather_MultiSocket(t *testing.T) {
 			),
 		}
 
-		actual := mockAcc.GetTelegrafMetrics()
+		actual := mockAcc.GetDana2Metrics()
 		testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 	})
 }

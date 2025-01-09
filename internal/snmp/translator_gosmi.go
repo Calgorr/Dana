@@ -171,7 +171,7 @@ func snmpTranslateCall(oid string) (mibName string, oidNum string, oidText strin
 		out, err = gosmi.GetNodeByOID(types.OidMustFromString(oid))
 		oidNum = oid
 		// ensure modules are loaded or node will be empty (might not error)
-		//nolint:nilerr // do not return the err as the oid is numeric and telegraf can continue
+		//nolint:nilerr // do not return the err as the oid is numeric and Dana2 can continue
 		if err != nil || out.Name == "iso" {
 			return oid, oid, oid, "", out, nil
 		}

@@ -1246,7 +1246,7 @@ func TestBindXmlStatsV3Signed(t *testing.T) {
 	// Gather and compare
 	var acc testutil.Accumulator
 	require.NoError(t, acc.GatherError(plugin.Gather))
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 func TestBindXmlStatsV3Unsigned(t *testing.T) {
 	// Setup a mock server to deliver the stats
@@ -1871,7 +1871,7 @@ func TestBindXmlStatsV3Unsigned(t *testing.T) {
 	// Gather and compare
 	var acc testutil.Accumulator
 	require.NoError(t, acc.GatherError(plugin.Gather))
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 }
 
 func TestBindUnparsableURL(t *testing.T) {

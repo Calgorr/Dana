@@ -74,7 +74,7 @@ func TestDefaultURL(t *testing.T) {
 			actual = config
 			return &MockClient{
 				DatabaseF: func() string {
-					return "telegraf"
+					return "Dana2"
 				},
 				CreateDatabaseF: func() error {
 					return nil
@@ -117,13 +117,13 @@ func TestConnectHTTPConfig(t *testing.T) {
 
 	output := influxdb.InfluxDB{
 		URLs:             []string{"http://localhost:8086"},
-		Database:         "telegraf",
+		Database:         "Dana2",
 		RetentionPolicy:  "default",
 		WriteConsistency: "any",
 		Timeout:          config.Duration(5 * time.Second),
 		Username:         config.NewSecret([]byte("guy")),
 		Password:         config.NewSecret([]byte("smiley")),
-		UserAgent:        "telegraf",
+		UserAgent:        "Dana2",
 		HTTPProxy:        "http://localhost:8086",
 		HTTPHeaders: map[string]string{
 			"x": "y",
@@ -137,7 +137,7 @@ func TestConnectHTTPConfig(t *testing.T) {
 			actual = config
 			return &MockClient{
 				DatabaseF: func() string {
-					return "telegraf"
+					return "Dana2"
 				},
 				CreateDatabaseF: func() error {
 					return nil
@@ -174,7 +174,7 @@ func TestWriteRecreateDatabaseIfDatabaseNotFound(t *testing.T) {
 		CreateHTTPClientF: func(*influxdb.HTTPConfig) (influxdb.Client, error) {
 			return &MockClient{
 				DatabaseF: func() string {
-					return "telegraf"
+					return "Dana2"
 				},
 				CreateDatabaseF: func() error {
 					return nil
@@ -184,7 +184,7 @@ func TestWriteRecreateDatabaseIfDatabaseNotFound(t *testing.T) {
 						APIError: influxdb.APIError{
 							StatusCode:  http.StatusNotFound,
 							Title:       "404 Not Found",
-							Description: `database not found "telegraf"`,
+							Description: `database not found "Dana2"`,
 						},
 					}
 				},
@@ -223,7 +223,7 @@ func TestInfluxDBLocalAddress(t *testing.T) {
 		CreateHTTPClientF: func(_ *influxdb.HTTPConfig) (influxdb.Client, error) {
 			return &MockClient{
 				DatabaseF: func() string {
-					return "telegraf"
+					return "Dana2"
 				},
 				CreateDatabaseF: func() error {
 					return nil

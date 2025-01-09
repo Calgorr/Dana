@@ -182,7 +182,7 @@ func (c *Chrony) Stop() {
 // dialUnix opens an unixgram connection with chrony
 func (c *Chrony) dialUnix(address string) (*net.UnixConn, error) {
 	dir := path.Dir(address)
-	c.local = path.Join(dir, fmt.Sprintf("chrony-telegraf-%s.sock", uuid.New().String()))
+	c.local = path.Join(dir, fmt.Sprintf("chrony-Dana2-%s.sock", uuid.New().String()))
 	conn, err := net.DialUnix("unixgram",
 		&net.UnixAddr{Name: c.local, Net: "unixgram"},
 		&net.UnixAddr{Name: address, Net: "unixgram"},

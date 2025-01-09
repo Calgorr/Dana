@@ -119,10 +119,10 @@ func TestPluginOptionDeprecation(t *testing.T) {
 		},
 	}
 
-	// Fake telegraf's version
+	// Fake Dana2's version
 	version, err := semver.NewVersion("1.30.0")
 	require.NoError(t, err)
-	telegrafVersion = version
+	Dana2Version = version
 
 	// Switch the logger to log to a buffer
 	var buf bytes.Buffer
@@ -234,10 +234,10 @@ func TestPluginOptionValueDeprecation(t *testing.T) {
 		},
 	}
 
-	// Fake telegraf's version
+	// Fake Dana2's version
 	version, err := semver.NewVersion("1.30.0")
 	require.NoError(t, err)
-	telegrafVersion = version
+	Dana2Version = version
 
 	// Switch the logger to log to a buffer
 	var buf bytes.Buffer

@@ -91,7 +91,7 @@ func (i *InfluxDB) Gather(acc Dana.Accumulator) error {
 // Gathers data from a particular URL
 // Parameters:
 //
-//	acc    : The telegraf Accumulator to use
+//	acc    : The Dana2 Accumulator to use
 //	url    : endpoint to send request to
 //
 // Returns:
@@ -111,7 +111,7 @@ func (i *InfluxDB) gatherURL(acc Dana.Accumulator, url string) error {
 		req.SetBasicAuth(i.Username, i.Password)
 	}
 
-	req.Header.Set("User-Agent", "Telegraf/"+internal.Version)
+	req.Header.Set("User-Agent", "Dana2/"+internal.Version)
 
 	resp, err := i.client.Do(req)
 	if err != nil {

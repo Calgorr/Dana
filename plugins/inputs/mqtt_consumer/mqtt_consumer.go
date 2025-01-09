@@ -295,7 +295,7 @@ func (m *MQTTConsumer) createOpts() (*mqtt.ClientOptions, error) {
 		if err != nil {
 			return nil, fmt.Errorf("generating random string for client ID failed: %w", err)
 		}
-		opts.SetClientID("Telegraf-Consumer-" + randomString)
+		opts.SetClientID("Dana2-Consumer-" + randomString)
 	} else {
 		opts.SetClientID(m.ClientID)
 	}
@@ -327,7 +327,7 @@ func (m *MQTTConsumer) createOpts() (*mqtt.ClientOptions, error) {
 		return opts, errors.New("could not get host information")
 	}
 	for _, server := range m.Servers {
-		// Preserve support for host:port style servers; deprecated in Telegraf 1.4.4
+		// Preserve support for host:port style servers; deprecated in Dana2 1.4.4
 		if !strings.Contains(server, "://") {
 			m.Log.Warnf("Server %q should be updated to use `scheme://host:port` format", server)
 			if tlsCfg == nil {

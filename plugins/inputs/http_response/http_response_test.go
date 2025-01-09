@@ -1161,7 +1161,7 @@ func TestRedirect(t *testing.T) {
 		),
 	}
 
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	for _, m := range actual {
 		m.RemoveField("response_time")
 	}

@@ -33,7 +33,7 @@ func TestConnectAndWriteIntegration(t *testing.T) {
 	require.NoError(t, s.Init())
 	n := &NSQ{
 		Server:     server[0],
-		Topic:      "telegraf",
+		Topic:      "Dana2",
 		serializer: s,
 	}
 

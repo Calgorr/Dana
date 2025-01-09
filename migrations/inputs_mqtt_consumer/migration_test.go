@@ -26,8 +26,8 @@ func TestNoMigration(t *testing.T) {
 
   ## Topics that will be subscribed to.
   topics = [
-  "telegraf/host01/cpu",
-  "telegraf/+/mem",
+  "Dana2/host01/cpu",
+  "Dana2/+/mem",
   "sensors/#",
   ]
 
@@ -70,26 +70,26 @@ func TestNoMigration(t *testing.T) {
   # client_id = ""
 
   ## Username and password to connect MQTT server.
-  # username = "telegraf"
+  # username = "Dana2"
   # password = "metricsmetricsmetricsmetrics"
 
   ## Optional TLS Config
-  # tls_ca = "/etc/telegraf/ca.pem"
-  # tls_cert = "/etc/telegraf/cert.pem"
-  # tls_key = "/etc/telegraf/key.pem"
+  # tls_ca = "/etc/Dana2/ca.pem"
+  # tls_cert = "/etc/Dana2/cert.pem"
+  # tls_key = "/etc/Dana2/key.pem"
   ## Use TLS but skip chain & host verification
   # insecure_skip_verify = false
 
   ## Client trace messages
   ## When set to true, and debug mode enabled in the agent settings, the MQTT
-  ## client's messages are included in telegraf logs. These messages are very
+  ## client's messages are included in Dana2 logs. These messages are very
   ## noisey, but essential for debugging issues.
   # client_trace = false
 
   ## Data format to consume.
   ## Each data format has its own unique set of configuration options, read
   ## more about them here:
-  ## https://github.com/influxdata/telegraf/blob/master/docs/DATA_FORMATS_INPUT.md
+  ## https://github.com/influxdata/Dana2/blob/master/docs/DATA_FORMATS_INPUT.md
   data_format = "influx"
 
   ## Enable extracting tag values from MQTT topics
@@ -125,7 +125,7 @@ func TestCases(t *testing.T) {
 
 		t.Run(f.Name(), func(t *testing.T) {
 			testcasePath := filepath.Join("testcases", f.Name())
-			inputFile := filepath.Join(testcasePath, "telegraf.conf")
+			inputFile := filepath.Join(testcasePath, "Dana2.conf")
 			expectedFile := filepath.Join(testcasePath, "expected.conf")
 
 			// Read the expected output

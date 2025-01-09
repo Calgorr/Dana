@@ -47,7 +47,7 @@ func TestFireboard(t *testing.T) {
 	}
 	// Expect the correct values for all tags
 	expectTags := map[string]string{
-		"title":   "telegraf-FireBoard",
+		"title":   "Dana2-FireBoard",
 		"uuid":    "b55e766c-b308-49b5-93a4-df89fe31efd0",
 		"channel": strconv.FormatInt(1, 10),
 		"scale":   "Fahrenheit",
@@ -59,7 +59,7 @@ func TestFireboard(t *testing.T) {
 var response = `
 [{
 	"id": 99999,
-	"title": "telegraf-FireBoard",
+	"title": "Dana2-FireBoard",
 	"created": "2019-03-23T16:48:32.152010Z",
 	"uuid": "b55e766c-b308-49b5-93a4-df89fe31efd0",
 	"hardware_id": "XXXXXXXXX",

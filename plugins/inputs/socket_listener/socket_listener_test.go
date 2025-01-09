@@ -191,7 +191,7 @@ func TestSocketListener(t *testing.T) {
 				defer acc.Unlock()
 				return acc.NMetrics() >= uint64(len(expected))
 			}, time.Second, 100*time.Millisecond, "did not receive metrics (%d)", acc.NMetrics())
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.SortMetrics())
 		})
 	}
@@ -258,7 +258,7 @@ func TestLargeReadBufferTCP(t *testing.T) {
 	require.Eventuallyf(t, func() bool {
 		return acc.NMetrics() >= uint64(len(expected))
 	}, time.Second, 100*time.Millisecond, "did not receive metrics (%d): %v", acc.NMetrics(), getError())
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 }
 
@@ -344,7 +344,7 @@ func TestLargeReadBufferUnixgram(t *testing.T) {
 	require.Eventuallyf(t, func() bool {
 		return acc.NMetrics() >= uint64(len(expected))
 	}, time.Second, 100*time.Millisecond, "did not receive metrics (%d): %v", acc.NMetrics(), getError())
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.IgnoreTime())
 }
 
@@ -372,7 +372,7 @@ func TestCases(t *testing.T) {
 
 		t.Run(f.Name(), func(t *testing.T) {
 			testcasePath := filepath.Join("testcases", f.Name())
-			configFilename := filepath.Join(testcasePath, "telegraf.conf")
+			configFilename := filepath.Join(testcasePath, "Dana2.conf")
 			inputFilename := filepath.Join(testcasePath, "sequence.json")
 			expectedFilename := filepath.Join(testcasePath, "expected.out")
 			expectedErrorFilename := filepath.Join(testcasePath, "expected.err")
@@ -456,7 +456,7 @@ func TestCases(t *testing.T) {
 			}, 3*time.Second, 100*time.Millisecond, "did not receive metrics (%d/%d)", acc.NMetrics(), len(expected))
 
 			// Check the metric nevertheless as we might get some metrics despite errors.
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, options...)
 		})
 	}

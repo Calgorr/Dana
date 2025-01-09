@@ -7,7 +7,7 @@ import (
 	"syscall"
 )
 
-func (t *Telegraf) Run() error {
+func (t *Dana2) Run() error {
 	stop = make(chan struct{})
 	defer close(stop)
 

@@ -418,7 +418,7 @@ func init() {
 	inputs.Add("cloudwatch_metric_streams", func() Dana.Input {
 		return &CloudWatchMetricStreams{
 			ServiceAddress: ":443",
-			Paths:          []string{"/telegraf"},
+			Paths:          []string{"/Dana2"},
 		}
 	})
 }

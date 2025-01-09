@@ -42,7 +42,7 @@ func TestReadsMetricsFromNSQ(t *testing.T) {
 
 	consumer := &NSQConsumer{
 		Log:                    testutil.Logger{},
-		Topic:                  "telegraf",
+		Topic:                  "Dana2",
 		Channel:                "consume",
 		MaxInFlight:            1,
 		MaxUndeliveredMessages: defaultMaxUndeliveredMessages,

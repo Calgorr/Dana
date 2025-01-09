@@ -63,7 +63,7 @@ type v2Counter struct {
 	Value int    `xml:"counter"`
 }
 
-// addXMLv2Counter adds a v2Counter array to a Telegraf Accumulator, with the specified tags
+// addXMLv2Counter adds a v2Counter array to a Dana2 Accumulator, with the specified tags
 func addXMLv2Counter(acc Dana.Accumulator, commonTags map[string]string, stats []v2Counter) {
 	grouper := metric.NewSeriesGrouper()
 	ts := time.Now()

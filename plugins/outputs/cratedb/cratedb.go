@@ -139,7 +139,7 @@ VALUES
 // plugin should probably refrain from using it in combination with untrusted
 // inputs.
 //
-// [1] https://github.com/influxdata/telegraf/pull/3210#issuecomment-339273371
+// [1] https://github.com/influxdata/Dana2/pull/3210#issuecomment-339273371
 func escapeValue(val interface{}, keyReplacement string) (string, error) {
 	switch t := val.(type) {
 	case string:
@@ -165,7 +165,7 @@ func escapeValue(val interface{}, keyReplacement string) (string, error) {
 		return escapeObject(t, keyReplacement)
 	default:
 		// This might be panic worthy under normal circumstances, but it's probably
-		// better to not shut down the entire telegraf process because of one
+		// better to not shut down the entire Dana2 process because of one
 		// misbehaving plugin.
 		return "", fmt.Errorf("unexpected type: %T: %#v", t, t)
 	}
@@ -221,7 +221,7 @@ func escapeString(s, quote string) string {
 // and tags. It's used instead of m.HashID() because it's not considered stable
 // and because a cryptographic hash makes more sense for the use case of
 // deduplication.
-// [1] https://github.com/influxdata/telegraf/pull/3210#discussion_r148411201
+// [1] https://github.com/influxdata/Dana2/pull/3210#discussion_r148411201
 func hashID(m Dana.Metric) int64 {
 	h := sha512.New()
 	h.Write([]byte(m.Name()))

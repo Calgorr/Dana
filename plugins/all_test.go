@@ -15,7 +15,7 @@ import (
 
 // exceptionMap holds those plugins which differ in conventions when defining plugins.
 // Most plugins follow the convention of pkg-name to plugin-name.
-// For ex, Pivot processor pkg github.com/influxdata/telegraf/plugins/processors/pivot maps directly to
+// For ex, Pivot processor pkg github.com/influxdata/Dana2/plugins/processors/pivot maps directly to
 // the last element of the pkg i.e "pivot"
 // But in case of "aws_ec2" processor, the pkg is defined as "Dana/plugins/processors/aws/ec2".
 // This ensures package names are not tied with plugin names.

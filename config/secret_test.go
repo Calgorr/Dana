@@ -269,32 +269,32 @@ func TestSecretUnquote(t *testing.T) {
 			name: "single quotes with backslashes",
 			cfg: []byte(`
 				[[inputs.mockup]]
-					secret = 'Server=SQLTELEGRAF\\SQL2022;app name=telegraf;log=1;'
-					expected = 'Server=SQLTELEGRAF\\SQL2022;app name=telegraf;log=1;'
+					secret = 'Server=SQLDana2\\SQL2022;app name=Dana2;log=1;'
+					expected = 'Server=SQLDana2\\SQL2022;app name=Dana2;log=1;'
 			`),
 		},
 		{
 			name: "double quotes with backslashes",
 			cfg: []byte(`
 				[[inputs.mockup]]
-					secret = "Server=SQLTELEGRAF\\SQL2022;app name=telegraf;log=1;"
-					expected = "Server=SQLTELEGRAF\\SQL2022;app name=telegraf;log=1;"
+					secret = "Server=SQLDana2\\SQL2022;app name=Dana2;log=1;"
+					expected = "Server=SQLDana2\\SQL2022;app name=Dana2;log=1;"
 			`),
 		},
 		{
 			name: "triple single quotes with backslashes",
 			cfg: []byte(`
 				[[inputs.mockup]]
-					secret = '''Server=SQLTELEGRAF\\SQL2022;app name=telegraf;log=1;'''
-					expected = '''Server=SQLTELEGRAF\\SQL2022;app name=telegraf;log=1;'''
+					secret = '''Server=SQLDana2\\SQL2022;app name=Dana2;log=1;'''
+					expected = '''Server=SQLDana2\\SQL2022;app name=Dana2;log=1;'''
 			`),
 		},
 		{
 			name: "triple double quotes with backslashes",
 			cfg: []byte(`
 				[[inputs.mockup]]
-					secret = """Server=SQLTELEGRAF\\SQL2022;app name=telegraf;log=1;"""
-					expected = """Server=SQLTELEGRAF\\SQL2022;app name=telegraf;log=1;"""
+					secret = """Server=SQLDana2\\SQL2022;app name=Dana2;log=1;"""
+					expected = """Server=SQLDana2\\SQL2022;app name=Dana2;log=1;"""
 			`),
 		},
 	}

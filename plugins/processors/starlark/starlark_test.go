@@ -234,7 +234,7 @@ def apply(metric):
 			}
 
 			plugin.Stop()
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics())
 		})
 	}
 }
@@ -2558,7 +2558,7 @@ def apply(metric):
 			}
 
 			plugin.Stop()
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics())
 		})
 	}
 }
@@ -2639,7 +2639,7 @@ def apply(metric):
 			}
 
 			plugin.Stop()
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics())
 		})
 	}
 }
@@ -2912,7 +2912,7 @@ func TestScript(t *testing.T) {
 			}
 
 			tt.plugin.Stop()
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics())
 		})
 	}
 }
@@ -3306,7 +3306,7 @@ func TestAllScriptTestData(t *testing.T) {
 				}
 
 				plugin.Stop()
-				testutil.RequireMetricsEqual(t, outputMetrics, acc.GetTelegrafMetrics(), testutil.SortMetrics())
+				testutil.RequireMetricsEqual(t, outputMetrics, acc.GetDana2Metrics(), testutil.SortMetrics())
 			})
 			return nil
 		})
@@ -3441,7 +3441,7 @@ def apply(metric):
 			plugin.Stop()
 
 			// Ensure we get back the correct number of metrics
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			require.Lenf(t, actual, tt.numMetrics, "expected %d metrics but got %d", tt.numMetrics, len(actual))
 			for _, m := range actual {
 				m.Accept()
@@ -3523,7 +3523,7 @@ def apply(metric):
 			expected = expected[:tt.delivery]
 
 			// Simulate output acknowledging delivery of metrics and check delivery
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			// Ensure we get back the correct number of metrics
 			require.Lenf(t, actual, tt.results, "expected %d metrics but got %d", tt.results, len(actual))
 			for _, m := range actual {
@@ -3615,7 +3615,7 @@ def apply(metric):
 	plugin.Stop()
 
 	// Check
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual)
 }
 
@@ -3698,7 +3698,7 @@ def apply(metric):
 	plugin.Stop()
 
 	// Check
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual)
 
 	// Check getting the persisted state

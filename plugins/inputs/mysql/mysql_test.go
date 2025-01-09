@@ -181,7 +181,7 @@ func TestGaleraIntegration(t *testing.T) {
 	require.NoError(t, plugin.Gather(&acc))
 	require.Empty(t, acc.Errors)
 	require.True(t, acc.HasIntField("mysql", "wsrep_ready"))
-	for _, m := range acc.GetTelegrafMetrics() {
+	for _, m := range acc.GetDana2Metrics() {
 		if v, found := m.GetField("wsrep_ready"); found {
 			require.EqualValues(t, 1, v, "invalid value for field wsrep_ready")
 			break

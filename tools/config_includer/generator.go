@@ -34,7 +34,7 @@ func absolutePath(root, fn string) (string, error) {
 }
 
 func main() {
-	// Estimate Telegraf root to be able to handle absolute paths
+	// Estimate Dana2 root to be able to handle absolute paths
 	cwd, err := os.Getwd()
 	if err != nil {
 		log.Fatalf("Cannot get working directory: %v", err)

@@ -114,7 +114,7 @@ func TestConnectValidatesConfigParameters(t *testing.T) {
 		MappingMode:            MappingModeSingleTable,
 		SingleTableName:        testSingleTableName,
 		UseMultiMeasureRecords: true, // MeasureNameForMultiMeasureRecords is not needed as
-		// measurement name (from telegraf metric) is used as multi-measure name in TS
+		// measurement name (from Dana2 metric) is used as multi-measure name in TS
 		Log: testutil.Logger{},
 	}
 	require.NoError(t, validConfigMultiMeasureSingleTableMode.Connect())
@@ -126,7 +126,7 @@ func TestConnectValidatesConfigParameters(t *testing.T) {
 		UseMultiMeasureRecords:            true,
 		MeasureNameForMultiMeasureRecords: "multi-measure-name",
 		// value of MeasureNameForMultiMeasureRecords will be ignored and
-		// measurement name (from telegraf metric) is used as multi-measure name in TS
+		// measurement name (from Dana2 metric) is used as multi-measure name in TS
 		Log: testutil.Logger{},
 	}
 	err := invalidConfigMultiMeasureSingleTableMode.Connect()
@@ -151,11 +151,11 @@ func TestConnectValidatesConfigParameters(t *testing.T) {
 	singleTableDimensionWithMultiTable := Timestream{
 		DatabaseName: tsDbName,
 		MappingMode:  MappingModeMultiTable,
-		SingleTableDimensionNameForTelegrafMeasurementName: testSingleTableDim,
+		SingleTableDimensionNameForDana2MeasurementName: testSingleTableDim,
 		Log: testutil.Logger{},
 	}
 	require.Contains(t, singleTableDimensionWithMultiTable.Connect().Error(),
-		"SingleTableDimensionNameForTelegrafMeasurementName")
+		"SingleTableDimensionNameForDana2MeasurementName")
 
 	// single-table arguments
 	noTableNameMappingModeSingleTable := Timestream{
@@ -172,13 +172,13 @@ func TestConnectValidatesConfigParameters(t *testing.T) {
 		Log:             testutil.Logger{},
 	}
 	require.Contains(t, noDimensionNameMappingModeSingleTable.Connect().Error(),
-		"SingleTableDimensionNameForTelegrafMeasurementName")
+		"SingleTableDimensionNameForDana2MeasurementName")
 
 	validConfigurationMappingModeSingleTable := Timestream{
 		DatabaseName:    tsDbName,
 		MappingMode:     MappingModeSingleTable,
 		SingleTableName: testSingleTableName,
-		SingleTableDimensionNameForTelegrafMeasurementName: testSingleTableDim,
+		SingleTableDimensionNameForDana2MeasurementName: testSingleTableDim,
 		Log: testutil.Logger{},
 	}
 	require.NoError(t, validConfigurationMappingModeSingleTable.Connect())
@@ -554,7 +554,7 @@ func (m *mockTimestreamErrorClient) DescribeDatabase(
 	return nil, nil
 }
 
-func TestThrottlingErrorIsReturnedToTelegraf(t *testing.T) {
+func TestThrottlingErrorIsReturnedToDana2(t *testing.T) {
 	WriteFactory = func(*common_aws.CredentialConfig) (WriteClient, error) {
 		return &mockTimestreamErrorClient{
 			ErrorToReturnOnWriteRecords: &types.ThrottlingException{Message: aws.String("Throttling Test")},
@@ -576,8 +576,8 @@ func TestThrottlingErrorIsReturnedToTelegraf(t *testing.T) {
 
 	err := plugin.Write([]Dana.Metric{input})
 
-	require.Error(t, err, "Expected an error to be returned to Telegraf, "+
-		"so that the write will be retried by Telegraf later.")
+	require.Error(t, err, "Expected an error to be returned to Dana2, "+
+		"so that the write will be retried by Dana2 later.")
 }
 
 func TestRejectedRecordsErrorResultsInMetricsBeingSkipped(t *testing.T) {
@@ -1233,7 +1233,7 @@ func TestCustomEndpoint(t *testing.T) {
 
 func comparisonTest(t *testing.T,
 	mappingMode string,
-	telegrafMetrics []Dana.Metric,
+	Dana2Metrics []Dana.Metric,
 	timestreamRecords []*timestreamwrite.WriteRecordsInput,
 ) {
 	var plugin Timestream
@@ -1244,7 +1244,7 @@ func comparisonTest(t *testing.T,
 			DatabaseName: tsDbName,
 
 			SingleTableName: testSingleTableName,
-			SingleTableDimensionNameForTelegrafMeasurementName: testSingleTableDim,
+			SingleTableDimensionNameForDana2MeasurementName: testSingleTableDim,
 			Log: testutil.Logger{},
 		}
 	case MappingModeMultiTable:
@@ -1255,15 +1255,15 @@ func comparisonTest(t *testing.T,
 		}
 	}
 
-	comparison(t, plugin, mappingMode, telegrafMetrics, timestreamRecords)
+	comparison(t, plugin, mappingMode, Dana2Metrics, timestreamRecords)
 }
 
 func comparison(t *testing.T,
 	plugin Timestream,
 	mappingMode string,
-	telegrafMetrics []Dana.Metric,
+	Dana2Metrics []Dana.Metric,
 	timestreamRecords []*timestreamwrite.WriteRecordsInput) {
-	result := plugin.TransformMetrics(telegrafMetrics)
+	result := plugin.TransformMetrics(Dana2Metrics)
 
 	require.Equal(t, len(timestreamRecords), len(result), "The number of transformed records was expected to be different")
 	for _, tsRecord := range timestreamRecords {

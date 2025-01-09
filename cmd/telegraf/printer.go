@@ -28,15 +28,15 @@ var (
 	outputDefaults = make([]string, 0)
 )
 
-var header = `# Telegraf Configuration
+var header = `# Dana2 Configuration
 #
-# Telegraf is entirely plugin driven. All metrics are gathered from the
+# Dana2 is entirely plugin driven. All metrics are gathered from the
 # declared inputs, and sent to the declared outputs.
 #
 # Plugins must be declared in here to be active.
 # To deactivate a plugin, comment out the name and any variables.
 #
-# Use 'telegraf -config telegraf.conf -test' to see what metrics a config
+# Use 'Dana2 -config Dana2.conf -test' to see what metrics a config
 # file would generate.
 #
 # Environment variables can be used anywhere in this config file, simply surround

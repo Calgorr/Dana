@@ -604,7 +604,7 @@ func TestGatherValidJSON(t *testing.T) {
 			err = gatherROCmSMI(octets, &acc)
 			require.NoError(t, err)
 
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), testutil.SortMetrics())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), testutil.SortMetrics())
 		})
 	}
 }

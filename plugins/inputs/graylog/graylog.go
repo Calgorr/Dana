@@ -119,7 +119,7 @@ func (h *GrayLog) Gather(acc Dana.Accumulator) error {
 // Gathers data from a particular server
 // Parameters:
 //
-//	acc      : The telegraf Accumulator to use
+//	acc      : The Dana2 Accumulator to use
 //	serverURL: endpoint to send request to
 //	service  : the service being queried
 //
@@ -211,7 +211,7 @@ func (h *GrayLog) sendRequest(serverURL string) (string, float64, error) {
 		return "", -1, fmt.Errorf("invalid server URL %q", serverURL)
 	}
 	// Add X-Requested-By header
-	headers["X-Requested-By"] = "Telegraf"
+	headers["X-Requested-By"] = "Dana2"
 
 	if strings.Contains(requestURL.String(), "multiple") {
 		m := &messageBody{Metrics: h.Metrics}

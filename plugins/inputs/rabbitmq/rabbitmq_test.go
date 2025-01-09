@@ -231,7 +231,7 @@ func TestRabbitMQGeneratesMetricsSet1(t *testing.T) {
 	acc.Wait(len(expected))
 	require.Empty(t, acc.Errors)
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), testutil.SortMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), testutil.SortMetrics())
 }
 
 func TestRabbitMQGeneratesMetricsSet2(t *testing.T) {
@@ -632,7 +632,7 @@ func TestRabbitMQGeneratesMetricsSet2(t *testing.T) {
 	require.Len(t, acc.Errors, len(expectedErrors))
 	require.ElementsMatch(t, expectedErrors, acc.Errors)
 
-	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime(), testutil.SortMetrics())
+	testutil.RequireMetricsEqual(t, expected, acc.GetDana2Metrics(), testutil.IgnoreTime(), testutil.SortMetrics())
 }
 
 func TestRabbitMQMetricFilerts(t *testing.T) {

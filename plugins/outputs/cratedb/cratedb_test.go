@@ -79,7 +79,7 @@ func TestConnectAndWriteIntegration(t *testing.T) {
 }
 
 func TestConnectionIssueAtStartup(t *testing.T) {
-	// Test case for https://github.com/influxdata/telegraf/issues/13278
+	// Test case for https://github.com/influxdata/Dana2/issues/13278
 	if testing.Short() {
 		t.Skip("Skipping integration test in short mode")
 	}

@@ -58,7 +58,7 @@ func TestConnectAndWriteIntegration(t *testing.T) {
 		Timeout:             config.Duration(time.Second * 5),
 		EnableGzip:          true,
 		ManageTemplate:      true,
-		TemplateName:        "telegraf",
+		TemplateName:        "Dana2",
 		OverwriteTemplate:   false,
 		HealthCheckInterval: config.Duration(time.Second * 10),
 		HealthCheckTimeout:  config.Duration(time.Second * 1),
@@ -91,7 +91,7 @@ func TestConnectAndWriteMetricWithNaNValueEmptyIntegration(t *testing.T) {
 		IndexName:           "test-%Y.%m.%d",
 		Timeout:             config.Duration(time.Second * 5),
 		ManageTemplate:      true,
-		TemplateName:        "telegraf",
+		TemplateName:        "Dana2",
 		OverwriteTemplate:   false,
 		HealthCheckInterval: config.Duration(time.Second * 10),
 		HealthCheckTimeout:  config.Duration(time.Second * 1),
@@ -132,7 +132,7 @@ func TestConnectAndWriteMetricWithNaNValueNoneIntegration(t *testing.T) {
 		IndexName:           "test-%Y.%m.%d",
 		Timeout:             config.Duration(time.Second * 5),
 		ManageTemplate:      true,
-		TemplateName:        "telegraf",
+		TemplateName:        "Dana2",
 		OverwriteTemplate:   false,
 		HealthCheckInterval: config.Duration(time.Second * 10),
 		HealthCheckTimeout:  config.Duration(time.Second * 1),
@@ -174,7 +174,7 @@ func TestConnectAndWriteMetricWithNaNValueDropIntegration(t *testing.T) {
 		IndexName:           "test-%Y.%m.%d",
 		Timeout:             config.Duration(time.Second * 5),
 		ManageTemplate:      true,
-		TemplateName:        "telegraf",
+		TemplateName:        "Dana2",
 		OverwriteTemplate:   false,
 		HealthCheckInterval: config.Duration(time.Second * 10),
 		HealthCheckTimeout:  config.Duration(time.Second * 1),
@@ -239,7 +239,7 @@ func TestConnectAndWriteMetricWithNaNValueReplacementIntegration(t *testing.T) {
 			IndexName:           "test-%Y.%m.%d",
 			Timeout:             config.Duration(time.Second * 5),
 			ManageTemplate:      true,
-			TemplateName:        "telegraf",
+			TemplateName:        "Dana2",
 			OverwriteTemplate:   false,
 			HealthCheckInterval: config.Duration(time.Second * 10),
 			HealthCheckTimeout:  config.Duration(time.Second * 1),
@@ -316,7 +316,7 @@ func TestUseOpTypeCreate(t *testing.T) {
 		Timeout:           config.Duration(time.Second * 5),
 		EnableGzip:        true,
 		ManageTemplate:    true,
-		TemplateName:      "telegraf",
+		TemplateName:      "Dana2",
 		OverwriteTemplate: true,
 		UseOpTypeCreate:   true,
 		Log:               testutil.Logger{},
@@ -360,7 +360,7 @@ func TestTemplateManagementIntegration(t *testing.T) {
 		Timeout:           config.Duration(time.Second * 5),
 		EnableGzip:        true,
 		ManageTemplate:    true,
-		TemplateName:      "telegraf",
+		TemplateName:      "Dana2",
 		OverwriteTemplate: true,
 		Log:               testutil.Logger{},
 	}
@@ -393,7 +393,7 @@ func TestTemplateInvalidIndexPatternIntegration(t *testing.T) {
 		Timeout:           config.Duration(time.Second * 5),
 		EnableGzip:        true,
 		ManageTemplate:    true,
-		TemplateName:      "telegraf",
+		TemplateName:      "Dana2",
 		OverwriteTemplate: true,
 		Log:               testutil.Logger{},
 	}
@@ -811,7 +811,7 @@ func TestAuthorizationHeaderWhenBearerTokenIsPresent(t *testing.T) {
 func TestStandardIndexSettings(t *testing.T) {
 	e := &Elasticsearch{
 		TemplateName: "test",
-		IndexName:    "telegraf-%Y.%m.%d",
+		IndexName:    "Dana2-%Y.%m.%d",
 		Log:          testutil.Logger{},
 	}
 	buf, err := e.createNewTemplate("test")
@@ -829,7 +829,7 @@ func TestStandardIndexSettings(t *testing.T) {
 func TestDifferentIndexSettings(t *testing.T) {
 	e := &Elasticsearch{
 		TemplateName: "test",
-		IndexName:    "telegraf-%Y.%m.%d",
+		IndexName:    "Dana2-%Y.%m.%d",
 		IndexTemplate: map[string]interface{}{
 			"refresh_interval":           "20s",
 			"mapping.total_fields.limit": 1000,

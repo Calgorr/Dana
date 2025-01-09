@@ -45,8 +45,8 @@ func TestSimpleReverseLookupIntegration(t *testing.T) {
 	dns.Stop()
 	// should be processed now.
 
-	require.Len(t, acc.GetTelegrafMetrics(), 1)
-	processedMetric := acc.GetTelegrafMetrics()[0]
+	require.Len(t, acc.GetDana2Metrics(), 1)
+	processedMetric := acc.GetDana2Metrics()[0]
 	_, ok := processedMetric.GetField("source_name")
 	require.True(t, ok)
 	tag, ok := processedMetric.GetTag("dest_name")
@@ -116,7 +116,7 @@ func TestTracking(t *testing.T) {
 		require.NoError(t, plugin.Add(m, acc))
 	}
 	plugin.Stop()
-	actual := acc.GetTelegrafMetrics()
+	actual := acc.GetDana2Metrics()
 	testutil.RequireMetricsEqual(t, expected, actual, testutil.SortMetrics())
 
 	// Simulate output acknowledging delivery

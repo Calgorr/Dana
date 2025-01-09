@@ -59,7 +59,7 @@ func TestInitFail(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Always initialize the logger to avoid SIGSEGV. This is done automatically by
-			// telegraf during normal operation.
+			// Dana2 during normal operation.
 			tt.plugin.Log = testutil.Logger{}
 			err := tt.plugin.Init()
 			require.Error(t, err)
@@ -227,7 +227,7 @@ func TestFixedValue(t *testing.T) {
 			// Compare the metrics in a convenient way. Here we ignore
 			// the metric time during comparison as we cannot inject the time
 			// during test. For more comparison options check testutil package.
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }
@@ -318,7 +318,7 @@ func TestRandomValue(t *testing.T) {
 			acc.Wait(3)
 
 			// Compare all aspects of the metric that are known to you
-			for i, m := range acc.GetTelegrafMetrics() {
+			for i, m := range acc.GetDana2Metrics() {
 				require.Equal(t, m.Name(), tt.template.Name())
 				require.Equal(t, m.Tags(), tt.template.Tags())
 
@@ -433,7 +433,7 @@ func TestRandomValueFailPartial(t *testing.T) {
 			require.EqualError(t, acc.Errors[0], tt.expectedErr)
 
 			// Compare the expected partial metrics.
-			testutil.RequireMetricsEqual(t, tt.expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
+			testutil.RequireMetricsEqual(t, tt.expected, acc.GetDana2Metrics(), testutil.IgnoreTime())
 		})
 	}
 }

@@ -88,7 +88,7 @@ func TestCases(t *testing.T) {
 			testcasePath := filepath.Join("testcases", entry.Name())
 			responsesPath := filepath.Join(testcasePath, "responses")
 			expectedFilename := filepath.Join(testcasePath, "expected.out")
-			configFilename := filepath.Join(testcasePath, "telegraf.conf")
+			configFilename := filepath.Join(testcasePath, "Dana2.conf")
 
 			responses, err := os.ReadDir(responsesPath)
 			require.NoError(t, err)
@@ -153,7 +153,7 @@ func TestCases(t *testing.T) {
 			var acc testutil.Accumulator
 			require.NoError(t, plugin.Gather(&acc))
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			testutil.RequireMetricsEqual(t, expected, actual, testutil.SortMetrics(), testutil.IgnoreTime())
 		})
 	}

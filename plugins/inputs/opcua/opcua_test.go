@@ -307,8 +307,8 @@ connect_timeout = "10s"
 request_timeout = "5s"
 security_policy = "auto"
 security_mode = "auto"
-certificate = "/etc/telegraf/cert.pem"
-private_key = "/etc/telegraf/key.pem"
+certificate = "/etc/Dana2/cert.pem"
+private_key = "/etc/Dana2/key.pem"
 auth_method = "Anonymous"
 username = ""
 password = ""
@@ -375,8 +375,8 @@ use_unregistered_reads = true
 	require.Equal(t, config.Duration(5*time.Second), o.readClientConfig.RequestTimeout)
 	require.Equal(t, "auto", o.readClientConfig.SecurityPolicy)
 	require.Equal(t, "auto", o.readClientConfig.SecurityMode)
-	require.Equal(t, "/etc/telegraf/cert.pem", o.readClientConfig.Certificate)
-	require.Equal(t, "/etc/telegraf/key.pem", o.readClientConfig.PrivateKey)
+	require.Equal(t, "/etc/Dana2/cert.pem", o.readClientConfig.Certificate)
+	require.Equal(t, "/etc/Dana2/key.pem", o.readClientConfig.PrivateKey)
 	require.Equal(t, "Anonymous", o.readClientConfig.AuthMethod)
 	require.True(t, o.readClientConfig.Username.Empty())
 	require.True(t, o.readClientConfig.Password.Empty())

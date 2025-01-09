@@ -51,7 +51,7 @@ func (h *HTTP) SampleConfig() string {
 func (h *HTTP) Init() error {
 	ctx := context.Background()
 
-	// Prevent idle connections from hanging around forever on telegraf reload
+	// Prevent idle connections from hanging around forever on Dana2 reload
 	if h.HTTPClientConfig.IdleConnTimeout == 0 {
 		h.HTTPClientConfig.IdleConnTimeout = config.Duration(defaultIdleConnTimeoutMinutes * time.Minute)
 	}

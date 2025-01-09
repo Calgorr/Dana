@@ -70,7 +70,7 @@ type App interface {
 	GetSecretStore(string) (Dana.SecretStore, error)
 }
 
-type Telegraf struct {
+type Dana2 struct {
 	pprofErr <-chan error
 
 	inputFilters       []string
@@ -84,7 +84,7 @@ type Telegraf struct {
 	WindowFlags
 }
 
-func (t *Telegraf) Init(pprofErr <-chan error, f Filters, g GlobalFlags, w WindowFlags) {
+func (t *Dana2) Init(pprofErr <-chan error, f Filters, g GlobalFlags, w WindowFlags) {
 	t.pprofErr = pprofErr
 	t.inputFilters = f.input
 	t.outputFilters = f.output
@@ -107,7 +107,7 @@ func (t *Telegraf) Init(pprofErr <-chan error, f Filters, g GlobalFlags, w Windo
 	config.OldEnvVarReplacement = g.oldEnvBehavior
 }
 
-func (t *Telegraf) ListSecretStores() ([]string, error) {
+func (t *Dana2) ListSecretStores() ([]string, error) {
 	c, err := t.loadConfiguration()
 	if err != nil {
 		return nil, err
@@ -120,7 +120,7 @@ func (t *Telegraf) ListSecretStores() ([]string, error) {
 	return ids, nil
 }
 
-func (t *Telegraf) GetSecretStore(id string) (Dana.SecretStore, error) {
+func (t *Dana2) GetSecretStore(id string) (Dana.SecretStore, error) {
 	t.quiet = true
 	c, err := t.loadConfiguration()
 	if err != nil {
@@ -135,7 +135,7 @@ func (t *Telegraf) GetSecretStore(id string) (Dana.SecretStore, error) {
 	return store, nil
 }
 
-func (t *Telegraf) reloadLoop() error {
+func (t *Dana2) reloadLoop() error {
 	reloadConfig := false
 	reload := make(chan bool, 1)
 	reload <- true
@@ -181,7 +181,7 @@ func (t *Telegraf) reloadLoop() error {
 			select {
 			case sig := <-signals:
 				if sig == syscall.SIGHUP {
-					log.Println("I! Reloading Telegraf config")
+					log.Println("I! Reloading Dana2 config")
 					// May need to update the list of known config files
 					// if a delete or create occured. That way on the reload
 					// we ensure we watch the correct files.
@@ -202,7 +202,7 @@ func (t *Telegraf) reloadLoop() error {
 
 		err := t.runAgent(ctx, reloadConfig)
 		if err != nil && !errors.Is(err, context.Canceled) {
-			return fmt.Errorf("[telegraf] Error running agent: %w", err)
+			return fmt.Errorf("[Dana2] Error running agent: %w", err)
 		}
 		reloadConfig = true
 	}
@@ -210,7 +210,7 @@ func (t *Telegraf) reloadLoop() error {
 	return nil
 }
 
-func (t *Telegraf) watchLocalConfig(ctx context.Context, signals chan os.Signal, fConfig string) {
+func (t *Dana2) watchLocalConfig(ctx context.Context, signals chan os.Signal, fConfig string) {
 	var mytomb tomb.Tomb
 	var watcher watch.FileWatcher
 	if t.watchConfig == "poll" {
@@ -254,7 +254,7 @@ func (t *Telegraf) watchLocalConfig(ctx context.Context, signals chan os.Signal,
 	signals <- syscall.SIGHUP
 }
 
-func (t *Telegraf) watchRemoteConfigs(ctx context.Context, signals chan os.Signal, interval time.Duration, remoteConfigs []string) {
+func (t *Dana2) watchRemoteConfigs(ctx context.Context, signals chan os.Signal, interval time.Duration, remoteConfigs []string) {
 	configs := strings.Join(remoteConfigs, ", ")
 	log.Printf("I! Remote config watcher started for: %s\n", configs)
 
@@ -295,7 +295,7 @@ func (t *Telegraf) watchRemoteConfigs(ctx context.Context, signals chan os.Signa
 	}
 }
 
-func (t *Telegraf) loadConfiguration() (*config.Config, error) {
+func (t *Dana2) loadConfiguration() (*config.Config, error) {
 	// If no other options are specified, load the config file and run.
 	c := config.NewConfig()
 	c.Agent.Quiet = t.quiet
@@ -313,7 +313,7 @@ func (t *Telegraf) loadConfiguration() (*config.Config, error) {
 	return c, nil
 }
 
-func (t *Telegraf) getConfigFiles() error {
+func (t *Dana2) getConfigFiles() error {
 	var configFiles []string
 
 	configFiles = append(configFiles, t.config...)
@@ -338,7 +338,7 @@ func (t *Telegraf) getConfigFiles() error {
 	return nil
 }
 
-func (t *Telegraf) runAgent(ctx context.Context, reloadConfig bool) error {
+func (t *Dana2) runAgent(ctx context.Context, reloadConfig bool) error {
 	c := t.cfg
 	var err error
 	if reloadConfig {
@@ -380,7 +380,7 @@ func (t *Telegraf) runAgent(ctx context.Context, reloadConfig bool) error {
 		return err
 	}
 
-	log.Printf("I! Starting Telegraf %s%s brought to you by InfluxData the makers of InfluxDB", internal.Version, internal.Customized)
+	log.Printf("I! Starting Dana2 %s%s brought to you by InfluxData the makers of InfluxDB", internal.Version, internal.Customized)
 	log.Printf("I! Available plugins: %d inputs, %d aggregators, %d processors, %d parsers, %d outputs, %d secret-stores",
 		len(inputs.Inputs),
 		len(aggregators.Aggregators),
@@ -425,16 +425,16 @@ func (t *Telegraf) runAgent(ctx context.Context, reloadConfig bool) error {
 			available /= 1024
 			log.Printf("I! Found %d secrets...", c.NumberSecrets)
 			msg := fmt.Sprintf("Insufficient lockable memory %dkb when %dkb is required.", available, required)
-			msg += " Please increase the limit for Telegraf in your Operating System!"
+			msg += " Please increase the limit for Dana2 in your Operating System!"
 			log.Print("W! " + color.RedString(msg))
 		}
 	}
 	ag := agent.NewServer(c)
 
-	// Notify systemd that telegraf is ready
+	// Notify systemd that Dana2 is ready
 	// SdNotify() only tries to notify if the NOTIFY_SOCKET environment is set, so it's safe to call when systemd isn't present.
 	// Ignore the return values here because they're not valid for platforms that don't use systemd.
-	// For platforms that use systemd, telegraf doesn't log if the notification failed.
+	// For platforms that use systemd, Dana2 doesn't log if the notification failed.
 	//nolint:errcheck // see above
 	daemon.SdNotify(false, daemon.SdNotifyReady)
 

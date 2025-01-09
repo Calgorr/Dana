@@ -176,7 +176,7 @@ func TestRunningProcessorApply(t *testing.T) {
 			}
 			rp.Stop()
 
-			actual := acc.GetTelegrafMetrics()
+			actual := acc.GetDana2Metrics()
 			require.Equal(t, tt.expected, actual)
 		})
 	}

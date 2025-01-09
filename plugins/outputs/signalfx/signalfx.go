@@ -44,7 +44,7 @@ type SignalFx struct {
 	cancel context.CancelFunc
 }
 
-// GetMetricType returns the equivalent telegraf ValueType for a signalfx metric type
+// GetMetricType returns the equivalent Dana2 ValueType for a signalfx metric type
 func GetMetricType(mtype Dana.ValueType) (metricType datapoint.MetricType) {
 	switch mtype {
 	case Dana.Counter:
@@ -198,7 +198,7 @@ func (s *SignalFx) isEventIncluded(name string) bool {
 	return s.includedEventSet[name]
 }
 
-// getMetricName combines telegraf fields and tags into a full metric name
+// getMetricName combines Dana2 fields and tags into a full metric name
 func getMetricName(metric, field string) string {
 	name := metric
 

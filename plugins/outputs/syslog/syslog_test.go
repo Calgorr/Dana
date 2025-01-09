@@ -43,7 +43,7 @@ func TestGetSyslogMessageWithFramingOctetCounting(t *testing.T) {
 	messageBytesWithFraming, err := s.getSyslogMessageBytesWithFraming(syslogMessage)
 	require.NoError(t, err)
 
-	require.Equal(t, "59 <13>1 2010-11-10T23:00:00Z testhost Telegraf - testmetric -", string(messageBytesWithFraming), "Incorrect Octet counting framing")
+	require.Equal(t, "59 <13>1 2010-11-10T23:00:00Z testhost Dana2 - testmetric -", string(messageBytesWithFraming), "Incorrect Octet counting framing")
 }
 
 func TestGetSyslogMessageWithFramingNonTransparent(t *testing.T) {
@@ -68,7 +68,7 @@ func TestGetSyslogMessageWithFramingNonTransparent(t *testing.T) {
 	messageBytesWithFraming, err := s.getSyslogMessageBytesWithFraming(syslogMessage)
 	require.NoError(t, err)
 
-	require.Equal(t, "<13>1 2010-11-10T23:00:00Z testhost Telegraf - testmetric -\n", string(messageBytesWithFraming), "Incorrect Octet counting framing")
+	require.Equal(t, "<13>1 2010-11-10T23:00:00Z testhost Dana2 - testmetric -\n", string(messageBytesWithFraming), "Incorrect Octet counting framing")
 }
 
 func TestGetSyslogMessageWithFramingNonTransparentNul(t *testing.T) {
@@ -94,7 +94,7 @@ func TestGetSyslogMessageWithFramingNonTransparentNul(t *testing.T) {
 	messageBytesWithFraming, err := s.getSyslogMessageBytesWithFraming(syslogMessage)
 	require.NoError(t, err)
 
-	require.Equal(t, "<13>1 2010-11-10T23:00:00Z testhost Telegraf - testmetric -\x00", string(messageBytesWithFraming), "Incorrect Octet counting framing")
+	require.Equal(t, "<13>1 2010-11-10T23:00:00Z testhost Dana2 - testmetric -\x00", string(messageBytesWithFraming), "Incorrect Octet counting framing")
 }
 
 func TestSyslogWriteWithTcp(t *testing.T) {
@@ -265,7 +265,7 @@ func TestStartupErrorBehaviorDefault(t *testing.T) {
 		Separator:           "_",
 		DefaultSeverityCode: uint8(5), // notice
 		DefaultFacilityCode: uint8(1), // user-level
-		DefaultAppname:      "Telegraf",
+		DefaultAppname:      "Dana2",
 	}
 
 	model := models.NewRunningOutput(
@@ -298,7 +298,7 @@ func TestStartupErrorBehaviorError(t *testing.T) {
 		Separator:           "_",
 		DefaultSeverityCode: uint8(5), // notice
 		DefaultFacilityCode: uint8(1), // user-level
-		DefaultAppname:      "Telegraf",
+		DefaultAppname:      "Dana2",
 	}
 
 	model := models.NewRunningOutput(
@@ -332,7 +332,7 @@ func TestStartupErrorBehaviorIgnore(t *testing.T) {
 		Separator:           "_",
 		DefaultSeverityCode: uint8(5), // notice
 		DefaultFacilityCode: uint8(1), // user-level
-		DefaultAppname:      "Telegraf",
+		DefaultAppname:      "Dana2",
 	}
 
 	model := models.NewRunningOutput(
@@ -368,7 +368,7 @@ func TestStartupErrorBehaviorRetry(t *testing.T) {
 		Separator:           "_",
 		DefaultSeverityCode: uint8(5), // notice
 		DefaultFacilityCode: uint8(1), // user-level
-		DefaultAppname:      "Telegraf",
+		DefaultAppname:      "Dana2",
 	}
 
 	model := models.NewRunningOutput(
@@ -449,7 +449,7 @@ func TestCases(t *testing.T) {
 
 		t.Run(f.Name(), func(t *testing.T) {
 			testcasePath := filepath.Join("testcases", f.Name())
-			configFilename := filepath.Join(testcasePath, "telegraf.conf")
+			configFilename := filepath.Join(testcasePath, "Dana2.conf")
 			inputFilename := filepath.Join(testcasePath, "input.influx")
 			expectedFilename := filepath.Join(testcasePath, "expected.out")
 			expectedErrorFilename := filepath.Join(testcasePath, "expected.err")

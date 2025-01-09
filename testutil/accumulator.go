@@ -55,9 +55,9 @@ func (a *Accumulator) NDelivered() int {
 	return len(a.delivered)
 }
 
-// GetTelegrafMetrics returns all the metrics collected by the accumulator
+// GetDana2Metrics returns all the metrics collected by the accumulator
 // If you are getting race conditions here then you are not waiting for all of your metrics to arrive: see Wait()
-func (a *Accumulator) GetTelegrafMetrics() []Dana.Metric {
+func (a *Accumulator) GetDana2Metrics() []Dana.Metric {
 	a.Lock()
 	defer a.Unlock()
 	metrics := make([]Dana.Metric, 0, len(a.accumulated))
@@ -753,7 +753,7 @@ func (a *Accumulator) BoolField(measurement, field string) (v, ok bool) {
 }
 
 // NopAccumulator is used for benchmarking to isolate the plugin from the internal
-// telegraf accumulator machinery.
+// Dana2 accumulator machinery.
 type NopAccumulator struct{}
 
 func (n *NopAccumulator) AddFields(_ string, _ map[string]interface{}, _ map[string]string, _ ...time.Time) {

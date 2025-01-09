@@ -134,7 +134,7 @@ func (k *KinesisOutput) getPartitionKey(metric Dana.Metric) string {
 				return k.Partition.Default
 			}
 			// Default partition name if default is not set
-			return "telegraf"
+			return "Dana2"
 		default:
 			k.Log.Errorf("You have configured a Partition method of %q which is not supported", k.Partition.Method)
 		}

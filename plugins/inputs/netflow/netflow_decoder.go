@@ -766,8 +766,8 @@ func (d *netflowDecoder) decodeValueV9(field netflow.DataField) ([]Dana.Field, e
 	}
 
 	// Fallback to IPFIX mappings as some devices seem to send IPFIX elements in
-	// Netflow v9 packets. See https://github.com/influxdata/telegraf/issues/14902
-	// and https://github.com/influxdata/telegraf/issues/14903.
+	// Netflow v9 packets. See https://github.com/influxdata/Dana2/issues/14902
+	// and https://github.com/influxdata/Dana2/issues/14903.
 	if mappings, found := fieldMappingsIPFIX[elementID]; found {
 		var fields []Dana.Field
 		for _, m := range mappings {

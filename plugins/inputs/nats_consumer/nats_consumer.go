@@ -205,7 +205,7 @@ func (n *NatsConsumer) natsErrHandler(c *nats.Conn, s *nats.Subscription, e erro
 }
 
 // receiver() reads all incoming messages from NATS, and parses them into
-// telegraf metrics.
+// Dana2 metrics.
 func (n *NatsConsumer) receiver(ctx context.Context) {
 	sem := make(semaphore, n.MaxUndeliveredMessages)
 
@@ -272,8 +272,8 @@ func init() {
 	inputs.Add("nats_consumer", func() Dana.Input {
 		return &NatsConsumer{
 			Servers:                []string{"nats://localhost:4222"},
-			Subjects:               []string{"telegraf"},
-			QueueGroup:             "telegraf_consumers",
+			Subjects:               []string{"Dana2"},
+			QueueGroup:             "Dana2_consumers",
 			PendingBytesLimit:      nats.DefaultSubPendingBytesLimit,
 			PendingMessageLimit:    nats.DefaultSubPendingMsgsLimit,
 			MaxUndeliveredMessages: defaultMaxUndeliveredMessages,

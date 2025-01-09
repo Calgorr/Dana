@@ -60,7 +60,7 @@ type HealthMetric struct {
 	SuccessfulQueries int
 }
 
-const defaultServer = "Server=.;app name=telegraf;log=1;"
+const defaultServer = "Server=.;app name=Dana2;log=1;"
 
 const (
 	typeAzureSQLDB                 = "AzureSQLDB"
@@ -71,7 +71,7 @@ const (
 )
 
 const (
-	healthMetricName              = "sqlserver_telegraf_health"
+	healthMetricName              = "sqlserver_Dana2_health"
 	healthMetricInstanceTag       = "sql_instance"
 	healthMetricDatabaseTag       = "database_name"
 	healthMetricAttemptedQueries  = "attempted_queries"

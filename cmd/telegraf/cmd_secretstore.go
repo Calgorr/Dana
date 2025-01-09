@@ -46,7 +46,7 @@ func getSecretStoreCommands(m App) []*cli.Command {
 The 'list' command requires passing in your configuration file
 containing the secret-store definitions you want to access. To get a
 list of available secret-store plugins, please have a look at
-https://github.com/influxdata/telegraf/tree/master/plugins/secretstores.
+https://github.com/influxdata/Dana2/tree/master/plugins/secretstores.
 
 For help on how to define secret-stores, check the documentation of the
 different plugins.
@@ -55,11 +55,11 @@ Assuming you use the default configuration file location, you can run
 the following command to list the keys of all known secrets in ALL
 available stores
 
-> telegraf secrets list
+> Dana2 secrets list
 
 To get the keys of all known secrets in a particular store, you can run
 
-> telegraf secrets list mystore
+> Dana2 secrets list mystore
 
 To also reveal the actual secret, i.e. the value, you can pass the
 '--reveal-secret' flag.
@@ -132,7 +132,7 @@ To also reveal the actual secret, i.e. the value, you can pass the
 The 'get' command requires passing in your configuration file
 containing the secret-store definitions you want to access. To get a
 list of available secret-store plugins, please have a look at
-https://github.com/influxdata/telegraf/tree/master/plugins/secretstores.
+https://github.com/influxdata/Dana2/tree/master/plugins/secretstores.
 and use the 'secrets list' command to get the IDs of available stores and
 key(s) of available secrets.
 
@@ -143,7 +143,7 @@ Assuming you use the default configuration file location, you can run
 the following command to retrieve a secret from a secret store
 available stores
 
-> telegraf secrets get mystore mysecretkey
+> Dana2 secrets get mystore mysecretkey
 
 This will fetch the secret with the key 'mysecretkey' from the secret-store
 with the ID 'mystore'.
@@ -190,7 +190,7 @@ with the ID 'mystore'.
 The 'set' command requires passing in your configuration file
 containing the secret-store definitions you want to access. To get a
 list of available secret-store plugins, please have a look at
-https://github.com/influxdata/telegraf/tree/master/plugins/secretstores.
+https://github.com/influxdata/Dana2/tree/master/plugins/secretstores.
 and use the 'secrets list' command to get the IDs of available stores and keys.
 
 For help on how to define secret-stores, check the documentation of the
@@ -199,7 +199,7 @@ different plugins.
 Assuming you use the default configuration file location, you can run
 the following command to create a secret in anm available secret-store
 
-> telegraf secrets set mystore mysecretkey mysecretvalue
+> Dana2 secrets set mystore mysecretkey mysecretvalue
 
 This will create a secret with the key 'mysecretkey' in the secret-store
 with the ID 'mystore' with the value being set to 'mysecretvalue'. If a
@@ -208,7 +208,7 @@ value will be modified.
 
 When you leave out the value of the secret like
 
-> telegraf secrets set mystore mysecretkey
+> Dana2 secrets set mystore mysecretkey
 
 you will be prompted to enter the value of the secret.
 `,

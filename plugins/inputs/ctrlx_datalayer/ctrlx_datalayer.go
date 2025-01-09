@@ -157,7 +157,7 @@ func convertTimestamp2UnixTime(t int64) time.Time {
 func (c *CtrlXDataLayer) createSubscription(sub *subscription) (string, error) {
 	sseURL := c.url + subscriptionPath
 
-	id := "telegraf_" + uuid.New().String()
+	id := "Dana2_" + uuid.New().String()
 	request := sub.createRequest(id)
 	payload, err := json.Marshal(request)
 	if err != nil {
@@ -364,7 +364,7 @@ func (c *CtrlXDataLayer) gatherLoop(ctx context.Context) {
 	}
 }
 
-// init registers the plugin in telegraf.
+// init registers the plugin in Dana2.
 func init() {
 	inputs.Add("ctrlx_datalayer", func() Dana.Input {
 		return &CtrlXDataLayer{}

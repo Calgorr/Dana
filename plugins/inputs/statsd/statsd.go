@@ -106,7 +106,7 @@ type Statsd struct {
 	// UDPPacketSize is deprecated, it's only here for legacy support
 	// we now always create 1 max size buffer and then copy only what we need
 	// into the in channel
-	// see https://github.com/influxdata/telegraf/pull/992
+	// see https://github.com/influxdata/Dana2/pull/992
 	UDPPacketSize int `toml:"udp_packet_size" deprecated:"0.12.1;1.35.0;option is ignored"`
 
 	ReadBufferSize      int              `toml:"read_buffer_size"`
@@ -805,7 +805,7 @@ func parseKeyValue(keyValue string) (key, val string) {
 	} else if len(split) == 1 {
 		val = split[0]
 	} else if len(split) > 2 {
-		// fix: https://github.com/influxdata/telegraf/issues/10113
+		// fix: https://github.com/influxdata/Dana2/issues/10113
 		// fix: value has "=" parse error
 		// uri=/service/endpoint?sampleParam={paramValue} parse value key="uri", val="/service/endpoint?sampleParam\={paramValue}"
 		key = split[0]
