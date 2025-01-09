@@ -37,7 +37,9 @@ type dashboardRepo struct {
 func (d *dashboardRepo) CreateDashboard(ctx context.Context, dashboard *model.Dashboard) (primitive.ObjectID, error) {
 	// Create a new document for insertion
 	document := bson.M{
-		"data": dashboard.Data,
+		"name":      dashboard.Name,
+		"panels":    dashboard.Panels,
+		"variables": dashboard.Variables,
 	}
 
 	// Insert the document into the collection
@@ -69,7 +71,9 @@ func (d *dashboardRepo) UpdateDashboard(ctx context.Context, dashboard *model.Da
 	filter := bson.M{"_id": dashboard.ID}
 	update := bson.M{
 		"$set": bson.M{
-			"data": dashboard.Data,
+			"name":      dashboard.Name,
+			"panels":    dashboard.Panels,
+			"variables": dashboard.Variables,
 		},
 	}
 

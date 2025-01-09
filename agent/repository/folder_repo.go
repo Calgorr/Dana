@@ -78,7 +78,9 @@ func (f *folderRepo) UpdateDashboardInFolder(ctx context.Context, folderID strin
 	filter := bson.M{"_id": folderObjectID}
 	update := bson.M{
 		"$set": bson.M{
-			"dashboards.$[elem].data": dashboard.Data,
+			"dashboards.$[elem].name":      dashboard.Name,
+			"dashboards.$[elem].panels":    dashboard.Panels,
+			"dashboards.$[elem].variables": dashboard.Variables,
 		},
 	}
 	arrayFilters := options.ArrayFilters{
