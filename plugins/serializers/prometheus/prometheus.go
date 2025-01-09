@@ -34,13 +34,13 @@ func (mt *MetricTypes) Init() error {
 	return nil
 }
 
-func (mt *MetricTypes) DetermineType(name string, m telegraf.Metric) telegraf.ValueType {
+func (mt *MetricTypes) DetermineType(name string, m Dana.Metric) Dana.ValueType {
 	metricType := m.Type()
 	if mt.filterCounter != nil && mt.filterCounter.Match(name) {
-		metricType = telegraf.Counter
+		metricType = Dana.Counter
 	}
 	if mt.filterGauge != nil && mt.filterGauge.Match(name) {
-		metricType = telegraf.Gauge
+		metricType = Dana.Gauge
 	}
 	return metricType
 }
@@ -64,11 +64,11 @@ func (s *Serializer) Init() error {
 	return s.FormatConfig.TypeMappings.Init()
 }
 
-func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
-	return s.SerializeBatch([]telegraf.Metric{metric})
+func (s *Serializer) Serialize(metric Dana.Metric) ([]byte, error) {
+	return s.SerializeBatch([]Dana.Metric{metric})
 }
 
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	coll := NewCollection(s.FormatConfig)
 	for _, metric := range metrics {
 		coll.Add(metric, time.Now())
@@ -88,7 +88,7 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
 
 func init() {
 	serializers.Add("prometheus",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

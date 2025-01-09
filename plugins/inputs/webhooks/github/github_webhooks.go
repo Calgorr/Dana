@@ -17,12 +17,12 @@ import (
 type GithubWebhook struct {
 	Path   string
 	Secret string
-	acc    telegraf.Accumulator
-	log    telegraf.Logger
+	acc    Dana.Accumulator
+	log    Dana.Logger
 	auth.BasicAuth
 }
 
-func (gh *GithubWebhook) Register(router *mux.Router, acc telegraf.Accumulator, log telegraf.Logger) {
+func (gh *GithubWebhook) Register(router *mux.Router, acc Dana.Accumulator, log Dana.Logger) {
 	router.HandleFunc(gh.Path, gh.eventHandler).Methods("POST")
 
 	gh.log = log

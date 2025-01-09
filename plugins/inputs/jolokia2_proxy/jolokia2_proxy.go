@@ -46,7 +46,7 @@ func (*JolokiaProxy) SampleConfig() string {
 	return sampleConfig
 }
 
-func (jp *JolokiaProxy) Gather(acc telegraf.Accumulator) error {
+func (jp *JolokiaProxy) Gather(acc Dana.Accumulator) error {
 	if jp.gatherer == nil {
 		jp.gatherer = common.NewGatherer(jp.createMetrics())
 	}
@@ -97,7 +97,7 @@ func (jp *JolokiaProxy) createClient() (*common.Client, error) {
 }
 
 func init() {
-	inputs.Add("jolokia2_proxy", func() telegraf.Input {
+	inputs.Add("jolokia2_proxy", func() Dana.Input {
 		return &JolokiaProxy{
 			DefaultFieldSeparator: ".",
 		}

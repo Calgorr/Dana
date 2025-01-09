@@ -31,7 +31,7 @@ func TestRunningAggregatorAdd(t *testing.T) {
 			"value": int64(101),
 		},
 		time.Now().Add(time.Millisecond*150),
-		telegraf.Untyped)
+		Dana.Untyped)
 	require.False(t, ra.Add(m))
 	ra.Push(&acc)
 
@@ -59,7 +59,7 @@ func TestRunningAggregatorAddMetricsOutsideCurrentPeriod(t *testing.T) {
 			"value": int64(101),
 		},
 		now.Add(-time.Hour),
-		telegraf.Untyped,
+		Dana.Untyped,
 	)
 	require.False(t, ra.Add(m))
 
@@ -70,7 +70,7 @@ func TestRunningAggregatorAddMetricsOutsideCurrentPeriod(t *testing.T) {
 			"value": int64(101),
 		},
 		now.Add(time.Hour),
-		telegraf.Untyped,
+		Dana.Untyped,
 	)
 	require.False(t, ra.Add(m))
 
@@ -81,7 +81,7 @@ func TestRunningAggregatorAddMetricsOutsideCurrentPeriod(t *testing.T) {
 			"value": int64(101),
 		},
 		time.Now().Add(time.Millisecond*50),
-		telegraf.Untyped)
+		Dana.Untyped)
 	require.False(t, ra.Add(m))
 
 	ra.Push(&acc)
@@ -110,7 +110,7 @@ func TestRunningAggregatorAddMetricsOutsideCurrentPeriodWithGrace(t *testing.T) 
 			"value": int64(101),
 		},
 		now.Add(-time.Hour),
-		telegraf.Untyped,
+		Dana.Untyped,
 	)
 	require.False(t, ra.Add(m))
 
@@ -121,7 +121,7 @@ func TestRunningAggregatorAddMetricsOutsideCurrentPeriodWithGrace(t *testing.T) 
 			"value": int64(100),
 		},
 		now.Add(-time.Millisecond*1000),
-		telegraf.Untyped,
+		Dana.Untyped,
 	)
 	require.False(t, ra.Add(m))
 
@@ -132,7 +132,7 @@ func TestRunningAggregatorAddMetricsOutsideCurrentPeriodWithGrace(t *testing.T) 
 			"value": int64(102),
 		},
 		now.Add(-time.Millisecond*200),
-		telegraf.Untyped,
+		Dana.Untyped,
 	)
 	require.False(t, ra.Add(m))
 
@@ -143,7 +143,7 @@ func TestRunningAggregatorAddMetricsOutsideCurrentPeriodWithGrace(t *testing.T) 
 			"value": int64(101),
 		},
 		time.Now().Add(time.Millisecond*50),
-		telegraf.Untyped)
+		Dana.Untyped)
 	require.False(t, ra.Add(m))
 
 	ra.Push(&acc)
@@ -172,7 +172,7 @@ func TestRunningAggregatorAddAndPushOnePeriod(t *testing.T) {
 			"value": int64(101),
 		},
 		time.Now().Add(time.Millisecond*100),
-		telegraf.Untyped)
+		Dana.Untyped)
 	require.False(t, ra.Add(m))
 
 	ra.Push(&acc)
@@ -199,7 +199,7 @@ func TestRunningAggregatorAddDropOriginal(t *testing.T) {
 			"value": int64(101),
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	require.True(t, ra.Add(m))
 
 	// this metric name doesn't match the filter, so Add will return false
@@ -209,7 +209,7 @@ func TestRunningAggregatorAddDropOriginal(t *testing.T) {
 			"value": int64(101),
 		},
 		now,
-		telegraf.Untyped)
+		Dana.Untyped)
 	require.False(t, ra.Add(m2))
 }
 
@@ -251,14 +251,14 @@ func (t *mockAggregator) Reset() {
 	t.sum = 0
 }
 
-func (t *mockAggregator) Push(acc telegraf.Accumulator) {
+func (t *mockAggregator) Push(acc Dana.Accumulator) {
 	acc.AddFields("TestMetric",
 		map[string]interface{}{"sum": t.sum},
 		map[string]string{},
 	)
 }
 
-func (t *mockAggregator) Add(in telegraf.Metric) {
+func (t *mockAggregator) Add(in Dana.Metric) {
 	for _, v := range in.Fields() {
 		if vi, ok := v.(int64); ok {
 			t.sum += vi

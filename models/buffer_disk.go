@@ -103,7 +103,7 @@ func (b *DiskBuffer) writeIndex() uint64 {
 	return index + 1
 }
 
-func (b *DiskBuffer) Add(metrics ...telegraf.Metric) int {
+func (b *DiskBuffer) Add(metrics ...Dana.Metric) int {
 	b.Lock()
 	defer b.Unlock()
 
@@ -119,7 +119,7 @@ func (b *DiskBuffer) Add(metrics ...telegraf.Metric) int {
 	return dropped
 }
 
-func (b *DiskBuffer) addSingleMetric(m telegraf.Metric) bool {
+func (b *DiskBuffer) addSingleMetric(m Dana.Metric) bool {
 	data, err := metric.ToBytes(m)
 	if err != nil {
 		panic(err)
@@ -142,7 +142,7 @@ func (b *DiskBuffer) BeginTransaction(batchSize int) *Transaction {
 	b.batchFirst = b.readIndex()
 	b.batchSize = 0
 
-	metrics := make([]telegraf.Metric, 0, batchSize)
+	metrics := make([]Dana.Metric, 0, batchSize)
 	offsets := make([]int, 0, batchSize)
 	readIndex := b.batchFirst
 	endIndex := b.writeIndex()
@@ -178,7 +178,7 @@ func (b *DiskBuffer) BeginTransaction(batchSize int) *Transaction {
 			log.Printf("E! raw metric data: %v", data)
 			panic(err)
 		}
-		if _, ok := m.(telegraf.TrackingMetric); ok && readIndex < b.originalEnd {
+		if _, ok := m.(Dana.TrackingMetric); ok && readIndex < b.originalEnd {
 			// tracking metric left over from previous instance, skip
 			continue
 		}

@@ -20,11 +20,11 @@ import (
 func TestVaultStats(t *testing.T) {
 	var applyTests = []struct {
 		name     string
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "Metrics",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"vault.raft.replication.appendEntries.logs",
 					map[string]string{
@@ -110,7 +110,7 @@ func TestVaultStats(t *testing.T) {
 }
 
 func TestRedirect(t *testing.T) {
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"vault.raft.replication.appendEntries.logs",
 			map[string]string{

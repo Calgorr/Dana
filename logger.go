@@ -1,4 +1,4 @@
-package telegraf
+package Dana
 
 // LogLevel denotes the level for logging
 type LogLevel int

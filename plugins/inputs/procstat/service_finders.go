@@ -15,10 +15,10 @@ import (
 
 type processFinder struct {
 	errPidFiles map[string]bool
-	log         telegraf.Logger
+	log         Dana.Logger
 }
 
-func newProcessFinder(log telegraf.Logger) *processFinder {
+func newProcessFinder(log Dana.Logger) *processFinder {
 	return &processFinder{
 		errPidFiles: make(map[string]bool),
 		log:         log,

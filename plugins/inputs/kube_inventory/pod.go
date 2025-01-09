@@ -9,7 +9,7 @@ import (
 	"Dana"
 )
 
-func collectPods(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory) {
+func collectPods(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory) {
 	var list corev1.PodList
 	listRef := &list
 	var err error
@@ -29,7 +29,7 @@ func collectPods(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesIn
 	}
 }
 
-func (ki *KubernetesInventory) gatherPod(p *corev1.Pod, acc telegraf.Accumulator) {
+func (ki *KubernetesInventory) gatherPod(p *corev1.Pod, acc Dana.Accumulator) {
 	creationTs := p.GetCreationTimestamp()
 	if creationTs.IsZero() {
 		return
@@ -49,7 +49,7 @@ func (ki *KubernetesInventory) gatherPod(p *corev1.Pod, acc telegraf.Accumulator
 	}
 }
 
-func (ki *KubernetesInventory) gatherPodContainer(p *corev1.Pod, cs corev1.ContainerStatus, c corev1.Container, acc telegraf.Accumulator) {
+func (ki *KubernetesInventory) gatherPodContainer(p *corev1.Pod, cs corev1.ContainerStatus, c corev1.Container, acc Dana.Accumulator) {
 	stateCode := 3
 	stateReason := ""
 	state := "unknown"

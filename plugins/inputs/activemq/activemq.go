@@ -122,7 +122,7 @@ func (a *ActiveMQ) Init() error {
 	return nil
 }
 
-func (a *ActiveMQ) Gather(acc telegraf.Accumulator) error {
+func (a *ActiveMQ) Gather(acc Dana.Accumulator) error {
 	dataQueues, err := a.getMetrics(a.queuesURL())
 	if err != nil {
 		return err
@@ -199,7 +199,7 @@ func (a *ActiveMQ) getMetrics(u string) ([]byte, error) {
 	return io.ReadAll(resp.Body)
 }
 
-func (a *ActiveMQ) gatherQueuesMetrics(acc telegraf.Accumulator, queues queues) {
+func (a *ActiveMQ) gatherQueuesMetrics(acc Dana.Accumulator, queues queues) {
 	for _, queue := range queues.QueueItems {
 		records := make(map[string]interface{})
 		tags := make(map[string]string)
@@ -217,7 +217,7 @@ func (a *ActiveMQ) gatherQueuesMetrics(acc telegraf.Accumulator, queues queues) 
 	}
 }
 
-func (a *ActiveMQ) gatherTopicsMetrics(acc telegraf.Accumulator, topics topics) {
+func (a *ActiveMQ) gatherTopicsMetrics(acc Dana.Accumulator, topics topics) {
 	for _, topic := range topics.TopicItems {
 		records := make(map[string]interface{})
 		tags := make(map[string]string)
@@ -235,7 +235,7 @@ func (a *ActiveMQ) gatherTopicsMetrics(acc telegraf.Accumulator, topics topics) 
 	}
 }
 
-func (a *ActiveMQ) gatherSubscribersMetrics(acc telegraf.Accumulator, subscribers subscribers) {
+func (a *ActiveMQ) gatherSubscribersMetrics(acc Dana.Accumulator, subscribers subscribers) {
 	for _, subscriber := range subscribers.SubscriberItems {
 		records := make(map[string]interface{})
 		tags := make(map[string]string)
@@ -275,7 +275,7 @@ func (a *ActiveMQ) subscribersURL() string {
 }
 
 func init() {
-	inputs.Add("activemq", func() telegraf.Input {
+	inputs.Add("activemq", func() Dana.Input {
 		return &ActiveMQ{
 			Server:   "localhost",
 			Port:     8161,

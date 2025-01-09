@@ -152,7 +152,7 @@ func TestGetMap(t *testing.T) {
 
 func TestTracking(t *testing.T) {
 	// Setup raw input and expected output
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"ifIndex": "1", "agent": "127.0.0.1"},
@@ -161,7 +161,7 @@ func TestTracking(t *testing.T) {
 		),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{
@@ -176,15 +176,15 @@ func TestTracking(t *testing.T) {
 
 	// Create fake notification for testing
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
 	// Convert raw input to tracking metric
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)

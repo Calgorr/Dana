@@ -25,7 +25,7 @@ import (
 var sampleConfig string
 
 type SlabStats struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	statFile string
 	useSudo  bool
@@ -35,7 +35,7 @@ func (*SlabStats) SampleConfig() string {
 	return sampleConfig
 }
 
-func (ss *SlabStats) Gather(acc telegraf.Accumulator) error {
+func (ss *SlabStats) Gather(acc Dana.Accumulator) error {
 	fields, err := ss.getSlabStats()
 	if err != nil {
 		return err
@@ -104,7 +104,7 @@ func normalizeName(name string) string {
 }
 
 func init() {
-	inputs.Add("slab", func() telegraf.Input {
+	inputs.Add("slab", func() Dana.Input {
 		return &SlabStats{
 			statFile: path.Join(internal.GetProcPath(), "slabinfo"),
 			useSudo:  true,

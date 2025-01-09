@@ -137,7 +137,7 @@ func (c *Config) matches(in []byte) bool {
 	return true
 }
 
-func (c *Config) collect(in []byte, order binary.ByteOrder, defaultTime time.Time) (telegraf.Metric, error) {
+func (c *Config) collect(in []byte, order binary.ByteOrder, defaultTime time.Time) (Dana.Metric, error) {
 	t := defaultTime
 	name := c.MetricName
 	tags := make(map[string]string)

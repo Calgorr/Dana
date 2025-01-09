@@ -47,7 +47,7 @@ func TestCases(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	inputs.Add("upsd", func() telegraf.Input {
+	inputs.Add("upsd", func() Dana.Input {
 		return &Upsd{}
 	})
 
@@ -66,7 +66,7 @@ func TestCases(t *testing.T) {
 			require.NoError(t, parser.Init())
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)

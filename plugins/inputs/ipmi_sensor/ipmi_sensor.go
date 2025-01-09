@@ -48,7 +48,7 @@ type Ipmi struct {
 	UseSudo       bool            `toml:"use_sudo"`
 	UseCache      bool            `toml:"use_cache"`
 	CachePath     string          `toml:"cache_path"`
-	Log           telegraf.Logger `toml:"-"`
+	Log           Dana.Logger     `toml:"-"`
 }
 
 func (*Ipmi) SampleConfig() string {
@@ -82,7 +82,7 @@ func (m *Ipmi) Init() error {
 	return nil
 }
 
-func (m *Ipmi) Gather(acc telegraf.Accumulator) error {
+func (m *Ipmi) Gather(acc Dana.Accumulator) error {
 	if len(m.Path) == 0 {
 		return errors.New("ipmitool not found: verify that ipmitool is installed and that ipmitool is in your PATH")
 	}
@@ -91,7 +91,7 @@ func (m *Ipmi) Gather(acc telegraf.Accumulator) error {
 		wg := sync.WaitGroup{}
 		for _, server := range m.Servers {
 			wg.Add(1)
-			go func(a telegraf.Accumulator, s string) {
+			go func(a Dana.Accumulator, s string) {
 				defer wg.Done()
 				for _, sensor := range m.Sensors {
 					a.AddError(m.parse(a, s, sensor))
@@ -111,7 +111,7 @@ func (m *Ipmi) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (m *Ipmi) parse(acc telegraf.Accumulator, server, sensor string) error {
+func (m *Ipmi) parse(acc Dana.Accumulator, server, sensor string) error {
 	var command []string
 	switch sensor {
 	case "sdr":
@@ -187,7 +187,7 @@ func (m *Ipmi) parse(acc telegraf.Accumulator, server, sensor string) error {
 	return fmt.Errorf("unknown sensor type %q", sensor)
 }
 
-func parseChassisPowerStatus(acc telegraf.Accumulator, hostname string, cmdOut []byte, measuredAt time.Time) error {
+func parseChassisPowerStatus(acc Dana.Accumulator, hostname string, cmdOut []byte, measuredAt time.Time) error {
 	// each line will look something like
 	// Chassis Power is on
 	// Chassis Power is off
@@ -204,7 +204,7 @@ func parseChassisPowerStatus(acc telegraf.Accumulator, hostname string, cmdOut [
 	return scanner.Err()
 }
 
-func (m *Ipmi) parseDCMIPowerReading(acc telegraf.Accumulator, hostname string, cmdOut []byte, measuredAt time.Time) error {
+func (m *Ipmi) parseDCMIPowerReading(acc Dana.Accumulator, hostname string, cmdOut []byte, measuredAt time.Time) error {
 	// each line will look something like
 	// Current Power Reading : 0.000
 	scanner := bufio.NewScanner(bytes.NewReader(cmdOut))
@@ -244,7 +244,7 @@ func (m *Ipmi) parseDCMIPowerReading(acc telegraf.Accumulator, hostname string, 
 	return scanner.Err()
 }
 
-func (m *Ipmi) parseV1(acc telegraf.Accumulator, hostname string, cmdOut []byte, measuredAt time.Time) error {
+func (m *Ipmi) parseV1(acc Dana.Accumulator, hostname string, cmdOut []byte, measuredAt time.Time) error {
 	// each line will look something like
 	// Planar VBAT      | 3.05 Volts        | ok
 	scanner := bufio.NewScanner(bytes.NewReader(cmdOut))
@@ -301,7 +301,7 @@ func (m *Ipmi) parseV1(acc telegraf.Accumulator, hostname string, cmdOut []byte,
 	return scanner.Err()
 }
 
-func (m *Ipmi) parseV2(acc telegraf.Accumulator, hostname string, cmdOut []byte, measuredAt time.Time) error {
+func (m *Ipmi) parseV2(acc Dana.Accumulator, hostname string, cmdOut []byte, measuredAt time.Time) error {
 	// each line will look something like
 	// CMOS Battery     | 65h | ok  |  7.1 |
 	// Temp             | 0Eh | ok  |  3.1 | 55 degrees C
@@ -402,7 +402,7 @@ func transform(s string) string {
 }
 
 func init() {
-	inputs.Add("ipmi_sensor", func() telegraf.Input {
+	inputs.Add("ipmi_sensor", func() Dana.Input {
 		return &Ipmi{Timeout: config.Duration(20 * time.Second)}
 	})
 }

@@ -28,7 +28,7 @@ func (*Bcache) SampleConfig() string {
 	return sampleConfig
 }
 
-func (b *Bcache) Gather(acc telegraf.Accumulator) error {
+func (b *Bcache) Gather(acc Dana.Accumulator) error {
 	bcacheDevsChecked := make(map[string]bool)
 	var restrictDevs bool
 	if len(b.BcacheDevs) != 0 {
@@ -97,7 +97,7 @@ func prettyToBytes(v string) uint64 {
 	return uint64(result)
 }
 
-func gatherBcache(bdev string, acc telegraf.Accumulator) error {
+func gatherBcache(bdev string, acc Dana.Accumulator) error {
 	tags := getTags(bdev)
 	metrics, err := filepath.Glob(bdev + "/stats_total/*")
 	if err != nil {
@@ -139,7 +139,7 @@ func gatherBcache(bdev string, acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("bcache", func() telegraf.Input {
+	inputs.Add("bcache", func() Dana.Input {
 		return &Bcache{}
 	})
 }

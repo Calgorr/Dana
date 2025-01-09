@@ -60,7 +60,7 @@ type HTTPResponse struct {
 	tls.ClientConfig
 	cookie.CookieAuthConfig
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	compiledStringMatch *regexp.Regexp
 	clients             []client
@@ -129,7 +129,7 @@ func (h *HTTPResponse) Init() error {
 }
 
 // Gather gets all metric fields and tags and returns any errors it encounters
-func (h *HTTPResponse) Gather(acc telegraf.Accumulator) error {
+func (h *HTTPResponse) Gather(acc Dana.Accumulator) error {
 	for _, c := range h.clients {
 		// Prepare data
 		var fields map[string]interface{}
@@ -478,7 +478,7 @@ func (h *HTTPResponse) setRequestAuth(request *http.Request) error {
 }
 
 func init() {
-	inputs.Add("http_response", func() telegraf.Input {
+	inputs.Add("http_response", func() Dana.Input {
 		return &HTTPResponse{}
 	})
 }

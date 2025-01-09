@@ -58,7 +58,7 @@ func (*Disque) SampleConfig() string {
 	return sampleConfig
 }
 
-func (d *Disque) Gather(acc telegraf.Accumulator) error {
+func (d *Disque) Gather(acc Dana.Accumulator) error {
 	if len(d.Servers) == 0 {
 		address := &url.URL{
 			Host: ":" + defaultPort,
@@ -90,7 +90,7 @@ func (d *Disque) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (d *Disque) gatherServer(addr *url.URL, acc telegraf.Accumulator) error {
+func (d *Disque) gatherServer(addr *url.URL, acc Dana.Accumulator) error {
 	if d.c == nil {
 		_, _, err := net.SplitHostPort(addr.Host)
 		if err != nil {
@@ -198,7 +198,7 @@ func (d *Disque) gatherServer(addr *url.URL, acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("disque", func() telegraf.Input {
+	inputs.Add("disque", func() Dana.Input {
 		return &Disque{}
 	})
 }

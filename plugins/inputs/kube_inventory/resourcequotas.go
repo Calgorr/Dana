@@ -9,7 +9,7 @@ import (
 	"Dana"
 )
 
-func collectResourceQuotas(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory) {
+func collectResourceQuotas(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory) {
 	list, err := ki.client.getResourceQuotas(ctx)
 	if err != nil {
 		acc.AddError(err)
@@ -20,7 +20,7 @@ func collectResourceQuotas(ctx context.Context, acc telegraf.Accumulator, ki *Ku
 	}
 }
 
-func (ki *KubernetesInventory) gatherResourceQuota(r corev1.ResourceQuota, acc telegraf.Accumulator) {
+func (ki *KubernetesInventory) gatherResourceQuota(r corev1.ResourceQuota, acc Dana.Accumulator) {
 	fields := make(map[string]interface{}, len(r.Status.Hard)+len(r.Status.Used))
 	tags := map[string]string{
 		"resource":  r.Name,

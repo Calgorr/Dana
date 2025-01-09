@@ -32,7 +32,7 @@ type esAggregationQueryTest struct {
 	queryName                 string
 	testAggregationQueryInput esAggregation
 	testAggregationQueryData  []aggregationQueryData
-	expectedMetrics           []telegraf.Metric
+	expectedMetrics           []Dana.Metric
 	wantBuildQueryErr         bool
 	wantGetMetricFieldsErr    bool
 	wantQueryResErr           bool
@@ -64,7 +64,7 @@ var testEsAggregationData = []esAggregationQueryTest{
 				isParent: true,
 			},
 		},
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			testutil.MustMetric(
 				"measurement1",
 				map[string]string{"URI_keyword": "/downloads/product_1"},
@@ -99,7 +99,7 @@ var testEsAggregationData = []esAggregationQueryTest{
 				isParent: true,
 			},
 		},
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			testutil.MustMetric(
 				"measurement2",
 				map[string]string{"URI_keyword": "/downloads/product_1"},
@@ -140,7 +140,7 @@ var testEsAggregationData = []esAggregationQueryTest{
 				isParent: true,
 			},
 		},
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			testutil.MustMetric(
 				"measurement3",
 				map[string]string{"response_keyword": "200"},
@@ -201,7 +201,7 @@ var testEsAggregationData = []esAggregationQueryTest{
 				isParent: true,
 			},
 		},
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			testutil.MustMetric(
 				"measurement4",
 				map[string]string{"response_keyword": "404", "URI_keyword": "/downloads/product_1", "method_keyword": "GET"},
@@ -272,7 +272,7 @@ var testEsAggregationData = []esAggregationQueryTest{
 				isParent: true,
 			},
 		},
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			testutil.MustMetric(
 				"measurement5",
 				map[string]string{"URI_keyword": "/downloads/product_2"},
@@ -305,7 +305,7 @@ var testEsAggregationData = []esAggregationQueryTest{
 				isParent: true,
 			},
 		},
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			testutil.MustMetric(
 				"measurement6",
 				map[string]string{"response_keyword": "200", "URI_keyword": "/downloads/product_1"},
@@ -334,7 +334,7 @@ var testEsAggregationData = []esAggregationQueryTest{
 			mapMetricFields: map[string]string{},
 		},
 		nil,
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			testutil.MustMetric(
 				"measurement7",
 				map[string]string{},
@@ -364,7 +364,7 @@ var testEsAggregationData = []esAggregationQueryTest{
 				isParent: true,
 			},
 		},
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			testutil.MustMetric(
 				"measurement8",
 				map[string]string{},
@@ -442,7 +442,7 @@ var testEsAggregationData = []esAggregationQueryTest{
 				isParent: true,
 			},
 		},
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			testutil.MustMetric(
 				"measurement12",
 				map[string]string{},
@@ -638,7 +638,7 @@ func TestElasticsearchQueryIntegration(t *testing.T) {
 		t.Errorf("%s", acc.Errors)
 	}
 
-	var expectedMetrics []telegraf.Metric
+	var expectedMetrics []Dana.Metric
 	for _, result := range testEsAggregationData {
 		expectedMetrics = append(expectedMetrics, result.expectedMetrics...)
 	}

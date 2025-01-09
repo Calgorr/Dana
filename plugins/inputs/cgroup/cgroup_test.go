@@ -28,7 +28,7 @@ func TestCgroupStatistics_1(t *testing.T) {
 	}
 
 	require.NoError(t, acc.GatherError(cg.Gather))
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"cgroup",
 			map[string]string{
@@ -66,7 +66,7 @@ func TestCgroupStatistics_2(t *testing.T) {
 	}
 
 	require.NoError(t, acc.GatherError(cg.Gather))
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"cgroup",
 			map[string]string{
@@ -101,7 +101,7 @@ func TestCgroupStatistics_3(t *testing.T) {
 	}
 
 	require.NoError(t, acc.GatherError(cg.Gather))
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"cgroup",
 			map[string]string{
@@ -135,7 +135,7 @@ func TestCgroupStatistics_4(t *testing.T) {
 	}
 
 	require.NoError(t, acc.GatherError(cg.Gather))
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"cgroup",
 			map[string]string{
@@ -183,7 +183,7 @@ func TestCgroupStatistics_5(t *testing.T) {
 	}
 
 	require.NoError(t, acc.GatherError(cg.Gather))
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"cgroup",
 			map[string]string{
@@ -217,7 +217,7 @@ func TestCgroupStatistics_6(t *testing.T) {
 	}
 
 	require.NoError(t, acc.GatherError(cg.Gather))
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"cgroup",
 			map[string]string{
@@ -243,7 +243,7 @@ func TestCgroupStatistics_7(t *testing.T) {
 	}
 
 	require.NoError(t, acc.GatherError(cg.Gather))
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"cgroup",
 			map[string]string{
@@ -400,7 +400,7 @@ func TestCgroupStatistics_8(t *testing.T) {
 	require.Error(t, acc.GatherError(cg.Gather))
 	require.Len(t, cg.logged, 1)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"cgroup",
 			map[string]string{"path": "testdata/broken"},
@@ -425,7 +425,7 @@ func TestCgroupEscapeDir(t *testing.T) {
 		logged: make(map[string]bool),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"cgroup",
 			map[string]string{"path": `testdata/backslash/machine-qemu-1-ubuntu`},

@@ -20,12 +20,12 @@ import (
 var sampleConfig string
 
 type NetFlow struct {
-	ServiceAddress string          `toml:"service_address"`
-	ReadBufferSize config.Size     `toml:"read_buffer_size"`
-	Protocol       string          `toml:"protocol"`
-	DumpPackets    bool            `toml:"dump_packets" deprecated:"1.35.0;use 'log_level' 'trace' instead"`
-	PENFiles       []string        `toml:"private_enterprise_number_files"`
-	Log            telegraf.Logger `toml:"-"`
+	ServiceAddress string      `toml:"service_address"`
+	ReadBufferSize config.Size `toml:"read_buffer_size"`
+	Protocol       string      `toml:"protocol"`
+	DumpPackets    bool        `toml:"dump_packets" deprecated:"1.35.0;use 'log_level' 'trace' instead"`
+	PENFiles       []string    `toml:"private_enterprise_number_files"`
+	Log            Dana.Logger `toml:"-"`
 
 	conn    *net.UDPConn
 	decoder protocolDecoder
@@ -34,7 +34,7 @@ type NetFlow struct {
 
 type protocolDecoder interface {
 	init() error
-	decode(net.IP, []byte) ([]telegraf.Metric, error)
+	decode(net.IP, []byte) ([]Dana.Metric, error)
 }
 
 func (*NetFlow) SampleConfig() string {
@@ -82,7 +82,7 @@ func (n *NetFlow) Init() error {
 	return n.decoder.init()
 }
 
-func (n *NetFlow) Start(acc telegraf.Accumulator) error {
+func (n *NetFlow) Start(acc Dana.Accumulator) error {
 	u, err := url.Parse(n.ServiceAddress)
 	if err != nil {
 		return err
@@ -114,7 +114,7 @@ func (n *NetFlow) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*NetFlow) Gather(telegraf.Accumulator) error {
+func (*NetFlow) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -125,7 +125,7 @@ func (n *NetFlow) Stop() {
 	n.wg.Wait()
 }
 
-func (n *NetFlow) read(acc telegraf.Accumulator) {
+func (n *NetFlow) read(acc Dana.Accumulator) {
 	buf := make([]byte, 64*1024) // 64kB
 	for {
 		count, src, err := n.conn.ReadFromUDP(buf)
@@ -139,7 +139,7 @@ func (n *NetFlow) read(acc telegraf.Accumulator) {
 		if count < 1 {
 			continue
 		}
-		if n.Log.Level().Includes(telegraf.Trace) || n.DumpPackets { // for backward compatibility
+		if n.Log.Level().Includes(Dana.Trace) || n.DumpPackets { // for backward compatibility
 			n.Log.Tracef("raw data: %s", hex.EncodeToString(buf[:count]))
 		}
 		metrics, err := n.decoder.decode(src.IP, buf[:count])
@@ -156,7 +156,7 @@ func (n *NetFlow) read(acc telegraf.Accumulator) {
 
 // Register the plugin
 func init() {
-	inputs.Add("netflow", func() telegraf.Input {
+	inputs.Add("netflow", func() Dana.Input {
 		return &NetFlow{}
 	})
 }

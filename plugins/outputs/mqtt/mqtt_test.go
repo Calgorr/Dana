@@ -193,8 +193,8 @@ func TestIntegrationMQTTv3(t *testing.T) {
 	require.NoError(t, plugin.client.SubscribeMultiple(topics, onMessage))
 
 	// Setup and execute the test case
-	input := make([]telegraf.Metric, 0, 3)
-	expected := make([]telegraf.Metric, 0, len(input))
+	input := make([]Dana.Metric, 0, 3)
+	expected := make([]Dana.Metric, 0, len(input))
 	for i := 0; i < cap(input); i++ {
 		name := fmt.Sprintf("test%d", i)
 		m := testutil.TestMetric(i, name)
@@ -345,8 +345,8 @@ func TestIntegrationMQTTLayoutNonBatch(t *testing.T) {
 	require.NoError(t, plugin.client.SubscribeMultiple(topics, onMessage))
 
 	// Setup and execute the test case
-	input := make([]telegraf.Metric, 0, 3)
-	expected := make([]telegraf.Metric, 0, len(input))
+	input := make([]Dana.Metric, 0, 3)
+	expected := make([]Dana.Metric, 0, len(input))
 	for i := 0; i < cap(input); i++ {
 		name := fmt.Sprintf("test%d", i)
 		m := metric.New(
@@ -432,8 +432,8 @@ func TestIntegrationMQTTLayoutBatch(t *testing.T) {
 	require.NoError(t, plugin.client.SubscribeMultiple(topics, onMessage))
 
 	// Setup and execute the test case
-	input := make([]telegraf.Metric, 0, 6)
-	expected := make([]telegraf.Metric, 0, len(input))
+	input := make([]Dana.Metric, 0, 6)
+	expected := make([]Dana.Metric, 0, len(input))
 	for i := 0; i < cap(input); i++ {
 		name := fmt.Sprintf("test%d", i%3)
 		m := metric.New(
@@ -520,7 +520,7 @@ func TestIntegrationMQTTLayoutField(t *testing.T) {
 	require.NoError(t, plugin.client.SubscribeMultiple(topics, onMessage))
 
 	// Setup and execute the test case
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"modbus",
 			map[string]string{
@@ -637,7 +637,7 @@ func TestIntegrationMQTTLayoutHomieV4(t *testing.T) {
 	require.NoError(t, plugin.client.SubscribeMultiple(topics, onMessage))
 
 	// Setup and execute the test case
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"modbus",
 			map[string]string{
@@ -800,7 +800,7 @@ func TestIntegrationMQTTLayoutHomieV4(t *testing.T) {
 	require.ElementsMatch(t, expected, actual)
 }
 
-func createMetricMessageHandler(acc telegraf.Accumulator, parser telegraf.Parser) paho.MessageHandler {
+func createMetricMessageHandler(acc Dana.Accumulator, parser Dana.Parser) paho.MessageHandler {
 	return func(_ paho.Client, msg paho.Message) {
 		metrics, err := parser.Parse(msg.Payload())
 		if err != nil {

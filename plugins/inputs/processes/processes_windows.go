@@ -8,7 +8,7 @@ import (
 )
 
 type Processes struct {
-	Log telegraf.Logger
+	Log Dana.Logger
 }
 
 func (e *Processes) Init() error {
@@ -16,12 +16,12 @@ func (e *Processes) Init() error {
 	return nil
 }
 
-func (e *Processes) Gather(_ telegraf.Accumulator) error {
+func (e *Processes) Gather(_ Dana.Accumulator) error {
 	return nil
 }
 
 func init() {
-	inputs.Add("processes", func() telegraf.Input {
+	inputs.Add("processes", func() Dana.Input {
 		return &Processes{}
 	})
 }

@@ -79,7 +79,7 @@ func (c *Collector) Collect(ch chan<- prometheus.Metric) {
 	}
 }
 
-func (c *Collector) Add(metrics []telegraf.Metric) error {
+func (c *Collector) Add(metrics []Dana.Metric) error {
 	c.Lock()
 	defer c.Unlock()
 

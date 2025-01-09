@@ -263,7 +263,7 @@ var (
 	intelAttributes = map[string]struct {
 		ID    string
 		Name  string
-		Parse func(acc telegraf.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error
+		Parse func(acc Dana.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error
 	}{
 		"program_fail_count": {
 			Name: "Program_Fail_Count",
@@ -303,7 +303,7 @@ var (
 	intelAttributesDeprecatedFormat = map[string]struct {
 		ID    string
 		Name  string
-		Parse func(acc telegraf.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error
+		Parse func(acc Dana.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error
 	}{
 		"program_fail_count": {
 			Name: "Program_Fail_Count",
@@ -334,7 +334,7 @@ var (
 		},
 		"timed_workload_timer": {
 			Name: "Timed_Workload_Timer",
-			Parse: func(acc telegraf.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error {
+			Parse: func(acc Dana.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error {
 				return parseCommaSeparatedIntWithAccumulator(acc, fields, tags, strings.TrimSuffix(str, " min"))
 			},
 		},
@@ -372,7 +372,7 @@ type Smart struct {
 	TagWithDeviceType bool            `toml:"tag_with_device_type"`
 	Timeout           config.Duration `toml:"timeout"`
 	ReadMethod        string          `toml:"read_method"`
-	Log               telegraf.Logger `toml:"-"`
+	Log               Dana.Logger     `toml:"-"`
 }
 
 type nvmeDevice struct {
@@ -437,7 +437,7 @@ func (m *Smart) Init() error {
 }
 
 // Gather takes in an accumulator and adds the metrics that the SMART tools gather.
-func (m *Smart) Gather(acc telegraf.Accumulator) error {
+func (m *Smart) Gather(acc Dana.Accumulator) error {
 	var err error
 	var scannedNVMeDevices []string
 	var scannedNonNVMeDevices []string
@@ -554,7 +554,7 @@ func excludedDev(excludes []string, deviceLine string) bool {
 }
 
 // Add info and attributes for each S.M.A.R.T. device
-func (m *Smart) addAttributes(acc telegraf.Accumulator, devices []string) {
+func (m *Smart) addAttributes(acc Dana.Accumulator, devices []string) {
 	var wg sync.WaitGroup
 	wg.Add(len(devices))
 	for _, device := range devices {
@@ -571,7 +571,7 @@ func (m *Smart) addAttributes(acc telegraf.Accumulator, devices []string) {
 	wg.Wait()
 }
 
-func (m *Smart) addVendorNVMeAttributes(acc telegraf.Accumulator, devices []string) {
+func (m *Smart) addVendorNVMeAttributes(acc Dana.Accumulator, devices []string) {
 	nvmeDevices := getDeviceInfoForNVMeDisks(acc, devices, m.PathNVMe, m.Timeout, m.UseSudo)
 
 	var wg sync.WaitGroup
@@ -606,7 +606,7 @@ func (m *Smart) addVendorNVMeAttributes(acc telegraf.Accumulator, devices []stri
 	wg.Wait()
 }
 
-func getDeviceInfoForNVMeDisks(acc telegraf.Accumulator, devices []string, nvme string, timeout config.Duration, useSudo bool) []nvmeDevice {
+func getDeviceInfoForNVMeDisks(acc Dana.Accumulator, devices []string, nvme string, timeout config.Duration, useSudo bool) []nvmeDevice {
 	nvmeDevices := make([]nvmeDevice, 0, len(devices))
 	for _, device := range devices {
 		newDevice, err := gatherNVMeDeviceInfo(nvme, device, timeout, useSudo)
@@ -667,7 +667,7 @@ func findNVMeDeviceInfo(output string) (nvmeDevice, error) {
 	return newDevice, nil
 }
 
-func gatherIntelNVMeDisk(acc telegraf.Accumulator, timeout config.Duration, usesudo bool, nvme string, device nvmeDevice, wg *sync.WaitGroup) {
+func gatherIntelNVMeDisk(acc Dana.Accumulator, timeout config.Duration, usesudo bool, nvme string, device nvmeDevice, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	args := []string{"intel", "smart-log-add"}
@@ -697,7 +697,7 @@ func gatherIntelNVMeDisk(acc telegraf.Accumulator, timeout config.Duration, uses
 			attr = struct {
 				ID    string
 				Name  string
-				Parse func(acc telegraf.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error
+				Parse func(acc Dana.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error
 			}{}
 			attrExists bool
 		)
@@ -735,7 +735,7 @@ func gatherIntelNVMeDisk(acc telegraf.Accumulator, timeout config.Duration, uses
 	}
 }
 
-func (m *Smart) gatherDisk(acc telegraf.Accumulator, device string, wg *sync.WaitGroup) {
+func (m *Smart) gatherDisk(acc Dana.Accumulator, device string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	// smartctl 5.41 & 5.42 have are broken regarding handling of --nocheck/-n
 	args := []string{"--info", "--health", "--attributes", "--tolerance=verypermissive", "-n", m.Nocheck, "--format=brief"}
@@ -966,7 +966,7 @@ func parseRawValue(rawVal string) (int64, error) {
 	return duration, nil
 }
 
-func parseBytesWritten(acc telegraf.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error {
+func parseBytesWritten(acc Dana.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error {
 	var value int64
 
 	if _, err := fmt.Sscanf(str, "sectors: %d", &value); err != nil {
@@ -977,7 +977,7 @@ func parseBytesWritten(acc telegraf.Accumulator, fields map[string]interface{}, 
 	return nil
 }
 
-func parseThermalThrottle(acc telegraf.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error {
+func parseThermalThrottle(acc Dana.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error {
 	var percentage float64
 	var count int64
 
@@ -996,7 +996,7 @@ func parseThermalThrottle(acc telegraf.Accumulator, fields map[string]interface{
 	return nil
 }
 
-func parseWearLeveling(acc telegraf.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error {
+func parseWearLeveling(acc Dana.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error {
 	var vmin, vmax, avg int64
 
 	if _, err := fmt.Sscanf(str, "min: %d, max: %d, avg: %d", &vmin, &vmax, &avg); err != nil {
@@ -1012,7 +1012,7 @@ func parseWearLeveling(acc telegraf.Accumulator, fields map[string]interface{}, 
 	return nil
 }
 
-func parseTimedWorkload(acc telegraf.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error {
+func parseTimedWorkload(acc Dana.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error {
 	var value float64
 
 	if _, err := fmt.Sscanf(str, "%f", &value); err != nil {
@@ -1064,7 +1064,7 @@ func parseDataUnits(fields, deviceFields map[string]interface{}, str string) err
 	return parseCommaSeparatedInt(fields, deviceFields, units)
 }
 
-func parseCommaSeparatedIntWithAccumulator(acc telegraf.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error {
+func parseCommaSeparatedIntWithAccumulator(acc Dana.Accumulator, fields map[string]interface{}, tags map[string]string, str string) error {
 	i, err := strconv.ParseInt(strings.ReplaceAll(str, ",", ""), 10, 64)
 	if err != nil {
 		return err
@@ -1113,7 +1113,7 @@ func init() {
 	// Set LC_NUMERIC to uniform numeric output from cli tools
 	_ = os.Setenv("LC_NUMERIC", "en_US.UTF-8")
 
-	inputs.Add("smart", func() telegraf.Input {
+	inputs.Add("smart", func() Dana.Input {
 		m := newSmart()
 		m.Nocheck = "standby"
 		return m

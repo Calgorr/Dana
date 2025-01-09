@@ -49,7 +49,7 @@ func (*Ipset) Init() error {
 	return nil
 }
 
-func (i *Ipset) Gather(acc telegraf.Accumulator) error {
+func (i *Ipset) Gather(acc Dana.Accumulator) error {
 	out, e := i.lister(i.Timeout, i.UseSudo)
 	if e != nil {
 		acc.AddError(e)
@@ -141,7 +141,7 @@ func setList(timeout config.Duration, useSudo bool) (*bytes.Buffer, error) {
 }
 
 func init() {
-	inputs.Add("ipset", func() telegraf.Input {
+	inputs.Add("ipset", func() Dana.Input {
 		return &Ipset{
 			lister:  setList,
 			Timeout: defaultTimeout,

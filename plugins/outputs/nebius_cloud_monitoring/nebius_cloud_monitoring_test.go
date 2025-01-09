@@ -57,13 +57,13 @@ func TestWrite(t *testing.T) {
 	tests := []struct {
 		name    string
 		plugin  *NebiusCloudMonitoring
-		metrics []telegraf.Metric
+		metrics []Dana.Metric
 		handler func(t *testing.T, w http.ResponseWriter, r *http.Request)
 	}{
 		{
 			name:   "metric is converted to json value",
 			plugin: &NebiusCloudMonitoring{},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cluster",
 					map[string]string{},
@@ -85,7 +85,7 @@ func TestWrite(t *testing.T) {
 		{
 			name:   "int64 metric is converted to json value",
 			plugin: &NebiusCloudMonitoring{},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cluster",
 					map[string]string{},
@@ -107,7 +107,7 @@ func TestWrite(t *testing.T) {
 		{
 			name:   "int metric is converted to json value",
 			plugin: &NebiusCloudMonitoring{},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cluster",
 					map[string]string{},
@@ -129,7 +129,7 @@ func TestWrite(t *testing.T) {
 		{
 			name:   "label with name 'name' is replaced with '_name'",
 			plugin: &NebiusCloudMonitoring{},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cluster",
 					map[string]string{

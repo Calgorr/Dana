@@ -38,7 +38,7 @@ func (*Uwsgi) SampleConfig() string {
 }
 
 // Gather collect data from uWSGI Server
-func (u *Uwsgi) Gather(acc telegraf.Accumulator) error {
+func (u *Uwsgi) Gather(acc Dana.Accumulator) error {
 	if u.client == nil {
 		u.client = &http.Client{
 			Timeout: time.Duration(u.Timeout),
@@ -68,7 +68,7 @@ func (u *Uwsgi) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (u *Uwsgi) gatherServer(acc telegraf.Accumulator, address *url.URL) error {
+func (u *Uwsgi) gatherServer(acc Dana.Accumulator, address *url.URL) error {
 	var err error
 	var r io.ReadCloser
 	var s StatsServer
@@ -111,7 +111,7 @@ func (u *Uwsgi) gatherServer(acc telegraf.Accumulator, address *url.URL) error {
 	return err
 }
 
-func gatherStatServer(acc telegraf.Accumulator, s *StatsServer) {
+func gatherStatServer(acc Dana.Accumulator, s *StatsServer) {
 	fields := map[string]interface{}{
 		"listen_queue":        s.ListenQueue,
 		"listen_queue_errors": s.ListenQueueErrors,
@@ -133,7 +133,7 @@ func gatherStatServer(acc telegraf.Accumulator, s *StatsServer) {
 	gatherCores(acc, s)
 }
 
-func gatherWorkers(acc telegraf.Accumulator, s *StatsServer) {
+func gatherWorkers(acc Dana.Accumulator, s *StatsServer) {
 	for _, w := range s.Workers {
 		fields := map[string]interface{}{
 			"requests":       w.Requests,
@@ -162,7 +162,7 @@ func gatherWorkers(acc telegraf.Accumulator, s *StatsServer) {
 	}
 }
 
-func gatherApps(acc telegraf.Accumulator, s *StatsServer) {
+func gatherApps(acc Dana.Accumulator, s *StatsServer) {
 	for _, w := range s.Workers {
 		for _, a := range w.Apps {
 			fields := map[string]interface{}{
@@ -181,7 +181,7 @@ func gatherApps(acc telegraf.Accumulator, s *StatsServer) {
 	}
 }
 
-func gatherCores(acc telegraf.Accumulator, s *StatsServer) {
+func gatherCores(acc Dana.Accumulator, s *StatsServer) {
 	for _, w := range s.Workers {
 		for _, c := range w.Cores {
 			fields := map[string]interface{}{
@@ -204,7 +204,7 @@ func gatherCores(acc telegraf.Accumulator, s *StatsServer) {
 }
 
 func init() {
-	inputs.Add("uwsgi", func() telegraf.Input {
+	inputs.Add("uwsgi", func() Dana.Input {
 		return &Uwsgi{
 			Timeout: config.Duration(5 * time.Second),
 		}

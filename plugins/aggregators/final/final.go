@@ -20,7 +20,7 @@ type Final struct {
 	KeepOriginalFieldNames bool            `toml:"keep_original_field_names"`
 
 	// The last metric for all series which are active
-	metricCache map[uint64]telegraf.Metric
+	metricCache map[uint64]Dana.Metric
 }
 
 func NewFinal() *Final {
@@ -45,17 +45,17 @@ func (m *Final) Init() error {
 	}
 
 	// Initialize the cache
-	m.metricCache = make(map[uint64]telegraf.Metric)
+	m.metricCache = make(map[uint64]Dana.Metric)
 
 	return nil
 }
 
-func (m *Final) Add(in telegraf.Metric) {
+func (m *Final) Add(in Dana.Metric) {
 	id := in.HashID()
 	m.metricCache[id] = in
 }
 
-func (m *Final) Push(acc telegraf.Accumulator) {
+func (m *Final) Push(acc Dana.Accumulator) {
 	// Preserve timestamp of original metric
 	acc.SetPrecision(time.Nanosecond)
 
@@ -84,7 +84,7 @@ func (m *Final) Reset() {
 }
 
 func init() {
-	aggregators.Add("final", func() telegraf.Aggregator {
+	aggregators.Add("final", func() Dana.Aggregator {
 		return NewFinal()
 	})
 }

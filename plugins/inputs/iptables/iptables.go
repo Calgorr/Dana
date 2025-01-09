@@ -43,7 +43,7 @@ func (*Iptables) SampleConfig() string {
 	return sampleConfig
 }
 
-func (ipt *Iptables) Gather(acc telegraf.Accumulator) error {
+func (ipt *Iptables) Gather(acc Dana.Accumulator) error {
 	if ipt.Table == "" || len(ipt.Chains) == 0 {
 		return nil
 	}
@@ -90,7 +90,7 @@ func (ipt *Iptables) chainList(table, chain string) (string, error) {
 	return string(out), err
 }
 
-func (ipt *Iptables) parseAndGather(data string, acc telegraf.Accumulator) error {
+func (ipt *Iptables) parseAndGather(data string, acc Dana.Accumulator) error {
 	lines := strings.Split(data, "\n")
 	if len(lines) < 3 {
 		return nil
@@ -131,7 +131,7 @@ func (ipt *Iptables) parseAndGather(data string, acc telegraf.Accumulator) error
 }
 
 func init() {
-	inputs.Add("iptables", func() telegraf.Input {
+	inputs.Add("iptables", func() Dana.Input {
 		ipt := &Iptables{}
 		ipt.lister = ipt.chainList
 		return ipt

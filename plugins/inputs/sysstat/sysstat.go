@@ -70,7 +70,7 @@ type Sysstat struct {
 	// DeviceTags adds the possibility to add additional tags for devices.
 	DeviceTags map[string][]map[string]string `toml:"device_tags"`
 
-	Log telegraf.Logger
+	Log Dana.Logger
 
 	// Used to autodetect how long the sadc command should run for
 	interval       int
@@ -100,7 +100,7 @@ func (s *Sysstat) Init() error {
 	return nil
 }
 
-func (s *Sysstat) Gather(acc telegraf.Accumulator) error {
+func (s *Sysstat) Gather(acc Dana.Accumulator) error {
 	if time.Duration(s.SadcInterval) != 0 {
 		// Collect interval is calculated as interval - parseInterval
 		s.interval = int(time.Duration(s.SadcInterval).Seconds()) + parseInterval
@@ -128,7 +128,7 @@ func (s *Sysstat) Gather(acc telegraf.Accumulator) error {
 	var wg sync.WaitGroup
 	for option := range s.Options {
 		wg.Add(1)
-		go func(acc telegraf.Accumulator, option string) {
+		go func(acc Dana.Accumulator, option string) {
 			defer wg.Done()
 			acc.AddError(s.parse(acc, option, tmpfile.Name(), ts))
 		}(acc, option)
@@ -197,8 +197,8 @@ func withCLocale(cmd *exec.Cmd) *exec.Cmd {
 //
 //	Sadf -p -- -p <option> tmpFile
 //
-// and parses the output to add it to the telegraf.Accumulator acc.
-func (s *Sysstat) parse(acc telegraf.Accumulator, option, tmpfile string, ts time.Time) error {
+// and parses the output to add it to the Dana.Accumulator acc.
+func (s *Sysstat) parse(acc Dana.Accumulator, option, tmpfile string, ts time.Time) error {
 	cmd := execCommand(s.Sadf, sadfOptions(option, tmpfile)...)
 	cmd = withCLocale(cmd)
 	stdout, err := cmd.StdoutPipe()
@@ -307,7 +307,7 @@ func escape(dirty string) string {
 }
 
 func init() {
-	inputs.Add("sysstat", func() telegraf.Input {
+	inputs.Add("sysstat", func() Dana.Input {
 		return &Sysstat{
 			Group:      true,
 			Activities: dfltActivities,

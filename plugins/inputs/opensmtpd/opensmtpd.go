@@ -40,7 +40,7 @@ func (*Opensmtpd) SampleConfig() string {
 	return sampleConfig
 }
 
-func (s *Opensmtpd) Gather(acc telegraf.Accumulator) error {
+func (s *Opensmtpd) Gather(acc Dana.Accumulator) error {
 	// All the dots in stat name will be replaced by underscores.
 	// Histogram statistics will not be collected.
 
@@ -110,7 +110,7 @@ func opensmtpdRunner(cmdName string, timeout config.Duration, useSudo bool) (*by
 }
 
 func init() {
-	inputs.Add("opensmtpd", func() telegraf.Input {
+	inputs.Add("opensmtpd", func() Dana.Input {
 		return &Opensmtpd{
 			run:     opensmtpdRunner,
 			Binary:  defaultBinary,

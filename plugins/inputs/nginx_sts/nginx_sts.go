@@ -35,7 +35,7 @@ func (*NginxSTS) SampleConfig() string {
 	return sampleConfig
 }
 
-func (n *NginxSTS) Gather(acc telegraf.Accumulator) error {
+func (n *NginxSTS) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	// Create an HTTP client that is re-used for each
@@ -87,7 +87,7 @@ func (n *NginxSTS) createHTTPClient() (*http.Client, error) {
 	return client, nil
 }
 
-func (n *NginxSTS) gatherURL(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *NginxSTS) gatherURL(addr *url.URL, acc Dana.Accumulator) error {
 	resp, err := n.client.Get(addr.String())
 	if err != nil {
 		return fmt.Errorf("error making HTTP request to %q: %w", addr.String(), err)
@@ -164,7 +164,7 @@ type upstream struct {
 	Down                  bool   `json:"down"`
 }
 
-func gatherStatusURL(r *bufio.Reader, tags map[string]string, acc telegraf.Accumulator) error {
+func gatherStatusURL(r *bufio.Reader, tags map[string]string, acc Dana.Accumulator) error {
 	dec := json.NewDecoder(r)
 	status := &nginxSTSResponse{}
 	if err := dec.Decode(status); err != nil {
@@ -285,7 +285,7 @@ func getTags(addr *url.URL) map[string]string {
 }
 
 func init() {
-	inputs.Add("nginx_sts", func() telegraf.Input {
+	inputs.Add("nginx_sts", func() Dana.Input {
 		return &NginxSTS{}
 	})
 }

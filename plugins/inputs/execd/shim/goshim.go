@@ -41,9 +41,9 @@ const (
 // Shim allows you to wrap your inputs and run them as if they were part of Telegraf,
 // except built externally.
 type Shim struct {
-	Inputs            []telegraf.Input
+	Inputs            []Dana.Input
 	gatherPromptChans []chan empty
-	metricCh          chan telegraf.Metric
+	metricCh          chan Dana.Metric
 
 	stdin  io.Reader
 	stdout io.Writer
@@ -63,8 +63,8 @@ func New() *Shim {
 }
 
 // AddInput adds the input to the shim. Later calls to Run() will run this input.
-func (s *Shim) AddInput(input telegraf.Input) error {
-	if p, ok := input.(telegraf.Initializer); ok {
+func (s *Shim) AddInput(input Dana.Input) error {
+	if p, ok := input.(Dana.Initializer); ok {
 		err := p.Init()
 		if err != nil {
 			return fmt.Errorf("failed to init input: %w", err)
@@ -76,7 +76,7 @@ func (s *Shim) AddInput(input telegraf.Input) error {
 }
 
 // AddInputs adds multiple inputs to the shim. Later calls to Run() will run these.
-func (s *Shim) AddInputs(newInputs []telegraf.Input) error {
+func (s *Shim) AddInputs(newInputs []Dana.Input) error {
 	for _, inp := range newInputs {
 		if err := s.AddInput(inp); err != nil {
 			return err
@@ -92,7 +92,7 @@ func (s *Shim) Run(pollInterval time.Duration) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	s.metricCh = make(chan telegraf.Metric, 1)
+	s.metricCh = make(chan Dana.Metric, 1)
 
 	wg := sync.WaitGroup{}
 	quit := make(chan os.Signal, 1)
@@ -112,7 +112,7 @@ func (s *Shim) Run(pollInterval time.Duration) error {
 		acc := agent.NewAccumulator(wrappedInput, s.metricCh)
 		acc.SetPrecision(time.Nanosecond)
 
-		if serviceInput, ok := input.(telegraf.ServiceInput); ok {
+		if serviceInput, ok := input.(Dana.ServiceInput); ok {
 			if err := serviceInput.Start(acc); err != nil {
 				return fmt.Errorf("failed to start input: %w", err)
 			}
@@ -120,9 +120,9 @@ func (s *Shim) Run(pollInterval time.Duration) error {
 		gatherPromptCh := make(chan empty, 1)
 		s.gatherPromptChans = append(s.gatherPromptChans, gatherPromptCh)
 		wg.Add(1) // one per input
-		go func(input telegraf.Input) {
+		go func(input Dana.Input) {
 			s.startGathering(ctx, input, acc, gatherPromptCh, pollInterval)
-			if serviceInput, ok := input.(telegraf.ServiceInput); ok {
+			if serviceInput, ok := input.(Dana.ServiceInput); ok {
 				serviceInput.Stop()
 			}
 			close(gatherPromptCh)
@@ -175,7 +175,7 @@ func (s *Shim) LoadConfig(filePath *string) error {
 // DefaultImportedPlugins defaults to whatever plugins happen to be loaded and
 // have registered themselves with the registry. This makes loading plugins
 // without having to define a config dead easy.
-func DefaultImportedPlugins() (i []telegraf.Input, e error) {
+func DefaultImportedPlugins() (i []Dana.Input, e error) {
 	for _, inputCreatorFunc := range inputs.Inputs {
 		i = append(i, inputCreatorFunc())
 	}
@@ -183,7 +183,7 @@ func DefaultImportedPlugins() (i []telegraf.Input, e error) {
 }
 
 // LoadConfig loads the config and returns inputs that later need to be loaded.
-func LoadConfig(filePath *string) ([]telegraf.Input, error) {
+func LoadConfig(filePath *string) ([]Dana.Input, error) {
 	if filePath == nil || *filePath == "" {
 		return DefaultImportedPlugins()
 	}
@@ -260,7 +260,7 @@ func (s *Shim) collectMetrics(ctx context.Context) {
 	}
 }
 
-func (s *Shim) startGathering(ctx context.Context, input telegraf.Input, acc telegraf.Accumulator, gatherPromptCh <-chan empty, pollInterval time.Duration) {
+func (s *Shim) startGathering(ctx context.Context, input Dana.Input, acc Dana.Accumulator, gatherPromptCh <-chan empty, pollInterval time.Duration) {
 	if pollInterval == PollIntervalDisabled {
 		return // don't poll
 	}
@@ -303,8 +303,8 @@ func getEnv(key string) string {
 	return envVarEscaper.Replace(v)
 }
 
-func loadConfigIntoInputs(md toml.MetaData, inputConfigs map[string][]toml.Primitive) ([]telegraf.Input, error) {
-	renderedInputs := make([]telegraf.Input, 0, len(inputConfigs))
+func loadConfigIntoInputs(md toml.MetaData, inputConfigs map[string][]toml.Primitive) ([]Dana.Input, error) {
+	renderedInputs := make([]Dana.Input, 0, len(inputConfigs))
 	for name, primitives := range inputConfigs {
 		inputCreator, ok := inputs.Inputs[name]
 		if !ok {

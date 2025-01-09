@@ -22,7 +22,7 @@ var sampleConfig string
 
 // IPVS holds the state for this input plugin
 type IPVS struct {
-	Log    telegraf.Logger `toml:"-"`
+	Log    Dana.Logger `toml:"-"`
 	handle *ipvs.Handle
 }
 
@@ -30,7 +30,7 @@ func (*IPVS) SampleConfig() string {
 	return sampleConfig
 }
 
-func (i *IPVS) Gather(acc telegraf.Accumulator) error {
+func (i *IPVS) Gather(acc Dana.Accumulator) error {
 	if i.handle == nil {
 		h, err := ipvs.New("") // TODO: make the namespace configurable
 		if err != nil {
@@ -147,7 +147,7 @@ func addressFamilyToString(af uint16) string {
 }
 
 func init() {
-	inputs.Add("ipvs", func() telegraf.Input {
+	inputs.Add("ipvs", func() Dana.Input {
 		logrus.InstallHook()
 		return &IPVS{}
 	})

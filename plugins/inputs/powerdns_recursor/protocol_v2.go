@@ -17,7 +17,7 @@ import (
 // Synchronous request / response, individual datagrams
 // Datagram 1 => status: uint32
 // Datagram 2 => data: byte[] (max 16_384 bytes)
-func (p *PowerdnsRecursor) gatherFromV2Server(address string, acc telegraf.Accumulator) error {
+func (p *PowerdnsRecursor) gatherFromV2Server(address string, acc Dana.Accumulator) error {
 	recvSocket := filepath.Join(p.SocketDir, "pdns_recursor_telegraf"+uuid.New().String())
 
 	laddr, err := net.ResolveUnixAddr("unixgram", recvSocket)

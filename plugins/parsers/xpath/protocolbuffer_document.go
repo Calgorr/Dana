@@ -27,7 +27,7 @@ type protobufDocument struct {
 	MessageType  string
 	ImportPaths  []string
 	SkipBytes    int64
-	Log          telegraf.Logger
+	Log          Dana.Logger
 
 	msg          *dynamicpb.Message
 	unmarshaller proto.UnmarshalOptions

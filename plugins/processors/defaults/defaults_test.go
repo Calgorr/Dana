@@ -16,8 +16,8 @@ func TestDefaults(t *testing.T) {
 	scenarios := []struct {
 		name     string
 		defaults *Defaults
-		input    telegraf.Metric
-		expected []telegraf.Metric
+		input    Dana.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "Test that no values are changed since they are not nil or empty",
@@ -38,7 +38,7 @@ func TestDefaults(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"CPU metrics",
 					map[string]string{},
@@ -70,7 +70,7 @@ func TestDefaults(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"CPU metrics",
 					map[string]string{},
@@ -106,7 +106,7 @@ func TestDefaults(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"CPU metrics",
 					map[string]string{},
@@ -134,27 +134,27 @@ func TestDefaults(t *testing.T) {
 }
 
 func TestTracking(t *testing.T) {
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42, "topic": "telegraf"}, time.Unix(0, 0)),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"hours": 23}, time.Unix(0, 0)),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"status": "fixed"}, time.Unix(0, 0)),
 	}
 
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"foo",
 			map[string]string{},

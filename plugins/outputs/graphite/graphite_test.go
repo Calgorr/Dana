@@ -38,7 +38,7 @@ func TestGraphiteError(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 	// Prepare point list
-	metrics := []telegraf.Metric{m1}
+	metrics := []Dana.Metric{m1}
 
 	require.NoError(t, g.Connect())
 	err := g.Write(metrics)
@@ -66,7 +66,7 @@ func TestGraphiteReconnect(t *testing.T) {
 
 	t.Log("Writing metric, without any server up, expected to fail")
 	require.NoError(t, g.Connect())
-	require.Error(t, g.Write([]telegraf.Metric{m}))
+	require.Error(t, g.Write([]Dana.Metric{m}))
 
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -75,7 +75,7 @@ func TestGraphiteReconnect(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Log("Writing metric after server came up, we expect automatic reconnect on write without calling Connect() again")
-	require.NoError(t, g.Write([]telegraf.Metric{m}))
+	require.NoError(t, g.Write([]Dana.Metric{m}))
 
 	simulateTCPServer(t, &wg, tcpServer, "192_168_0_1.|us-west-2|.mymeasurement.myfield 0.123 1289430000")
 
@@ -119,8 +119,8 @@ func TestGraphiteOK(t *testing.T) {
 	)
 
 	// Prepare point list
-	metrics := []telegraf.Metric{m1}
-	metrics2 := []telegraf.Metric{m2, m3}
+	metrics := []Dana.Metric{m1}
+	metrics2 := []Dana.Metric{m2, m3}
 	err1 := g.Connect()
 	require.NoError(t, err1)
 	// Send Data
@@ -172,7 +172,7 @@ func TestGraphiteStrictRegex(t *testing.T) {
 	}
 	require.NoError(t, g.Init())
 	require.NoError(t, g.Connect())
-	require.NoError(t, g.Write([]telegraf.Metric{m}))
+	require.NoError(t, g.Write([]Dana.Metric{m}))
 
 	wg.Wait()
 	require.NoError(t, g.Close())
@@ -215,8 +215,8 @@ func TestGraphiteOkWithSeparatorDot(t *testing.T) {
 	)
 
 	// Prepare point list
-	metrics := []telegraf.Metric{m1}
-	metrics2 := []telegraf.Metric{m2, m3}
+	metrics := []Dana.Metric{m1}
+	metrics2 := []Dana.Metric{m2, m3}
 	err1 := g.Connect()
 	require.NoError(t, err1)
 	// Send Data
@@ -279,8 +279,8 @@ func TestGraphiteOkWithSeparatorUnderscore(t *testing.T) {
 	)
 
 	// Prepare point list
-	metrics := []telegraf.Metric{m1}
-	metrics2 := []telegraf.Metric{m2, m3}
+	metrics := []Dana.Metric{m1}
+	metrics2 := []Dana.Metric{m2, m3}
 	err1 := g.Connect()
 	require.NoError(t, err1)
 	// Send Data
@@ -347,8 +347,8 @@ func TestGraphiteOKWithMultipleTemplates(t *testing.T) {
 	)
 
 	// Prepare point list
-	metrics := []telegraf.Metric{m1}
-	metrics2 := []telegraf.Metric{m2, m3}
+	metrics := []Dana.Metric{m1}
+	metrics2 := []Dana.Metric{m2, m3}
 	err1 := g.Connect()
 	require.NoError(t, err1)
 	// Send Data
@@ -411,8 +411,8 @@ func TestGraphiteOkWithTags(t *testing.T) {
 	)
 
 	// Prepare point list
-	metrics := []telegraf.Metric{m1}
-	metrics2 := []telegraf.Metric{m2, m3}
+	metrics := []Dana.Metric{m1}
+	metrics2 := []Dana.Metric{m2, m3}
 	err1 := g.Connect()
 	require.NoError(t, err1)
 	// Send Data
@@ -476,8 +476,8 @@ func TestGraphiteOkWithTagsAndSeparatorDot(t *testing.T) {
 	)
 
 	// Prepare point list
-	metrics := []telegraf.Metric{m1}
-	metrics2 := []telegraf.Metric{m2, m3}
+	metrics := []Dana.Metric{m1}
+	metrics2 := []Dana.Metric{m2, m3}
 	err1 := g.Connect()
 	require.NoError(t, err1)
 	// Send Data
@@ -541,8 +541,8 @@ func TestGraphiteOkWithTagsAndSeparatorUnderscore(t *testing.T) {
 	)
 
 	// Prepare point list
-	metrics := []telegraf.Metric{m1}
-	metrics2 := []telegraf.Metric{m2, m3}
+	metrics := []Dana.Metric{m1}
+	metrics2 := []Dana.Metric{m2, m3}
 	err1 := g.Connect()
 	require.NoError(t, err1)
 	// Send Data
@@ -613,7 +613,7 @@ func TestIntegration(t *testing.T) {
 	require.NoError(t, plugin.Connect())
 	defer plugin.Close()
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"source": "foo"},

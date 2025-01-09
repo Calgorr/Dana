@@ -43,7 +43,7 @@ type jsonView struct {
 }
 
 // addJSONCounter adds a counter array to a Telegraf Accumulator, with the specified tags.
-func addJSONCounter(acc telegraf.Accumulator, commonTags map[string]string, stats map[string]int) {
+func addJSONCounter(acc Dana.Accumulator, commonTags map[string]string, stats map[string]int) {
 	grouper := metric.NewSeriesGrouper()
 	ts := time.Now()
 	for name, value := range stats {
@@ -67,8 +67,8 @@ func addJSONCounter(acc telegraf.Accumulator, commonTags map[string]string, stat
 	}
 }
 
-// addStatsJson walks a jsonStats struct and adds the values to the telegraf.Accumulator.
-func (b *Bind) addStatsJSON(stats jsonStats, acc telegraf.Accumulator, urlTag string) {
+// addStatsJson walks a jsonStats struct and adds the values to the Dana.Accumulator.
+func (b *Bind) addStatsJSON(stats jsonStats, acc Dana.Accumulator, urlTag string) {
 	grouper := metric.NewSeriesGrouper()
 	ts := time.Now()
 	tags := map[string]string{"url": urlTag}
@@ -151,7 +151,7 @@ func (b *Bind) addStatsJSON(stats jsonStats, acc telegraf.Accumulator, urlTag st
 // readStatsJSON takes a base URL to probe, and requests the individual statistics blobs that we
 // are interested in. These individual blobs have a combined size which is significantly smaller
 // than if we requested everything at once (e.g. taskmgr and socketmgr can be omitted).
-func (b *Bind) readStatsJSON(addr *url.URL, acc telegraf.Accumulator) error {
+func (b *Bind) readStatsJSON(addr *url.URL, acc Dana.Accumulator) error {
 	var stats jsonStats
 
 	// Progressively build up full jsonStats struct by parsing the individual HTTP responses

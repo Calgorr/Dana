@@ -14,7 +14,7 @@ import (
 func TestSerializer(t *testing.T) {
 	var tests = []struct {
 		name      string
-		input     telegraf.Metric
+		input     Dana.Metric
 		template  string
 		output    []byte
 		errReason string
@@ -144,7 +144,7 @@ func TestSerializer(t *testing.T) {
 			}
 			require.Equal(t, string(tt.output), string(output))
 			// Ensure we get the same output in batch mode
-			batchOutput, err := serializer.SerializeBatch([]telegraf.Metric{tt.input})
+			batchOutput, err := serializer.SerializeBatch([]Dana.Metric{tt.input})
 			if tt.errReason != "" {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), tt.errReason)
@@ -163,7 +163,7 @@ func TestSerializeBatch(t *testing.T) {
 		},
 		time.Unix(0, 0),
 	)
-	metrics := []telegraf.Metric{m, m}
+	metrics := []Dana.Metric{m, m}
 	s := &Serializer{BatchTemplate: `{{ range $index, $metric := . }}{{$index}}: {{$metric.Name}} {{$metric.Field "value"}}
 {{end}}`}
 	require.NoError(t, s.Init())

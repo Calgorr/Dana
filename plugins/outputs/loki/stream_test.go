@@ -12,12 +12,12 @@ type tuple struct {
 	key, value string
 }
 
-func generateLabelsAndTag(tt ...tuple) (map[string]string, []*telegraf.Tag) {
+func generateLabelsAndTag(tt ...tuple) (map[string]string, []*Dana.Tag) {
 	labels := map[string]string{}
-	tags := make([]*telegraf.Tag, 0, len(tt))
+	tags := make([]*Dana.Tag, 0, len(tt))
 	for _, t := range tt {
 		labels[t.key] = t.value
-		tags = append(tags, &telegraf.Tag{Key: t.key, Value: t.value})
+		tags = append(tags, &Dana.Tag{Key: t.key, Value: t.value})
 	}
 
 	return labels, tags
@@ -30,7 +30,7 @@ func TestGenerateLabelsAndTag(t *testing.T) {
 		tuple{key: "key3", value: "value3"},
 	)
 
-	expectedTags := []*telegraf.Tag{
+	expectedTags := []*Dana.Tag{
 		{Key: "key1", Value: "value1"},
 		{Key: "key2", Value: "value2"},
 		{Key: "key3", Value: "value3"},
@@ -89,11 +89,11 @@ func TestStream_insertLog(t *testing.T) {
 
 func TestUniqKeyFromTagList(t *testing.T) {
 	tests := []struct {
-		in  []*telegraf.Tag
+		in  []*Dana.Tag
 		out string
 	}{
 		{
-			in: []*telegraf.Tag{
+			in: []*Dana.Tag{
 				{Key: "key1", Value: "value1"},
 				{Key: "key2", Value: "value2"},
 				{Key: "key3", Value: "value3"},
@@ -101,7 +101,7 @@ func TestUniqKeyFromTagList(t *testing.T) {
 			out: "key1-value1-key2-value2-key3-value3-",
 		},
 		{
-			in: []*telegraf.Tag{
+			in: []*Dana.Tag{
 				{Key: "key1", Value: "value1"},
 				{Key: "key3", Value: "value3"},
 				{Key: "key4", Value: "value4"},
@@ -109,7 +109,7 @@ func TestUniqKeyFromTagList(t *testing.T) {
 			out: "key1-value1-key3-value3-key4-value4-",
 		},
 		{
-			in: []*telegraf.Tag{
+			in: []*Dana.Tag{
 				{Key: "target", Value: "local"},
 				{Key: "host", Value: "host"},
 				{Key: "service", Value: "dns"},
@@ -117,14 +117,14 @@ func TestUniqKeyFromTagList(t *testing.T) {
 			out: "target-local-host-host-service-dns-",
 		},
 		{
-			in: []*telegraf.Tag{
+			in: []*Dana.Tag{
 				{Key: "target", Value: "localhost"},
 				{Key: "hostservice", Value: "dns"},
 			},
 			out: "target-localhost-hostservice-dns-",
 		},
 		{
-			in: []*telegraf.Tag{
+			in: []*Dana.Tag{
 				{Key: "target-local", Value: "host-"},
 			},
 			out: "target--local-host---",

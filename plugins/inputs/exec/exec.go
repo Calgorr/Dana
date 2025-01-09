@@ -34,9 +34,9 @@ type Exec struct {
 	Environment []string        `toml:"environment"`
 	IgnoreError bool            `toml:"ignore_error"`
 	Timeout     config.Duration `toml:"timeout"`
-	Log         telegraf.Logger `toml:"-"`
+	Log         Dana.Logger     `toml:"-"`
 
-	parser telegraf.Parser
+	parser Dana.Parser
 
 	runner runner
 
@@ -45,7 +45,7 @@ type Exec struct {
 	parseDespiteError bool
 }
 
-type exitCodeHandlerFunc func([]telegraf.Metric, error, []byte) []telegraf.Metric
+type exitCodeHandlerFunc func([]Dana.Metric, error, []byte) []Dana.Metric
 
 type runner interface {
 	run(string, []string, time.Duration) ([]byte, []byte, error)
@@ -63,7 +63,7 @@ func (*Exec) Init() error {
 	return nil
 }
 
-func (e *Exec) SetParser(parser telegraf.Parser) {
+func (e *Exec) SetParser(parser Dana.Parser) {
 	e.parser = parser
 	unwrapped, ok := parser.(*models.RunningParser)
 	if ok {
@@ -74,7 +74,7 @@ func (e *Exec) SetParser(parser telegraf.Parser) {
 	}
 }
 
-func (e *Exec) Gather(acc telegraf.Accumulator) error {
+func (e *Exec) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	// Legacy single command support
 	if e.Command != "" {
@@ -160,7 +160,7 @@ func removeWindowsCarriageReturns(b bytes.Buffer) bytes.Buffer {
 	return b
 }
 
-func (e *Exec) processCommand(command string, acc telegraf.Accumulator, wg *sync.WaitGroup) {
+func (e *Exec) processCommand(command string, acc Dana.Accumulator, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	out, errBuf, runErr := e.runner.run(command, e.Environment, time.Duration(e.Timeout))
@@ -191,7 +191,7 @@ func (e *Exec) processCommand(command string, acc telegraf.Accumulator, wg *sync
 	}
 }
 
-func nagiosHandler(metrics []telegraf.Metric, err error, msg []byte) []telegraf.Metric {
+func nagiosHandler(metrics []Dana.Metric, err error, msg []byte) []Dana.Metric {
 	return nagios.AddState(err, msg, metrics)
 }
 
@@ -203,7 +203,7 @@ func newExec() *Exec {
 }
 
 func init() {
-	inputs.Add("exec", func() telegraf.Input {
+	inputs.Add("exec", func() Dana.Input {
 		return newExec()
 	})
 }

@@ -55,7 +55,7 @@ type Query struct {
 	fieldFilterString filter.Filter
 }
 
-func (q *Query) parse(acc telegraf.Accumulator, rows *dbsql.Rows, t time.Time, logger telegraf.Logger) (int, error) {
+func (q *Query) parse(acc Dana.Accumulator, rows *dbsql.Rows, t time.Time, logger Dana.Logger) (int, error) {
 	columnNames, err := rows.Columns()
 	if err != nil {
 		return 0, err
@@ -223,7 +223,7 @@ type SQL struct {
 	MaxOpenConnections          int             `toml:"connection_max_open"`
 	MaxIdleConnections          int             `toml:"connection_max_idle"`
 	Queries                     []Query         `toml:"query"`
-	Log                         telegraf.Logger `toml:"-"`
+	Log                         Dana.Logger     `toml:"-"`
 	DisconnectedServersBehavior string          `toml:"disconnected_servers_behavior"`
 
 	driverName      string
@@ -432,7 +432,7 @@ func (s *SQL) prepareStatements() {
 	}
 }
 
-func (s *SQL) Start(_ telegraf.Accumulator) error {
+func (s *SQL) Start(_ Dana.Accumulator) error {
 	if err := s.setupConnection(); err != nil {
 		return err
 	}
@@ -468,7 +468,7 @@ func (s *SQL) Stop() {
 	}
 }
 
-func (s *SQL) Gather(acc telegraf.Accumulator) error {
+func (s *SQL) Gather(acc Dana.Accumulator) error {
 	// during plugin startup, it is possible that the server was not reachable.
 	// we try pinging the server in this collection cycle.
 	// we are only concerned with `prepareStatements` function to complete(return true), just once.
@@ -499,7 +499,7 @@ func (s *SQL) Gather(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("sql", func() telegraf.Input {
+	inputs.Add("sql", func() Dana.Input {
 		return &SQL{
 			MaxIdleTime:        config.Duration(0), // unlimited
 			MaxLifetime:        config.Duration(0), // unlimited
@@ -509,7 +509,7 @@ func init() {
 	})
 }
 
-func (s *SQL) executeQuery(ctx context.Context, acc telegraf.Accumulator, q Query, tquery time.Time) error {
+func (s *SQL) executeQuery(ctx context.Context, acc Dana.Accumulator, q Query, tquery time.Time) error {
 	// Execute the query either prepared or unprepared
 	var rows *dbsql.Rows
 	if q.statement != nil {

@@ -363,7 +363,7 @@ func TestGatherMetric(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var acc telegraf.Accumulator
+			var acc Dana.Accumulator
 			require.EqualError(t, plugin.gatherMetric(acc, tt.metricName, metric), tt.expectedErrorString)
 		})
 	}
@@ -390,12 +390,12 @@ func TestGather(t *testing.T) {
 		name           string
 		hasMeasurement bool
 		metricNames    []string
-		expected       []telegraf.Metric
+		expected       []Dana.Metric
 	}{
 		{
 			name:        "Empty data point",
 			metricNames: []string{"EmptyDatapoint"},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"aliyuncms_acs_slb_dashboard",
 					nil,
@@ -407,7 +407,7 @@ func TestGather(t *testing.T) {
 			name:           "Data point with fields & tags",
 			hasMeasurement: true,
 			metricNames:    []string{"InstanceActiveConnection"},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"aliyuncms_acs_slb_dashboard",
 					map[string]string{

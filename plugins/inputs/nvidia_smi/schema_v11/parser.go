@@ -9,7 +9,7 @@ import (
 )
 
 // Parse parses the XML-encoded data from nvidia-smi and adds measurements.
-func Parse(acc telegraf.Accumulator, buf []byte) error {
+func Parse(acc Dana.Accumulator, buf []byte) error {
 	var s smi
 	if err := xml.Unmarshal(buf, &s); err != nil {
 		return err

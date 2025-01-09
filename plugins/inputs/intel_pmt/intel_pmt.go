@@ -34,10 +34,10 @@ const (
 )
 
 type IntelPMT struct {
-	PmtSpec        string          `toml:"spec"`
-	DatatypeFilter []string        `toml:"datatypes_enabled"`
-	SampleFilter   []string        `toml:"samples_enabled"`
-	Log            telegraf.Logger `toml:"-"`
+	PmtSpec        string      `toml:"spec"`
+	DatatypeFilter []string    `toml:"datatypes_enabled"`
+	SampleFilter   []string    `toml:"samples_enabled"`
+	Log            Dana.Logger `toml:"-"`
 
 	pmtBasePath            string
 	reader                 sourceReader
@@ -74,7 +74,7 @@ func (p *IntelPMT) Init() error {
 	return p.parseXMLs()
 }
 
-func (p *IntelPMT) Gather(acc telegraf.Accumulator) error {
+func (p *IntelPMT) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	var hasError atomic.Bool
 	for guid := range p.pmtTelemetryFiles {
@@ -296,7 +296,7 @@ func getTelemSample(s sample, buf []byte, offset uint64) (uint64, error) {
 // Returns:
 //
 //	error - error if getting values has failed, if sample IDref is missing or if equation evaluation has failed.
-func (p *IntelPMT) aggregateSamples(acc telegraf.Accumulator, guid string, data []byte, numaNode, pciBdf string) error {
+func (p *IntelPMT) aggregateSamples(acc Dana.Accumulator, guid string, data []byte, numaNode, pciBdf string) error {
 	results, err := p.getSampleValues(guid, data)
 	if err != nil {
 		return err
@@ -399,7 +399,7 @@ func hexToDec(hexStr string) string {
 }
 
 func init() {
-	inputs.Add(pluginName, func() telegraf.Input {
+	inputs.Add(pluginName, func() Dana.Input {
 		return &IntelPMT{}
 	})
 }

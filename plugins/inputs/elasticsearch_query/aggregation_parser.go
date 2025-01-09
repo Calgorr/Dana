@@ -13,7 +13,7 @@ type resultMetric struct {
 	tags   map[string]string
 }
 
-func parseSimpleResult(acc telegraf.Accumulator, measurement string, searchResult *elastic5.SearchResult) {
+func parseSimpleResult(acc Dana.Accumulator, measurement string, searchResult *elastic5.SearchResult) {
 	fields := make(map[string]interface{})
 	tags := make(map[string]string)
 
@@ -22,7 +22,7 @@ func parseSimpleResult(acc telegraf.Accumulator, measurement string, searchResul
 	acc.AddFields(measurement, fields, tags)
 }
 
-func parseAggregationResult(acc telegraf.Accumulator, aggregationQueryList []aggregationQueryData, searchResult *elastic5.SearchResult) error {
+func parseAggregationResult(acc Dana.Accumulator, aggregationQueryList []aggregationQueryData, searchResult *elastic5.SearchResult) error {
 	measurements := make(map[string]map[string]string, len(aggregationQueryList))
 
 	// organize the aggregation query data by measurement
@@ -54,7 +54,7 @@ func parseAggregationResult(acc telegraf.Accumulator, aggregationQueryList []agg
 	return nil
 }
 
-func recurseResponse(acc telegraf.Accumulator, aggNameFunction map[string]string, bucketResponse elastic5.Aggregations, m resultMetric) (resultMetric, error) {
+func recurseResponse(acc Dana.Accumulator, aggNameFunction map[string]string, bucketResponse elastic5.Aggregations, m resultMetric) (resultMetric, error) {
 	var err error
 
 	aggNames := getAggNames(bucketResponse)

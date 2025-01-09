@@ -65,7 +65,7 @@ func TestExternalOutputBatch(t *testing.T) {
 	)
 
 	require.NoError(t, e.Connect())
-	require.NoError(t, e.Write([]telegraf.Metric{m, m}))
+	require.NoError(t, e.Write([]Dana.Metric{m, m}))
 	// Make sure it executed the command once, with 2 metrics
 	require.Equal(t, []int{2}, runner.runs)
 	require.NoError(t, e.Close())
@@ -91,7 +91,7 @@ func TestExternalOutputNoBatch(t *testing.T) {
 	)
 
 	require.NoError(t, e.Connect())
-	require.NoError(t, e.Write([]telegraf.Metric{m, m}))
+	require.NoError(t, e.Write([]Dana.Metric{m, m}))
 	// Make sure it executed the command twice, both with a single metric
 	require.Equal(t, []int{1, 1}, runner.runs)
 	require.NoError(t, e.Close())
@@ -104,7 +104,7 @@ func TestExec(t *testing.T) {
 		name    string
 		command []string
 		err     bool
-		metrics []telegraf.Metric
+		metrics []Dana.Metric
 	}{
 		{
 			name:    "test success",

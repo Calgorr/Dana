@@ -281,7 +281,7 @@ func TestSubscribeClientIntegrationAdditionalFields(t *testing.T) {
 		"The operation succeeded. StatusGood (0x0)",
 		"The operation succeeded. StatusGood (0x0)",
 	}
-	expectedopcmetrics := make([]telegraf.Metric, 0, len(testopctags))
+	expectedopcmetrics := make([]Dana.Metric, 0, len(testopctags))
 	for i, x := range testopctags {
 		now := time.Now()
 		tags := map[string]string{
@@ -365,7 +365,7 @@ func TestSubscribeClientIntegrationAdditionalFields(t *testing.T) {
 						return
 					}
 					// Test if the received metric matches one of the expected
-					testutil.RequireMetricsSubset(t, []telegraf.Metric{m}, expectedopcmetrics, testutil.IgnoreTime())
+					testutil.RequireMetricsSubset(t, []Dana.Metric{m}, expectedopcmetrics, testutil.IgnoreTime())
 					tagsRemaining = newRemaining
 				}
 			}

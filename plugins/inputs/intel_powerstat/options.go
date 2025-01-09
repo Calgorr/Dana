@@ -19,7 +19,7 @@ type optConfig struct {
 	excludedCPUs   []int
 	perfEventFile  string
 	msrReadTimeout time.Duration
-	log            telegraf.Logger
+	log            Dana.Logger
 }
 
 // optionGenerator takes a struct with the plugin configuration, and generates options

@@ -9,7 +9,7 @@ import (
 	"Dana"
 )
 
-func collectPersistentVolumeClaims(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory) {
+func collectPersistentVolumeClaims(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory) {
 	list, err := ki.client.getPersistentVolumeClaims(ctx)
 	if err != nil {
 		acc.AddError(err)
@@ -20,7 +20,7 @@ func collectPersistentVolumeClaims(ctx context.Context, acc telegraf.Accumulator
 	}
 }
 
-func (ki *KubernetesInventory) gatherPersistentVolumeClaim(pvc corev1.PersistentVolumeClaim, acc telegraf.Accumulator) {
+func (ki *KubernetesInventory) gatherPersistentVolumeClaim(pvc corev1.PersistentVolumeClaim, acc Dana.Accumulator) {
 	phaseType := 3
 	switch strings.ToLower(string(pvc.Status.Phase)) {
 	case "bound":

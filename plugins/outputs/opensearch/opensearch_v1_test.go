@@ -72,7 +72,7 @@ func TestConnectAndWriteMetricWithNaNValueEmptyIntegration(t *testing.T) {
 		Log:                 testutil.Logger{},
 	}
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.TestMetric(math.NaN()),
 		testutil.TestMetric(math.Inf(1)),
 		testutil.TestMetric(math.Inf(-1)),
@@ -84,7 +84,7 @@ func TestConnectAndWriteMetricWithNaNValueEmptyIntegration(t *testing.T) {
 
 	// Verify that we can fail for metric with unhandled NaN/inf/-inf values
 	for _, m := range metrics {
-		require.Error(t, e.Write([]telegraf.Metric{m}), "error sending bulk request to Opensearch: "+
+		require.Error(t, e.Write([]Dana.Metric{m}), "error sending bulk request to Opensearch: "+
 			"json: unsupported value: NaN")
 	}
 }
@@ -114,7 +114,7 @@ func TestConnectAndWriteMetricWithNaNValueNoneIntegration(t *testing.T) {
 		Log:                 testutil.Logger{},
 	}
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.TestMetric(math.NaN()),
 		testutil.TestMetric(math.Inf(1)),
 		testutil.TestMetric(math.Inf(-1)),
@@ -128,7 +128,7 @@ func TestConnectAndWriteMetricWithNaNValueNoneIntegration(t *testing.T) {
 
 	// Verify that we can fail for metric with unhandled NaN/inf/-inf values
 	for _, m := range metrics {
-		err = e.Write([]telegraf.Metric{m})
+		err = e.Write([]Dana.Metric{m})
 		require.Error(t, err, "error sending bulk request to Opensearch: json: unsupported value: NaN")
 	}
 }
@@ -158,7 +158,7 @@ func TestConnectAndWriteMetricWithNaNValueDropIntegration(t *testing.T) {
 		Log:                 testutil.Logger{},
 	}
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.TestMetric(math.NaN()),
 		testutil.TestMetric(math.Inf(1)),
 		testutil.TestMetric(math.Inf(-1)),
@@ -172,7 +172,7 @@ func TestConnectAndWriteMetricWithNaNValueDropIntegration(t *testing.T) {
 
 	// Verify that we can fail for metric with unhandled NaN/inf/-inf values
 	for _, m := range metrics {
-		err = e.Write([]telegraf.Metric{m})
+		err = e.Write([]Dana.Metric{m})
 		require.NoError(t, err)
 	}
 }
@@ -226,7 +226,7 @@ func TestConnectAndWriteMetricWithNaNValueReplacementIntegration(t *testing.T) {
 			Log:                 testutil.Logger{},
 		}
 
-		metrics := []telegraf.Metric{
+		metrics := []Dana.Metric{
 			testutil.TestMetric(math.NaN()),
 			testutil.TestMetric(math.Inf(1)),
 			testutil.TestMetric(math.Inf(-1)),
@@ -238,7 +238,7 @@ func TestConnectAndWriteMetricWithNaNValueReplacementIntegration(t *testing.T) {
 		require.NoError(t, err)
 
 		for _, m := range metrics {
-			err = e.Write([]telegraf.Metric{m})
+			err = e.Write([]Dana.Metric{m})
 
 			if test.expectError {
 				require.Error(t, err)

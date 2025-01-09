@@ -26,7 +26,7 @@ type packetListener struct {
 	MaxDecompressionSize int64
 	SocketMode           string
 	ReadBufferSize       int
-	Log                  telegraf.Logger
+	Log                  Dana.Logger
 
 	conn      net.PacketConn
 	decoders  sync.Pool

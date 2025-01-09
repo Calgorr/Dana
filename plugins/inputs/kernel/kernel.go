@@ -67,7 +67,7 @@ func (k *Kernel) Init() error {
 	return nil
 }
 
-func (k *Kernel) Gather(acc telegraf.Accumulator) error {
+func (k *Kernel) Gather(acc Dana.Accumulator) error {
 	data, err := getProcValueBytes(k.statFile)
 	if err != nil {
 		return err
@@ -196,7 +196,7 @@ func getProcValueInt(path string) (int64, error) {
 }
 
 func init() {
-	inputs.Add("kernel", func() telegraf.Input {
+	inputs.Add("kernel", func() Dana.Input {
 		return &Kernel{
 			statFile:        "/proc/stat",
 			entropyStatFile: "/proc/sys/kernel/random/entropy_avail",

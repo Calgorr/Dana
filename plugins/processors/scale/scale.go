@@ -36,8 +36,8 @@ type Scaling struct {
 }
 
 type Scale struct {
-	Scalings []Scaling       `toml:"scaling"`
-	Log      telegraf.Logger `toml:"-"`
+	Scalings []Scaling   `toml:"scaling"`
+	Log      Dana.Logger `toml:"-"`
 }
 
 func (s *Scaling) Init() error {
@@ -112,7 +112,7 @@ func (s *Scale) Init() error {
 }
 
 // handle the scaling process
-func (s *Scale) scaleValues(metric telegraf.Metric) {
+func (s *Scale) scaleValues(metric Dana.Metric) {
 	fields := metric.FieldList()
 
 	for _, scaling := range s.Scalings {
@@ -133,7 +133,7 @@ func (s *Scale) scaleValues(metric telegraf.Metric) {
 	}
 }
 
-func (s *Scale) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (s *Scale) Apply(in ...Dana.Metric) []Dana.Metric {
 	for _, metric := range in {
 		s.scaleValues(metric)
 	}
@@ -141,7 +141,7 @@ func (s *Scale) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("scale", func() telegraf.Processor {
+	processors.Add("scale", func() Dana.Processor {
 		return &Scale{}
 	})
 }

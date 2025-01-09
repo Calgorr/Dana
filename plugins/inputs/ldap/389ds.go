@@ -77,7 +77,7 @@ func (l *LDAP) new389dsConfig() []request {
 	return []request{{req, l.convert389ds}}
 }
 
-func (l *LDAP) convert389ds(result *ldap.SearchResult, ts time.Time) []telegraf.Metric {
+func (l *LDAP) convert389ds(result *ldap.SearchResult, ts time.Time) []Dana.Metric {
 	tags := map[string]string{
 		"server": l.host,
 		"port":   l.port,
@@ -110,5 +110,5 @@ func (l *LDAP) convert389ds(result *ldap.SearchResult, ts time.Time) []telegraf.
 	}
 
 	m := metric.New("389ds", tags, fields, ts)
-	return []telegraf.Metric{m}
+	return []Dana.Metric{m}
 }

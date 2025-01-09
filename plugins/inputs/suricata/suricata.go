@@ -39,7 +39,7 @@ type Suricata struct {
 	inputListener *net.UnixListener
 	cancel        context.CancelFunc
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	wg sync.WaitGroup
 }
@@ -70,7 +70,7 @@ func (s *Suricata) Init() error {
 
 // Start initiates background collection of JSON data from the socket
 // provided to Suricata.
-func (s *Suricata) Start(acc telegraf.Accumulator) error {
+func (s *Suricata) Start(acc Dana.Accumulator) error {
 	var err error
 	s.inputListener, err = net.ListenUnix("unix", &net.UnixAddr{
 		Name: s.Source,
@@ -100,7 +100,7 @@ func (s *Suricata) Stop() {
 	s.wg.Wait()
 }
 
-func (s *Suricata) readInput(ctx context.Context, acc telegraf.Accumulator, conn net.Conn) error {
+func (s *Suricata) readInput(ctx context.Context, acc Dana.Accumulator, conn net.Conn) error {
 	reader := bufio.NewReaderSize(conn, InBufSize)
 	for {
 		select {
@@ -121,7 +121,7 @@ func (s *Suricata) readInput(ctx context.Context, acc telegraf.Accumulator, conn
 	}
 }
 
-func (s *Suricata) handleServerConnection(ctx context.Context, acc telegraf.Accumulator) {
+func (s *Suricata) handleServerConnection(ctx context.Context, acc Dana.Accumulator) {
 	var err error
 	for {
 		select {
@@ -179,7 +179,7 @@ func flexFlatten(outmap map[string]interface{}, field string, v interface{}, del
 	return nil
 }
 
-func (s *Suricata) parseAlert(acc telegraf.Accumulator, result map[string]interface{}) {
+func (s *Suricata) parseAlert(acc Dana.Accumulator, result map[string]interface{}) {
 	if _, ok := result["alert"].(map[string]interface{}); !ok {
 		s.Log.Debug("'alert' sub-object does not have required structure")
 		return
@@ -200,7 +200,7 @@ func (s *Suricata) parseAlert(acc telegraf.Accumulator, result map[string]interf
 	acc.AddFields("suricata_alert", totalmap, nil)
 }
 
-func (s *Suricata) parseStats(acc telegraf.Accumulator, result map[string]interface{}) {
+func (s *Suricata) parseStats(acc Dana.Accumulator, result map[string]interface{}) {
 	if _, ok := result["stats"].(map[string]interface{}); !ok {
 		s.Log.Debug("The 'stats' sub-object does not have required structure")
 		return
@@ -246,7 +246,7 @@ func (s *Suricata) parseStats(acc telegraf.Accumulator, result map[string]interf
 	}
 }
 
-func (s *Suricata) parseGeneric(acc telegraf.Accumulator, result map[string]interface{}) error {
+func (s *Suricata) parseGeneric(acc Dana.Accumulator, result map[string]interface{}) error {
 	eventType := ""
 	if _, ok := result["event_type"]; !ok {
 		return fmt.Errorf("unable to determine event type of message: %s", result)
@@ -315,7 +315,7 @@ func (s *Suricata) parseGeneric(acc telegraf.Accumulator, result map[string]inte
 	return nil
 }
 
-func (s *Suricata) parse(acc telegraf.Accumulator, sjson []byte) error {
+func (s *Suricata) parse(acc Dana.Accumulator, sjson []byte) error {
 	// initial parsing
 	var result map[string]interface{}
 	err := json.Unmarshal(sjson, &result)
@@ -344,12 +344,12 @@ func (s *Suricata) parse(acc telegraf.Accumulator, sjson []byte) error {
 
 // Gather measures and submits one full set of telemetry to Telegraf.
 // Not used here, submission is completely input-driven.
-func (*Suricata) Gather(telegraf.Accumulator) error {
+func (*Suricata) Gather(Dana.Accumulator) error {
 	return nil
 }
 
 func init() {
-	inputs.Add("suricata", func() telegraf.Input {
+	inputs.Add("suricata", func() Dana.Input {
 		return &Suricata{}
 	})
 }

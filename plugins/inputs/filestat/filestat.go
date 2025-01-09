@@ -20,7 +20,7 @@ type FileStat struct {
 	Md5   bool     `toml:"md5"`
 	Files []string `toml:"files"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	// maps full file paths to globmatch obj
 	globs map[string]*globpath.GlobPath
@@ -35,7 +35,7 @@ func (*FileStat) SampleConfig() string {
 	return sampleConfig
 }
 
-func (f *FileStat) Gather(acc telegraf.Accumulator) error {
+func (f *FileStat) Gather(acc Dana.Accumulator) error {
 	var err error
 
 	for _, filepath := range f.Files {
@@ -135,7 +135,7 @@ func newFileStat() *FileStat {
 }
 
 func init() {
-	inputs.Add("filestat", func() telegraf.Input {
+	inputs.Add("filestat", func() Dana.Input {
 		return newFileStat()
 	})
 }

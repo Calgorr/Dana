@@ -27,7 +27,7 @@ type YandexCloudMonitoring struct {
 	EndpointURL string          `toml:"endpoint_url"`
 	Service     string          `toml:"service"`
 
-	Log telegraf.Logger
+	Log Dana.Logger
 
 	MetadataTokenURL       string
 	MetadataFolderURL      string
@@ -120,7 +120,7 @@ func (a *YandexCloudMonitoring) Close() error {
 }
 
 // Write writes metrics to the remote endpoint
-func (a *YandexCloudMonitoring) Write(metrics []telegraf.Metric) error {
+func (a *YandexCloudMonitoring) Write(metrics []Dana.Metric) error {
 	var yandexCloudMonitoringMetrics []yandexCloudMonitoringMetric
 	for _, m := range metrics {
 		for _, field := range m.FieldList() {
@@ -247,7 +247,7 @@ func (a *YandexCloudMonitoring) send(body []byte) error {
 }
 
 func init() {
-	outputs.Add("yandex_cloud_monitoring", func() telegraf.Output {
+	outputs.Add("yandex_cloud_monitoring", func() Dana.Output {
 		return &YandexCloudMonitoring{
 			timeFunc: time.Now,
 		}

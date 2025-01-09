@@ -89,7 +89,7 @@ func TestSuricataAlerts(t *testing.T) {
 
 	acc.Wait(1)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"suricata_alert",
 			map[string]string{},
@@ -138,7 +138,7 @@ func TestSuricata(t *testing.T) {
 
 	acc.Wait(1)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"suricata",
 			map[string]string{
@@ -188,7 +188,7 @@ func TestThreadStats(t *testing.T) {
 	require.NoError(t, c.Close())
 	acc.Wait(2)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"suricata",
 			map[string]string{
@@ -344,10 +344,10 @@ func TestSuricataStartStop(t *testing.T) {
 func TestSuricataParse(t *testing.T) {
 	tests := []struct {
 		filename string
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{{
 		filename: "test2.json",
-		expected: []telegraf.Metric{
+		expected: []Dana.Metric{
 			testutil.MustMetric(
 				"suricata",
 				map[string]string{
@@ -384,11 +384,11 @@ func TestSuricataParse(t *testing.T) {
 func TestSuricataParseVersion2(t *testing.T) {
 	tests := []struct {
 		filename string
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			filename: "v2/alert.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"suricata",
 					map[string]string{
@@ -419,7 +419,7 @@ func TestSuricataParseVersion2(t *testing.T) {
 		},
 		{
 			filename: "v2/dns.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"suricata",
 					map[string]string{
@@ -444,7 +444,7 @@ func TestSuricataParseVersion2(t *testing.T) {
 		},
 		{
 			filename: "v2/drop.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"suricata",
 					map[string]string{
@@ -474,7 +474,7 @@ func TestSuricataParseVersion2(t *testing.T) {
 		},
 		{
 			filename: "v2/flow.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"suricata",
 					map[string]string{
@@ -496,7 +496,7 @@ func TestSuricataParseVersion2(t *testing.T) {
 		},
 		{
 			filename: "v2/http.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"suricata",
 					map[string]string{
@@ -524,7 +524,7 @@ func TestSuricataParseVersion2(t *testing.T) {
 		},
 		{
 			filename: "v2/status.json",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"suricata",
 					map[string]string{

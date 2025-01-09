@@ -14,16 +14,16 @@ import (
 )
 
 // AddProcessor adds the processor to the shim. Later calls to Run() will run this.
-func (s *Shim) AddProcessor(processor telegraf.Processor) error {
+func (s *Shim) AddProcessor(processor Dana.Processor) error {
 	models.SetLoggerOnPlugin(processor, s.Log())
 	p := processors.NewStreamingProcessorFromProcessor(processor)
 	return s.AddStreamingProcessor(p)
 }
 
 // AddStreamingProcessor adds the processor to the shim. Later calls to Run() will run this.
-func (s *Shim) AddStreamingProcessor(processor telegraf.StreamingProcessor) error {
+func (s *Shim) AddStreamingProcessor(processor Dana.StreamingProcessor) error {
 	models.SetLoggerOnPlugin(processor, s.Log())
-	if p, ok := processor.(telegraf.Initializer); ok {
+	if p, ok := processor.(Dana.Initializer); ok {
 		err := p.Init()
 		if err != nil {
 			return fmt.Errorf("failed to init input: %w", err)

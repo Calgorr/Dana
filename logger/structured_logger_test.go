@@ -355,6 +355,6 @@ func BenchmarkTelegrafStructuredLogWrite(b *testing.B) {
 
 	ts := time.Now()
 	for i := 0; i < b.N; i++ {
-		l.Print(telegraf.Debug, ts, "", nil, "test")
+		l.Print(Dana.Debug, ts, "", nil, "test")
 	}
 }

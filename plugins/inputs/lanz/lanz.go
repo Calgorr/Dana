@@ -28,7 +28,7 @@ func (*Lanz) SampleConfig() string {
 	return sampleConfig
 }
 
-func (l *Lanz) Start(acc telegraf.Accumulator) error {
+func (l *Lanz) Start(acc Dana.Accumulator) error {
 	if len(l.Servers) == 0 {
 		l.Servers = append(l.Servers, "tcp://127.0.0.1:50001")
 	}
@@ -58,7 +58,7 @@ func (l *Lanz) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*Lanz) Gather(telegraf.Accumulator) error {
+func (*Lanz) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -69,7 +69,7 @@ func (l *Lanz) Stop() {
 	l.wg.Wait()
 }
 
-func receive(acc telegraf.Accumulator, in <-chan *pb.LanzRecord, deviceURL *url.URL) {
+func receive(acc Dana.Accumulator, in <-chan *pb.LanzRecord, deviceURL *url.URL) {
 	//nolint:gosimple // for-select used on purpose
 	for {
 		select {
@@ -82,7 +82,7 @@ func receive(acc telegraf.Accumulator, in <-chan *pb.LanzRecord, deviceURL *url.
 	}
 }
 
-func msgToAccumulator(acc telegraf.Accumulator, msg *pb.LanzRecord, deviceURL *url.URL) {
+func msgToAccumulator(acc Dana.Accumulator, msg *pb.LanzRecord, deviceURL *url.URL) {
 	cr := msg.GetCongestionRecord()
 	if cr != nil {
 		vals := map[string]interface{}{
@@ -122,7 +122,7 @@ func msgToAccumulator(acc telegraf.Accumulator, msg *pb.LanzRecord, deviceURL *u
 }
 
 func init() {
-	inputs.Add("lanz", func() telegraf.Input {
+	inputs.Add("lanz", func() Dana.Input {
 		return &Lanz{}
 	})
 }

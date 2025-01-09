@@ -266,7 +266,7 @@ func TestInit(t *testing.T) {
 func TestGather(t *testing.T) {
 	type fields struct {
 		PmtSpec                string
-		Log                    telegraf.Logger
+		Log                    Dana.Logger
 		pmtTelemetryFiles      map[string]pmtFileInfo
 		pmtAggregator          map[string]aggregator
 		pmtAggregatorInterface map[string]aggregatorInterface
@@ -282,7 +282,7 @@ func TestGather(t *testing.T) {
 		name     string
 		fields   fields
 		files    []testFile
-		expected []telegraf.Metric
+		expected []Dana.Metric
 		wantErr  bool
 	}{
 		{
@@ -444,7 +444,7 @@ func TestGather(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"intel_pmt",
 					map[string]string{
@@ -534,7 +534,7 @@ func TestGather(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"intel_pmt",
 					map[string]string{

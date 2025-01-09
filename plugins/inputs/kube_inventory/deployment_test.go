@@ -22,7 +22,7 @@ func TestDeployment(t *testing.T) {
 	tests := []struct {
 		name     string
 		handler  *mockHandler
-		output   []telegraf.Metric
+		output   []Dana.Metric
 		hasError bool
 	}{
 		{
@@ -82,7 +82,7 @@ func TestDeployment(t *testing.T) {
 					},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					"kubernetes_deployment",
 					map[string]string{

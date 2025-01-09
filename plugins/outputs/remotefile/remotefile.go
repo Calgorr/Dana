@@ -35,15 +35,15 @@ type File struct {
 	UseBatchFormat    bool            `toml:"use_batch_format"`
 	Trace             bool            `toml:"trace" deprecated:"1.33.0;1.35.0;use 'log_level = \"trace\"' instead"`
 	ForgetFiles       config.Duration `toml:"forget_files_after"`
-	Log               telegraf.Logger `toml:"-"`
+	Log               Dana.Logger     `toml:"-"`
 
 	root     *vfs.VFS
 	fscancel context.CancelFunc
 	vfsopts  vfscommon.Options
 
 	templates      []*template.Template
-	serializerFunc telegraf.SerializerFunc
-	serializers    map[string]telegraf.Serializer
+	serializerFunc Dana.SerializerFunc
+	serializers    map[string]Dana.Serializer
 	modified       map[string]time.Time
 }
 
@@ -51,7 +51,7 @@ func (*File) SampleConfig() string {
 	return sampleConfig
 }
 
-func (f *File) SetSerializerFunc(sf telegraf.SerializerFunc) {
+func (f *File) SetSerializerFunc(sf Dana.SerializerFunc) {
 	f.serializerFunc = sf
 }
 
@@ -103,7 +103,7 @@ func (f *File) Init() error {
 		f.templates = append(f.templates, tmpl)
 	}
 
-	f.serializers = make(map[string]telegraf.Serializer)
+	f.serializers = make(map[string]Dana.Serializer)
 	f.modified = make(map[string]time.Time)
 
 	return nil
@@ -172,14 +172,14 @@ func (f *File) Close() error {
 	return nil
 }
 
-func (f *File) Write(metrics []telegraf.Metric) error {
+func (f *File) Write(metrics []Dana.Metric) error {
 	var buf bytes.Buffer
 
 	// Group the metrics per output file
-	groups := make(map[string][]telegraf.Metric)
+	groups := make(map[string][]Dana.Metric)
 	for _, raw := range metrics {
 		m := raw
-		if wm, ok := raw.(telegraf.UnwrappableMetric); ok {
+		if wm, ok := raw.(Dana.UnwrappableMetric); ok {
 			m = wm.Unwrap()
 		}
 
@@ -269,5 +269,5 @@ func (f *File) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("remotefile", func() telegraf.Output { return &File{} })
+	outputs.Add("remotefile", func() Dana.Output { return &File{} })
 }

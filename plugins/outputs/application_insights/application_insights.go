@@ -34,7 +34,7 @@ type ApplicationInsights struct {
 	Timeout                 config.Duration   `toml:"timeout"`
 	EnableDiagnosticLogging bool              `toml:"enable_diagnostic_logging"`
 	ContextTagSources       map[string]string `toml:"context_tag_sources"`
-	Log                     telegraf.Logger   `toml:"-"`
+	Log                     Dana.Logger       `toml:"-"`
 
 	diagMsgSubscriber DiagnosticsMessageSubscriber
 	transmitter       TelemetryTransmitter
@@ -64,7 +64,7 @@ func (a *ApplicationInsights) Connect() error {
 	return nil
 }
 
-func (a *ApplicationInsights) Write(metrics []telegraf.Metric) error {
+func (a *ApplicationInsights) Write(metrics []Dana.Metric) error {
 	for _, metric := range metrics {
 		allMetricTelemetry := a.createTelemetry(metric)
 		for _, telemetry := range allMetricTelemetry {
@@ -96,7 +96,7 @@ func (a *ApplicationInsights) Close() error {
 	return nil
 }
 
-func (a *ApplicationInsights) createTelemetry(metric telegraf.Metric) []appinsights.Telemetry {
+func (a *ApplicationInsights) createTelemetry(metric Dana.Metric) []appinsights.Telemetry {
 	aggregateTelemetry, usedFields := a.createAggregateMetricTelemetry(metric)
 	if aggregateTelemetry != nil {
 		telemetry := a.createTelemetryForUnusedFields(metric, usedFields)
@@ -119,7 +119,7 @@ func (a *ApplicationInsights) createTelemetry(metric telegraf.Metric) []appinsig
 }
 
 func (a *ApplicationInsights) createSimpleMetricTelemetry(
-	metric telegraf.Metric,
+	metric Dana.Metric,
 	fieldName string,
 	useFieldNameInTelemetryName bool,
 ) *appinsights.MetricTelemetry {
@@ -141,7 +141,7 @@ func (a *ApplicationInsights) createSimpleMetricTelemetry(
 	return telemetry
 }
 
-func (a *ApplicationInsights) createAggregateMetricTelemetry(metric telegraf.Metric) (*appinsights.AggregateMetricTelemetry, []string) {
+func (a *ApplicationInsights) createAggregateMetricTelemetry(metric Dana.Metric) (*appinsights.AggregateMetricTelemetry, []string) {
 	usedFields := make([]string, 0, 6) // We will use up to 6 fields
 
 	// Get the sum of all individual measurements(mandatory property)
@@ -178,7 +178,7 @@ func (a *ApplicationInsights) createAggregateMetricTelemetry(metric telegraf.Met
 	return telemetry, usedFields
 }
 
-func (a *ApplicationInsights) createTelemetryForUnusedFields(metric telegraf.Metric, usedFields []string) []appinsights.Telemetry {
+func (a *ApplicationInsights) createTelemetryForUnusedFields(metric Dana.Metric, usedFields []string) []appinsights.Telemetry {
 	fields := metric.Fields()
 	retval := make([]appinsights.Telemetry, 0, len(fields))
 
@@ -196,7 +196,7 @@ func (a *ApplicationInsights) createTelemetryForUnusedFields(metric telegraf.Met
 	return retval
 }
 
-func (a *ApplicationInsights) addContextTags(metric telegraf.Metric, telemetry appinsights.Telemetry) {
+func (a *ApplicationInsights) addContextTags(metric Dana.Metric, telemetry appinsights.Telemetry) {
 	for contextTagName, tagSourceName := range a.ContextTagSources {
 		if contextTagValue, found := metric.GetTag(tagSourceName); found {
 			telemetry.ContextTags()[contextTagName] = contextTagValue
@@ -206,7 +206,7 @@ func (a *ApplicationInsights) addContextTags(metric telegraf.Metric, telemetry a
 
 func getFloat64TelemetryPropertyValue(
 	candidateFields []string,
-	metric telegraf.Metric,
+	metric Dana.Metric,
 	usedFields *[]string,
 ) (float64, error) {
 	for _, fieldName := range candidateFields {
@@ -232,7 +232,7 @@ func getFloat64TelemetryPropertyValue(
 
 func getIntTelemetryPropertyValue(
 	candidateFields []string,
-	metric telegraf.Metric,
+	metric Dana.Metric,
 	usedFields *[]string,
 ) (int, error) {
 	for _, fieldName := range candidateFields {
@@ -310,7 +310,7 @@ func toInt(value interface{}) (int, error) {
 }
 
 func init() {
-	outputs.Add("application_insights", func() telegraf.Output {
+	outputs.Add("application_insights", func() Dana.Output {
 		return &ApplicationInsights{
 			Timeout:           config.Duration(time.Second * 5),
 			diagMsgSubscriber: diagnosticsMessageSubscriber{},

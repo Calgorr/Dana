@@ -45,7 +45,7 @@ func TestTableSourceIntegration_tagJSONB(t *testing.T) {
 	require.NoError(t, err)
 	p.TagsAsJsonb = true
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"a": "one", "b": "two"}, MSI{"v": 1}),
 	}
 
@@ -70,7 +70,7 @@ func TestTableSourceIntegration_tagTable(t *testing.T) {
 	p.TagsAsForeignKeys = true
 	p.tagsCache = freecache.NewCache(5 * 1024 * 1024)
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"a": "one", "b": "two"}, MSI{"v": 1}),
 	}
 
@@ -95,7 +95,7 @@ func TestTableSourceIntegration_tagTableJSONB(t *testing.T) {
 	p.TagsAsJsonb = true
 	p.tagsCache = freecache.NewCache(5 * 1024 * 1024)
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"a": "one", "b": "two"}, MSI{"v": 1}),
 	}
 
@@ -116,7 +116,7 @@ func TestTableSourceIntegration_fieldsJSONB(t *testing.T) {
 	require.NoError(t, err)
 	p.FieldsAsJsonb = true
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 1, "b": 2}),
 	}
 
@@ -138,7 +138,7 @@ func TestTableSourceIntegration_DropColumn_tag(t *testing.T) {
 	p, err := newPostgresqlTest(t)
 	require.NoError(t, err)
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"a": "one", "b": "two"}, MSI{"v": 1}),
 		newMetric(t, "", MSS{"a": "one"}, MSI{"v": 2}),
 	}
@@ -173,7 +173,7 @@ func TestTableSourceIntegration_DropColumn_tag_fkTrue_fcTrue(t *testing.T) {
 	p.ForeignTagConstraint = true
 	p.tagsCache = freecache.NewCache(5 * 1024 * 1024)
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"a": "one", "b": "two"}, MSI{"v": 1}),
 		newMetric(t, "", MSS{"a": "one"}, MSI{"v": 2}),
 	}
@@ -212,7 +212,7 @@ func TestTableSourceIntegration_DropColumn_tag_fkTrue_fcFalse(t *testing.T) {
 	p.ForeignTagConstraint = false
 	p.tagsCache = freecache.NewCache(5 * 1024 * 1024)
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"a": "one", "b": "two"}, MSI{"v": 1}),
 		newMetric(t, "", MSS{"a": "one"}, MSI{"v": 2}),
 	}
@@ -248,7 +248,7 @@ func TestTableSourceIntegration_DropColumn_field(t *testing.T) {
 	p, err := newPostgresqlTest(t)
 	require.NoError(t, err)
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 1}),
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"a": 2, "b": 3}),
 	}
@@ -278,7 +278,7 @@ func TestTableSourceIntegration_InconsistentTags(t *testing.T) {
 	p, err := newPostgresqlTest(t)
 	require.NoError(t, err)
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"a": "1"}, MSI{"b": 2}),
 		newMetric(t, "", MSS{"c": "3"}, MSI{"d": 4}),
 	}
@@ -303,7 +303,7 @@ func TestTagTableSourceIntegration_InconsistentTags(t *testing.T) {
 	p.TagsAsForeignKeys = true
 	p.tagsCache = freecache.NewCache(5 * 1024 * 1024)
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"a": "1"}, MSI{"b": 2}),
 		newMetric(t, "", MSS{"c": "3"}, MSI{"d": 4}),
 	}

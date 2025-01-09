@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type IntelPMT struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*IntelPMT) SampleConfig() string { return sampleConfig }
@@ -24,10 +24,10 @@ func (p *IntelPMT) Init() error {
 	return nil
 }
 
-func (*IntelPMT) Gather(_ telegraf.Accumulator) error { return nil }
+func (*IntelPMT) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("intel_pmt", func() telegraf.Input {
+	inputs.Add("intel_pmt", func() Dana.Input {
 		return &IntelPMT{}
 	})
 }

@@ -12,12 +12,12 @@ import (
 func TestRequireMetricEqual(t *testing.T) {
 	tests := []struct {
 		name string
-		got  telegraf.Metric
-		want telegraf.Metric
+		got  Dana.Metric
+		want Dana.Metric
 	}{
 		{
 			name: "equal metrics should be equal",
-			got: func() telegraf.Metric {
+			got: func() Dana.Metric {
 				m := metric.New(
 					"test",
 					map[string]string{
@@ -33,7 +33,7 @@ func TestRequireMetricEqual(t *testing.T) {
 				)
 				return m
 			}(),
-			want: func() telegraf.Metric {
+			want: func() Dana.Metric {
 				m := metric.New(
 					"test",
 					map[string]string{
@@ -61,13 +61,13 @@ func TestRequireMetricEqual(t *testing.T) {
 func TestRequireMetricsEqual(t *testing.T) {
 	tests := []struct {
 		name string
-		got  []telegraf.Metric
-		want []telegraf.Metric
+		got  []Dana.Metric
+		want []Dana.Metric
 		opts []cmp.Option
 	}{
 		{
 			name: "sort metrics option sorts by name",
-			got: []telegraf.Metric{
+			got: []Dana.Metric{
 				MustMetric(
 					"cpu",
 					map[string]string{},
@@ -81,7 +81,7 @@ func TestRequireMetricsEqual(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			want: []telegraf.Metric{
+			want: []Dana.Metric{
 				MustMetric(
 					"net",
 					map[string]string{},
@@ -108,13 +108,13 @@ func TestRequireMetricsEqual(t *testing.T) {
 func TestRequireMetricsSubset(t *testing.T) {
 	tests := []struct {
 		name string
-		got  []telegraf.Metric
-		want []telegraf.Metric
+		got  []Dana.Metric
+		want []Dana.Metric
 		opts []cmp.Option
 	}{
 		{
 			name: "subset of metrics",
-			got: []telegraf.Metric{
+			got: []Dana.Metric{
 				MustMetric(
 					"cpu",
 					map[string]string{},
@@ -134,7 +134,7 @@ func TestRequireMetricsSubset(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			want: []telegraf.Metric{
+			want: []Dana.Metric{
 				MustMetric(
 					"net",
 					map[string]string{},
@@ -161,13 +161,13 @@ func TestRequireMetricsSubset(t *testing.T) {
 func TestRequireMetricsStructureEqual(t *testing.T) {
 	tests := []struct {
 		name string
-		got  []telegraf.Metric
-		want []telegraf.Metric
+		got  []Dana.Metric
+		want []Dana.Metric
 		opts []cmp.Option
 	}{
 		{
 			name: "compare structure",
-			got: []telegraf.Metric{
+			got: []Dana.Metric{
 				MustMetric(
 					"cpu",
 					map[string]string{},
@@ -181,7 +181,7 @@ func TestRequireMetricsStructureEqual(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			want: []telegraf.Metric{
+			want: []Dana.Metric{
 				MustMetric(
 					"net",
 					map[string]string{},
@@ -208,13 +208,13 @@ func TestRequireMetricsStructureEqual(t *testing.T) {
 func TestRequireMetricsStructureSubset(t *testing.T) {
 	tests := []struct {
 		name string
-		got  []telegraf.Metric
-		want []telegraf.Metric
+		got  []Dana.Metric
+		want []Dana.Metric
 		opts []cmp.Option
 	}{
 		{
 			name: "subset of metric structure",
-			got: []telegraf.Metric{
+			got: []Dana.Metric{
 				MustMetric(
 					"cpu",
 					map[string]string{},
@@ -234,7 +234,7 @@ func TestRequireMetricsStructureSubset(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			want: []telegraf.Metric{
+			want: []Dana.Metric{
 				MustMetric(
 					"net",
 					map[string]string{},

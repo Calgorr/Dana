@@ -92,7 +92,7 @@ func (*HistogramAggregator) SampleConfig() string {
 }
 
 // Add adds new hit to the buckets
-func (h *HistogramAggregator) Add(in telegraf.Metric) {
+func (h *HistogramAggregator) Add(in Dana.Metric) {
 	addTime := timeNow()
 
 	bucketsByField := make(map[string][]float64)
@@ -138,7 +138,7 @@ func (h *HistogramAggregator) Add(in telegraf.Metric) {
 }
 
 // Push returns histogram values for metrics
-func (h *HistogramAggregator) Push(acc telegraf.Accumulator) {
+func (h *HistogramAggregator) Push(acc Dana.Accumulator) {
 	now := timeNow()
 	metricsWithGroupedFields := make([]groupedByCountFields, 0)
 	for id, aggregate := range h.cache {
@@ -321,7 +321,7 @@ func makeFieldsWithCount(fieldsWithCountIn map[string]int64) map[string]interfac
 
 // init initializes histogram aggregator plugin
 func init() {
-	aggregators.Add("histogram", func() telegraf.Aggregator {
+	aggregators.Add("histogram", func() Dana.Aggregator {
 		return NewHistogramAggregator()
 	})
 }

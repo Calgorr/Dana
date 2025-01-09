@@ -300,7 +300,7 @@ func TestMetricResult(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"machine",
 			map[string]string{

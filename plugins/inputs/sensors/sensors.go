@@ -58,7 +58,7 @@ func (s *Sensors) Init() error {
 	return nil
 }
 
-func (s *Sensors) Gather(acc telegraf.Accumulator) error {
+func (s *Sensors) Gather(acc Dana.Accumulator) error {
 	if len(s.path) == 0 {
 		return errors.New("sensors not found: verify that lm-sensors package is installed and that sensors is in your PATH")
 	}
@@ -70,8 +70,8 @@ func (s *Sensors) Gather(acc telegraf.Accumulator) error {
 //
 //	sensors -u -A
 //
-// and parses the output to add it to the telegraf.Accumulator.
-func (s *Sensors) parse(acc telegraf.Accumulator) error {
+// and parses the output to add it to the Dana.Accumulator.
+func (s *Sensors) parse(acc Dana.Accumulator) error {
 	tags := make(map[string]string)
 	fields := make(map[string]interface{})
 	chip := ""
@@ -126,7 +126,7 @@ func snake(input string) string {
 }
 
 func init() {
-	inputs.Add("sensors", func() telegraf.Input {
+	inputs.Add("sensors", func() Dana.Input {
 		return &Sensors{
 			RemoveNumbers: true,
 			Timeout:       defaultTimeout,

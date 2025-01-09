@@ -24,10 +24,10 @@ var sampleConfig string
 
 // Vault configuration object
 type Vault struct {
-	URL       string          `toml:"url"`
-	TokenFile string          `toml:"token_file"`
-	Token     string          `toml:"token"`
-	Log       telegraf.Logger `toml:"-"`
+	URL       string      `toml:"url"`
+	TokenFile string      `toml:"token_file"`
+	Token     string      `toml:"token"`
+	Log       Dana.Logger `toml:"-"`
 	common_http.HTTPClientConfig
 
 	client *http.Client
@@ -70,12 +70,12 @@ func (n *Vault) Init() error {
 	return nil
 }
 
-func (*Vault) Start(telegraf.Accumulator) error {
+func (*Vault) Start(Dana.Accumulator) error {
 	return nil
 }
 
 // Gather, collects metrics from Vault endpoint
-func (n *Vault) Gather(acc telegraf.Accumulator) error {
+func (n *Vault) Gather(acc Dana.Accumulator) error {
 	sysMetrics, err := n.loadJSON(n.URL + "/v1/sys/metrics")
 	if err != nil {
 		return err
@@ -119,7 +119,7 @@ func (n *Vault) loadJSON(url string) (*SysMetrics, error) {
 }
 
 // buildVaultMetrics, it builds all the metrics and adds them to the accumulator
-func buildVaultMetrics(acc telegraf.Accumulator, sysMetrics *SysMetrics) error {
+func buildVaultMetrics(acc Dana.Accumulator, sysMetrics *SysMetrics) error {
 	t, err := internal.ParseTimestamp(timeLayout, sysMetrics.Timestamp, nil)
 	if err != nil {
 		return fmt.Errorf("error parsing time: %w", err)
@@ -190,7 +190,7 @@ func buildVaultMetrics(acc telegraf.Accumulator, sysMetrics *SysMetrics) error {
 }
 
 func init() {
-	inputs.Add("vault", func() telegraf.Input {
+	inputs.Add("vault", func() Dana.Input {
 		return &Vault{
 			HTTPClientConfig: common_http.HTTPClientConfig{
 				ResponseHeaderTimeout: config.Duration(5 * time.Second),

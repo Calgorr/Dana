@@ -222,6 +222,6 @@ func BenchmarkTelegrafTextLogWrite(b *testing.B) {
 
 	ts := time.Now()
 	for i := 0; i < b.N; i++ {
-		dl.Print(telegraf.Debug, ts, "", nil, "test")
+		dl.Print(Dana.Debug, ts, "", nil, "test")
 	}
 }

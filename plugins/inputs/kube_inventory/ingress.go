@@ -8,7 +8,7 @@ import (
 	"Dana"
 )
 
-func collectIngress(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory) {
+func collectIngress(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory) {
 	list, err := ki.client.getIngress(ctx)
 	if err != nil {
 		acc.AddError(err)
@@ -19,7 +19,7 @@ func collectIngress(ctx context.Context, acc telegraf.Accumulator, ki *Kubernete
 	}
 }
 
-func gatherIngress(i netv1.Ingress, acc telegraf.Accumulator) {
+func gatherIngress(i netv1.Ingress, acc Dana.Accumulator) {
 	creationTs := i.GetCreationTimestamp()
 	if creationTs.IsZero() {
 		return

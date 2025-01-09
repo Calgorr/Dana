@@ -25,10 +25,10 @@ import (
 var sampleConfig string
 
 type NeoomBeaam struct {
-	Address       string          `toml:"address"`
-	Token         config.Secret   `toml:"token"`
-	RefreshConfig bool            `toml:"refresh_configuration"`
-	Log           telegraf.Logger `toml:"-"`
+	Address       string        `toml:"address"`
+	Token         config.Secret `toml:"token"`
+	RefreshConfig bool          `toml:"refresh_configuration"`
+	Log           Dana.Logger   `toml:"-"`
 	chttp.HTTPClientConfig
 
 	source string
@@ -55,7 +55,7 @@ func (n *NeoomBeaam) Init() error {
 	return nil
 }
 
-func (n *NeoomBeaam) Start(telegraf.Accumulator) error {
+func (n *NeoomBeaam) Start(Dana.Accumulator) error {
 	// Create the client
 	ctx := context.Background()
 	client, err := n.HTTPClientConfig.CreateClient(ctx, n.Log)
@@ -68,7 +68,7 @@ func (n *NeoomBeaam) Start(telegraf.Accumulator) error {
 	return n.updateConfiguration()
 }
 
-func (n *NeoomBeaam) Gather(acc telegraf.Accumulator) error {
+func (n *NeoomBeaam) Gather(acc Dana.Accumulator) error {
 	// Refresh the config if requested
 	if n.RefreshConfig {
 		if err := n.updateConfiguration(); err != nil {
@@ -149,7 +149,7 @@ func (n *NeoomBeaam) updateConfiguration() error {
 	return nil
 }
 
-func (n *NeoomBeaam) queryEnergyFlow(acc telegraf.Accumulator) error {
+func (n *NeoomBeaam) queryEnergyFlow(acc Dana.Accumulator) error {
 	// Create the request
 	endpoint := n.Address + "/api/v1/site/state"
 	request, err := http.NewRequest("GET", endpoint, nil)
@@ -218,7 +218,7 @@ func (n *NeoomBeaam) queryEnergyFlow(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (n *NeoomBeaam) queryThing(acc telegraf.Accumulator, thing thingDefinition) error {
+func (n *NeoomBeaam) queryThing(acc Dana.Accumulator, thing thingDefinition) error {
 	// Create the request
 	endpoint := n.Address + "/api/v1/things/" + thing.id + "/states"
 	request, err := http.NewRequest("GET", endpoint, nil)
@@ -299,7 +299,7 @@ func (n *NeoomBeaam) queryThing(acc telegraf.Accumulator, thing thingDefinition)
 
 // Register the plugin
 func init() {
-	inputs.Add("neoom_beaam", func() telegraf.Input {
+	inputs.Add("neoom_beaam", func() Dana.Input {
 		return &NeoomBeaam{
 			HTTPClientConfig: chttp.HTTPClientConfig{
 				Timeout:               config.Duration(5 * time.Second),

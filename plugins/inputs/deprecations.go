@@ -3,7 +3,7 @@ package inputs
 import "Dana"
 
 // Deprecations lists the deprecated plugins
-var Deprecations = map[string]telegraf.DeprecationInfo{
+var Deprecations = map[string]Dana.DeprecationInfo{
 	"aerospike": {
 		Since:     "1.30.0",
 		RemovalIn: "1.40.0",

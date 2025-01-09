@@ -89,7 +89,7 @@ type Secret struct {
 	container secretContainer
 
 	// resolvers are the functions for resolving a given secret-id (key)
-	resolvers map[string]telegraf.ResolveFunc
+	resolvers map[string]Dana.ResolveFunc
 
 	// unlinked contains all references in the secret that are not yet
 	// linked to the corresponding secret store.
@@ -249,7 +249,7 @@ func (s *Secret) GetUnlinked() []string {
 
 // Link used the given resolver map to link the secret parts to their
 // secret-store resolvers.
-func (s *Secret) Link(resolvers map[string]telegraf.ResolveFunc) error {
+func (s *Secret) Link(resolvers map[string]Dana.ResolveFunc) error {
 	// Decrypt the secret so we can return it
 	if s.container == nil {
 		return nil
@@ -279,11 +279,11 @@ func (s *Secret) Link(resolvers map[string]telegraf.ResolveFunc) error {
 	return nil
 }
 
-func resolve(secret []byte, resolvers map[string]telegraf.ResolveFunc) ([]byte, map[string]telegraf.ResolveFunc, []string) {
+func resolve(secret []byte, resolvers map[string]Dana.ResolveFunc) ([]byte, map[string]Dana.ResolveFunc, []string) {
 	// Iterate through the parts and try to resolve them. For static parts
 	// we directly replace them, while for dynamic ones we store the resolver.
 	replaceErrs := make([]string, 0)
-	remaining := make(map[string]telegraf.ResolveFunc)
+	remaining := make(map[string]Dana.ResolveFunc)
 	newsecret := secretPattern.ReplaceAllFunc(secret, func(match []byte) []byte {
 		resolver, found := resolvers[string(match)]
 		if !found {

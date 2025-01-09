@@ -17,7 +17,7 @@ func TestDiskBufferRetainsTrackingInformation(t *testing.T) {
 	m := metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(0, 0))
 
 	var delivered int
-	mm, _ := metric.WithTracking(m, func(telegraf.DeliveryInfo) { delivered++ })
+	mm, _ := metric.WithTracking(m, func(Dana.DeliveryInfo) { delivered++ })
 
 	buf, err := NewBuffer("test", "123", "", 0, "disk", t.TempDir())
 	require.NoError(t, err)
@@ -36,8 +36,8 @@ func TestDiskBufferRetainsTrackingInformation(t *testing.T) {
 func TestDiskBufferTrackingDroppedFromOldWal(t *testing.T) {
 	m := metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(0, 0))
 
-	tm, _ := metric.WithTracking(m, func(telegraf.DeliveryInfo) {})
-	metrics := []telegraf.Metric{
+	tm, _ := metric.WithTracking(m, func(Dana.DeliveryInfo) {})
+	metrics := []Dana.Metric{
 		// Basic metric with 1 field, 0 timestamp
 		metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(0, 0)),
 		// Basic metric with 1 field, different timestamp
@@ -88,7 +88,7 @@ func TestDiskBufferTrackingDroppedFromOldWal(t *testing.T) {
 	tx := buf.BeginTransaction(4)
 
 	// Check that the tracking metric is skipped
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metrics[0], metrics[1], metrics[2], metrics[4],
 	}
 	testutil.RequireMetricsEqual(t, expected, tx.Batch)

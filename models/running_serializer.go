@@ -18,16 +18,16 @@ type SerializerConfig struct {
 }
 
 type RunningSerializer struct {
-	Serializer telegraf.Serializer
+	Serializer Dana.Serializer
 	Config     *SerializerConfig
-	log        telegraf.Logger
+	log        Dana.Logger
 
 	MetricsSerialized selfstat.Stat
 	BytesSerialized   selfstat.Stat
 	SerializationTime selfstat.Stat
 }
 
-func NewRunningSerializer(serializer telegraf.Serializer, config *SerializerConfig) *RunningSerializer {
+func NewRunningSerializer(serializer Dana.Serializer, config *SerializerConfig) *RunningSerializer {
 	tags := map[string]string{"type": config.DataFormat}
 	if config.Alias != "" {
 		tags["alias"] = config.Alias
@@ -70,7 +70,7 @@ func (r *RunningSerializer) LogName() string {
 }
 
 func (r *RunningSerializer) Init() error {
-	if p, ok := r.Serializer.(telegraf.Initializer); ok {
+	if p, ok := r.Serializer.(Dana.Initializer); ok {
 		err := p.Init()
 		if err != nil {
 			return err
@@ -79,7 +79,7 @@ func (r *RunningSerializer) Init() error {
 	return nil
 }
 
-func (r *RunningSerializer) Serialize(metric telegraf.Metric) ([]byte, error) {
+func (r *RunningSerializer) Serialize(metric Dana.Metric) ([]byte, error) {
 	start := time.Now()
 	buf, err := r.Serializer.Serialize(metric)
 	elapsed := time.Since(start)
@@ -90,7 +90,7 @@ func (r *RunningSerializer) Serialize(metric telegraf.Metric) ([]byte, error) {
 	return buf, err
 }
 
-func (r *RunningSerializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (r *RunningSerializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	start := time.Now()
 	buf, err := r.Serializer.SerializeBatch(metrics)
 	elapsed := time.Since(start)
@@ -101,6 +101,6 @@ func (r *RunningSerializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, e
 	return buf, err
 }
 
-func (r *RunningSerializer) Log() telegraf.Logger {
+func (r *RunningSerializer) Log() Dana.Logger {
 	return r.log
 }

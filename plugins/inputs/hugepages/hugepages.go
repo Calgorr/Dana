@@ -94,7 +94,7 @@ func (h *Hugepages) Init() error {
 	return nil
 }
 
-func (h *Hugepages) Gather(acc telegraf.Accumulator) error {
+func (h *Hugepages) Gather(acc Dana.Accumulator) error {
 	if h.gatherRoot {
 		if err := h.gatherRootStats(acc); err != nil {
 			return fmt.Errorf("gathering root stats failed: %w", err)
@@ -117,12 +117,12 @@ func (h *Hugepages) Gather(acc telegraf.Accumulator) error {
 }
 
 // gatherStatsPerNode collects root hugepages statistics
-func (h *Hugepages) gatherRootStats(acc telegraf.Accumulator) error {
+func (h *Hugepages) gatherRootStats(acc Dana.Accumulator) error {
 	return gatherFromHugepagePath(acc, "hugepages_"+rootHugepages, h.rootHugepagePath, hugepagesMetricsRoot, nil)
 }
 
 // gatherStatsPerNode collects hugepages statistics per NUMA node
-func (h *Hugepages) gatherStatsPerNode(acc telegraf.Accumulator) error {
+func (h *Hugepages) gatherStatsPerNode(acc Dana.Accumulator) error {
 	nodeDirs, err := os.ReadDir(h.numaNodePath)
 	if err != nil {
 		return err
@@ -152,7 +152,7 @@ func (h *Hugepages) gatherStatsPerNode(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func gatherFromHugepagePath(acc telegraf.Accumulator, measurement, path string, fileFilter, defaultTags map[string]string) error {
+func gatherFromHugepagePath(acc Dana.Accumulator, measurement, path string, fileFilter, defaultTags map[string]string) error {
 	// read metrics from: hugepages/hugepages-*/*
 	hugepagesDirs, err := os.ReadDir(path)
 	if err != nil {
@@ -213,7 +213,7 @@ func gatherFromHugepagePath(acc telegraf.Accumulator, measurement, path string, 
 }
 
 // gatherStatsFromMeminfo collects hugepages statistics from meminfo file
-func (h *Hugepages) gatherStatsFromMeminfo(acc telegraf.Accumulator) error {
+func (h *Hugepages) gatherStatsFromMeminfo(acc Dana.Accumulator) error {
 	meminfo, err := os.ReadFile(h.meminfoPath)
 	if err != nil {
 		return err
@@ -274,7 +274,7 @@ func (h *Hugepages) parseHugepagesConfig() error {
 }
 
 func init() {
-	inputs.Add("hugepages", func() telegraf.Input {
+	inputs.Add("hugepages", func() Dana.Input {
 		return &Hugepages{}
 	})
 }

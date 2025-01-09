@@ -47,7 +47,7 @@ func (*Ecs) SampleConfig() string {
 	return sampleConfig
 }
 
-func (ecs *Ecs) Gather(acc telegraf.Accumulator) error {
+func (ecs *Ecs) Gather(acc Dana.Accumulator) error {
 	err := initSetup(ecs)
 	if err != nil {
 		return err
@@ -137,7 +137,7 @@ func resolveEndpoint(ecs *Ecs) {
 	ecs.metadataVersion = 2
 }
 
-func accTask(task *ecsTask, tags map[string]string, acc telegraf.Accumulator) {
+func accTask(task *ecsTask, tags map[string]string, acc Dana.Accumulator) {
 	taskFields := map[string]interface{}{
 		"desired_status": task.DesiredStatus,
 		"known_status":   task.KnownStatus,
@@ -148,7 +148,7 @@ func accTask(task *ecsTask, tags map[string]string, acc telegraf.Accumulator) {
 	acc.AddFields("ecs_task", taskFields, tags)
 }
 
-func (ecs *Ecs) accContainers(task *ecsTask, taskTags map[string]string, acc telegraf.Accumulator) {
+func (ecs *Ecs) accContainers(task *ecsTask, taskTags map[string]string, acc Dana.Accumulator) {
 	for i := range task.Containers {
 		c := &task.Containers[i]
 		if !ecs.containerNameFilter.Match(c.Name) {
@@ -233,7 +233,7 @@ func (ecs *Ecs) createContainerStatusFilters() error {
 }
 
 func init() {
-	inputs.Add("ecs", func() telegraf.Input {
+	inputs.Add("ecs", func() Dana.Input {
 		return &Ecs{
 			EndpointURL:    "",
 			Timeout:        config.Duration(5 * time.Second),

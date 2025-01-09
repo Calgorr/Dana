@@ -363,9 +363,9 @@ func namespaceAnnotationMatch(nsName string, p *Prometheus) bool {
 		return true
 	}
 
-	tags := make([]*telegraf.Tag, 0, len(ns.Annotations))
+	tags := make([]*Dana.Tag, 0, len(ns.Annotations))
 	for k, v := range ns.Annotations {
-		tags = append(tags, &telegraf.Tag{Key: k, Value: v})
+		tags = append(tags, &Dana.Tag{Key: k, Value: v})
 	}
 	return models.ShouldTagsPass(p.nsAnnotationPass, p.nsAnnotationDrop, tags)
 }

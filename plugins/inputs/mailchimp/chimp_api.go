@@ -28,7 +28,7 @@ type chimpAPI struct {
 	sync.Mutex
 
 	url *url.URL
-	log telegraf.Logger
+	log Dana.Logger
 }
 
 type reportsParams struct {
@@ -55,7 +55,7 @@ func (p *reportsParams) String() string {
 	return v.Encode()
 }
 
-func newChimpAPI(apiKey string, log telegraf.Logger) *chimpAPI {
+func newChimpAPI(apiKey string, log Dana.Logger) *chimpAPI {
 	u := &url.URL{}
 	u.Scheme = "https"
 	u.Host = mailchimpDatacenter.FindString(apiKey) + ".api.mailchimp.com"

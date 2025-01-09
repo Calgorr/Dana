@@ -29,9 +29,9 @@ const (
 )
 
 type LinuxCPU struct {
-	PathSysfs string          `toml:"host_sys"`
-	Metrics   []string        `toml:"metrics"`
-	Log       telegraf.Logger `toml:"-"`
+	PathSysfs string      `toml:"host_sys"`
+	Metrics   []string    `toml:"metrics"`
+	Log       Dana.Logger `toml:"-"`
 	cpus      []cpu
 }
 
@@ -73,7 +73,7 @@ func (g *LinuxCPU) Init() error {
 	return nil
 }
 
-func (g *LinuxCPU) Gather(acc telegraf.Accumulator) error {
+func (g *LinuxCPU) Gather(acc Dana.Accumulator) error {
 	for _, cpu := range g.cpus {
 		fields := make(map[string]interface{})
 		tags := map[string]string{"cpu": cpu.id}
@@ -205,7 +205,7 @@ func readUintFromFile(propPath string) (uint64, error) {
 }
 
 func init() {
-	inputs.Add("linux_cpu", func() telegraf.Input {
+	inputs.Add("linux_cpu", func() Dana.Input {
 		return &LinuxCPU{
 			Metrics: []string{"cpufreq"},
 		}

@@ -185,7 +185,7 @@ func TestRetrySuccessful(t *testing.T) {
 		},
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"modbus",
 			map[string]string{
@@ -307,7 +307,7 @@ func TestCases(t *testing.T) {
 	}
 
 	// Register the plugin
-	inputs.Add("modbus", func() telegraf.Input { return &Modbus{} })
+	inputs.Add("modbus", func() Dana.Input { return &Modbus{} })
 
 	// Define a function to return the register value as data
 	readFunc := func(_ *mbserver.Server, frame mbserver.Framer) ([]byte, *mbserver.Exception) {
@@ -359,7 +359,7 @@ func TestCases(t *testing.T) {
 			}
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedOutputFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedOutputFilename, parser)
@@ -668,7 +668,7 @@ func TestWorkaroundsStringRegisterLocation(t *testing.T) {
 			const addr = uint16(8)
 			length := uint16(len(tt.content) / 2)
 
-			expected := []telegraf.Metric{
+			expected := []Dana.Metric{
 				metric.New(
 					"modbus",
 					map[string]string{

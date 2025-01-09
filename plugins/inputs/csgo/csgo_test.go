@@ -49,7 +49,7 @@ func TestCPUStats(t *testing.T) {
 	require.NoError(t, plugin.Init())
 
 	// Define expected result
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"csgo",
 			map[string]string{
@@ -68,7 +68,7 @@ func TestCPUStats(t *testing.T) {
 				"variance_ms":    0.01,
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 	}
 

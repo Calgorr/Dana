@@ -42,12 +42,12 @@ type HTTP struct {
 
 	Headers            map[string]*config.Secret `toml:"headers"`
 	SuccessStatusCodes []int                     `toml:"success_status_codes"`
-	Log                telegraf.Logger           `toml:"-"`
+	Log                Dana.Logger               `toml:"-"`
 
 	common_http.HTTPClientConfig
 
 	client     *http.Client
-	parserFunc telegraf.ParserFunc
+	parserFunc Dana.ParserFunc
 }
 
 func (*HTTP) SampleConfig() string {
@@ -82,15 +82,15 @@ func (h *HTTP) Init() error {
 	return nil
 }
 
-func (h *HTTP) SetParserFunc(fn telegraf.ParserFunc) {
+func (h *HTTP) SetParserFunc(fn Dana.ParserFunc) {
 	h.parserFunc = fn
 }
 
-func (*HTTP) Start(telegraf.Accumulator) error {
+func (*HTTP) Start(Dana.Accumulator) error {
 	return nil
 }
 
-func (h *HTTP) Gather(acc telegraf.Accumulator) error {
+func (h *HTTP) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	for _, u := range h.URLs {
 		wg.Add(1)
@@ -122,7 +122,7 @@ func (h *HTTP) Stop() {
 // Returns:
 //
 //	error: Any error that may have occurred
-func (h *HTTP) gatherURL(acc telegraf.Accumulator, url string) error {
+func (h *HTTP) gatherURL(acc Dana.Accumulator, url string) error {
 	body := makeRequestBodyReader(h.ContentEncoding, h.Body)
 	request, err := http.NewRequest(h.Method, url, body)
 	if err != nil {
@@ -258,7 +258,7 @@ func makeRequestBodyReader(contentEncoding, body string) io.Reader {
 }
 
 func init() {
-	inputs.Add("http", func() telegraf.Input {
+	inputs.Add("http", func() Dana.Input {
 		return &HTTP{
 			Method: "GET",
 		}

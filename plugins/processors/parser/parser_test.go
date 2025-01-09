@@ -25,11 +25,11 @@ func TestApply(t *testing.T) {
 		parseFields  []string
 		parseTags    []string
 		parseBase64  []string
-		parser       telegraf.Parser
+		parser       Dana.Parser
 		dropOriginal bool
 		merge        string
-		input        telegraf.Metric
-		expected     []telegraf.Metric
+		input        Dana.Metric
+		expected     []Dana.Metric
 	}{
 		{
 			name:         "parse one field drop original",
@@ -52,7 +52,7 @@ func TestApply(t *testing.T) {
 					"sample": `{"ts":"2018-07-24T19:43:40.275Z","lvl":"info","msg":"http request","method":"POST"}`,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"singleField",
 					map[string]string{
@@ -87,7 +87,7 @@ func TestApply(t *testing.T) {
 					"sample": `{"ts":"2018-07-24T19:43:40.275Z","lvl":"info","msg":"http request","method":"POST"}`,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"singleField",
 					map[string]string{
@@ -124,7 +124,7 @@ func TestApply(t *testing.T) {
 					"sample": `{"ts":"2018-07-24T19:43:40.275Z","lvl":"info","msg":"http request","method":"POST"}`,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"singleField",
 					map[string]string{
@@ -158,7 +158,7 @@ func TestApply(t *testing.T) {
 					"message": "deal,computer_name=hosta message=\"stuff\" 1530654676316265790",
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"influxField",
 					map[string]string{},
@@ -192,7 +192,7 @@ func TestApply(t *testing.T) {
 					"message": "deal,computer_name=hosta message=\"stuff\" 1530654676316265790",
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"deal",
 					map[string]string{
@@ -221,7 +221,7 @@ func TestApply(t *testing.T) {
 						"Intel Mac OS X 10.9; rv:25.0) Gecko/20100101 Firefox/25.0\"",
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"success",
 					map[string]string{
@@ -256,7 +256,7 @@ func TestApply(t *testing.T) {
 					"field_2": `{"err":"fatal","fatal":"security threat"}`,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"bigMeasure",
 					map[string]string{
@@ -289,7 +289,7 @@ func TestApply(t *testing.T) {
 					"field_2": `{"err":"fatal","fatal":"security threat"}`,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"bigMeasure",
 					map[string]string{
@@ -320,7 +320,7 @@ func TestApply(t *testing.T) {
 					"field_2": `{"err":"fatal","fatal":"security threat"}`,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"bigMeasure",
 					map[string]string{},
@@ -360,7 +360,7 @@ func TestApply(t *testing.T) {
 				},
 				map[string]interface{}{},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"singleTag",
 					map[string]string{},
@@ -384,7 +384,7 @@ func TestApply(t *testing.T) {
 				},
 				map[string]interface{}{},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"singleTag",
 					map[string]string{
@@ -410,7 +410,7 @@ func TestApply(t *testing.T) {
 				},
 				map[string]interface{}{},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"singleTag",
 					map[string]string{
@@ -443,7 +443,7 @@ func TestApply(t *testing.T) {
 					"bad":  "why",
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"success",
 					map[string]string{},
@@ -477,7 +477,7 @@ func TestApply(t *testing.T) {
 					"ok":   `{"thing":"thang"}`,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"success",
 					map[string]string{},
@@ -521,7 +521,7 @@ func TestApply(t *testing.T) {
 					"bad":  "why",
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"success",
 					map[string]string{
@@ -552,7 +552,7 @@ func TestApply(t *testing.T) {
 					"bad":  "why",
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"success",
 					map[string]string{
@@ -567,7 +567,7 @@ func TestApply(t *testing.T) {
 			parseFields: []string{"value"},
 			merge:       "override",
 			// Create parser the config way with the name of the parent plugin.
-			parser: func() telegraf.Parser {
+			parser: func() Dana.Parser {
 				p := parsers.Parsers["value"]("parser")
 				vp := p.(*value.Parser)
 				vp.DataType = "float"
@@ -579,7 +579,7 @@ func TestApply(t *testing.T) {
 				map[string]string{},
 				map[string]interface{}{"value": "7.2"},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"myname",
 					map[string]string{},
@@ -598,7 +598,7 @@ func TestApply(t *testing.T) {
 				map[string]string{},
 				map[string]interface{}{"value": "test value=7.2"},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"test",
 					map[string]string{},
@@ -621,7 +621,7 @@ func TestApply(t *testing.T) {
 					"value": `{"timestamp": "2020-06-27 19:43:40", "value": 42.1}`,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"myname",
 					map[string]string{},
@@ -691,7 +691,7 @@ func TestApply(t *testing.T) {
 					"value": uint8(13),
 				},
 				time.Unix(1593287020, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"myname",
 					map[string]string{},
@@ -727,7 +727,7 @@ func TestApply(t *testing.T) {
 					"sample": `eyJ0ZXh0IjogInRlc3QgYmFzZTY0In0=`,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"singleField",
 					map[string]string{
@@ -752,7 +752,7 @@ func TestApply(t *testing.T) {
 					"field_2": `eyJlcnIiOiJmYXRhbCIsImZhdGFsIjoic2VjdXJpdHkgdGhyZWF0In0=`,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"bigMeasure",
 					map[string]string{
@@ -787,7 +787,7 @@ func TestApply(t *testing.T) {
 					"field_2": `{"err":"fatal","fatal":"security threat"}`,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"bigMeasure",
 					map[string]string{
@@ -810,7 +810,7 @@ func TestApply(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if p, ok := tt.parser.(telegraf.Initializer); ok {
+			if p, ok := tt.parser.(Dana.Initializer); ok {
 				require.NoError(t, p.Init())
 			}
 			plugin := Parser{
@@ -845,9 +845,9 @@ func TestBadApply(t *testing.T) {
 	tests := []struct {
 		name        string
 		parseFields []string
-		parser      telegraf.Parser
-		input       telegraf.Metric
-		expected    []telegraf.Metric
+		parser      Dana.Parser
+		input       Dana.Metric
+		expected    []Dana.Metric
 	}{
 		{
 			name:        "field not found",
@@ -860,7 +860,7 @@ func TestBadApply(t *testing.T) {
 					"some_field": 5,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"bad",
 					map[string]string{},
@@ -881,7 +881,7 @@ func TestBadApply(t *testing.T) {
 					"some_field": 5,
 				},
 				time.Unix(0, 0)),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"bad",
 					map[string]string{},
@@ -895,7 +895,7 @@ func TestBadApply(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if p, ok := tt.parser.(telegraf.Initializer); ok {
+			if p, ok := tt.parser.(Dana.Initializer); ok {
 				require.NoError(t, p.Init())
 			}
 
@@ -974,8 +974,8 @@ func TestTracking(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// Create a tracking metric and tap the delivery information
 			var mu sync.Mutex
-			delivered := make([]telegraf.DeliveryInfo, 0, 1)
-			notify := func(di telegraf.DeliveryInfo) {
+			delivered := make([]Dana.DeliveryInfo, 0, 1)
+			notify := func(di Dana.DeliveryInfo) {
 				mu.Lock()
 				defer mu.Unlock()
 				delivered = append(delivered, di)
@@ -1016,7 +1016,7 @@ func TestTracking(t *testing.T) {
 
 // Benchmarks
 
-func getMetricFields(m telegraf.Metric) interface{} {
+func getMetricFields(m Dana.Metric) interface{} {
 	key := "field3"
 	if v, ok := m.Fields()[key]; ok {
 		return v
@@ -1024,7 +1024,7 @@ func getMetricFields(m telegraf.Metric) interface{} {
 	return nil
 }
 
-func getMetricFieldList(m telegraf.Metric) interface{} {
+func getMetricFieldList(m Dana.Metric) interface{} {
 	key := "field3"
 	fields := m.FieldList()
 	for _, field := range fields {

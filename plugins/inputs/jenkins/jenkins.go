@@ -55,7 +55,7 @@ type Jenkins struct {
 	tls.ClientConfig
 	client *client
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	semaphore chan struct{}
 }
@@ -64,7 +64,7 @@ func (*Jenkins) SampleConfig() string {
 	return sampleConfig
 }
 
-func (j *Jenkins) Gather(acc telegraf.Accumulator) error {
+func (j *Jenkins) Gather(acc Dana.Accumulator) error {
 	if j.client == nil {
 		client, err := j.newHTTPClient()
 		if err != nil {
@@ -142,7 +142,7 @@ func (j *Jenkins) initialize(client *http.Client) error {
 	return j.client.init()
 }
 
-func (j *Jenkins) gatherNodeData(n node, acc telegraf.Accumulator) error {
+func (j *Jenkins) gatherNodeData(n node, acc Dana.Accumulator) error {
 	if n.DisplayName == "" {
 		return errors.New("error empty node name")
 	}
@@ -207,7 +207,7 @@ func (j *Jenkins) gatherNodeData(n node, acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (j *Jenkins) gatherNodesData(acc telegraf.Accumulator) {
+func (j *Jenkins) gatherNodesData(acc Dana.Accumulator) {
 	nodeResp, err := j.client.getAllNodes(context.Background())
 	if err != nil {
 		acc.AddError(err)
@@ -232,7 +232,7 @@ func (j *Jenkins) gatherNodesData(acc telegraf.Accumulator) {
 	}
 }
 
-func (j *Jenkins) gatherJobs(acc telegraf.Accumulator) {
+func (j *Jenkins) gatherJobs(acc Dana.Accumulator) {
 	js, err := j.client.getJobs(context.Background(), nil)
 	if err != nil {
 		acc.AddError(err)
@@ -241,7 +241,7 @@ func (j *Jenkins) gatherJobs(acc telegraf.Accumulator) {
 	var wg sync.WaitGroup
 	for _, job := range js.Jobs {
 		wg.Add(1)
-		go func(name string, wg *sync.WaitGroup, acc telegraf.Accumulator) {
+		go func(name string, wg *sync.WaitGroup, acc Dana.Accumulator) {
 			defer wg.Done()
 			if err := j.getJobDetail(jobRequest{
 				name:  name,
@@ -254,7 +254,7 @@ func (j *Jenkins) gatherJobs(acc telegraf.Accumulator) {
 	wg.Wait()
 }
 
-func (j *Jenkins) getJobDetail(jr jobRequest, acc telegraf.Accumulator) error {
+func (j *Jenkins) getJobDetail(jr jobRequest, acc Dana.Accumulator) error {
 	if j.MaxSubJobDepth > 0 && jr.layer == j.MaxSubJobDepth {
 		return nil
 	}
@@ -271,7 +271,7 @@ func (j *Jenkins) getJobDetail(jr jobRequest, acc telegraf.Accumulator) error {
 		}
 		wg.Add(1)
 		// schedule tcp fetch for inner jobs
-		go func(ij innerJob, jr jobRequest, acc telegraf.Accumulator) {
+		go func(ij innerJob, jr jobRequest, acc Dana.Accumulator) {
 			defer wg.Done()
 			if err := j.getJobDetail(jobRequest{
 				name:    ij.Name,
@@ -430,7 +430,7 @@ func (jr jobRequest) parentsString() string {
 	return strings.Join(jr.parents, "/")
 }
 
-func (j *Jenkins) gatherJobBuild(jr jobRequest, b *buildResponse, acc telegraf.Accumulator) {
+func (j *Jenkins) gatherJobBuild(jr jobRequest, b *buildResponse, acc Dana.Accumulator) {
 	tags := map[string]string{"name": jr.name, "parents": jr.parentsString(), "result": b.Result, "source": j.source, "port": j.port}
 	fields := make(map[string]interface{})
 	fields["duration"] = b.Duration
@@ -458,7 +458,7 @@ func mapResultCode(s string) int {
 }
 
 func init() {
-	inputs.Add("jenkins", func() telegraf.Input {
+	inputs.Add("jenkins", func() Dana.Input {
 		return &Jenkins{
 			MaxBuildAge:       config.Duration(time.Hour),
 			MaxConnections:    5,

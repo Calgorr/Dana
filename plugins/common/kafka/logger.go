@@ -29,7 +29,7 @@ func (l *debugLogger) Println(v ...interface{}) {
 }
 
 // SetLogger configures a debug logger for kafka (sarama)
-func SetLogger(level telegraf.LogLevel) {
+func SetLogger(level Dana.LogLevel) {
 	// Set-up the sarama logger only once
 	once.Do(func() {
 		sarama.Logger = &debugLogger{}

@@ -8,7 +8,7 @@ import (
 	"Dana"
 )
 
-func collectNodes(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory) {
+func collectNodes(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory) {
 	list, err := ki.client.getNodes(ctx, ki.NodeName)
 	if err != nil {
 		acc.AddError(err)
@@ -22,14 +22,14 @@ func collectNodes(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesI
 	}
 }
 
-func gatherNodeCount(count int, acc telegraf.Accumulator) {
+func gatherNodeCount(count int, acc Dana.Accumulator) {
 	fields := map[string]interface{}{"node_count": count}
 	tags := make(map[string]string)
 
 	acc.AddFields(nodeMeasurement, fields, tags)
 }
 
-func (ki *KubernetesInventory) gatherNode(n *corev1.Node, acc telegraf.Accumulator) {
+func (ki *KubernetesInventory) gatherNode(n *corev1.Node, acc Dana.Accumulator) {
 	fields := make(map[string]interface{}, len(n.Status.Capacity)+len(n.Status.Allocatable)+1)
 	tags := map[string]string{
 		"node_name":         n.Name,

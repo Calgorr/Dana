@@ -17,8 +17,8 @@ func TestConverter(t *testing.T) {
 	tests := []struct {
 		name      string
 		converter *Converter
-		input     telegraf.Metric
-		expected  []telegraf.Metric
+		input     Dana.Metric
+		expected  []Dana.Metric
 	}{
 		{
 			name: "from tag",
@@ -45,7 +45,7 @@ func TestConverter(t *testing.T) {
 				map[string]interface{}{},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -83,7 +83,7 @@ func TestConverter(t *testing.T) {
 				map[string]interface{}{},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -124,7 +124,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -168,7 +168,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -204,7 +204,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -250,7 +250,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -285,7 +285,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -328,7 +328,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -382,7 +382,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -422,7 +422,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -454,7 +454,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -484,7 +484,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -513,7 +513,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -542,7 +542,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -572,7 +572,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -600,7 +600,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -628,7 +628,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -656,7 +656,7 @@ func TestConverter(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -712,8 +712,8 @@ func TestMeasurement(t *testing.T) {
 	tests := []struct {
 		name      string
 		converter *Converter
-		input     telegraf.Metric
-		expected  []telegraf.Metric
+		input     Dana.Metric
+		expected  []Dana.Metric
 	}{
 		{
 			name: "measurement from tag",
@@ -732,7 +732,7 @@ func TestMeasurement(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"/var/log/syslog",
 					map[string]string{},
@@ -759,7 +759,7 @@ func TestMeasurement(t *testing.T) {
 				},
 				time.Unix(0, 0),
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"telegraf",
 					map[string]string{},
@@ -790,27 +790,27 @@ func TestEmptyConfigInitError(t *testing.T) {
 }
 
 func TestTracking(t *testing.T) {
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42, "topic": "telegraf"}, time.Unix(0, 0)),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42, "topic": "telegraf"}, time.Unix(0, 0)),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42, "topic": "telegraf"}, time.Unix(0, 0)),
 	}
 
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New("telegraf", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
 		metric.New("telegraf", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
 		metric.New("telegraf", map[string]string{}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),

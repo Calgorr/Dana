@@ -12,7 +12,7 @@ func (*gosmiTranslator) lookup(oid string) (snmp.MibEntry, error) {
 	return snmp.TrapLookup(oid)
 }
 
-func newGosmiTranslator(paths []string, log telegraf.Logger) (*gosmiTranslator, error) {
+func newGosmiTranslator(paths []string, log Dana.Logger) (*gosmiTranslator, error) {
 	err := snmp.LoadMibsFromPath(paths, log, &snmp.GosmiMibLoader{})
 	if err == nil {
 		return &gosmiTranslator{}, nil

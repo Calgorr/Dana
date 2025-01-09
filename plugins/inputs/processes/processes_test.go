@@ -138,7 +138,7 @@ func TestParkedProcess(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, plugin.Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"processes",
 			map[string]string{},
@@ -155,7 +155,7 @@ func TestParkedProcess(t *testing.T) {
 				"zombies":  0,
 			},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 	}
 

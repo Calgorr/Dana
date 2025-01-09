@@ -74,7 +74,7 @@ func (q *Query) prepare(host string, username, password config.Secret) error {
 	return nil
 }
 
-func (q *Query) execute(acc telegraf.Accumulator) error {
+func (q *Query) execute(acc Dana.Accumulator) error {
 	// The only way to run WMI queries in parallel while being thread-safe is to
 	// ensure the CoInitialize[Ex]() call is bound to its current OS thread.
 	// Otherwise, attempting to initialize and run parallel queries across
@@ -143,7 +143,7 @@ func (q *Query) execute(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (q *Query) extractProperties(acc telegraf.Accumulator, itemRaw *ole.VARIANT) error {
+func (q *Query) extractProperties(acc Dana.Accumulator, itemRaw *ole.VARIANT) error {
 	tags, fields := make(map[string]string), make(map[string]interface{})
 
 	if q.host != "" {

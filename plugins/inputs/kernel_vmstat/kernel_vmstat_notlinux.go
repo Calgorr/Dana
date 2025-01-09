@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type KernelVmstat struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*KernelVmstat) SampleConfig() string { return sampleConfig }
@@ -24,10 +24,10 @@ func (k *KernelVmstat) Init() error {
 	return nil
 }
 
-func (*KernelVmstat) Gather(_ telegraf.Accumulator) error { return nil }
+func (*KernelVmstat) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("kernel_vmstat", func() telegraf.Input {
+	inputs.Add("kernel_vmstat", func() Dana.Input {
 		return &KernelVmstat{}
 	})
 }

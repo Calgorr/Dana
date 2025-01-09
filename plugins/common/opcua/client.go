@@ -92,7 +92,7 @@ func (o *OpcUAClientConfig) validateEndpoint() error {
 	return nil
 }
 
-func (o *OpcUAClientConfig) CreateClient(telegrafLogger telegraf.Logger) (*OpcUAClient, error) {
+func (o *OpcUAClientConfig) CreateClient(telegrafLogger Dana.Logger) (*OpcUAClient, error) {
 	err := o.Validate()
 	if err != nil {
 		return nil, err
@@ -115,7 +115,7 @@ func (o *OpcUAClientConfig) CreateClient(telegrafLogger telegraf.Logger) (*OpcUA
 
 type OpcUAClient struct {
 	Config *OpcUAClientConfig
-	Log    telegraf.Logger
+	Log    Dana.Logger
 
 	Client *opcua.Client
 

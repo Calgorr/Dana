@@ -121,7 +121,7 @@ func (s *Varnish) Init() error {
 // The prefix of each stat (eg MAIN, MEMPOOL, LCK, etc) will be used as a
 // 'section' tag and all stats that share that prefix will be reported as fields
 // with that tag
-func (s *Varnish) Gather(acc telegraf.Accumulator) error {
+func (s *Varnish) Gather(acc Dana.Accumulator) error {
 	if s.filter == nil {
 		var err error
 		if len(s.Stats) == 0 {
@@ -191,7 +191,7 @@ func (s *Varnish) prepareCmdArgs() ([]string, []string) {
 	return admArgs, statsArgs
 }
 
-func (s *Varnish) processMetricsV1(acc telegraf.Accumulator, out *bytes.Buffer) error {
+func (s *Varnish) processMetricsV1(acc Dana.Accumulator, out *bytes.Buffer) error {
 	sectionMap := make(map[string]map[string]interface{})
 	scanner := bufio.NewScanner(out)
 	for scanner.Scan() {
@@ -240,7 +240,7 @@ func (s *Varnish) processMetricsV1(acc telegraf.Accumulator, out *bytes.Buffer) 
 }
 
 // metrics version 2 - parsing json
-func (s *Varnish) processMetricsV2(activeVcl string, acc telegraf.Accumulator, out *bytes.Buffer) error {
+func (s *Varnish) processMetricsV2(activeVcl string, acc Dana.Accumulator, out *bytes.Buffer) error {
 	rootJSON := make(map[string]interface{})
 	dec := json.NewDecoder(out)
 	dec.UseNumber()
@@ -396,7 +396,7 @@ type varnishMetric struct {
 }
 
 func init() {
-	inputs.Add("varnish", func() telegraf.Input {
+	inputs.Add("varnish", func() Dana.Input {
 		return &Varnish{
 			run:             varnishRunner,
 			admRun:          varnishRunner,

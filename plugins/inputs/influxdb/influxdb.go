@@ -53,7 +53,7 @@ func (*InfluxDB) SampleConfig() string {
 	return sampleConfig
 }
 
-func (i *InfluxDB) Gather(acc telegraf.Accumulator) error {
+func (i *InfluxDB) Gather(acc Dana.Accumulator) error {
 	if len(i.URLs) == 0 {
 		i.URLs = []string{"http://localhost:8086/debug/vars"}
 	}
@@ -97,7 +97,7 @@ func (i *InfluxDB) Gather(acc telegraf.Accumulator) error {
 // Returns:
 //
 //	error: Any error that may have occurred
-func (i *InfluxDB) gatherURL(acc telegraf.Accumulator, url string) error {
+func (i *InfluxDB) gatherURL(acc Dana.Accumulator, url string) error {
 	shardCounter := 0
 	now := time.Now()
 
@@ -305,7 +305,7 @@ func readResponseError(resp *http.Response) error {
 }
 
 func init() {
-	inputs.Add("influxdb", func() telegraf.Input {
+	inputs.Add("influxdb", func() Dana.Input {
 		return &InfluxDB{
 			Timeout: config.Duration(time.Second * 5),
 		}

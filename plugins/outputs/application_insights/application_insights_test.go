@@ -152,7 +152,7 @@ func TestAggregateMetricCreated(t *testing.T) {
 			err := ai.Connect()
 			require.NoError(t, err)
 
-			mSet := []telegraf.Metric{m}
+			mSet := []Dana.Metric{m}
 			err = ai.Write(mSet)
 			require.NoError(t, err)
 			transmitter.AssertNumberOfCalls(t, "Track", 1+len(tt.additionalMetricValueFields))
@@ -220,7 +220,7 @@ func TestSimpleMetricCreated(t *testing.T) {
 			err := ai.Connect()
 			require.NoError(t, err)
 
-			mSet := []telegraf.Metric{m}
+			mSet := []Dana.Metric{m}
 			err = ai.Write(mSet)
 			require.NoError(t, err)
 
@@ -290,7 +290,7 @@ func TestTagsAppliedToTelemetry(t *testing.T) {
 			err := ai.Connect()
 			require.NoError(t, err)
 
-			mSet := []telegraf.Metric{m}
+			mSet := []Dana.Metric{m}
 			err = ai.Write(mSet)
 			require.NoError(t, err)
 			transmitter.AssertNumberOfCalls(t, "Track", len(tt.metricValueFields))
@@ -331,7 +331,7 @@ func TestContextTagsSetOnSimpleTelemetry(t *testing.T) {
 	err := ai.Connect()
 	require.NoError(t, err)
 
-	mSet := []telegraf.Metric{m}
+	mSet := []Dana.Metric{m}
 	err = ai.Write(mSet)
 	require.NoError(t, err)
 	transmitter.AssertNumberOfCalls(t, "Track", 1)
@@ -368,7 +368,7 @@ func TestContextTagsSetOnAggregateTelemetry(t *testing.T) {
 	err := ai.Connect()
 	require.NoError(t, err)
 
-	mSet := []telegraf.Metric{m}
+	mSet := []Dana.Metric{m}
 	err = ai.Write(mSet)
 	require.NoError(t, err)
 	transmitter.AssertNumberOfCalls(t, "Track", 1)
@@ -389,7 +389,7 @@ func unfinished() <-chan struct{} {
 	return unfinished
 }
 
-func verifyAggregateTelemetry(t *testing.T, m telegraf.Metric, valueField, countField string, telemetry *appinsights.AggregateMetricTelemetry) {
+func verifyAggregateTelemetry(t *testing.T, m Dana.Metric, valueField, countField string, telemetry *appinsights.AggregateMetricTelemetry) {
 	verifyAggregateField := func(fieldName string, telemetryValue float64) {
 		metricRawFieldValue, found := m.Fields()[fieldName]
 		if !found {
@@ -411,7 +411,7 @@ func verifyAggregateTelemetry(t *testing.T, m telegraf.Metric, valueField, count
 	assertMapContains(t, m.Tags(), telemetry.Properties)
 }
 
-func verifySimpleTelemetry(t *testing.T, m telegraf.Metric, valueField, expectedTelemetryName string, telemetry *appinsights.MetricTelemetry) {
+func verifySimpleTelemetry(t *testing.T, m Dana.Metric, valueField, expectedTelemetryName string, telemetry *appinsights.MetricTelemetry) {
 	require.Equal(t, expectedTelemetryName, telemetry.Name, "Telemetry name is not what was expected")
 	require.InDelta(t, m.Fields()[valueField], telemetry.Value, testutil.DefaultDelta, "Telemetry value does not match metric value field")
 	require.Equal(t, m.Time(), telemetry.Timestamp, "Telemetry and metric timestamps do not match")
@@ -420,7 +420,7 @@ func verifySimpleTelemetry(t *testing.T, m telegraf.Metric, valueField, expected
 
 func verifyAdditionalTelemetry(
 	t *testing.T,
-	m telegraf.Metric,
+	m Dana.Metric,
 	transmitter *mocks.Transmitter,
 	additionalMetricValueFields []string,
 	telemetryNamePrefix string,

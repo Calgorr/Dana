@@ -30,13 +30,13 @@ func TestMonthTag(t *testing.T) {
 	now := time.Now()
 	month := now.Format("Jan")
 
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42}, now),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New("foo", map[string]string{"month": month}, map[string]interface{}{"value": 42}, now),
 		metric.New("bar", map[string]string{"month": month}, map[string]interface{}{"value": 42}, now),
 		metric.New("baz", map[string]string{"month": month}, map[string]interface{}{"value": 42}, now),
@@ -56,13 +56,13 @@ func TestMonthField(t *testing.T) {
 	now := time.Now()
 	month := now.Format("Jan")
 
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42}, now),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42, "month": month}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42, "month": month}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42, "month": month}, now),
@@ -81,13 +81,13 @@ func TestMonthField(t *testing.T) {
 func TestOldDateTag(t *testing.T) {
 	now := time.Date(1993, 05, 27, 0, 0, 0, 0, time.UTC)
 
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42}, now),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New("foo", map[string]string{"year": "1993"}, map[string]interface{}{"value": 42}, now),
 		metric.New("bar", map[string]string{"year": "1993"}, map[string]interface{}{"value": 42}, now),
 		metric.New("baz", map[string]string{"year": "1993"}, map[string]interface{}{"value": 42}, now),
@@ -107,13 +107,13 @@ func TestFieldUnix(t *testing.T) {
 	now := time.Now()
 	ts := now.Unix()
 
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42}, now),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42, "unix": ts}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42, "unix": ts}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42, "unix": ts}, now),
@@ -133,13 +133,13 @@ func TestFieldUnixNano(t *testing.T) {
 	now := time.Now()
 	ts := now.UnixNano()
 
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42}, now),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42, "unix_ns": ts}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42, "unix_ns": ts}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42, "unix_ns": ts}, now),
@@ -159,13 +159,13 @@ func TestFieldUnixMillis(t *testing.T) {
 	now := time.Now()
 	ts := now.UnixMilli()
 
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42}, now),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42, "unix_ms": ts}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42, "unix_ms": ts}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42, "unix_ms": ts}, now),
@@ -185,13 +185,13 @@ func TestFieldUnixMicros(t *testing.T) {
 	now := time.Now()
 	ts := now.UnixMicro()
 
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42}, now),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42, "unix_us": ts}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42, "unix_us": ts}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42, "unix_us": ts}, now),
@@ -224,7 +224,7 @@ func TestDateOffset(t *testing.T) {
 		time.Unix(1578603600, 0),
 	)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{
@@ -245,22 +245,22 @@ func TestTracking(t *testing.T) {
 	now := time.Now()
 	ts := now.UnixMicro()
 
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New("foo", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("bar", map[string]string{}, map[string]interface{}{"value": 42}, now),
 		metric.New("baz", map[string]string{}, map[string]interface{}{"value": 42}, now),
 	}
 
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
-	input := make([]telegraf.Metric, 0, len(inputRaw))
-	expected := make([]telegraf.Metric, 0, len(input))
+	input := make([]Dana.Metric, 0, len(inputRaw))
+	expected := make([]Dana.Metric, 0, len(input))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)

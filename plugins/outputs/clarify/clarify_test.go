@@ -58,7 +58,7 @@ func TestGenerateID(t *testing.T) {
 		ClarifyIDTag: "clarify_input_id",
 	}
 	var idTests = []struct {
-		inMetric telegraf.Metric
+		inMetric Dana.Metric
 		outID    []string
 		err      error
 	}{
@@ -136,7 +136,7 @@ func TestProcessMetrics(t *testing.T) {
 		ClarifyIDTag: "clarify_input_id",
 	}
 	var idTests = []struct {
-		inMetric   telegraf.Metric
+		inMetric   Dana.Metric
 		outFrame   views.DataFrame
 		outSignals map[string]views.SignalSave
 	}{
@@ -281,7 +281,7 @@ func TestProcessMetrics(t *testing.T) {
 		},
 	}
 	for _, tt := range idTests {
-		of, os := clfy.processMetrics([]telegraf.Metric{tt.inMetric})
+		of, os := clfy.processMetrics([]Dana.Metric{tt.inMetric})
 		require.EqualValues(t, tt.outFrame, of)
 		require.EqualValues(t, tt.outSignals, os)
 	}

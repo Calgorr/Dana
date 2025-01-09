@@ -46,7 +46,7 @@ type Client struct {
 	Valid     bool
 	Timeout   time.Duration
 	closeGate sync.Once
-	log       telegraf.Logger
+	log       Dana.Logger
 }
 
 // NewClientFactory creates a new ClientFactory and prepares it for use.

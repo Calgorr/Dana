@@ -267,11 +267,11 @@ type MockupTypesPlugin struct {
 	Sizes     []config.Size     `toml:"sizes"`
 }
 
-func (*MockupTypesPlugin) SampleConfig() string                { return "Mockup test types plugin" }
-func (*MockupTypesPlugin) Gather(_ telegraf.Accumulator) error { return nil }
+func (*MockupTypesPlugin) SampleConfig() string            { return "Mockup test types plugin" }
+func (*MockupTypesPlugin) Gather(_ Dana.Accumulator) error { return nil }
 
 // Register the mockup plugin on loading
 func init() {
 	// Register the mockup input plugin for the required names
-	inputs.Add("typesmockup", func() telegraf.Input { return &MockupTypesPlugin{} })
+	inputs.Add("typesmockup", func() Dana.Input { return &MockupTypesPlugin{} })
 }

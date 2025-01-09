@@ -39,7 +39,7 @@ type Redis struct {
 
 	tls.ClientConfig
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	clients   []Client
 	connected bool
@@ -301,7 +301,7 @@ func (r *Redis) connect() error {
 
 // Reads stats from all configured servers accumulates stats.
 // Returns one of the errors encountered while gather stats (if any).
-func (r *Redis) Gather(acc telegraf.Accumulator) error {
+func (r *Redis) Gather(acc Dana.Accumulator) error {
 	if !r.connected {
 		err := r.connect()
 		if err != nil {
@@ -324,7 +324,7 @@ func (r *Redis) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (r *Redis) gatherCommandValues(client Client, acc telegraf.Accumulator) error {
+func (r *Redis) gatherCommandValues(client Client, acc Dana.Accumulator) error {
 	fields := make(map[string]interface{})
 	for _, command := range r.Commands {
 		val, err := client.Do(command.Type, command.Command...)
@@ -344,7 +344,7 @@ func (r *Redis) gatherCommandValues(client Client, acc telegraf.Accumulator) err
 	return nil
 }
 
-func gatherServer(client Client, acc telegraf.Accumulator) error {
+func gatherServer(client Client, acc Dana.Accumulator) error {
 	info, err := client.Info().Result()
 	if err != nil {
 		return err
@@ -357,7 +357,7 @@ func gatherServer(client Client, acc telegraf.Accumulator) error {
 // gatherInfoOutput gathers
 func gatherInfoOutput(
 	rdr io.Reader,
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	tags map[string]string,
 ) error {
 	var section string
@@ -490,7 +490,7 @@ func gatherInfoOutput(
 //	db0:keys=2,expires=0,avg_ttl=0
 //
 // And there is one for each db on the redis instance
-func gatherKeyspaceLine(name, line string, acc telegraf.Accumulator, globalTags map[string]string) {
+func gatherKeyspaceLine(name, line string, acc Dana.Accumulator, globalTags map[string]string) {
 	if strings.Contains(line, "keys=") {
 		fields := make(map[string]interface{})
 		tags := make(map[string]string)
@@ -516,7 +516,7 @@ func gatherKeyspaceLine(name, line string, acc telegraf.Accumulator, globalTags 
 //	cmdstat_publish:calls=33791,usec=208789,usec_per_call=6.18
 //
 // Tag: command=publish; Fields: calls=33791i,usec=208789i,usec_per_call=6.18
-func gatherCommandstateLine(name, line string, acc telegraf.Accumulator, globalTags map[string]string) {
+func gatherCommandstateLine(name, line string, acc Dana.Accumulator, globalTags map[string]string) {
 	if !strings.HasPrefix(name, "cmdstat") {
 		return
 	}
@@ -558,7 +558,7 @@ func gatherCommandstateLine(name, line string, acc telegraf.Accumulator, globalT
 //	latency_percentiles_usec_zadd:p50=9.023,p99=28.031,p99.9=43.007
 //
 // Tag: command=zadd; Fields: p50=9.023,p99=28.031,p99.9=43.007
-func gatherLatencystatsLine(name, line string, acc telegraf.Accumulator, globalTags map[string]string) {
+func gatherLatencystatsLine(name, line string, acc Dana.Accumulator, globalTags map[string]string) {
 	if !strings.HasPrefix(name, "latency_percentiles_usec") {
 		return
 	}
@@ -593,7 +593,7 @@ func gatherLatencystatsLine(name, line string, acc telegraf.Accumulator, globalT
 //	slave0:ip=127.0.0.1,port=7379,state=online,offset=4556468,lag=0
 //
 // This line will only be visible when a node has a replica attached.
-func gatherReplicationLine(name, line string, acc telegraf.Accumulator, globalTags map[string]string) {
+func gatherReplicationLine(name, line string, acc Dana.Accumulator, globalTags map[string]string) {
 	fields := make(map[string]interface{})
 	tags := make(map[string]string)
 	for k, v := range globalTags {
@@ -633,7 +633,7 @@ func gatherReplicationLine(name, line string, acc telegraf.Accumulator, globalTa
 //
 // errorstat_ERR:count=37
 // errorstat_MOVED:count=3626
-func gatherErrorstatsLine(name, line string, acc telegraf.Accumulator, globalTags map[string]string) {
+func gatherErrorstatsLine(name, line string, acc Dana.Accumulator, globalTags map[string]string) {
 	tags := make(map[string]string, len(globalTags)+1)
 	for k, v := range globalTags {
 		tags[k] = v
@@ -655,7 +655,7 @@ func gatherErrorstatsLine(name, line string, acc telegraf.Accumulator, globalTag
 }
 
 func init() {
-	inputs.Add("redis", func() telegraf.Input {
+	inputs.Add("redis", func() Dana.Input {
 		return &Redis{}
 	})
 }
@@ -774,7 +774,7 @@ func coerceType(value interface{}, typ reflect.Type) reflect.Value {
 	return reflect.ValueOf(value)
 }
 
-func (*Redis) Start(telegraf.Accumulator) error {
+func (*Redis) Start(Dana.Accumulator) error {
 	return nil
 }
 

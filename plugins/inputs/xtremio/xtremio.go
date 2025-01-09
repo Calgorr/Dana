@@ -21,11 +21,11 @@ import (
 var sampleConfig string
 
 type XtremIO struct {
-	Username   string          `toml:"username"`
-	Password   string          `toml:"password"`
-	URL        string          `toml:"url"`
-	Collectors []string        `toml:"collectors"`
-	Log        telegraf.Logger `toml:"-"`
+	Username   string      `toml:"username"`
+	Password   string      `toml:"password"`
+	URL        string      `toml:"url"`
+	Collectors []string    `toml:"collectors"`
+	Log        Dana.Logger `toml:"-"`
 	tls.ClientConfig
 
 	cookie *http.Cookie
@@ -72,7 +72,7 @@ func (xio *XtremIO) Init() error {
 	return nil
 }
 
-func (xio *XtremIO) Gather(acc telegraf.Accumulator) error {
+func (xio *XtremIO) Gather(acc Dana.Accumulator) error {
 	if err := xio.authenticate(); err != nil {
 		return err
 	}
@@ -160,7 +160,7 @@ func (xio *XtremIO) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (xio *XtremIO) gatherBBUs(acc telegraf.Accumulator, url string, wg *sync.WaitGroup) {
+func (xio *XtremIO) gatherBBUs(acc Dana.Accumulator, url string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	resp, err := xio.call(url)
 	if err != nil {
@@ -193,7 +193,7 @@ func (xio *XtremIO) gatherBBUs(acc telegraf.Accumulator, url string, wg *sync.Wa
 	acc.AddFields("xio", fields, tags)
 }
 
-func (xio *XtremIO) gatherClusters(acc telegraf.Accumulator, url string, wg *sync.WaitGroup) {
+func (xio *XtremIO) gatherClusters(acc Dana.Accumulator, url string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	resp, err := xio.call(url)
 	if err != nil {
@@ -229,7 +229,7 @@ func (xio *XtremIO) gatherClusters(acc telegraf.Accumulator, url string, wg *syn
 	acc.AddFields("xio", fields, tags)
 }
 
-func (xio *XtremIO) gatherSSDs(acc telegraf.Accumulator, url string, wg *sync.WaitGroup) {
+func (xio *XtremIO) gatherSSDs(acc Dana.Accumulator, url string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	resp, err := xio.call(url)
 	if err != nil {
@@ -265,7 +265,7 @@ func (xio *XtremIO) gatherSSDs(acc telegraf.Accumulator, url string, wg *sync.Wa
 	acc.AddFields("xio", fields, tags)
 }
 
-func (xio *XtremIO) gatherVolumes(acc telegraf.Accumulator, url string, wg *sync.WaitGroup) {
+func (xio *XtremIO) gatherVolumes(acc Dana.Accumulator, url string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	resp, err := xio.call(url)
 	if err != nil {
@@ -298,7 +298,7 @@ func (xio *XtremIO) gatherVolumes(acc telegraf.Accumulator, url string, wg *sync
 	acc.AddFields("xio", fields, tags)
 }
 
-func (xio *XtremIO) gatherXMS(acc telegraf.Accumulator, url string, wg *sync.WaitGroup) {
+func (xio *XtremIO) gatherXMS(acc Dana.Accumulator, url string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	resp, err := xio.call(url)
 	if err != nil {
@@ -376,7 +376,7 @@ func (xio *XtremIO) authenticate() error {
 }
 
 func init() {
-	inputs.Add("xtremio", func() telegraf.Input {
+	inputs.Add("xtremio", func() Dana.Input {
 		return &XtremIO{}
 	})
 }

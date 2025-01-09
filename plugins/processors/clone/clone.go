@@ -22,8 +22,8 @@ func (*Clone) SampleConfig() string {
 	return sampleConfig
 }
 
-func (c *Clone) Apply(in ...telegraf.Metric) []telegraf.Metric {
-	out := make([]telegraf.Metric, 0, 2*len(in))
+func (c *Clone) Apply(in ...Dana.Metric) []Dana.Metric {
+	out := make([]Dana.Metric, 0, 2*len(in))
 
 	for _, original := range in {
 		m := original.Copy()
@@ -46,7 +46,7 @@ func (c *Clone) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("clone", func() telegraf.Processor {
+	processors.Add("clone", func() Dana.Processor {
 		return &Clone{}
 	})
 }

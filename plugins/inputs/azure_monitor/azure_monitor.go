@@ -24,7 +24,7 @@ type AzureMonitor struct {
 	ResourceTargets      []*resourceTarget      `toml:"resource_target"`
 	ResourceGroupTargets []*resourceGroupTarget `toml:"resource_group_target"`
 	SubscriptionTargets  []*resource            `toml:"subscription_target"`
-	Log                  telegraf.Logger        `toml:"-"`
+	Log                  Dana.Logger            `toml:"-"`
 
 	receiver     *receiver.AzureMonitorMetricsReceiver
 	azureManager azureClientsCreator
@@ -113,7 +113,7 @@ func (am *AzureMonitor) Init() error {
 	return nil
 }
 
-func (am *AzureMonitor) Gather(acc telegraf.Accumulator) error {
+func (am *AzureMonitor) Gather(acc Dana.Accumulator) error {
 	var waitGroup sync.WaitGroup
 
 	for _, target := range am.receiver.Targets.ResourceTargets {
@@ -187,7 +187,7 @@ func (*azureClientsManager) createAzureClients(
 }
 
 func init() {
-	inputs.Add("azure_monitor", func() telegraf.Input {
+	inputs.Add("azure_monitor", func() Dana.Input {
 		return &AzureMonitor{
 			azureManager: &azureClientsManager{},
 		}

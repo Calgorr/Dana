@@ -21,8 +21,8 @@ type Plugin struct {
 	Files            []string               `toml:"files"`
 	DefaultTags      map[string]string      `toml:"default_tag_defs"`
 	AdditionalParams map[string]interface{} `toml:"additional_params"`
-	Parser           telegraf.Parser        `toml:"-"`
-	Log              telegraf.Logger        `toml:"-"`
+	Parser           Dana.Parser            `toml:"-"`
+	Log              Dana.Logger            `toml:"-"`
 
 	// Settings used by test-code
 	Path             string `toml:"-"` // start path for relative files
@@ -30,9 +30,9 @@ type Plugin struct {
 	UseTypeTag       string `toml:"-"` // if specified use this tag to infer metric type
 
 	// Test-data derived from the files
-	Expected              []telegraf.Metric `toml:"-"` // expected metrics
-	ExpectedErrors        []string          `toml:"-"` // expected errors
-	ShouldIgnoreTimestamp bool              `toml:"-"` // flag indicating if the expected metrics do have timestamps
+	Expected              []Dana.Metric `toml:"-"` // expected metrics
+	ExpectedErrors        []string      `toml:"-"` // expected errors
+	ShouldIgnoreTimestamp bool          `toml:"-"` // flag indicating if the expected metrics do have timestamps
 
 	// Internal data
 	inputFilenames []string
@@ -98,18 +98,18 @@ func (p *Plugin) Init() error {
 			if !found {
 				continue
 			}
-			var mtype telegraf.ValueType
+			var mtype Dana.ValueType
 			switch typeTag {
 			case "counter":
-				mtype = telegraf.Counter
+				mtype = Dana.Counter
 			case "gauge":
-				mtype = telegraf.Gauge
+				mtype = Dana.Gauge
 			case "untyped":
-				mtype = telegraf.Untyped
+				mtype = Dana.Untyped
 			case "summary":
-				mtype = telegraf.Summary
+				mtype = Dana.Summary
 			case "histogram":
-				mtype = telegraf.Histogram
+				mtype = Dana.Histogram
 			default:
 				continue
 			}
@@ -140,7 +140,7 @@ func (p *Plugin) Init() error {
 	return nil
 }
 
-func (p *Plugin) Gather(acc telegraf.Accumulator) error {
+func (p *Plugin) Gather(acc Dana.Accumulator) error {
 	if p.Parser == nil {
 		return errors.New("no parser defined")
 	}
@@ -162,7 +162,7 @@ func (p *Plugin) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (p *Plugin) SetParser(parser telegraf.Parser) {
+func (p *Plugin) SetParser(parser Dana.Parser) {
 	p.Parser = parser
 	if len(p.DefaultTags) > 0 {
 		p.Parser.SetDefaultTags(p.DefaultTags)
@@ -171,7 +171,7 @@ func (p *Plugin) SetParser(parser telegraf.Parser) {
 
 // Register the plugin
 func init() {
-	inputs.Add("test", func() telegraf.Input {
+	inputs.Add("test", func() Dana.Input {
 		return &Plugin{}
 	})
 }

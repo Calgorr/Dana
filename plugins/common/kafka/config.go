@@ -19,7 +19,7 @@ type ReadConfig struct {
 }
 
 // SetConfig on the sarama.Config object from the ReadConfig struct.
-func (k *ReadConfig) SetConfig(cfg *sarama.Config, log telegraf.Logger) error {
+func (k *ReadConfig) SetConfig(cfg *sarama.Config, log Dana.Logger) error {
 	cfg.Consumer.Return.Errors = true
 	return k.Config.SetConfig(cfg, log)
 }
@@ -35,7 +35,7 @@ type WriteConfig struct {
 }
 
 // SetConfig on the sarama.Config object from the WriteConfig struct.
-func (k *WriteConfig) SetConfig(cfg *sarama.Config, log telegraf.Logger) error {
+func (k *WriteConfig) SetConfig(cfg *sarama.Config, log Dana.Logger) error {
 	cfg.Producer.Return.Successes = true
 	cfg.Producer.Idempotent = k.IdempotentWrites
 	cfg.Producer.Retry.Max = k.MaxRetry
@@ -82,7 +82,7 @@ func makeBackoffFunc(backoff, maxDuration time.Duration) BackoffFunc {
 }
 
 // SetConfig on the sarama.Config object from the Config struct.
-func (k *Config) SetConfig(cfg *sarama.Config, log telegraf.Logger) error {
+func (k *Config) SetConfig(cfg *sarama.Config, log Dana.Logger) error {
 	if k.Version != "" {
 		version, err := sarama.ParseKafkaVersion(k.Version)
 		if err != nil {

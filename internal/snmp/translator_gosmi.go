@@ -17,7 +17,7 @@ var errCannotFormatUnkownType = errors.New("cannot format value, unknown type")
 type gosmiTranslator struct {
 }
 
-func NewGosmiTranslator(paths []string, log telegraf.Logger) (*gosmiTranslator, error) {
+func NewGosmiTranslator(paths []string, log Dana.Logger) (*gosmiTranslator, error) {
 	err := LoadMibsFromPath(paths, log, &GosmiMibLoader{})
 	if err == nil {
 		return &gosmiTranslator{}, nil

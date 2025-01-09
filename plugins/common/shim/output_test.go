@@ -62,7 +62,7 @@ func TestOutputShim(t *testing.T) {
 }
 
 type testOutput struct {
-	MetricsWritten []telegraf.Metric
+	MetricsWritten []Dana.Metric
 }
 
 func (o *testOutput) Connect() error {
@@ -71,7 +71,7 @@ func (o *testOutput) Connect() error {
 func (o *testOutput) Close() error {
 	return nil
 }
-func (o *testOutput) Write(metrics []telegraf.Metric) error {
+func (o *testOutput) Write(metrics []Dana.Metric) error {
 	o.MetricsWritten = append(o.MetricsWritten, metrics...)
 	return nil
 }

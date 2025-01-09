@@ -30,7 +30,7 @@ const (
 
 type Checker interface {
 	// Check returns true if the metrics meet its criteria.
-	Check(metrics []telegraf.Metric) bool
+	Check(metrics []Dana.Metric) bool
 }
 
 type Health struct {
@@ -41,9 +41,9 @@ type Health struct {
 	BasicPassword  string          `toml:"basic_password"`
 	common_tls.ServerConfig
 
-	Compares []*Compares     `toml:"compares"`
-	Contains []*Contains     `toml:"contains"`
-	Log      telegraf.Logger `toml:"-"`
+	Compares []*Compares `toml:"compares"`
+	Contains []*Contains `toml:"contains"`
+	Log      Dana.Logger `toml:"-"`
 	checkers []Checker
 
 	wg      sync.WaitGroup
@@ -152,7 +152,7 @@ func (h *Health) ServeHTTP(rw http.ResponseWriter, _ *http.Request) {
 }
 
 // Write runs all checks over the metric batch and adjust health state.
-func (h *Health) Write(metrics []telegraf.Metric) error {
+func (h *Health) Write(metrics []Dana.Metric) error {
 	healthy := true
 	for _, checker := range h.checkers {
 		success := checker.Check(metrics)
@@ -227,7 +227,7 @@ func NewHealth() *Health {
 }
 
 func init() {
-	outputs.Add("health", func() telegraf.Output {
+	outputs.Add("health", func() Dana.Output {
 		return NewHealth()
 	})
 }

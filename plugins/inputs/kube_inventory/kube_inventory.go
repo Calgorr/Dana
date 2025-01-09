@@ -23,7 +23,7 @@ import (
 //go:embed sample.conf
 var sampleConfig string
 
-var availableCollectors = map[string]func(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory){
+var availableCollectors = map[string]func(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory){
 	"daemonsets":             collectDaemonSets,
 	"deployments":            collectDeployments,
 	"endpoints":              collectEndpoints,
@@ -69,8 +69,8 @@ type KubernetesInventory struct {
 	SelectorInclude []string `toml:"selector_include"`
 	SelectorExclude []string `toml:"selector_exclude"`
 
-	NodeName string          `toml:"node_name"`
-	Log      telegraf.Logger `toml:"-"`
+	NodeName string      `toml:"node_name"`
+	Log      Dana.Logger `toml:"-"`
 
 	tls.ClientConfig
 	client     *client
@@ -114,7 +114,7 @@ func (ki *KubernetesInventory) Init() error {
 }
 
 // Gather collects kubernetes metrics from a given URL.
-func (ki *KubernetesInventory) Gather(acc telegraf.Accumulator) (err error) {
+func (ki *KubernetesInventory) Gather(acc Dana.Accumulator) (err error) {
 	resourceFilter, err := filter.NewIncludeExcludeFilter(ki.ResourceInclude, ki.ResourceExclude)
 	if err != nil {
 		return err
@@ -131,7 +131,7 @@ func (ki *KubernetesInventory) Gather(acc telegraf.Accumulator) (err error) {
 	for collector, f := range availableCollectors {
 		if resourceFilter.Match(collector) {
 			wg.Add(1)
-			go func(f func(ctx context.Context, acc telegraf.Accumulator, k *KubernetesInventory)) {
+			go func(f func(ctx context.Context, acc Dana.Accumulator, k *KubernetesInventory)) {
 				defer wg.Done()
 				f(ctx, acc, ki)
 			}(f)
@@ -201,7 +201,7 @@ func (ki *KubernetesInventory) createSelectorFilters() error {
 }
 
 func init() {
-	inputs.Add("kube_inventory", func() telegraf.Input {
+	inputs.Add("kube_inventory", func() Dana.Input {
 		return &KubernetesInventory{
 			ResponseTimeout: config.Duration(time.Second * 5),
 			Namespace:       "default",

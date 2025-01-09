@@ -193,7 +193,7 @@ func TestInvalidTypeQueries(t *testing.T) {
 		input       string
 		configs     []Config
 		defaultTags map[string]string
-		expected    telegraf.Metric
+		expected    Dana.Metric
 	}{
 		{
 			name:  "invalid field type (number)",
@@ -263,7 +263,7 @@ func TestParseTimestamps(t *testing.T) {
 		input       string
 		configs     []Config
 		defaultTags map[string]string
-		expected    telegraf.Metric
+		expected    Dana.Metric
 	}{
 		{
 			name:  "parse timestamp (no fmt)",
@@ -392,7 +392,7 @@ func TestParseSingleValues(t *testing.T) {
 		input       string
 		configs     []Config
 		defaultTags map[string]string
-		expected    telegraf.Metric
+		expected    Dana.Metric
 	}{
 		{
 			name:  "parse scalar values as string fields",
@@ -595,7 +595,7 @@ func TestParseSingleAttributes(t *testing.T) {
 		input       string
 		configs     []Config
 		defaultTags map[string]string
-		expected    telegraf.Metric
+		expected    Dana.Metric
 	}{
 		{
 			name:  "parse attr timestamp (unix)",
@@ -804,7 +804,7 @@ func TestParseMultiValues(t *testing.T) {
 		input       string
 		configs     []Config
 		defaultTags map[string]string
-		expected    telegraf.Metric
+		expected    Dana.Metric
 	}{
 		{
 			name:  "select values (float)",
@@ -894,7 +894,7 @@ func TestParseMultiNodes(t *testing.T) {
 		input       string
 		configs     []Config
 		defaultTags map[string]string
-		expected    []telegraf.Metric
+		expected    []Dana.Metric
 	}{
 		{
 			name:  "select all devices",
@@ -917,7 +917,7 @@ func TestParseMultiNodes(t *testing.T) {
 				},
 			},
 			defaultTags: map[string]string{},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"test",
 					map[string]string{
@@ -1011,7 +1011,7 @@ func TestParseMetricQuery(t *testing.T) {
 		input       string
 		configs     []Config
 		defaultTags map[string]string
-		expected    telegraf.Metric
+		expected    Dana.Metric
 	}{
 		{
 			name:  "parse metric name query",
@@ -1402,7 +1402,7 @@ func TestMultipleConfigs(t *testing.T) {
 	require.NotEmpty(t, folders)
 
 	// Register the wrapper plugin
-	inputs.Add("file", func() telegraf.Input {
+	inputs.Add("file", func() Dana.Input {
 		return &file.File{}
 	})
 
@@ -1426,7 +1426,7 @@ func TestMultipleConfigs(t *testing.T) {
 			options := []cmp.Option{testutil.SortMetrics()}
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)
@@ -1496,7 +1496,7 @@ func loadTestConfiguration(filename string) (*Config, []string, error) {
 	return &cfg, header, err
 }
 
-var benchmarkExpectedMetrics = []telegraf.Metric{
+var benchmarkExpectedMetrics = []Dana.Metric{
 	metric.New(
 		"benchmark",
 		map[string]string{
@@ -1722,7 +1722,7 @@ func TestBenchmarkDataMsgPack(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"benchmark",
 			map[string]string{
@@ -1749,7 +1749,7 @@ func TestBenchmarkDataMsgPack(t *testing.T) {
 		),
 	}
 
-	actual := make([]telegraf.Metric, 0, 2)
+	actual := make([]Dana.Metric, 0, 2)
 	for _, msg := range benchmarkDataMsgPack {
 		m, err := plugin.Parse(msg)
 		require.NoError(t, err)

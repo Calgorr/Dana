@@ -33,7 +33,7 @@ func (*Nats) SampleConfig() string {
 	return sampleConfig
 }
 
-func (n *Nats) Gather(acc telegraf.Accumulator) error {
+func (n *Nats) Gather(acc Dana.Accumulator) error {
 	address, err := url.Parse(n.Server)
 	if err != nil {
 		return err
@@ -98,7 +98,7 @@ func (n *Nats) createHTTPClient() *http.Client {
 }
 
 func init() {
-	inputs.Add("nats", func() telegraf.Input {
+	inputs.Add("nats", func() Dana.Input {
 		return &Nats{
 			Server: "http://localhost:8222",
 		}

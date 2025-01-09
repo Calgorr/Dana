@@ -38,7 +38,7 @@ type Example struct {
 
 	// Telegraf logging facility
 	// The exact name is important to allow automatic initialization by telegraf.
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	// This is a non-exported internal state.
 	count int64
@@ -83,7 +83,7 @@ func (m *Example) Init() error {
 }
 
 // Gather defines what data the plugin will gather.
-func (m *Example) Gather(acc telegraf.Accumulator) error {
+func (m *Example) Gather(acc Dana.Accumulator) error {
 	// Imagine some completely arbitrary error occurring here
 	if m.NumberFields > 10 {
 		return errors.New("too many fields")
@@ -130,7 +130,7 @@ func (m *Example) Gather(acc telegraf.Accumulator) error {
 
 // Register the plugin
 func init() {
-	inputs.Add("example", func() telegraf.Input {
+	inputs.Add("example", func() Dana.Input {
 		return &Example{
 			// Set the default timeout here to distinguish it from the user setting it to zero
 			Timeout: config.Duration(100 * time.Millisecond),

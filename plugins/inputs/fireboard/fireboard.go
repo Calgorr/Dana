@@ -60,7 +60,7 @@ func (r *Fireboard) Init() error {
 	return nil
 }
 
-func (r *Fireboard) Gather(acc telegraf.Accumulator) error {
+func (r *Fireboard) Gather(acc Dana.Accumulator) error {
 	// Perform the GET request to the fireboard servers
 	req, err := http.NewRequest("GET", r.URL, nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func scale(n int) string {
 }
 
 // Gathers stats from a single device, adding them to the accumulator
-func gatherTemps(s fireboardStats, acc telegraf.Accumulator) {
+func gatherTemps(s fireboardStats, acc Dana.Accumulator) {
 	// Construct lookup for scale values
 
 	for _, t := range s.LatestTemps {
@@ -132,7 +132,7 @@ func newFireboard() *Fireboard {
 }
 
 func init() {
-	inputs.Add("fireboard", func() telegraf.Input {
+	inputs.Add("fireboard", func() Dana.Input {
 		return newFireboard()
 	})
 }

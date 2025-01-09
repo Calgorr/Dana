@@ -35,7 +35,7 @@ type Parquet struct {
 	Directory          string          `toml:"directory"`
 	RotationInterval   config.Duration `toml:"rotation_interval"`
 	TimestampFieldName string          `toml:"timestamp_field_name"`
-	Log                telegraf.Logger `toml:"-"`
+	Log                Dana.Logger     `toml:"-"`
 
 	metricGroups map[string]*metricGroup
 }
@@ -84,8 +84,8 @@ func (p *Parquet) Close() error {
 	return nil
 }
 
-func (p *Parquet) Write(metrics []telegraf.Metric) error {
-	groupedMetrics := make(map[string][]telegraf.Metric)
+func (p *Parquet) Write(metrics []Dana.Metric) error {
+	groupedMetrics := make(map[string][]Dana.Metric)
 	for _, metric := range metrics {
 		groupedMetrics[metric.Name()] = append(groupedMetrics[metric.Name()], metric)
 	}
@@ -153,7 +153,7 @@ func (p *Parquet) rotateIfNeeded(name string) error {
 	return nil
 }
 
-func (p *Parquet) createRecord(metrics []telegraf.Metric, builder *array.RecordBuilder, schema *arrow.Schema) (arrow.Record, error) {
+func (p *Parquet) createRecord(metrics []Dana.Metric, builder *array.RecordBuilder, schema *arrow.Schema) (arrow.Record, error) {
 	for index, col := range schema.Fields() {
 		for _, m := range metrics {
 			if p.TimestampFieldName != "" && col.Name == p.TimestampFieldName {
@@ -238,7 +238,7 @@ func (p *Parquet) createRecord(metrics []telegraf.Metric, builder *array.RecordB
 	return record, nil
 }
 
-func (p *Parquet) createSchema(metrics []telegraf.Metric) (*arrow.Schema, error) {
+func (p *Parquet) createSchema(metrics []Dana.Metric) (*arrow.Schema, error) {
 	rawFields := make(map[string]arrow.DataType, 0)
 	for _, metric := range metrics {
 		for _, field := range metric.FieldList() {
@@ -328,7 +328,7 @@ func goToArrowType(value interface{}) (arrow.DataType, error) {
 }
 
 func init() {
-	outputs.Add("parquet", func() telegraf.Output {
+	outputs.Add("parquet", func() Dana.Output {
 		return &Parquet{
 			TimestampFieldName: defaultTimestampFieldName,
 		}

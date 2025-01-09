@@ -21,7 +21,7 @@ func (*Trig) SampleConfig() string {
 	return sampleConfig
 }
 
-func (s *Trig) Gather(acc telegraf.Accumulator) error {
+func (s *Trig) Gather(acc Dana.Accumulator) error {
 	sinner := math.Sin((s.x*math.Pi)/5.0) * s.Amplitude
 	cosinner := math.Cos((s.x*math.Pi)/5.0) * s.Amplitude
 
@@ -38,5 +38,5 @@ func (s *Trig) Gather(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("trig", func() telegraf.Input { return &Trig{x: 0.0} })
+	inputs.Add("trig", func() Dana.Input { return &Trig{x: 0.0} })
 }

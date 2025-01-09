@@ -44,7 +44,7 @@ type (
 		CreateTableTags                               map[string]string `toml:"create_table_tags"`
 		MaxWriteGoRoutinesCount                       int               `toml:"max_write_go_routines"`
 
-		Log telegraf.Logger
+		Log Dana.Logger
 		svc WriteClient
 
 		common_aws.CredentialConfig
@@ -204,12 +204,12 @@ func (t *Timestream) Close() error {
 }
 
 func init() {
-	outputs.Add("timestream", func() telegraf.Output {
+	outputs.Add("timestream", func() Dana.Output {
 		return &Timestream{}
 	})
 }
 
-func (t *Timestream) Write(metrics []telegraf.Metric) error {
+func (t *Timestream) Write(metrics []Dana.Metric) error {
 	writeRecordsInputs := t.TransformMetrics(metrics)
 
 	maxWriteJobs := t.MaxWriteGoRoutinesCount
@@ -372,7 +372,7 @@ func (t *Timestream) createTable(tableName *string) error {
 // TransformMetrics transforms a collection of Telegraf Metrics into write requests to Timestream.
 // Telegraf Metrics are grouped by Name, Tag Keys and Time to use Timestream CommonAttributes.
 // Returns collection of write requests to be performed to Timestream.
-func (t *Timestream) TransformMetrics(metrics []telegraf.Metric) []*timestreamwrite.WriteRecordsInput {
+func (t *Timestream) TransformMetrics(metrics []Dana.Metric) []*timestreamwrite.WriteRecordsInput {
 	writeRequests := make(map[string]*timestreamwrite.WriteRecordsInput, len(metrics))
 	for _, m := range metrics {
 		// build MeasureName, MeasureValue, MeasureValueType
@@ -425,7 +425,7 @@ func (t *Timestream) TransformMetrics(metrics []telegraf.Metric) []*timestreamwr
 	return result
 }
 
-func (t *Timestream) buildDimensions(point telegraf.Metric) []types.Dimension {
+func (t *Timestream) buildDimensions(point Dana.Metric) []types.Dimension {
 	dimensions := make([]types.Dimension, 0, len(point.Tags()))
 	for tagName, tagValue := range point.Tags() {
 		dimension := types.Dimension{
@@ -448,14 +448,14 @@ func (t *Timestream) buildDimensions(point telegraf.Metric) []types.Dimension {
 // Tags and time are not included - common attributes are built separately.
 // Records with unsupported Metric Field type are skipped.
 // It returns an array of Timestream write records.
-func (t *Timestream) buildWriteRecords(point telegraf.Metric) []types.Record {
+func (t *Timestream) buildWriteRecords(point Dana.Metric) []types.Record {
 	if t.UseMultiMeasureRecords {
 		return t.buildMultiMeasureWriteRecords(point)
 	}
 	return t.buildSingleWriteRecords(point)
 }
 
-func (t *Timestream) buildSingleWriteRecords(point telegraf.Metric) []types.Record {
+func (t *Timestream) buildSingleWriteRecords(point Dana.Metric) []types.Record {
 	dimensions := t.buildDimensions(point)
 	records := make([]types.Record, 0, len(point.Fields()))
 	for fieldName, fieldValue := range point.Fields() {
@@ -482,7 +482,7 @@ func (t *Timestream) buildSingleWriteRecords(point telegraf.Metric) []types.Reco
 	return records
 }
 
-func (t *Timestream) buildMultiMeasureWriteRecords(point telegraf.Metric) []types.Record {
+func (t *Timestream) buildMultiMeasureWriteRecords(point Dana.Metric) []types.Record {
 	var records []types.Record
 	dimensions := t.buildDimensions(point)
 

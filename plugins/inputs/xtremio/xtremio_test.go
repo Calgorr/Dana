@@ -124,7 +124,7 @@ func TestFixedValue(t *testing.T) {
 	tests := []struct {
 		name     string
 		plugin   *XtremIO
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "gather bbus only",
@@ -134,7 +134,7 @@ func TestFixedValue(t *testing.T) {
 				URL:        ts.URL,
 				Collectors: []string{"bbus"},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"xio",
 					map[string]string{

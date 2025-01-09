@@ -12,7 +12,7 @@ import (
 
 func TestBuildPoint(t *testing.T) {
 	var tagtests = []struct {
-		ptIn  telegraf.Metric
+		ptIn  Dana.Metric
 		outPt Point
 		err   error
 	}{

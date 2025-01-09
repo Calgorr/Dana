@@ -21,10 +21,10 @@ func TestAggregate(t *testing.T) {
 	tests := []struct {
 		name     string
 		plugin   *AzureMonitor
-		metrics  []telegraf.Metric
+		metrics  []Dana.Metric
 		addTime  time.Time
 		pushTime time.Time
-		check    func(t *testing.T, plugin *AzureMonitor, metrics []telegraf.Metric)
+		check    func(t *testing.T, plugin *AzureMonitor, metrics []Dana.Metric)
 	}{
 		{
 			name: "add metric outside window is dropped",
@@ -33,7 +33,7 @@ func TestAggregate(t *testing.T) {
 				ResourceID: "/test",
 				Log:        testutil.Logger{},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -45,7 +45,7 @@ func TestAggregate(t *testing.T) {
 			},
 			addTime:  time.Unix(3600, 0),
 			pushTime: time.Unix(3600, 0),
-			check: func(t *testing.T, plugin *AzureMonitor, metrics []telegraf.Metric) {
+			check: func(t *testing.T, plugin *AzureMonitor, metrics []Dana.Metric) {
 				require.Equal(t, int64(1), plugin.MetricOutsideWindow.Get())
 				require.Empty(t, metrics)
 			},
@@ -57,7 +57,7 @@ func TestAggregate(t *testing.T) {
 				ResourceID: "/test",
 				Log:        testutil.Logger{},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -69,7 +69,7 @@ func TestAggregate(t *testing.T) {
 			},
 			addTime:  time.Unix(0, 0),
 			pushTime: time.Unix(0, 0),
-			check: func(t *testing.T, _ *AzureMonitor, metrics []telegraf.Metric) {
+			check: func(t *testing.T, _ *AzureMonitor, metrics []Dana.Metric) {
 				require.Empty(t, metrics)
 			},
 		},
@@ -81,7 +81,7 @@ func TestAggregate(t *testing.T) {
 				StringsAsDimensions: true,
 				Log:                 testutil.Logger{},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -96,8 +96,8 @@ func TestAggregate(t *testing.T) {
 			},
 			addTime:  time.Unix(0, 0),
 			pushTime: time.Unix(3600, 0),
-			check: func(t *testing.T, _ *AzureMonitor, metrics []telegraf.Metric) {
-				expected := []telegraf.Metric{
+			check: func(t *testing.T, _ *AzureMonitor, metrics []Dana.Metric) {
+				expected := []Dana.Metric{
 					testutil.MustMetric(
 						"cpu-value",
 						map[string]string{
@@ -124,7 +124,7 @@ func TestAggregate(t *testing.T) {
 				Log:        testutil.Logger{},
 				cache:      make(map[time.Time]map[uint64]*aggregate, 36),
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -136,8 +136,8 @@ func TestAggregate(t *testing.T) {
 			},
 			addTime:  time.Unix(0, 0),
 			pushTime: time.Unix(3600, 0),
-			check: func(t *testing.T, _ *AzureMonitor, metrics []telegraf.Metric) {
-				expected := []telegraf.Metric{
+			check: func(t *testing.T, _ *AzureMonitor, metrics []Dana.Metric) {
+				expected := []Dana.Metric{
 					testutil.MustMetric(
 						"cpu-value",
 						map[string]string{},
@@ -162,7 +162,7 @@ func TestAggregate(t *testing.T) {
 				Log:        testutil.Logger{},
 				cache:      make(map[time.Time]map[uint64]*aggregate, 36),
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -190,8 +190,8 @@ func TestAggregate(t *testing.T) {
 			},
 			addTime:  time.Unix(0, 0),
 			pushTime: time.Unix(3600, 0),
-			check: func(t *testing.T, _ *AzureMonitor, metrics []telegraf.Metric) {
-				expected := []telegraf.Metric{
+			check: func(t *testing.T, _ *AzureMonitor, metrics []Dana.Metric) {
+				expected := []Dana.Metric{
 					testutil.MustMetric(
 						"cpu-value",
 						map[string]string{},
@@ -272,7 +272,7 @@ func TestWrite(t *testing.T) {
 	tests := []struct {
 		name    string
 		plugin  *AzureMonitor
-		metrics []telegraf.Metric
+		metrics []Dana.Metric
 		handler func(t *testing.T, w http.ResponseWriter, r *http.Request)
 	}{
 		{
@@ -282,7 +282,7 @@ func TestWrite(t *testing.T) {
 				ResourceID: "/test",
 				Log:        testutil.Logger{},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -303,7 +303,7 @@ func TestWrite(t *testing.T) {
 				ResourceID: "/test",
 				Log:        testutil.Logger{},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu-value",
 					map[string]string{},
@@ -330,7 +330,7 @@ func TestWrite(t *testing.T) {
 				ResourceID: "/test",
 				Log:        testutil.Logger{},
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu-value",
 					map[string]string{},

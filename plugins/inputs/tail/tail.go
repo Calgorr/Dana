@@ -50,13 +50,13 @@ type Tail struct {
 	Filters      []string `toml:"filters"`
 	filterColors bool
 
-	Log        telegraf.Logger `toml:"-"`
+	Log        Dana.Logger `toml:"-"`
 	tailers    map[string]*tail.Tail
 	offsets    map[string]int64
-	parserFunc telegraf.ParserFunc
+	parserFunc Dana.ParserFunc
 	wg         sync.WaitGroup
 
-	acc telegraf.TrackingAccumulator
+	acc Dana.TrackingAccumulator
 
 	MultilineConfig MultilineConfig `toml:"multiline"`
 	multiline       *Multiline
@@ -121,11 +121,11 @@ func (t *Tail) SetState(state interface{}) error {
 	return nil
 }
 
-func (t *Tail) Gather(_ telegraf.Accumulator) error {
+func (t *Tail) Gather(_ Dana.Accumulator) error {
 	return t.tailNewFiles(true)
 }
 
-func (t *Tail) Start(acc telegraf.Accumulator) error {
+func (t *Tail) Start(acc Dana.Accumulator) error {
 	t.acc = acc.WithTracking(t.MaxUndeliveredLines)
 
 	t.ctx, t.cancel = context.WithCancel(context.Background())
@@ -250,7 +250,7 @@ func (t *Tail) tailNewFiles(fromBeginning bool) error {
 }
 
 // ParseLine parses a line of text.
-func parseLine(parser telegraf.Parser, line string) ([]telegraf.Metric, error) {
+func parseLine(parser Dana.Parser, line string) ([]Dana.Metric, error) {
 	m, err := parser.Parse([]byte(line))
 	if err != nil {
 		if errors.Is(err, parsers.ErrEOF) {
@@ -263,7 +263,7 @@ func parseLine(parser telegraf.Parser, line string) ([]telegraf.Metric, error) {
 
 // Receiver is launched as a goroutine to continuously watch a tailed logfile
 // for changes, parse any incoming msgs, and add to the accumulator.
-func (t *Tail) receiver(parser telegraf.Parser, tailer *tail.Tail) {
+func (t *Tail) receiver(parser Dana.Parser, tailer *tail.Tail) {
 	// holds the individual lines of multi-line log entries.
 	var buffer bytes.Buffer
 
@@ -406,12 +406,12 @@ func (t *Tail) Stop() {
 	offsetsMutex.Unlock()
 }
 
-func (t *Tail) SetParserFunc(fn telegraf.ParserFunc) {
+func (t *Tail) SetParserFunc(fn Dana.ParserFunc) {
 	t.parserFunc = fn
 }
 
 func init() {
-	inputs.Add("tail", func() telegraf.Input {
+	inputs.Add("tail", func() Dana.Input {
 		return NewTail()
 	})
 }

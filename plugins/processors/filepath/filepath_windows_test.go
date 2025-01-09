@@ -16,7 +16,7 @@ func TestOptions_Apply(t *testing.T) {
 			name:         "Smoke Test",
 			o:            newOptions("c:\\my\\test\\"),
 			inputMetrics: getSmokeTestInputMetrics(samplePath),
-			expectedMetrics: []telegraf.Metric{
+			expectedMetrics: []Dana.Metric{
 				testutil.MustMetric(
 					smokeMetricName,
 					map[string]string{

@@ -176,7 +176,7 @@ func TestCases(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	inputs.Add("netflow", func() telegraf.Input {
+	inputs.Add("netflow", func() Dana.Input {
 		return &NetFlow{}
 	})
 
@@ -215,7 +215,7 @@ func TestCases(t *testing.T) {
 			}
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)

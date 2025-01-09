@@ -78,7 +78,7 @@ func (beat *Beat) Init() error {
 	return nil
 }
 
-func (beat *Beat) Gather(accumulator telegraf.Accumulator) error {
+func (beat *Beat) Gather(accumulator Dana.Accumulator) error {
 	beatStats := &stats{}
 	beatInfo := &info{}
 
@@ -194,7 +194,7 @@ func newBeat() *Beat {
 }
 
 func init() {
-	inputs.Add("beat", func() telegraf.Input {
+	inputs.Add("beat", func() Dana.Input {
 		return newBeat()
 	})
 }

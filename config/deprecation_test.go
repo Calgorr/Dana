@@ -14,29 +14,29 @@ import (
 )
 
 func TestPluginDeprecation(t *testing.T) {
-	info := telegraf.DeprecationInfo{
+	info := Dana.DeprecationInfo{
 		Since:     "1.23.0",
 		RemovalIn: "2.0.0",
 		Notice:    "please check",
 	}
 	var tests = []struct {
 		name     string
-		level    telegraf.LogLevel
+		level    Dana.LogLevel
 		expected string
 	}{
 		{
 			name:     "Error level",
-			level:    telegraf.Error,
+			level:    Dana.Error,
 			expected: `Plugin "test" deprecated since version 1.23.0 and will be removed in 2.0.0: please check`,
 		},
 		{
 			name:     "Warn level",
-			level:    telegraf.Warn,
+			level:    Dana.Warn,
 			expected: `Plugin "test" deprecated since version 1.23.0 and will be removed in 2.0.0: please check`,
 		},
 		{
 			name:     "None",
-			level:    telegraf.None,
+			level:    Dana.None,
 			expected: ``,
 		},
 	}
@@ -90,31 +90,31 @@ func TestPluginOptionDeprecation(t *testing.T) {
 		since         string
 		removal       string
 		expected      string
-		expectedLevel telegraf.LogLevel
+		expectedLevel Dana.LogLevel
 	}{
 		{
 			name:          "Error level",
 			since:         "1.23.0",
 			removal:       "1.29.0",
-			expectedLevel: telegraf.Error,
+			expectedLevel: Dana.Error,
 			expected:      `Option "option" of plugin "test" deprecated since version 1.23.0 and will be removed in 1.29.0: please check`,
 		},
 		{
 			name:          "Warn level",
 			since:         "1.23.0",
 			removal:       "2.0.0",
-			expectedLevel: telegraf.Warn,
+			expectedLevel: Dana.Warn,
 			expected:      `Option "option" of plugin "test" deprecated since version 1.23.0 and will be removed in 2.0.0: please check`,
 		},
 		{
 			name:          "No removal info",
 			since:         "1.23.0",
-			expectedLevel: telegraf.Warn,
+			expectedLevel: Dana.Warn,
 			expected:      `Option "option" of plugin "test" deprecated since version 1.23.0 and will be removed in 2.0.0: please check`,
 		},
 		{
 			name:          "None",
-			expectedLevel: telegraf.None,
+			expectedLevel: Dana.None,
 			expected:      ``,
 		},
 	}
@@ -136,7 +136,7 @@ func TestPluginOptionDeprecation(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			buf.Reset()
-			info := telegraf.DeprecationInfo{
+			info := Dana.DeprecationInfo{
 				Since:     tt.since,
 				RemovalIn: tt.removal,
 				Notice:    "please check",
@@ -178,7 +178,7 @@ func TestPluginOptionValueDeprecation(t *testing.T) {
 		removal       string
 		value         interface{}
 		expected      string
-		expectedLevel telegraf.LogLevel
+		expectedLevel Dana.LogLevel
 	}{
 		{
 			name:          "Error level",
@@ -186,7 +186,7 @@ func TestPluginOptionValueDeprecation(t *testing.T) {
 			removal:       "1.29.0",
 			value:         "foobar",
 			expected:      `Value "foobar" for option "option" of plugin "test" deprecated since version 1.25.0 and will be removed in 1.29.0: please check`,
-			expectedLevel: telegraf.Error,
+			expectedLevel: Dana.Error,
 		},
 		{
 			name:          "Warn level",
@@ -194,19 +194,19 @@ func TestPluginOptionValueDeprecation(t *testing.T) {
 			removal:       "2.0.0",
 			value:         "foobar",
 			expected:      `Value "foobar" for option "option" of plugin "test" deprecated since version 1.25.0 and will be removed in 2.0.0: please check`,
-			expectedLevel: telegraf.Warn,
+			expectedLevel: Dana.Warn,
 		},
 		{
 			name:          "No removal info",
 			since:         "1.25.0",
 			value:         "foobar",
 			expected:      `Value "foobar" for option "option" of plugin "test" deprecated since version 1.25.0 and will be removed in 2.0.0: please check`,
-			expectedLevel: telegraf.Warn,
+			expectedLevel: Dana.Warn,
 		},
 		{
 			name:          "None",
 			expected:      ``,
-			expectedLevel: telegraf.None,
+			expectedLevel: Dana.None,
 		},
 		{
 			name:          "nil value",
@@ -214,7 +214,7 @@ func TestPluginOptionValueDeprecation(t *testing.T) {
 			removal:       "1.29.0",
 			value:         nil,
 			expected:      `Value "<nil>" for option "option" of plugin "test" deprecated since version 1.25.0 and will be removed in 1.29.0: please check`,
-			expectedLevel: telegraf.Error,
+			expectedLevel: Dana.Error,
 		},
 		{
 			name:          "Boolean value",
@@ -222,7 +222,7 @@ func TestPluginOptionValueDeprecation(t *testing.T) {
 			removal:       "1.29.0",
 			value:         true,
 			expected:      `Value "true" for option "option" of plugin "test" deprecated since version 1.25.0 and will be removed in 1.29.0: please check`,
-			expectedLevel: telegraf.Error,
+			expectedLevel: Dana.Error,
 		},
 		{
 			name:          "Integer value",
@@ -230,7 +230,7 @@ func TestPluginOptionValueDeprecation(t *testing.T) {
 			removal:       "1.29.0",
 			value:         123,
 			expected:      `Value "123" for option "option" of plugin "test" deprecated since version 1.25.0 and will be removed in 1.29.0: please check`,
-			expectedLevel: telegraf.Error,
+			expectedLevel: Dana.Error,
 		},
 	}
 
@@ -251,7 +251,7 @@ func TestPluginOptionValueDeprecation(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			buf.Reset()
 
-			info := telegraf.DeprecationInfo{
+			info := Dana.DeprecationInfo{
 				Since:     tt.since,
 				RemovalIn: tt.removal,
 				Notice:    "please check",

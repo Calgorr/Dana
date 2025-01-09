@@ -22,7 +22,7 @@ func TestService(t *testing.T) {
 	tests := []struct {
 		name     string
 		handler  *mockHandler
-		output   []telegraf.Metric
+		output   []Dana.Metric
 		hasError bool
 		include  []string
 		exclude  []string
@@ -73,7 +73,7 @@ func TestService(t *testing.T) {
 				},
 			},
 
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					"kubernetes_service",
 					map[string]string{

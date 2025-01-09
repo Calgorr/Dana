@@ -11,12 +11,12 @@ import (
 // type meant to encapsulate the storage of zipkin tracing data in
 // telegraf as line protocol.
 type LineProtocolConverter struct {
-	acc telegraf.Accumulator
+	acc Dana.Accumulator
 }
 
 // NewLineProtocolConverter returns an instance of LineProtocolConverter that
-// will add to the given telegraf.Accumulator
-func NewLineProtocolConverter(acc telegraf.Accumulator) *LineProtocolConverter {
+// will add to the given Dana.Accumulator
+func NewLineProtocolConverter(acc Dana.Accumulator) *LineProtocolConverter {
 	return &LineProtocolConverter{
 		acc: acc,
 	}
@@ -24,7 +24,7 @@ func NewLineProtocolConverter(acc telegraf.Accumulator) *LineProtocolConverter {
 
 // Record is LineProtocolConverter's implementation of the Record method of
 // the Recorder interface; it takes a trace as input, and adds it to an internal
-// telegraf.Accumulator.
+// Dana.Accumulator.
 func (l *LineProtocolConverter) Record(t trace.Trace) error {
 	for _, s := range t {
 		fields := map[string]interface{}{

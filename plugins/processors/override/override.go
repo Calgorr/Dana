@@ -22,7 +22,7 @@ func (*Override) SampleConfig() string {
 	return sampleConfig
 }
 
-func (p *Override) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (p *Override) Apply(in ...Dana.Metric) []Dana.Metric {
 	for _, metric := range in {
 		if len(p.NameOverride) > 0 {
 			metric.SetName(p.NameOverride)
@@ -41,7 +41,7 @@ func (p *Override) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("override", func() telegraf.Processor {
+	processors.Add("override", func() Dana.Processor {
 		return &Override{}
 	})
 }

@@ -32,14 +32,14 @@ func TestOriginalMode(t *testing.T) {
 		tagKey   string
 		valueKey string
 
-		metrics  []telegraf.Metric
-		expected []telegraf.Metric
+		metrics  []Dana.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name:     "simple",
 			tagKey:   "name",
 			valueKey: "value",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -48,7 +48,7 @@ func TestOriginalMode(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"name": "idle_time",
@@ -64,7 +64,7 @@ func TestOriginalMode(t *testing.T) {
 			name:     "multi fields",
 			tagKey:   "name",
 			valueKey: "value",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -74,7 +74,7 @@ func TestOriginalMode(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"name": "idle_time",
@@ -117,15 +117,15 @@ func TestFieldMode(t *testing.T) {
 		fieldNameAs string
 		tagKey      string
 		valueKey    string
-		metrics     []telegraf.Metric
-		expected    []telegraf.Metric
+		metrics     []Dana.Metric
+		expected    []Dana.Metric
 	}{
 		{
 			name:        "simple",
 			fieldNameAs: "metric",
 			tagKey:      "name",
 			valueKey:    "value",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -134,7 +134,7 @@ func TestFieldMode(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("idle_time",
 					map[string]string{},
 					map[string]interface{}{
@@ -149,7 +149,7 @@ func TestFieldMode(t *testing.T) {
 			fieldNameAs: "metric",
 			tagKey:      "name",
 			valueKey:    "value",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -159,7 +159,7 @@ func TestFieldMode(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("idle_time",
 					map[string]string{},
 					map[string]interface{}{
@@ -181,7 +181,7 @@ func TestFieldMode(t *testing.T) {
 			fieldNameAs: "metric",
 			tagKey:      "name",
 			valueKey:    "value",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{
 						"building": "5a",
@@ -193,7 +193,7 @@ func TestFieldMode(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("idle_time",
 					map[string]string{
 						"building": "5a",
@@ -232,14 +232,14 @@ func TestFieldMode(t *testing.T) {
 
 func TestTrackedMetricNotLost(t *testing.T) {
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, 3)
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, 3)
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
-	input := make([]telegraf.Metric, 0, 3)
-	expected := make([]telegraf.Metric, 0, 6)
+	input := make([]Dana.Metric, 0, 3)
+	expected := make([]Dana.Metric, 0, 6)
 	for i := 0; i < 3; i++ {
 		strI := strconv.Itoa(i)
 

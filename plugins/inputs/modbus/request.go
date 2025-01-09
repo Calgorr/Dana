@@ -190,7 +190,7 @@ type groupingParams struct {
 	// tags to add for the requests
 	tags map[string]string
 	// log facility to inform the user
-	log telegraf.Logger
+	log Dana.Logger
 }
 
 func groupFieldsToRequests(fields []field, params groupingParams) []request {

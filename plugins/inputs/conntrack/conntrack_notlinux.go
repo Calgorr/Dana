@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type Conntrack struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*Conntrack) SampleConfig() string { return sampleConfig }
@@ -24,10 +24,10 @@ func (c *Conntrack) Init() error {
 	return nil
 }
 
-func (*Conntrack) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Conntrack) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("conntrack", func() telegraf.Input {
+	inputs.Add("conntrack", func() Dana.Input {
 		return &Conntrack{}
 	})
 }

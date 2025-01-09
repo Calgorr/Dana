@@ -135,7 +135,7 @@ func testSyslogWriteWithStream(t *testing.T, s *Syslog, lconn net.Conn) {
 		map[string]interface{}{},
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC))
 
-	metrics := []telegraf.Metric{m1}
+	metrics := []Dana.Metric{m1}
 	syslogMessage, err := s.mapper.MapMetricToSyslogMessage(metrics[0])
 	require.NoError(t, err)
 	messageBytesWithFraming, err := s.getSyslogMessageBytesWithFraming(syslogMessage)
@@ -158,7 +158,7 @@ func testSyslogWriteWithPacket(t *testing.T, s *Syslog, lconn net.PacketConn) {
 		map[string]interface{}{},
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC))
 
-	metrics := []telegraf.Metric{m1}
+	metrics := []Dana.Metric{m1}
 	syslogMessage, err := s.mapper.MapMetricToSyslogMessage(metrics[0])
 	require.NoError(t, err)
 	messageBytesWithFraming, err := s.getSyslogMessageBytesWithFraming(syslogMessage)
@@ -191,7 +191,7 @@ func TestSyslogWriteErr(t *testing.T) {
 	err = lconn.(*net.TCPConn).SetWriteBuffer(256)
 	require.NoError(t, err)
 
-	metrics := []telegraf.Metric{testutil.TestMetric(1, "testerr")}
+	metrics := []Dana.Metric{testutil.TestMetric(1, "testerr")}
 
 	// close the socket to generate an error
 	err = lconn.Close()
@@ -234,7 +234,7 @@ func TestSyslogWriteReconnect(t *testing.T) {
 		wg.Done()
 	}()
 
-	metrics := []telegraf.Metric{testutil.TestMetric(1, "testerr")}
+	metrics := []Dana.Metric{testutil.TestMetric(1, "testerr")}
 	err = s.Write(metrics)
 	require.NoError(t, err)
 
@@ -439,7 +439,7 @@ func TestCases(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	outputs.Add("syslog", func() telegraf.Output { return newSyslog() })
+	outputs.Add("syslog", func() Dana.Output { return newSyslog() })
 
 	for _, f := range folders {
 		// Only handle folders

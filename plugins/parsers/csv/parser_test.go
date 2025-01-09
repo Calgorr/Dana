@@ -574,7 +574,7 @@ func TestTimestampUnixFloatPrecision(t *testing.T) {
 
 	data := `1551129661.95456123352050781250,42`
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"csv",
 			map[string]string{},
@@ -605,7 +605,7 @@ func TestSkipMeasurementColumn(t *testing.T) {
 	data := `id,value,timestamp
 		1,5,1551129661.954561233`
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"csv",
 			map[string]string{},
@@ -637,7 +637,7 @@ func TestSkipTimestampColumn(t *testing.T) {
 	data := `id,value,timestamp
 		1,5,1551129661.954561233`
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"csv",
 			map[string]string{},
@@ -692,7 +692,7 @@ func TestEmptyMeasurementName(t *testing.T) {
 	metrics, err := p.Parse([]byte(testCSV))
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("csv",
 			map[string]string{},
 			map[string]interface{}{
@@ -719,7 +719,7 @@ func TestNumericMeasurementName(t *testing.T) {
 	metrics, err := p.Parse([]byte(testCSV))
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("1",
 			map[string]string{},
 			map[string]interface{}{
@@ -745,7 +745,7 @@ func TestStaticMeasurementName(t *testing.T) {
 	metrics, err := p.Parse([]byte(testCSV))
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("csv",
 			map[string]string{},
 			map[string]interface{}{
@@ -773,7 +773,7 @@ func TestSkipEmptyStringValue(t *testing.T) {
 	metrics, err := p.Parse([]byte(testCSV))
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("csv",
 			map[string]string{},
 			map[string]interface{}{
@@ -800,7 +800,7 @@ func TestSkipSpecifiedStringValue(t *testing.T) {
 	metrics, err := p.Parse([]byte(testCSV))
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("csv",
 			map[string]string{},
 			map[string]interface{}{
@@ -1095,7 +1095,7 @@ timestamp,type,name,status
 #2020-11-04T13:23:04+00:00,Reader,R031,0
 2020-11-04T13:29:47+00:00,Coordinator,C001,0`
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"",
 			map[string]string{
@@ -1149,7 +1149,7 @@ timestamp,type,name,status
 
 	// Parsing another data line should work when not resetting
 	additionalCSV := "2021-12-01T19:01:00+00:00,Reader,R009,5\r\n"
-	additionalExpected := []telegraf.Metric{
+	additionalExpected := []Dana.Metric{
 		metric.New(
 			"",
 			map[string]string{
@@ -1192,7 +1192,7 @@ func TestParseCSVLinewiseResetModeNone(t *testing.T) {
 		"2020-11-04T13:29:47+00:00,Coordinator,C001,0",
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"",
 			map[string]string{
@@ -1241,7 +1241,7 @@ func TestParseCSVLinewiseResetModeNone(t *testing.T) {
 	p.SetDefaultTags(map[string]string{"test": "tag"})
 
 	// Do the parsing the first time
-	var metrics []telegraf.Metric
+	var metrics []Dana.Metric
 	for i, r := range testCSV {
 		m, err := p.ParseLine(r)
 		// Header lines should return "not enough data"
@@ -1298,7 +1298,7 @@ timestamp,type,name,status
 #2020-11-04T13:23:04+00:00,Reader,R031,0
 2020-11-04T13:29:47+00:00,Coordinator,C001,0`
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"",
 			map[string]string{
@@ -1368,7 +1368,7 @@ timestamp,category,id,flag
 #2020-11-04T13:23:04+00:00,Reader,R031,0
 2020-11-04T13:29:47+00:00,Coordinator,C001,0`
 
-	expected = []telegraf.Metric{
+	expected = []Dana.Metric{
 		metric.New(
 			"",
 			map[string]string{
@@ -1419,7 +1419,7 @@ func TestParseCSVLinewiseResetModeAlways(t *testing.T) {
 		"2020-11-04T13:29:47+00:00,Coordinator,C001,0",
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"",
 			map[string]string{
@@ -1468,7 +1468,7 @@ func TestParseCSVLinewiseResetModeAlways(t *testing.T) {
 	p.SetDefaultTags(map[string]string{"test": "tag"})
 
 	// Do the parsing the first time
-	var metrics []telegraf.Metric
+	var metrics []Dana.Metric
 	for i, r := range testCSV {
 		m, err := p.ParseLine(r)
 		// Header lines should return "not enough data"
@@ -1529,7 +1529,7 @@ func TestBenchmarkData(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"benchmark",
 			map[string]string{

@@ -24,13 +24,13 @@ var sampleConfig string
 var once sync.Once
 
 type File struct {
-	Files             []string        `toml:"files"`
-	FileTag           string          `toml:"file_tag"`
-	FilePathTag       string          `toml:"file_path_tag"`
-	CharacterEncoding string          `toml:"character_encoding"`
-	Log               telegraf.Logger `toml:"-"`
+	Files             []string    `toml:"files"`
+	FileTag           string      `toml:"file_tag"`
+	FilePathTag       string      `toml:"file_path_tag"`
+	CharacterEncoding string      `toml:"character_encoding"`
+	Log               Dana.Logger `toml:"-"`
 
-	parserFunc telegraf.ParserFunc
+	parserFunc Dana.ParserFunc
 	filenames  []string
 	decoder    *encoding.Decoder
 }
@@ -45,11 +45,11 @@ func (f *File) Init() error {
 	return err
 }
 
-func (f *File) SetParserFunc(fn telegraf.ParserFunc) {
+func (f *File) SetParserFunc(fn Dana.ParserFunc) {
 	f.parserFunc = fn
 }
 
-func (f *File) Gather(acc telegraf.Accumulator) error {
+func (f *File) Gather(acc Dana.Accumulator) error {
 	err := f.refreshFilePaths()
 	if err != nil {
 		return err
@@ -93,7 +93,7 @@ func (f *File) refreshFilePaths() error {
 	return nil
 }
 
-func (f *File) readMetric(filename string) ([]telegraf.Metric, error) {
+func (f *File) readMetric(filename string) ([]Dana.Metric, error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, err
@@ -123,7 +123,7 @@ func (f *File) readMetric(filename string) ([]telegraf.Metric, error) {
 }
 
 func init() {
-	inputs.Add("file", func() telegraf.Input {
+	inputs.Add("file", func() Dana.Input {
 		return &File{}
 	})
 }

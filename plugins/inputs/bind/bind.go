@@ -39,7 +39,7 @@ func (b *Bind) Init() error {
 	return nil
 }
 
-func (b *Bind) Gather(acc telegraf.Accumulator) error {
+func (b *Bind) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	if len(b.Urls) == 0 {
@@ -64,7 +64,7 @@ func (b *Bind) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (b *Bind) gatherURL(addr *url.URL, acc telegraf.Accumulator) error {
+func (b *Bind) gatherURL(addr *url.URL, acc Dana.Accumulator) error {
 	switch addr.Path {
 	case "":
 		// BIND 9.6 - 9.8
@@ -85,5 +85,5 @@ func (b *Bind) gatherURL(addr *url.URL, acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("bind", func() telegraf.Input { return &Bind{CountersAsInt: true} })
+	inputs.Add("bind", func() Dana.Input { return &Bind{CountersAsInt: true} })
 }

@@ -81,7 +81,7 @@ func (*Passenger) SampleConfig() string {
 	return sampleConfig
 }
 
-func (p *Passenger) Gather(acc telegraf.Accumulator) error {
+func (p *Passenger) Gather(acc Dana.Accumulator) error {
 	if p.Command == "" {
 		p.Command = "passenger-status -v --show=xml"
 	}
@@ -150,7 +150,7 @@ func (p *process) getUptime() int64 {
 	return uptime
 }
 
-func importMetric(stat []byte, acc telegraf.Accumulator) error {
+func importMetric(stat []byte, acc Dana.Accumulator) error {
 	var p info
 
 	decoder := xml.NewDecoder(bytes.NewReader(stat))
@@ -230,7 +230,7 @@ func importMetric(stat []byte, acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("passenger", func() telegraf.Input {
+	inputs.Add("passenger", func() Dana.Input {
 		return &Passenger{}
 	})
 }

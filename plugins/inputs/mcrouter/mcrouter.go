@@ -113,7 +113,7 @@ func (*Mcrouter) SampleConfig() string {
 	return sampleConfig
 }
 
-func (m *Mcrouter) Gather(acc telegraf.Accumulator) error {
+func (m *Mcrouter) Gather(acc Dana.Accumulator) error {
 	ctx := context.Background()
 
 	if m.Timeout < config.Duration(1*time.Second) {
@@ -181,7 +181,7 @@ func parseAddress(address string) (parsedAddress, protocol string, err error) {
 	return parsedAddress, protocol, nil
 }
 
-func gatherServer(ctx context.Context, address string, acc telegraf.Accumulator) error {
+func gatherServer(ctx context.Context, address string, acc Dana.Accumulator) error {
 	var conn net.Conn
 	var err error
 	var protocol string
@@ -274,7 +274,7 @@ func parseResponse(r *bufio.Scanner) (map[string]string, error) {
 }
 
 func init() {
-	inputs.Add("mcrouter", func() telegraf.Input {
+	inputs.Add("mcrouter", func() Dana.Input {
 		return &Mcrouter{}
 	})
 }

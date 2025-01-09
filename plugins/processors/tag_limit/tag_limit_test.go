@@ -12,7 +12,7 @@ import (
 	"Dana/testutil"
 )
 
-func MustMetric(name string, tags map[string]string, fields map[string]interface{}, metricTime time.Time) telegraf.Metric {
+func MustMetric(name string, tags map[string]string, fields map[string]interface{}, metricTime time.Time) Dana.Metric {
 	if tags == nil {
 		tags = map[string]string{}
 	}
@@ -89,27 +89,27 @@ func TestTrim(t *testing.T) {
 }
 
 func TestTracking(t *testing.T) {
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New("foo", map[string]string{"tag": "testing"}, map[string]interface{}{"value": 42}, time.Unix(0, 0)),
 		metric.New("bar", map[string]string{"tag": "other", "host": "localhost"}, map[string]interface{}{"value": 23}, time.Unix(0, 0)),
 		metric.New("baz", map[string]string{"tag": "value", "host": "localhost", "module": "main"}, map[string]interface{}{"value": 99}, time.Unix(0, 0)),
 	}
 
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"foo",
 			map[string]string{"tag": "testing"},

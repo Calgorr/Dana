@@ -64,7 +64,7 @@ type v2Counter struct {
 }
 
 // addXMLv2Counter adds a v2Counter array to a Telegraf Accumulator, with the specified tags
-func addXMLv2Counter(acc telegraf.Accumulator, commonTags map[string]string, stats []v2Counter) {
+func addXMLv2Counter(acc Dana.Accumulator, commonTags map[string]string, stats []v2Counter) {
 	grouper := metric.NewSeriesGrouper()
 	ts := time.Now()
 	for _, c := range stats {
@@ -86,7 +86,7 @@ func addXMLv2Counter(acc telegraf.Accumulator, commonTags map[string]string, sta
 
 // readStatsXMLv2 decodes a BIND9 XML statistics version 2 document. Unlike the XML v3 statistics
 // format, the v2 format does not support broken-out subsets.
-func (b *Bind) readStatsXMLv2(addr *url.URL, acc telegraf.Accumulator) error {
+func (b *Bind) readStatsXMLv2(addr *url.URL, acc Dana.Accumulator) error {
 	var stats v2Root
 
 	resp, err := b.client.Get(addr.String())

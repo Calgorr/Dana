@@ -56,7 +56,7 @@ type Wavefront struct {
 	common_http.HTTPClientConfig
 
 	sender wavefront.Sender
-	Log    telegraf.Logger `toml:"-"`
+	Log    Dana.Logger `toml:"-"`
 }
 
 // instead of Sanitize which may miss some special characters we can use a regex pattern, but this is significantly slower than Sanitize
@@ -136,7 +136,7 @@ func (w *Wavefront) Connect() error {
 	return nil
 }
 
-func (w *Wavefront) Write(metrics []telegraf.Metric) error {
+func (w *Wavefront) Write(metrics []Dana.Metric) error {
 	for _, m := range metrics {
 		for _, point := range w.buildMetrics(m) {
 			err := w.sender.SendMetric(point.Metric, point.Value, point.Timestamp, point.Source, point.Tags)
@@ -168,7 +168,7 @@ func (w *Wavefront) Write(metrics []telegraf.Metric) error {
 	return nil
 }
 
-func (w *Wavefront) buildMetrics(m telegraf.Metric) []*serializers_wavefront.MetricPoint {
+func (w *Wavefront) buildMetrics(m Dana.Metric) []*serializers_wavefront.MetricPoint {
 	ret := make([]*serializers_wavefront.MetricPoint, 0)
 
 	for fieldName, value := range m.Fields() {
@@ -373,7 +373,7 @@ func (w *Wavefront) makeAuthOptions() ([]wavefront.Option, error) {
 }
 
 func init() {
-	outputs.Add("wavefront", func() telegraf.Output {
+	outputs.Add("wavefront", func() Dana.Output {
 		return &Wavefront{
 			MetricSeparator:      ".",
 			ConvertPaths:         true,

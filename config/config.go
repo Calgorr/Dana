@@ -75,7 +75,7 @@ type Config struct {
 	OutputFilters      []string
 	SecretStoreFilters []string
 
-	SecretStores map[string]telegraf.SecretStore
+	SecretStores map[string]Dana.SecretStore
 
 	Agent       *AgentConfig
 	Inputs      []*models.RunningInput
@@ -147,7 +147,7 @@ func NewConfig() *Config {
 		Outputs:            make([]*models.RunningOutput, 0),
 		Processors:         make([]*models.RunningProcessor, 0),
 		AggProcessors:      make([]*models.RunningProcessor, 0),
-		SecretStores:       make(map[string]telegraf.SecretStore),
+		SecretStores:       make(map[string]Dana.SecretStore),
 		fileProcessors:     make([]*OrderedPlugin, 0),
 		fileAggProcessors:  make([]*OrderedPlugin, 0),
 		InputFilters:       make([]string, 0),
@@ -580,7 +580,7 @@ func (c *Config) LoadConfigData(data []byte) error {
 
 	// Warn when explicitly setting the old snmp translator
 	if c.Agent.SnmpTranslator == "netsnmp" {
-		PrintOptionValueDeprecationNotice("agent", "snmp_translator", "netsnmp", telegraf.DeprecationInfo{
+		PrintOptionValueDeprecationNotice("agent", "snmp_translator", "netsnmp", Dana.DeprecationInfo{
 			Since:     "1.25.0",
 			RemovalIn: "1.40.0",
 			Notice:    "Use 'gosmi' instead",
@@ -949,7 +949,7 @@ func (c *Config) addSecretStore(name string, table *ast.Table) error {
 
 func (c *Config) LinkSecrets() error {
 	for _, s := range unlinkedSecrets {
-		resolvers := make(map[string]telegraf.ResolveFunc)
+		resolvers := make(map[string]Dana.ResolveFunc)
 		for _, ref := range s.GetUnlinked() {
 			// Split the reference and lookup the resolver
 			storeID, key := splitLink(ref)
@@ -1134,7 +1134,7 @@ func (c *Config) addProcessor(name string, table *ast.Table) error {
 	return nil
 }
 
-func (c *Config) setupProcessor(name string, creator processors.StreamingCreator, table *ast.Table) (telegraf.StreamingProcessor, int, error) {
+func (c *Config) setupProcessor(name string, creator processors.StreamingCreator, table *ast.Table) (Dana.StreamingProcessor, int, error) {
 	var optionTestCount int
 
 	streamingProcessor := creator()
@@ -1149,7 +1149,7 @@ func (c *Config) setupProcessor(name string, creator processors.StreamingCreator
 	// If the (underlying) processor has a SetParser or SetParserFunc function,
 	// it can accept arbitrary data-formats, so build the requested parser and
 	// set it.
-	if t, ok := processor.(telegraf.ParserPlugin); ok {
+	if t, ok := processor.(Dana.ParserPlugin); ok {
 		parser, err := c.addParser("processors", name, table)
 		if err != nil {
 			return nil, 0, fmt.Errorf("adding parser failed: %w", err)
@@ -1158,11 +1158,11 @@ func (c *Config) setupProcessor(name string, creator processors.StreamingCreator
 		optionTestCount++
 	}
 
-	if t, ok := processor.(telegraf.ParserFuncPlugin); ok {
+	if t, ok := processor.(Dana.ParserFuncPlugin); ok {
 		if !c.probeParser("processors", name, table) {
 			return nil, 0, errors.New("parser not found")
 		}
-		t.SetParserFunc(func() (telegraf.Parser, error) {
+		t.SetParserFunc(func() (Dana.Parser, error) {
 			return c.addParser("processors", name, table)
 		})
 		optionTestCount++
@@ -1170,7 +1170,7 @@ func (c *Config) setupProcessor(name string, creator processors.StreamingCreator
 
 	// If the (underlying) processor has a SetSerializer function it can accept
 	// arbitrary data-formats, so build the requested serializer and set it.
-	if t, ok := processor.(telegraf.SerializerPlugin); ok {
+	if t, ok := processor.(Dana.SerializerPlugin); ok {
 		serializer, err := c.addSerializer(name, table)
 		if err != nil {
 			return nil, 0, fmt.Errorf("adding serializer failed: %w", err)
@@ -1178,11 +1178,11 @@ func (c *Config) setupProcessor(name string, creator processors.StreamingCreator
 		t.SetSerializer(serializer)
 		optionTestCount++
 	}
-	if t, ok := processor.(telegraf.SerializerFuncPlugin); ok {
+	if t, ok := processor.(Dana.SerializerFuncPlugin); ok {
 		if !c.probeSerializer(table) {
 			return nil, 0, errors.New("serializer not found")
 		}
-		t.SetSerializerFunc(func() (telegraf.Serializer, error) {
+		t.SetSerializerFunc(func() (Dana.Serializer, error) {
 			return c.addSerializer(name, table)
 		})
 		optionTestCount++
@@ -1225,7 +1225,7 @@ func (c *Config) addOutput(name string, table *ast.Table) error {
 
 	// If the output has a SetSerializer function, then this means it can write
 	// arbitrary types of output, so build the serializer and set it.
-	if t, ok := output.(telegraf.SerializerPlugin); ok {
+	if t, ok := output.(Dana.SerializerPlugin); ok {
 		missThreshold = 1
 		serializer, err := c.addSerializer(name, table)
 		if err != nil {
@@ -1234,12 +1234,12 @@ func (c *Config) addOutput(name string, table *ast.Table) error {
 		t.SetSerializer(serializer)
 	}
 
-	if t, ok := output.(telegraf.SerializerFuncPlugin); ok {
+	if t, ok := output.(Dana.SerializerFuncPlugin); ok {
 		missThreshold = 1
 		if !c.probeSerializer(table) {
 			return errors.New("serializer not found")
 		}
-		t.SetSerializerFunc(func() (telegraf.Serializer, error) {
+		t.SetSerializerFunc(func() (Dana.Serializer, error) {
 			return c.addSerializer(name, table)
 		})
 	}
@@ -1309,7 +1309,7 @@ func (c *Config) addInput(name string, table *ast.Table) error {
 
 	// If the input has a SetParser or SetParserFunc function, it can accept
 	// arbitrary data-formats, so build the requested parser and set it.
-	if t, ok := input.(telegraf.ParserPlugin); ok {
+	if t, ok := input.(Dana.ParserPlugin); ok {
 		missCountThreshold = 1
 		parser, err := c.addParser("inputs", name, table)
 		if err != nil {
@@ -1318,12 +1318,12 @@ func (c *Config) addInput(name string, table *ast.Table) error {
 		t.SetParser(parser)
 	}
 
-	if t, ok := input.(telegraf.ParserFuncPlugin); ok {
+	if t, ok := input.(Dana.ParserFuncPlugin); ok {
 		missCountThreshold = 1
 		if !c.probeParser("inputs", name, table) {
 			return errors.New("parser not found")
 		}
-		t.SetParserFunc(func() (telegraf.Parser, error) {
+		t.SetParserFunc(func() (Dana.Parser, error) {
 			return c.addParser("inputs", name, table)
 		})
 	}
@@ -1455,7 +1455,7 @@ func (c *Config) buildFilter(plugin string, tbl *ast.Table) (models.Filter, erro
 
 	oldPass := c.getFieldStringSlice(tbl, "pass")
 	if len(oldPass) > 0 {
-		PrintOptionDeprecationNotice(plugin, "pass", telegraf.DeprecationInfo{
+		PrintOptionDeprecationNotice(plugin, "pass", Dana.DeprecationInfo{
 			Since:     "0.10.4",
 			RemovalIn: "1.35.0",
 			Notice:    "use 'fieldinclude' instead",
@@ -1465,7 +1465,7 @@ func (c *Config) buildFilter(plugin string, tbl *ast.Table) (models.Filter, erro
 
 	oldFieldPass := c.getFieldStringSlice(tbl, "fieldpass")
 	if len(oldFieldPass) > 0 {
-		PrintOptionDeprecationNotice(plugin, "fieldpass", telegraf.DeprecationInfo{
+		PrintOptionDeprecationNotice(plugin, "fieldpass", Dana.DeprecationInfo{
 			Since:     "1.29.0",
 			RemovalIn: "1.40.0",
 			Notice:    "use 'fieldinclude' instead",
@@ -1480,7 +1480,7 @@ func (c *Config) buildFilter(plugin string, tbl *ast.Table) (models.Filter, erro
 
 	oldDrop := c.getFieldStringSlice(tbl, "drop")
 	if len(oldDrop) > 0 {
-		PrintOptionDeprecationNotice(plugin, "drop", telegraf.DeprecationInfo{
+		PrintOptionDeprecationNotice(plugin, "drop", Dana.DeprecationInfo{
 			Since:     "0.10.4",
 			RemovalIn: "1.35.0",
 			Notice:    "use 'fieldexclude' instead",
@@ -1490,7 +1490,7 @@ func (c *Config) buildFilter(plugin string, tbl *ast.Table) (models.Filter, erro
 
 	oldFieldDrop := c.getFieldStringSlice(tbl, "fielddrop")
 	if len(oldFieldDrop) > 0 {
-		PrintOptionDeprecationNotice(plugin, "fielddrop", telegraf.DeprecationInfo{
+		PrintOptionDeprecationNotice(plugin, "fielddrop", Dana.DeprecationInfo{
 			Since:     "1.29.0",
 			RemovalIn: "1.40.0",
 			Notice:    "use 'fieldexclude' instead",
@@ -1649,14 +1649,14 @@ func (c *Config) setLocalMissingTomlFieldTracker(counter map[string]int) {
 		// should just be hit once anyway. Therefore, we mark them with a
 		// high number to handle them correctly later.
 		pt := reflect.PointerTo(t)
-		root := pt.Implements(reflect.TypeOf((*telegraf.Input)(nil)).Elem())
-		root = root || pt.Implements(reflect.TypeOf((*telegraf.ServiceInput)(nil)).Elem())
-		root = root || pt.Implements(reflect.TypeOf((*telegraf.Output)(nil)).Elem())
-		root = root || pt.Implements(reflect.TypeOf((*telegraf.Aggregator)(nil)).Elem())
-		root = root || pt.Implements(reflect.TypeOf((*telegraf.Processor)(nil)).Elem())
-		root = root || pt.Implements(reflect.TypeOf((*telegraf.StreamingProcessor)(nil)).Elem())
-		root = root || pt.Implements(reflect.TypeOf((*telegraf.Parser)(nil)).Elem())
-		root = root || pt.Implements(reflect.TypeOf((*telegraf.Serializer)(nil)).Elem())
+		root := pt.Implements(reflect.TypeOf((*Dana.Input)(nil)).Elem())
+		root = root || pt.Implements(reflect.TypeOf((*Dana.ServiceInput)(nil)).Elem())
+		root = root || pt.Implements(reflect.TypeOf((*Dana.Output)(nil)).Elem())
+		root = root || pt.Implements(reflect.TypeOf((*Dana.Aggregator)(nil)).Elem())
+		root = root || pt.Implements(reflect.TypeOf((*Dana.Processor)(nil)).Elem())
+		root = root || pt.Implements(reflect.TypeOf((*Dana.StreamingProcessor)(nil)).Elem())
+		root = root || pt.Implements(reflect.TypeOf((*Dana.Parser)(nil)).Elem())
+		root = root || pt.Implements(reflect.TypeOf((*Dana.Serializer)(nil)).Elem())
 
 		c, ok := counter[key]
 		if !root {

@@ -2,7 +2,7 @@ package aggregators
 
 import "Dana"
 
-type Creator func() telegraf.Aggregator
+type Creator func() Dana.Aggregator
 
 var Aggregators = make(map[string]Creator)
 

@@ -38,7 +38,7 @@ type Warp10 struct {
 	MaxStringErrorSize int             `toml:"max_string_error_size"`
 	client             *http.Client
 	tls.ClientConfig
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 // MetricLine Warp 10 metrics
@@ -86,7 +86,7 @@ func (w *Warp10) Connect() error {
 }
 
 // GenWarp10Payload compute Warp 10 metrics payload
-func (w *Warp10) GenWarp10Payload(metrics []telegraf.Metric) string {
+func (w *Warp10) GenWarp10Payload(metrics []Dana.Metric) string {
 	collectString := make([]string, 0)
 	for _, mm := range metrics {
 		for _, field := range mm.FieldList() {
@@ -114,7 +114,7 @@ func (w *Warp10) GenWarp10Payload(metrics []telegraf.Metric) string {
 }
 
 // Write metrics to Warp10
-func (w *Warp10) Write(metrics []telegraf.Metric) error {
+func (w *Warp10) Write(metrics []Dana.Metric) error {
 	payload := w.GenWarp10Payload(metrics)
 	if payload == "" {
 		return nil
@@ -157,7 +157,7 @@ func (w *Warp10) Write(metrics []telegraf.Metric) error {
 	return nil
 }
 
-func buildTags(tags []*telegraf.Tag) []string {
+func buildTags(tags []*Dana.Tag) []string {
 	tagsString := make([]string, 0, len(tags)+1)
 	for _, tag := range tags {
 		key := url.QueryEscape(tag.Key)
@@ -249,7 +249,7 @@ func (w *Warp10) Init() error {
 }
 
 func init() {
-	outputs.Add("warp10", func() telegraf.Output {
+	outputs.Add("warp10", func() Dana.Output {
 		return &Warp10{}
 	})
 }

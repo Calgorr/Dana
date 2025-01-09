@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type Hugepages struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*Hugepages) SampleConfig() string {
@@ -26,10 +26,10 @@ func (h *Hugepages) Init() error {
 	return nil
 }
 
-func (*Hugepages) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Hugepages) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("hugepages", func() telegraf.Input {
+	inputs.Add("hugepages", func() Dana.Input {
 		return &Hugepages{}
 	})
 }

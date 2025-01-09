@@ -30,7 +30,7 @@ func (*HDDTemp) SampleConfig() string {
 	return sampleConfig
 }
 
-func (h *HDDTemp) Gather(acc telegraf.Accumulator) error {
+func (h *HDDTemp) Gather(acc Dana.Accumulator) error {
 	if h.fetcher == nil {
 		h.fetcher = gohddtemp.New()
 	}
@@ -68,7 +68,7 @@ func (h *HDDTemp) Gather(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("hddtemp", func() telegraf.Input {
+	inputs.Add("hddtemp", func() Dana.Input {
 		return &HDDTemp{
 			Address: defaultAddress,
 			Devices: []string{"*"},

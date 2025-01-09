@@ -21,7 +21,7 @@ type Options struct {
 	Rel      []RelOpts
 	ToSlash  []BaseOpts `toml:"toslash"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 type ProcessorFunc func(s string) string
@@ -39,7 +39,7 @@ type RelOpts struct {
 }
 
 // applyFunc applies the specified function to the metric
-func (o *Options) applyFunc(bo BaseOpts, fn ProcessorFunc, metric telegraf.Metric) {
+func (o *Options) applyFunc(bo BaseOpts, fn ProcessorFunc, metric Dana.Metric) {
 	if bo.Tag != "" {
 		if v, ok := metric.GetTag(bo.Tag); ok {
 			targetTag := bo.Tag
@@ -72,7 +72,7 @@ func stemFilePath(path string) string {
 }
 
 // processMetric processes fields and tag values for a given metric applying the selected transformations
-func (o *Options) processMetric(metric telegraf.Metric) {
+func (o *Options) processMetric(metric Dana.Metric) {
 	// Stem
 	for _, v := range o.Stem {
 		o.applyFunc(v, stemFilePath, metric)
@@ -110,7 +110,7 @@ func (*Options) SampleConfig() string {
 	return sampleConfig
 }
 
-func (o *Options) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (o *Options) Apply(in ...Dana.Metric) []Dana.Metric {
 	for _, m := range in {
 		o.processMetric(m)
 	}
@@ -119,7 +119,7 @@ func (o *Options) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("filepath", func() telegraf.Processor {
+	processors.Add("filepath", func() Dana.Processor {
 		return &Options{}
 	})
 }

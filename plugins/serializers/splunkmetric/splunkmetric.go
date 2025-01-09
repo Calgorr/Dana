@@ -31,11 +31,11 @@ type HECTimeSeries struct {
 	Fields map[string]interface{} `json:"fields"`
 }
 
-func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
+func (s *Serializer) Serialize(metric Dana.Metric) ([]byte, error) {
 	return s.createObject(metric)
 }
 
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	var serialized []byte
 
 	for _, metric := range metrics {
@@ -51,7 +51,7 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
 	return serialized, nil
 }
 
-func (s *Serializer) createMulti(metric telegraf.Metric, dataGroup HECTimeSeries, commonTags CommonTags) (metricGroup []byte, err error) {
+func (s *Serializer) createMulti(metric Dana.Metric, dataGroup HECTimeSeries, commonTags CommonTags) (metricGroup []byte, err error) {
 	/* When splunkmetric_multimetric is true, then we can write out multiple name=value pairs as part of the same
 	** event payload. This only works when the time, host, and dimensions are the same for every name=value pair
 	** in the timeseries data.
@@ -101,7 +101,7 @@ func (s *Serializer) createMulti(metric telegraf.Metric, dataGroup HECTimeSeries
 	return metricGroup, nil
 }
 
-func (s *Serializer) createSingle(metric telegraf.Metric, dataGroup HECTimeSeries, commonTags CommonTags) (metricGroup []byte, err error) {
+func (s *Serializer) createSingle(metric Dana.Metric, dataGroup HECTimeSeries, commonTags CommonTags) (metricGroup []byte, err error) {
 	/* The default mode is to generate one JSON entity per metric (required for pre-8.0 Splunks)
 	**
 	** The format for single metric is 'nameOfMetric = valueOfMetric'
@@ -151,7 +151,7 @@ func (s *Serializer) createSingle(metric telegraf.Metric, dataGroup HECTimeSerie
 	return metricGroup, nil
 }
 
-func (s *Serializer) createObject(metric telegraf.Metric) ([]byte, error) {
+func (s *Serializer) createObject(metric Dana.Metric) ([]byte, error) {
 	/*  Splunk supports one metric json object, and does _not_ support an array of JSON objects.
 	     ** Splunk has the following required names for the metric store:
 		 ** metric_name: The name of the metric
@@ -210,7 +210,7 @@ func verifyValue(v interface{}) (value interface{}, valid bool) {
 
 func init() {
 	serializers.Add("splunkmetric",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

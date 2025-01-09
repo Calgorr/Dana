@@ -55,7 +55,7 @@ func TestCases(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	outputs.Add("redistimeseries", func() telegraf.Output {
+	outputs.Add("redistimeseries", func() Dana.Output {
 		return &RedisTimeSeries{
 			ConvertStringFields: true,
 			Timeout:             config.Duration(10 * time.Second),

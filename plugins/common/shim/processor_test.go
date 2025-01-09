@@ -101,7 +101,7 @@ type testProcessor struct {
 	tagValue string
 }
 
-func (p *testProcessor) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (p *testProcessor) Apply(in ...Dana.Metric) []Dana.Metric {
 	for _, m := range in {
 		m.AddTag(p.tagName, p.tagValue)
 	}

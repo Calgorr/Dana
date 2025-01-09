@@ -32,8 +32,8 @@ var (
 // Wireguard is an input that enumerates all Wireguard interfaces/devices on
 // the host, and reports gauge metrics for the device itself and its peers.
 type Wireguard struct {
-	Devices []string        `toml:"devices"`
-	Log     telegraf.Logger `toml:"-"`
+	Devices []string    `toml:"devices"`
+	Log     Dana.Logger `toml:"-"`
 
 	client *wgctrl.Client
 }
@@ -50,7 +50,7 @@ func (wg *Wireguard) Init() error {
 	return err
 }
 
-func (wg *Wireguard) Gather(acc telegraf.Accumulator) error {
+func (wg *Wireguard) Gather(acc Dana.Accumulator) error {
 	devices, err := wg.enumerateDevices()
 	if err != nil {
 		return fmt.Errorf("error enumerating Wireguard devices: %w", err)
@@ -89,7 +89,7 @@ func (wg *Wireguard) enumerateDevices() ([]*wgtypes.Device, error) {
 	return devices, nil
 }
 
-func gatherDeviceMetrics(acc telegraf.Accumulator, device *wgtypes.Device) {
+func gatherDeviceMetrics(acc Dana.Accumulator, device *wgtypes.Device) {
 	fields := map[string]interface{}{
 		"listen_port":   device.ListenPort,
 		"firewall_mark": device.FirewallMark,
@@ -108,7 +108,7 @@ func gatherDeviceMetrics(acc telegraf.Accumulator, device *wgtypes.Device) {
 	acc.AddGauge(measurementDevice, gauges, tags)
 }
 
-func gatherDevicePeerMetrics(acc telegraf.Accumulator, device *wgtypes.Device, peer wgtypes.Peer) {
+func gatherDevicePeerMetrics(acc Dana.Accumulator, device *wgtypes.Device, peer wgtypes.Peer) {
 	fields := map[string]interface{}{
 		"persistent_keepalive_interval_ns": peer.PersistentKeepaliveInterval.Nanoseconds(),
 		"protocol_version":                 peer.ProtocolVersion,
@@ -139,7 +139,7 @@ func gatherDevicePeerMetrics(acc telegraf.Accumulator, device *wgtypes.Device, p
 }
 
 func init() {
-	inputs.Add("wireguard", func() telegraf.Input {
+	inputs.Add("wireguard", func() Dana.Input {
 		return &Wireguard{}
 	})
 }

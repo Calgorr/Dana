@@ -13,7 +13,7 @@ import (
 	"Dana"
 )
 
-func (k *Synproxy) Gather(acc telegraf.Accumulator) error {
+func (k *Synproxy) Gather(acc Dana.Accumulator) error {
 	data, err := k.getSynproxyStat()
 	if err != nil {
 		return err

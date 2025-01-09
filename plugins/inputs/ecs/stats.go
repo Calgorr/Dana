@@ -11,7 +11,7 @@ import (
 	"Dana/plugins/common/docker"
 )
 
-func parseContainerStats(c *ecsContainer, acc telegraf.Accumulator, tags map[string]string) {
+func parseContainerStats(c *ecsContainer, acc Dana.Accumulator, tags map[string]string) {
 	id := c.ID
 	stats := &c.Stats
 	tm := stats.Read
@@ -27,7 +27,7 @@ func parseContainerStats(c *ecsContainer, acc telegraf.Accumulator, tags map[str
 	blkstats(id, stats, acc, tags, tm)
 }
 
-func metastats(id string, c *ecsContainer, acc telegraf.Accumulator, tags map[string]string, tm time.Time) {
+func metastats(id string, c *ecsContainer, acc Dana.Accumulator, tags map[string]string, tm time.Time) {
 	metafields := map[string]interface{}{
 		"container_id":   id,
 		"docker_name":    c.DockerName,
@@ -45,7 +45,7 @@ func metastats(id string, c *ecsContainer, acc telegraf.Accumulator, tags map[st
 	acc.AddFields("ecs_container_meta", metafields, tags, tm)
 }
 
-func memstats(id string, stats *container.StatsResponse, acc telegraf.Accumulator, tags map[string]string, tm time.Time) {
+func memstats(id string, stats *container.StatsResponse, acc Dana.Accumulator, tags map[string]string, tm time.Time) {
 	memfields := map[string]interface{}{
 		"container_id": id,
 	}
@@ -102,7 +102,7 @@ func memstats(id string, stats *container.StatsResponse, acc telegraf.Accumulato
 	acc.AddFields("ecs_container_mem", memfields, tags, tm)
 }
 
-func cpustats(id string, stats *container.StatsResponse, acc telegraf.Accumulator, tags map[string]string, tm time.Time) {
+func cpustats(id string, stats *container.StatsResponse, acc Dana.Accumulator, tags map[string]string, tm time.Time) {
 	cpufields := map[string]interface{}{
 		"usage_total":                  stats.CPUStats.CPUUsage.TotalUsage,
 		"usage_in_usermode":            stats.CPUStats.CPUUsage.UsageInUsermode,
@@ -143,7 +143,7 @@ func cpustats(id string, stats *container.StatsResponse, acc telegraf.Accumulato
 	}
 }
 
-func netstats(id string, stats *container.StatsResponse, acc telegraf.Accumulator, tags map[string]string, tm time.Time) {
+func netstats(id string, stats *container.StatsResponse, acc Dana.Accumulator, tags map[string]string, tm time.Time) {
 	totalNetworkStatMap := make(map[string]interface{})
 	for network, netstats := range stats.Networks {
 		netfields := map[string]interface{}{
@@ -195,7 +195,7 @@ func netstats(id string, stats *container.StatsResponse, acc telegraf.Accumulato
 	}
 }
 
-func blkstats(id string, stats *container.StatsResponse, acc telegraf.Accumulator, tags map[string]string, tm time.Time) {
+func blkstats(id string, stats *container.StatsResponse, acc Dana.Accumulator, tags map[string]string, tm time.Time) {
 	blkioStats := stats.BlkioStats
 	// Make a map of devices to their block io stats
 	deviceStatMap := make(map[string]map[string]interface{})

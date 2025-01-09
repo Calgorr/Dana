@@ -41,7 +41,7 @@ func getCountInCidr(cidr string) (int, error) {
 	return numIps, nil
 }
 
-func (counter *ipsetEntries) addLine(line string, acc telegraf.Accumulator) error {
+func (counter *ipsetEntries) addLine(line string, acc Dana.Accumulator) error {
 	data := strings.Fields(line)
 	if len(data) < 3 {
 		return fmt.Errorf("error parsing line (expected at least 3 fields): %s", line)
@@ -65,7 +65,7 @@ func (counter *ipsetEntries) addLine(line string, acc telegraf.Accumulator) erro
 	return nil
 }
 
-func (counter *ipsetEntries) commit(acc telegraf.Accumulator) {
+func (counter *ipsetEntries) commit(acc Dana.Accumulator) {
 	if !counter.initialized {
 		return
 	}

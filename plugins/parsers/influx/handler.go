@@ -10,11 +10,11 @@ import (
 	"Dana/metric"
 )
 
-// MetricHandler implements the Handler interface and produces telegraf.Metric.
+// MetricHandler implements the Handler interface and produces Dana.Metric.
 type MetricHandler struct {
 	timePrecision time.Duration
 	timeFunc      TimeFunc
-	metric        telegraf.Metric
+	metric        Dana.Metric
 }
 
 func NewMetricHandler() *MetricHandler {
@@ -38,7 +38,7 @@ func (h *MetricHandler) SetTimeFunc(f TimeFunc) {
 	h.timeFunc = f
 }
 
-func (h *MetricHandler) Metric() telegraf.Metric {
+func (h *MetricHandler) Metric() Dana.Metric {
 	if h.metric.Time().IsZero() {
 		h.metric.SetTime(h.timeFunc().Truncate(h.timePrecision))
 	}

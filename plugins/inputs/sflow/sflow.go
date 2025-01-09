@@ -27,7 +27,7 @@ type SFlow struct {
 	ServiceAddress string      `toml:"service_address"`
 	ReadBufferSize config.Size `toml:"read_buffer_size"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	addr    net.Addr
 	decoder *packetDecoder
@@ -46,7 +46,7 @@ func (s *SFlow) Init() error {
 }
 
 // Start starts this sFlow listener listening on the configured network for sFlow packets
-func (s *SFlow) Start(acc telegraf.Accumulator) error {
+func (s *SFlow) Start(acc Dana.Accumulator) error {
 	s.decoder.OnPacket(func(p *v5Format) {
 		metrics := makeMetrics(p)
 		for _, m := range metrics {
@@ -84,7 +84,7 @@ func (s *SFlow) Start(acc telegraf.Accumulator) error {
 }
 
 // Gather is a NOOP for sFlow as it receives, asynchronously, sFlow network packets
-func (*SFlow) Gather(telegraf.Accumulator) error {
+func (*SFlow) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -99,7 +99,7 @@ func (s *SFlow) Address() net.Addr {
 	return s.addr
 }
 
-func (s *SFlow) read(acc telegraf.Accumulator, conn net.PacketConn) {
+func (s *SFlow) read(acc Dana.Accumulator, conn net.PacketConn) {
 	buf := make([]byte, maxPacketSize)
 	for {
 		n, _, err := conn.ReadFrom(buf)
@@ -113,7 +113,7 @@ func (s *SFlow) read(acc telegraf.Accumulator, conn net.PacketConn) {
 	}
 }
 
-func (s *SFlow) process(acc telegraf.Accumulator, buf []byte) {
+func (s *SFlow) process(acc Dana.Accumulator, buf []byte) {
 	if err := s.decoder.Decode(bytes.NewBuffer(buf)); err != nil {
 		acc.AddError(fmt.Errorf("unable to parse incoming packet: %w", err))
 	}
@@ -134,7 +134,7 @@ func listenUDP(network, address string) (*net.UDPConn, error) {
 
 // init registers this SFlow input plug in with the Telegraf framework
 func init() {
-	inputs.Add("sflow", func() telegraf.Input {
+	inputs.Add("sflow", func() Dana.Input {
 		return &SFlow{}
 	})
 }

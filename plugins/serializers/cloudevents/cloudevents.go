@@ -20,13 +20,13 @@ const (
 )
 
 type Serializer struct {
-	Version     string          `toml:"cloudevents_version"`
-	Source      string          `toml:"cloudevents_source"`
-	SourceTag   string          `toml:"cloudevents_source_tag"`
-	EventType   string          `toml:"cloudevents_event_type"`
-	EventTime   string          `toml:"cloudevents_event_time"`
-	BatchFormat string          `toml:"cloudevents_batch_format"`
-	Log         telegraf.Logger `toml:"-"`
+	Version     string      `toml:"cloudevents_version"`
+	Source      string      `toml:"cloudevents_source"`
+	SourceTag   string      `toml:"cloudevents_source_tag"`
+	EventType   string      `toml:"cloudevents_event_type"`
+	EventTime   string      `toml:"cloudevents_event_time"`
+	BatchFormat string      `toml:"cloudevents_batch_format"`
+	Log         Dana.Logger `toml:"-"`
 
 	idgen uuid.Generator
 }
@@ -65,7 +65,7 @@ func (s *Serializer) Init() error {
 	return nil
 }
 
-func (s *Serializer) Serialize(m telegraf.Metric) ([]byte, error) {
+func (s *Serializer) Serialize(m Dana.Metric) ([]byte, error) {
 	// Create the event that forms the envelop around the metric
 	evt, err := s.createEvent(m)
 	if err != nil {
@@ -74,7 +74,7 @@ func (s *Serializer) Serialize(m telegraf.Metric) ([]byte, error) {
 	return evt.MarshalJSON()
 }
 
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	switch s.BatchFormat {
 	case "metrics":
 		return s.batchMetrics(metrics)
@@ -84,7 +84,7 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
 	return nil, fmt.Errorf("unexpected batch-format %q", s.BatchFormat)
 }
 
-func (s *Serializer) batchMetrics(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) batchMetrics(metrics []Dana.Metric) ([]byte, error) {
 	// Determine the necessary information
 	eventType := EventTypeBatch
 	if s.EventType != "" {
@@ -134,7 +134,7 @@ func (s *Serializer) batchMetrics(metrics []telegraf.Metric) ([]byte, error) {
 	return json.Marshal(evt)
 }
 
-func (s *Serializer) batchEvents(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) batchEvents(metrics []Dana.Metric) ([]byte, error) {
 	events := make([]*cloudevents.Event, 0, len(metrics))
 	for _, m := range metrics {
 		e, err := s.createEvent(m)
@@ -147,7 +147,7 @@ func (s *Serializer) batchEvents(metrics []telegraf.Metric) ([]byte, error) {
 	return json.Marshal(events)
 }
 
-func (s *Serializer) createEvent(m telegraf.Metric) (*cloudevents.Event, error) {
+func (s *Serializer) createEvent(m Dana.Metric) (*cloudevents.Event, error) {
 	// Determine the necessary information
 	source := s.Source
 	if s.SourceTag != "" {
@@ -192,7 +192,7 @@ func (s *Serializer) createEvent(m telegraf.Metric) (*cloudevents.Event, error) 
 
 func init() {
 	serializers.Add("cloudevents",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

@@ -164,7 +164,7 @@ func TestServeHTTP(t *testing.T) {
 			Path:         "/",
 			MaxBodySize:  config.Size(test.maxsize),
 			sem:          make(chan struct{}, 1),
-			undelivered:  make(map[telegraf.TrackingID]chan bool),
+			undelivered:  make(map[Dana.TrackingID]chan bool),
 			mu:           &sync.Mutex{},
 			WriteTimeout: config.Duration(time.Millisecond * 10),
 		}
@@ -180,7 +180,7 @@ func TestServeHTTP(t *testing.T) {
 		require.NoError(t, p.Init())
 		pubPush.SetParser(p)
 
-		dst := make(chan telegraf.Metric, 1)
+		dst := make(chan Dana.Metric, 1)
 		ro := models.NewRunningOutput(&testOutput{failWrite: test.fail}, &models.OutputConfig{}, 1, 1)
 		pubPush.acc = agent.NewAccumulator(&testMetricMaker{}, dst).WithTracking(1)
 
@@ -191,7 +191,7 @@ func TestServeHTTP(t *testing.T) {
 		}()
 
 		wg.Add(1)
-		go func(d chan telegraf.Metric) {
+		go func(d chan Dana.Metric) {
 			defer wg.Done()
 			for m := range d {
 				ro.AddMetric(m)
@@ -227,11 +227,11 @@ func (tm *testMetricMaker) LogName() string {
 	return tm.Name()
 }
 
-func (*testMetricMaker) MakeMetric(metric telegraf.Metric) telegraf.Metric {
+func (*testMetricMaker) MakeMetric(metric Dana.Metric) Dana.Metric {
 	return metric
 }
 
-func (*testMetricMaker) Log() telegraf.Logger {
+func (*testMetricMaker) Log() Dana.Logger {
 	return logger.New("test", "test", "")
 }
 
@@ -256,7 +256,7 @@ func (*testOutput) SampleConfig() string {
 	return ""
 }
 
-func (t *testOutput) Write(_ []telegraf.Metric) error {
+func (t *testOutput) Write(_ []Dana.Metric) error {
 	if t.failWrite {
 		return errors.New("failed write")
 	}

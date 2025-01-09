@@ -1,4 +1,4 @@
-package telegraf
+package Dana
 
 type Output interface {
 	PluginDescriber

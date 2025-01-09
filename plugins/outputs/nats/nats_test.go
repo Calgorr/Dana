@@ -161,7 +161,7 @@ func TestConfigParsing(t *testing.T) {
 	}
 
 	// Register the plugin
-	outputs.Add("nats", func() telegraf.Output {
+	outputs.Add("nats", func() Dana.Output {
 		return &NATS{}
 	})
 	srl := &influx.Serializer{}

@@ -50,7 +50,7 @@ func TestHTTPWithJSONFormat(t *testing.T) {
 	}
 	metricName := "metricName"
 
-	plugin.SetParserFunc(func() (telegraf.Parser, error) {
+	plugin.SetParserFunc(func() (Dana.Parser, error) {
 		p := &json.Parser{MetricName: "metricName"}
 		err := p.Init()
 		return p, err
@@ -98,7 +98,7 @@ func TestHTTPHeaders(t *testing.T) {
 		Log:     testutil.Logger{},
 	}
 
-	plugin.SetParserFunc(func() (telegraf.Parser, error) {
+	plugin.SetParserFunc(func() (Dana.Parser, error) {
 		p := &json.Parser{MetricName: "metricName"}
 		err := p.Init()
 		return p, err
@@ -135,7 +135,7 @@ func TestHTTPContentLengthHeader(t *testing.T) {
 		Log:     testutil.Logger{},
 	}
 
-	plugin.SetParserFunc(func() (telegraf.Parser, error) {
+	plugin.SetParserFunc(func() (Dana.Parser, error) {
 		p := &json.Parser{MetricName: "metricName"}
 		err := p.Init()
 		return p, err
@@ -158,7 +158,7 @@ func TestInvalidStatusCode(t *testing.T) {
 		Log:  testutil.Logger{},
 	}
 
-	plugin.SetParserFunc(func() (telegraf.Parser, error) {
+	plugin.SetParserFunc(func() (Dana.Parser, error) {
 		p := &json.Parser{MetricName: "metricName"}
 		err := p.Init()
 		return p, err
@@ -182,7 +182,7 @@ func TestSuccessStatusCodes(t *testing.T) {
 		Log:                testutil.Logger{},
 	}
 
-	plugin.SetParserFunc(func() (telegraf.Parser, error) {
+	plugin.SetParserFunc(func() (Dana.Parser, error) {
 		p := &json.Parser{MetricName: "metricName"}
 		err := p.Init()
 		return p, err
@@ -209,7 +209,7 @@ func TestMethod(t *testing.T) {
 		Log:    testutil.Logger{},
 	}
 
-	plugin.SetParserFunc(func() (telegraf.Parser, error) {
+	plugin.SetParserFunc(func() (Dana.Parser, error) {
 		p := &json.Parser{MetricName: "metricName"}
 		err := p.Init()
 		return p, err
@@ -313,7 +313,7 @@ func TestBodyAndContentEncoding(t *testing.T) {
 				tt.queryHandlerFunc(t, w, r)
 			})
 
-			tt.plugin.SetParserFunc(func() (telegraf.Parser, error) {
+			tt.plugin.SetParserFunc(func() (Dana.Parser, error) {
 				parser := &influx.Parser{}
 				err := parser.Init()
 				return parser, err
@@ -395,7 +395,7 @@ func TestOAuthClientCredentialsGrant(t *testing.T) {
 				}
 			})
 
-			tt.plugin.SetParserFunc(func() (telegraf.Parser, error) {
+			tt.plugin.SetParserFunc(func() (Dana.Parser, error) {
 				p := &value.Parser{
 					MetricName: "metric",
 					DataType:   "string",
@@ -434,7 +434,7 @@ func TestHTTPWithCSVFormat(t *testing.T) {
 		Log:  testutil.Logger{},
 	}
 
-	plugin.SetParserFunc(func() (telegraf.Parser, error) {
+	plugin.SetParserFunc(func() (Dana.Parser, error) {
 		parser := &csv.Parser{
 			MetricName:  "metricName",
 			SkipRows:    3,
@@ -445,7 +445,7 @@ func TestHTTPWithCSVFormat(t *testing.T) {
 		return parser, err
 	})
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("metricName",
 			map[string]string{
 				"url": address,
@@ -509,7 +509,7 @@ func TestConnectionOverUnixSocket(t *testing.T) {
 		Log:  testutil.Logger{},
 	}
 
-	plugin.SetParserFunc(func() (telegraf.Parser, error) {
+	plugin.SetParserFunc(func() (Dana.Parser, error) {
 		parser := &csv.Parser{
 			MetricName:  "metricName",
 			SkipRows:    3,
@@ -520,7 +520,7 @@ func TestConnectionOverUnixSocket(t *testing.T) {
 		return parser, err
 	})
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("metricName",
 			map[string]string{
 				"url": address,

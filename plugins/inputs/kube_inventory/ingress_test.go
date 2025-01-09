@@ -19,7 +19,7 @@ func TestIngress(t *testing.T) {
 	tests := []struct {
 		name     string
 		handler  *mockHandler
-		output   []telegraf.Metric
+		output   []Dana.Metric
 		hasError bool
 	}{
 		{
@@ -83,7 +83,7 @@ func TestIngress(t *testing.T) {
 					},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					"kubernetes_ingress",
 					map[string]string{
@@ -193,7 +193,7 @@ func TestIngress(t *testing.T) {
 					},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					"kubernetes_ingress",
 					map[string]string{

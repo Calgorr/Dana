@@ -1,4 +1,4 @@
-package telegraf
+package Dana
 
 // Serializer is an interface defining functions that a serializer plugin must
 // satisfy.

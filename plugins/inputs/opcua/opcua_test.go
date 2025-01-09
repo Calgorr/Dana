@@ -192,7 +192,7 @@ func TestReadClientIntegrationAdditionalFields(t *testing.T) {
 		"The operation succeeded. StatusGood (0x0)",
 		"The operation succeeded. StatusGood (0x0)",
 	}
-	expectedopcmetrics := make([]telegraf.Metric, 0, len(testopctags))
+	expectedopcmetrics := make([]Dana.Metric, 0, len(testopctags))
 	for i, x := range testopctags {
 		now := time.Now()
 		tags := map[string]string{
@@ -233,7 +233,7 @@ func TestReadClientIntegrationAdditionalFields(t *testing.T) {
 
 	require.NoError(t, client.connect())
 
-	actualopcmetrics := make([]telegraf.Metric, 0, len(client.LastReceivedData))
+	actualopcmetrics := make([]Dana.Metric, 0, len(client.LastReceivedData))
 	for i := range client.LastReceivedData {
 		actualopcmetrics = append(actualopcmetrics, client.MetricForNode(i))
 	}

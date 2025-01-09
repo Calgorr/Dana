@@ -14,18 +14,18 @@ import (
 var sampleConfig string
 
 type Sensors struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (s *Sensors) Init() error {
 	s.Log.Warn("current platform is not supported")
 	return nil
 }
-func (*Sensors) SampleConfig() string                { return sampleConfig }
-func (*Sensors) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Sensors) SampleConfig() string            { return sampleConfig }
+func (*Sensors) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("sensors", func() telegraf.Input {
+	inputs.Add("sensors", func() Dana.Input {
 		return &Sensors{}
 	})
 }

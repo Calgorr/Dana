@@ -35,11 +35,11 @@ const (
 )
 
 type Libvirt struct {
-	LibvirtURI           string          `toml:"libvirt_uri"`
-	Domains              []string        `toml:"domains"`
-	StatisticsGroups     []string        `toml:"statistics_groups"`
-	AdditionalStatistics []string        `toml:"additional_statistics"`
-	Log                  telegraf.Logger `toml:"-"`
+	LibvirtURI           string      `toml:"libvirt_uri"`
+	Domains              []string    `toml:"domains"`
+	StatisticsGroups     []string    `toml:"statistics_groups"`
+	AdditionalStatistics []string    `toml:"additional_statistics"`
+	Log                  Dana.Logger `toml:"-"`
 
 	utils              utils
 	metricNumber       uint32
@@ -90,7 +90,7 @@ func (l *Libvirt) Init() error {
 	return nil
 }
 
-func (l *Libvirt) Gather(acc telegraf.Accumulator) error {
+func (l *Libvirt) Gather(acc Dana.Accumulator) error {
 	var err error
 	if err := l.utils.ensureConnected(l.LibvirtURI); err != nil {
 		return err
@@ -209,7 +209,7 @@ func (l *Libvirt) filterDomains(availableDomains []golibvirt.Domain) []golibvirt
 	return filteredDomains
 }
 
-func (l *Libvirt) gatherMetrics(domains []golibvirt.Domain, vcpuInfos map[string][]vcpuAffinity, acc telegraf.Accumulator) error {
+func (l *Libvirt) gatherMetrics(domains []golibvirt.Domain, vcpuInfos map[string][]vcpuAffinity, acc Dana.Accumulator) error {
 	stats, err := l.utils.gatherStatsForDomains(domains, l.metricNumber)
 	if err != nil {
 		return err
@@ -258,7 +258,7 @@ func (l *Libvirt) shouldGetCurrentPCPU() bool {
 }
 
 func init() {
-	inputs.Add(pluginName, func() telegraf.Input {
+	inputs.Add(pluginName, func() Dana.Input {
 		return &Libvirt{
 			utils: &utilsImpl{},
 		}

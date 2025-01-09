@@ -21,7 +21,7 @@ func TestPersistentVolumeClaim(t *testing.T) {
 	tests := []struct {
 		name     string
 		handler  *mockHandler
-		output   []telegraf.Metric
+		output   []Dana.Metric
 		hasError bool
 	}{
 		{
@@ -67,7 +67,7 @@ func TestPersistentVolumeClaim(t *testing.T) {
 					},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					"kubernetes_persistentvolumeclaim",
 					map[string]string{
@@ -116,7 +116,7 @@ func TestPersistentVolumeClaim(t *testing.T) {
 					},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					"kubernetes_persistentvolumeclaim",
 					map[string]string{
@@ -166,7 +166,7 @@ func TestPersistentVolumeClaim(t *testing.T) {
 					},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					"kubernetes_persistentvolumeclaim",
 					map[string]string{

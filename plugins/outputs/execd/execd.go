@@ -25,17 +25,17 @@ type Execd struct {
 	RestartDelay             config.Duration `toml:"restart_delay"`
 	IgnoreSerializationError bool            `toml:"ignore_serialization_error"`
 	UseBatchFormat           bool            `toml:"use_batch_format"`
-	Log                      telegraf.Logger
+	Log                      Dana.Logger
 
 	process    *process.Process
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 }
 
 func (*Execd) SampleConfig() string {
 	return sampleConfig
 }
 
-func (e *Execd) SetSerializer(s telegraf.Serializer) {
+func (e *Execd) SetSerializer(s Dana.Serializer) {
 	e.serializer = s
 }
 
@@ -78,7 +78,7 @@ func (e *Execd) Close() error {
 	return nil
 }
 
-func (e *Execd) Write(metrics []telegraf.Metric) error {
+func (e *Execd) Write(metrics []Dana.Metric) error {
 	if e.UseBatchFormat {
 		b, err := e.serializer.SerializeBatch(metrics)
 		if err != nil {
@@ -128,7 +128,7 @@ func (e *Execd) cmdReadOut(out io.Reader) {
 }
 
 func init() {
-	outputs.Add("execd", func() telegraf.Output {
+	outputs.Add("execd", func() Dana.Output {
 		return &Execd{}
 	})
 }

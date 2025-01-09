@@ -34,7 +34,7 @@ func (*Kapacitor) SampleConfig() string {
 	return sampleConfig
 }
 
-func (k *Kapacitor) Gather(acc telegraf.Accumulator) error {
+func (k *Kapacitor) Gather(acc Dana.Accumulator) error {
 	if k.client == nil {
 		client, err := k.createHTTPClient()
 		if err != nil {
@@ -133,7 +133,7 @@ type stats struct {
 //
 //	error: Any error that may have occurred
 func (k *Kapacitor) gatherURL(
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	url string,
 ) error {
 	now := time.Now()
@@ -231,7 +231,7 @@ func (k *Kapacitor) gatherURL(
 }
 
 func init() {
-	inputs.Add("kapacitor", func() telegraf.Input {
+	inputs.Add("kapacitor", func() Dana.Input {
 		return &Kapacitor{
 			URLs:    []string{defaultURL},
 			Timeout: config.Duration(time.Second * 5),

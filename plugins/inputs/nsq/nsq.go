@@ -57,7 +57,7 @@ func (*NSQ) SampleConfig() string {
 	return sampleConfig
 }
 
-func (n *NSQ) Gather(acc telegraf.Accumulator) error {
+func (n *NSQ) Gather(acc Dana.Accumulator) error {
 	var err error
 
 	if n.httpClient == nil {
@@ -95,7 +95,7 @@ func (n *NSQ) getHTTPClient() (*http.Client, error) {
 	return httpClient, nil
 }
 
-func (n *NSQ) gatherEndpoint(e string, acc telegraf.Accumulator) error {
+func (n *NSQ) gatherEndpoint(e string, acc Dana.Accumulator) error {
 	u, err := buildURL(e)
 	if err != nil {
 		return err
@@ -160,7 +160,7 @@ func buildURL(e string) (*url.URL, error) {
 	return addr, nil
 }
 
-func gatherTopicStats(t topicStats, acc telegraf.Accumulator, host, version string) {
+func gatherTopicStats(t topicStats, acc Dana.Accumulator, host, version string) {
 	// per topic overall (tag: name, paused, channel count)
 	tags := map[string]string{
 		"server_host":    host,
@@ -181,7 +181,7 @@ func gatherTopicStats(t topicStats, acc telegraf.Accumulator, host, version stri
 	}
 }
 
-func gatherChannelStats(c channelStats, acc telegraf.Accumulator, host, version, topic string) {
+func gatherChannelStats(c channelStats, acc Dana.Accumulator, host, version, topic string) {
 	tags := map[string]string{
 		"server_host":    host,
 		"server_version": version,
@@ -206,7 +206,7 @@ func gatherChannelStats(c channelStats, acc telegraf.Accumulator, host, version,
 	}
 }
 
-func gatherClientStats(c clientStats, acc telegraf.Accumulator, host, version, topic, channel string) {
+func gatherClientStats(c clientStats, acc Dana.Accumulator, host, version, topic, channel string) {
 	tags := map[string]string{
 		"server_host":       host,
 		"server_version":    version,
@@ -301,7 +301,7 @@ func newNSQ() *NSQ {
 }
 
 func init() {
-	inputs.Add("nsq", func() telegraf.Input {
+	inputs.Add("nsq", func() Dana.Input {
 		return newNSQ()
 	})
 }

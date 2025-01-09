@@ -12,7 +12,7 @@ import (
 	"Dana"
 )
 
-func (e *Execd) Gather(_ telegraf.Accumulator) error {
+func (e *Execd) Gather(_ Dana.Accumulator) error {
 	if e.process == nil || e.process.Cmd == nil {
 		return nil
 	}

@@ -46,7 +46,7 @@ func (m *MultiFile) Init() error {
 	return nil
 }
 
-func (m *MultiFile) Gather(acc telegraf.Accumulator) error {
+func (m *MultiFile) Gather(acc Dana.Accumulator) error {
 	now := time.Now()
 	fields := make(map[string]interface{})
 	tags := make(map[string]string)
@@ -108,7 +108,7 @@ func (m *MultiFile) Gather(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("multifile", func() telegraf.Input {
+	inputs.Add("multifile", func() Dana.Input {
 		return &MultiFile{
 			FailEarly: true,
 		}

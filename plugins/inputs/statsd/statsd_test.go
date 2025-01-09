@@ -507,13 +507,13 @@ func TestParse_Sets_SetsAsFloat(t *testing.T) {
 		require.NoError(t, testValidateSet(test.name, test.value, s.sets))
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"unique_user_ids",
 			map[string]string{"metric_type": "set"},
 			map[string]interface{}{"value": 2.0},
 			time.Now(),
-			telegraf.Untyped,
+			Dana.Untyped,
 		),
 	}
 
@@ -640,48 +640,48 @@ func TestParse_CountersAsFloat(t *testing.T) {
 		require.NoError(t, testValidateCounter(test.name, test.value, s.counters))
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"small_inc",
 			map[string]string{"metric_type": "counter"},
 			map[string]interface{}{"value": 2.0},
 			time.Now(),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		testutil.MustMetric(
 			"big_inc",
 			map[string]string{"metric_type": "counter"},
 			map[string]interface{}{"value": 1100101.0},
 			time.Now(),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		testutil.MustMetric(
 			"zero_init",
 			map[string]string{"metric_type": "counter"},
 			map[string]interface{}{"value": 0.0},
 			time.Now(),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		testutil.MustMetric(
 			"sample_rate",
 			map[string]string{"metric_type": "counter"},
 			map[string]interface{}{"value": 11.0},
 			time.Now(),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		testutil.MustMetric(
 			"scientific_notation",
 			map[string]string{"metric_type": "counter"},
 			map[string]interface{}{"value": 469600.0},
 			time.Now(),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		testutil.MustMetric(
 			"negative_test",
 			map[string]string{"metric_type": "counter"},
 			map[string]interface{}{"value": 95.0},
 			time.Now(),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 	}
 
@@ -1172,12 +1172,12 @@ func TestParse_DataDogTags(t *testing.T) {
 	tests := []struct {
 		name     string
 		line     string
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "counter",
 			line: "my_counter:1|c|#host:localhost,environment:prod,endpoint:/:tenant?/oauth/ro",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"my_counter",
 					map[string]string{
@@ -1190,14 +1190,14 @@ func TestParse_DataDogTags(t *testing.T) {
 						"value": 1,
 					},
 					time.Now(),
-					telegraf.Counter,
+					Dana.Counter,
 				),
 			},
 		},
 		{
 			name: "gauge",
 			line: "my_gauge:10.1|g|#live",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"my_gauge",
 					map[string]string{
@@ -1208,14 +1208,14 @@ func TestParse_DataDogTags(t *testing.T) {
 						"value": 10.1,
 					},
 					time.Now(),
-					telegraf.Gauge,
+					Dana.Gauge,
 				),
 			},
 		},
 		{
 			name: "set",
 			line: "my_set:1|s|#host:localhost",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"my_set",
 					map[string]string{
@@ -1232,7 +1232,7 @@ func TestParse_DataDogTags(t *testing.T) {
 		{
 			name: "timer",
 			line: "my_timer:3|ms|@0.1|#live,host:localhost",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"my_timer",
 					map[string]string{
@@ -1256,7 +1256,7 @@ func TestParse_DataDogTags(t *testing.T) {
 		{
 			name: "empty tag set",
 			line: "cpu:42|c|#",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -1266,7 +1266,7 @@ func TestParse_DataDogTags(t *testing.T) {
 						"value": 42,
 					},
 					time.Now(),
-					telegraf.Counter,
+					Dana.Counter,
 				),
 			},
 		},
@@ -1293,13 +1293,13 @@ func TestParse_DataDogContainerID(t *testing.T) {
 		name     string
 		line     string
 		keep     bool
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "counter",
 			line: "my_counter:1|c|#host:localhost,endpoint:/:tenant?/oauth/ro|c:f76b5a1c03caa192580874b253c158010ade668cf03080a57aa8283919d56e75",
 			keep: true,
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"my_counter",
 					map[string]string{
@@ -1312,7 +1312,7 @@ func TestParse_DataDogContainerID(t *testing.T) {
 						"value": 1,
 					},
 					time.Now(),
-					telegraf.Counter,
+					Dana.Counter,
 				),
 			},
 		},
@@ -1320,7 +1320,7 @@ func TestParse_DataDogContainerID(t *testing.T) {
 			name: "gauge",
 			line: "my_gauge:10.1|g|#live|c:f76b5a1c03caa192580874b253c158010ade668cf03080a57aa8283919d56e75",
 			keep: true,
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"my_gauge",
 					map[string]string{
@@ -1332,7 +1332,7 @@ func TestParse_DataDogContainerID(t *testing.T) {
 						"value": 10.1,
 					},
 					time.Now(),
-					telegraf.Gauge,
+					Dana.Gauge,
 				),
 			},
 		},
@@ -1340,7 +1340,7 @@ func TestParse_DataDogContainerID(t *testing.T) {
 			name: "set",
 			line: "my_set:1|s|#host:localhost|c:f76b5a1c03caa192580874b253c158010ade668cf03080a57aa8283919d56e75",
 			keep: true,
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"my_set",
 					map[string]string{
@@ -1359,7 +1359,7 @@ func TestParse_DataDogContainerID(t *testing.T) {
 			name: "timer",
 			line: "my_timer:3|ms|@0.1|#live,host:localhost|c:f76b5a1c03caa192580874b253c158010ade668cf03080a57aa8283919d56e75",
 			keep: true,
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"my_timer",
 					map[string]string{
@@ -1385,7 +1385,7 @@ func TestParse_DataDogContainerID(t *testing.T) {
 			name: "empty tag set",
 			line: "cpu:42|c|#|c:f76b5a1c03caa192580874b253c158010ade668cf03080a57aa8283919d56e75",
 			keep: true,
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -1396,7 +1396,7 @@ func TestParse_DataDogContainerID(t *testing.T) {
 						"value": 42,
 					},
 					time.Now(),
-					telegraf.Counter,
+					Dana.Counter,
 				),
 			},
 		},
@@ -1404,7 +1404,7 @@ func TestParse_DataDogContainerID(t *testing.T) {
 			name: "drop it",
 			line: "cpu:42|c|#live,host:localhost|c:f76b5a1c03caa192580874b253c158010ade668cf03080a57aa8283919d56e75",
 			keep: false,
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -1416,7 +1416,7 @@ func TestParse_DataDogContainerID(t *testing.T) {
 						"value": 42,
 					},
 					time.Now(),
-					telegraf.Counter,
+					Dana.Counter,
 				),
 			},
 		},
@@ -1533,7 +1533,7 @@ func TestCachesExpireAfterMaxTTL(t *testing.T) {
 	acc.Wait(3)
 
 	testutil.RequireMetricsEqual(t,
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			testutil.MustMetric(
 				"valid",
 				map[string]string{
@@ -1543,7 +1543,7 @@ func TestCachesExpireAfterMaxTTL(t *testing.T) {
 					"value": 90,
 				},
 				time.Now(),
-				telegraf.Counter,
+				Dana.Counter,
 			),
 			testutil.MustMetric(
 				"valid",
@@ -1554,7 +1554,7 @@ func TestCachesExpireAfterMaxTTL(t *testing.T) {
 					"value": 90,
 				},
 				time.Now(),
-				telegraf.Counter,
+				Dana.Counter,
 			),
 			testutil.MustMetric(
 				"valid",
@@ -1565,7 +1565,7 @@ func TestCachesExpireAfterMaxTTL(t *testing.T) {
 					"value": 45,
 				},
 				time.Now(),
-				telegraf.Counter,
+				Dana.Counter,
 			),
 		},
 		acc.GetTelegrafMetrics(),
@@ -2092,7 +2092,7 @@ func TestTCP(t *testing.T) {
 	}
 
 	testutil.RequireMetricsEqual(t,
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			testutil.MustMetric(
 				"cpu_time_idle",
 				map[string]string{
@@ -2102,7 +2102,7 @@ func TestTCP(t *testing.T) {
 					"value": 42,
 				},
 				time.Now(),
-				telegraf.Counter,
+				Dana.Counter,
 			),
 		},
 		acc.GetTelegrafMetrics(),
@@ -2137,7 +2137,7 @@ func TestUdp(t *testing.T) {
 	}
 
 	testutil.RequireMetricsEqual(t,
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			testutil.MustMetric(
 				"cpu_time_idle",
 				map[string]string{
@@ -2147,7 +2147,7 @@ func TestUdp(t *testing.T) {
 					"value": 42,
 				},
 				time.Now(),
-				telegraf.Counter,
+				Dana.Counter,
 			),
 		},
 		acc.GetTelegrafMetrics(),
@@ -2320,7 +2320,7 @@ func TestParse_InvalidAndRecoverIntegration(t *testing.T) {
 	require.NoError(t, statsd.Gather(acc))
 	acc.Wait(1)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu_time_idle",
 			map[string]string{
@@ -2330,7 +2330,7 @@ func TestParse_InvalidAndRecoverIntegration(t *testing.T) {
 				"value": 42,
 			},
 			time.Now(),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 	}
 	testutil.RequireMetricsEqual(t, expected, acc.GetTelegrafMetrics(), testutil.IgnoreTime())
@@ -2369,7 +2369,7 @@ func TestParse_DeltaCounter(t *testing.T) {
 		return acc.NMetrics() >= 1
 	}, time.Second, 100*time.Millisecond, "Expected 1 metric found %d", acc.NMetrics())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu_time_idle",
 			map[string]string{
@@ -2380,7 +2380,7 @@ func TestParse_DeltaCounter(t *testing.T) {
 				"value": 42,
 			},
 			time.Now(),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 	}
 	got := acc.GetTelegrafMetrics()

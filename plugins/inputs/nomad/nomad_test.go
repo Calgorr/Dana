@@ -16,11 +16,11 @@ import (
 func TestNomadStats(t *testing.T) {
 	var applyTests = []struct {
 		name     string
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "Metrics",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"nomad.nomad.rpc.query",
 					map[string]string{

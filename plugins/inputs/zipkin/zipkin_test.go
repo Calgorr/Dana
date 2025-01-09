@@ -42,7 +42,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": (time.Duration(53106) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851331000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -60,7 +60,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": (time.Duration(53106) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851331000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -75,7 +75,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": (time.Duration(50410) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360904552000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -93,7 +93,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": (time.Duration(50410) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360904552000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -108,7 +108,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": (time.Duration(103680) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851318000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -125,7 +125,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": (time.Duration(103680) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851318000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -142,7 +142,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": (time.Duration(103680) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851318000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -159,7 +159,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": (time.Duration(103680) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851318000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -177,7 +177,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": (time.Duration(103680) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851318000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 			},
 			wantErr: false,
@@ -200,7 +200,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": (time.Duration(1) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1433330263415871*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -217,7 +217,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": (time.Duration(1) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1433330263415871*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -234,7 +234,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": (time.Duration(1) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1433330263415871*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 			},
 		},
@@ -256,7 +256,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(3000000),
 					},
 					Time: time.Unix(0, 1503031538791000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -273,7 +273,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(3000000),
 					},
 					Time: time.Unix(0, 1503031538791000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -290,7 +290,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(3000000),
 					},
 					Time: time.Unix(0, 1503031538791000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -308,7 +308,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(3000000),
 					},
 					Time: time.Unix(0, 1503031538791000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -326,7 +326,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(3000000),
 					},
 					Time: time.Unix(0, 1503031538791000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -344,7 +344,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(3000000),
 					},
 					Time: time.Unix(0, 1503031538791000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -359,7 +359,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(10000000),
 					},
 					Time: time.Unix(0, 1503031538786000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -376,7 +376,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(10000000),
 					},
 					Time: time.Unix(0, 1503031538786000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -393,7 +393,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(10000000),
 					},
 					Time: time.Unix(0, 1503031538786000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -411,7 +411,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(10000000),
 					},
 					Time: time.Unix(0, 1503031538786000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -429,7 +429,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(10000000),
 					},
 					Time: time.Unix(0, 1503031538786000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -447,7 +447,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(10000000),
 					},
 					Time: time.Unix(0, 1503031538786000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -465,7 +465,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(10000000),
 					},
 					Time: time.Unix(0, 1503031538786000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -483,7 +483,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(10000000),
 					},
 					Time: time.Unix(0, 1503031538786000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -498,7 +498,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(23393000),
 					},
 					Time: time.Unix(0, 1503031538778000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -515,7 +515,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(23393000),
 					},
 					Time: time.Unix(0, 1503031538778000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -532,7 +532,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(23393000),
 					},
 					Time: time.Unix(0, 1503031538778000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -550,7 +550,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(23393000),
 					},
 					Time: time.Unix(0, 1503031538778000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -568,7 +568,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(23393000),
 					},
 					Time: time.Unix(0, 1503031538778000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -586,7 +586,7 @@ func TestZipkinPlugin(t *testing.T) {
 						"duration_ns": int64(23393000),
 					},
 					Time: time.Unix(0, 1503031538778000*int64(time.Microsecond)).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 			},
 		},

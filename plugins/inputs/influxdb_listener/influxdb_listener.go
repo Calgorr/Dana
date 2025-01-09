@@ -55,7 +55,7 @@ type InfluxDBListener struct {
 	listener net.Listener
 	server   http.Server
 
-	acc telegraf.Accumulator
+	acc Dana.Accumulator
 
 	bytesRecv       selfstat.Stat
 	requestsServed  selfstat.Stat
@@ -67,7 +67,7 @@ type InfluxDBListener struct {
 	buffersCreated  selfstat.Stat
 	authFailures    selfstat.Stat
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	mux http.ServeMux
 }
@@ -76,7 +76,7 @@ func (*InfluxDBListener) SampleConfig() string {
 	return sampleConfig
 }
 
-func (*InfluxDBListener) Gather(telegraf.Accumulator) error {
+func (*InfluxDBListener) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -117,7 +117,7 @@ func (h *InfluxDBListener) Init() error {
 	return nil
 }
 
-func (h *InfluxDBListener) Start(acc telegraf.Accumulator) error {
+func (h *InfluxDBListener) Start(acc Dana.Accumulator) error {
 	h.acc = acc
 
 	tlsConf, err := h.ServerConfig.TLSConfig()
@@ -288,7 +288,7 @@ func (h *InfluxDBListener) handleWriteInternalParser(res http.ResponseWriter, re
 		parser.SetTimePrecision(precision)
 	}
 
-	var m telegraf.Metric
+	var m Dana.Metric
 	var err error
 	var parseErrorCount int
 	var lastPos int
@@ -408,7 +408,7 @@ func (h *InfluxDBListener) handleWriteUpstreamParser(res http.ResponseWriter, re
 		h.bytesRecv.Incr(req.ContentLength)
 	}
 
-	var m telegraf.Metric
+	var m Dana.Metric
 	var err error
 	var parseErrorCount int
 	var firstParseErrorStr string
@@ -528,13 +528,13 @@ func getPrecisionMultiplier(precision string) time.Duration {
 
 func init() {
 	// http_listener deprecated in 1.9
-	inputs.Add("http_listener", func() telegraf.Input {
+	inputs.Add("http_listener", func() Dana.Input {
 		return &InfluxDBListener{
 			ServiceAddress: ":8186",
 			timeFunc:       time.Now,
 		}
 	})
-	inputs.Add("influxdb_listener", func() telegraf.Input {
+	inputs.Add("influxdb_listener", func() Dana.Input {
 		return &InfluxDBListener{
 			ServiceAddress: ":8186",
 			timeFunc:       time.Now,

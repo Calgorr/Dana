@@ -30,9 +30,9 @@ type Conversion struct {
 }
 
 type Converter struct {
-	Tags   *Conversion     `toml:"tags"`
-	Fields *Conversion     `toml:"fields"`
-	Log    telegraf.Logger `toml:"-"`
+	Tags   *Conversion `toml:"tags"`
+	Fields *Conversion `toml:"fields"`
+	Log    Dana.Logger `toml:"-"`
 
 	tagConversions   *ConversionFilter
 	fieldConversions *ConversionFilter
@@ -57,7 +57,7 @@ func (p *Converter) Init() error {
 	return p.compile()
 }
 
-func (p *Converter) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
+func (p *Converter) Apply(metrics ...Dana.Metric) []Dana.Metric {
 	for _, metric := range metrics {
 		p.convertTags(metric)
 		p.convertFields(metric)
@@ -136,7 +136,7 @@ func compileFilter(conv *Conversion) (*ConversionFilter, error) {
 }
 
 // convertTags converts tags into measurements or fields.
-func (p *Converter) convertTags(metric telegraf.Metric) {
+func (p *Converter) convertTags(metric Dana.Metric) {
 	if p.tagConversions == nil {
 		return
 	}
@@ -186,7 +186,7 @@ func (p *Converter) convertTags(metric telegraf.Metric) {
 }
 
 // convertFields converts fields into measurements, tags, or other field types.
-func (p *Converter) convertFields(metric telegraf.Metric) {
+func (p *Converter) convertFields(metric Dana.Metric) {
 	if p.fieldConversions == nil {
 		return
 	}
@@ -346,7 +346,7 @@ func toFloat(v interface{}) (float64, error) {
 }
 
 func init() {
-	processors.Add("converter", func() telegraf.Processor {
+	processors.Add("converter", func() Dana.Processor {
 		return &Converter{}
 	})
 }

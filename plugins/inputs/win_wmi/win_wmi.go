@@ -18,12 +18,12 @@ var sampleConfig string
 
 // Wmi struct
 type Wmi struct {
-	Host     string          `toml:"host"`
-	Username config.Secret   `toml:"username"`
-	Password config.Secret   `toml:"password"`
-	Queries  []Query         `toml:"query"`
-	Methods  []Method        `toml:"method"`
-	Log      telegraf.Logger `toml:"-"`
+	Host     string        `toml:"host"`
+	Username config.Secret `toml:"username"`
+	Password config.Secret `toml:"password"`
+	Queries  []Query       `toml:"query"`
+	Methods  []Method      `toml:"method"`
+	Log      Dana.Logger   `toml:"-"`
 }
 
 // S_FALSE is returned by CoInitializeEx if it was already called on this thread.
@@ -54,7 +54,7 @@ func (*Wmi) SampleConfig() string {
 }
 
 // Gather function
-func (w *Wmi) Gather(acc telegraf.Accumulator) error {
+func (w *Wmi) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	for _, query := range w.Queries {
 		wg.Add(1)
@@ -78,5 +78,5 @@ func (w *Wmi) Gather(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("win_wmi", func() telegraf.Input { return &Wmi{} })
+	inputs.Add("win_wmi", func() Dana.Input { return &Wmi{} })
 }

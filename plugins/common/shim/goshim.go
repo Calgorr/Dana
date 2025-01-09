@@ -35,11 +35,11 @@ const (
 // Shim allows you to wrap your inputs and run them as if they were part of Telegraf,
 // except built externally.
 type Shim struct {
-	Input     telegraf.Input
-	Processor telegraf.StreamingProcessor
-	Output    telegraf.Output
+	Input     Dana.Input
+	Processor Dana.StreamingProcessor
+	Output    Dana.Output
 
-	log telegraf.Logger
+	log Dana.Logger
 
 	// streams
 	stdin  io.Reader
@@ -47,7 +47,7 @@ type Shim struct {
 	stderr io.Writer
 
 	// outgoing metric channel
-	metricCh chan telegraf.Metric
+	metricCh chan Dana.Metric
 
 	// input only
 	gatherPromptCh chan empty
@@ -56,7 +56,7 @@ type Shim struct {
 // New creates a new shim interface
 func New() *Shim {
 	return &Shim{
-		metricCh: make(chan telegraf.Metric, 1),
+		metricCh: make(chan Dana.Metric, 1),
 		stdin:    os.Stdin,
 		stdout:   os.Stdout,
 		stderr:   os.Stderr,
@@ -135,11 +135,11 @@ func (s *Shim) LogName() string {
 }
 
 // MakeMetric satisfies the MetricMaker interface
-func (s *Shim) MakeMetric(m telegraf.Metric) telegraf.Metric {
+func (s *Shim) MakeMetric(m Dana.Metric) Dana.Metric {
 	return m // don't need to do anything to it.
 }
 
 // Log satisfies the MetricMaker interface
-func (s *Shim) Log() telegraf.Logger {
+func (s *Shim) Log() Dana.Logger {
 	return s.log
 }

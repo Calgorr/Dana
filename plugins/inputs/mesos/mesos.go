@@ -43,7 +43,7 @@ type Mesos struct {
 	SlaveCols  []string `toml:"slave_collections"`
 	tls.ClientConfig
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	initialized bool
 	client      *http.Client
@@ -55,7 +55,7 @@ func (*Mesos) SampleConfig() string {
 	return sampleConfig
 }
 
-func (m *Mesos) Gather(acc telegraf.Accumulator) error {
+func (m *Mesos) Gather(acc Dana.Accumulator) error {
 	if !m.initialized {
 		err := m.initialize()
 		if err != nil {
@@ -489,7 +489,7 @@ func urlTag(u *url.URL) string {
 }
 
 // This should not belong to the object
-func (m *Mesos) gatherMainMetrics(u *url.URL, role role, acc telegraf.Accumulator) error {
+func (m *Mesos) gatherMainMetrics(u *url.URL, role role, acc Dana.Accumulator) error {
 	var jsonOut map[string]interface{}
 
 	tags := map[string]string{
@@ -538,7 +538,7 @@ func (m *Mesos) gatherMainMetrics(u *url.URL, role role, acc telegraf.Accumulato
 }
 
 func init() {
-	inputs.Add("mesos", func() telegraf.Input {
+	inputs.Add("mesos", func() Dana.Input {
 		return &Mesos{}
 	})
 }

@@ -18,9 +18,9 @@ type Parser struct {
 	DefaultTags map[string]string
 }
 
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 	var err error
-	var metrics []telegraf.Metric
+	var metrics []Dana.Metric
 	var req prompb.WriteRequest
 
 	if err := req.Unmarshal(buf); err != nil {
@@ -103,7 +103,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 	return metrics, err
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line))
 	if err != nil {
 		return nil, err
@@ -126,7 +126,7 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 
 func init() {
 	parsers.Add("prometheusremotewrite",
-		func(string) telegraf.Parser {
+		func(string) Dana.Parser {
 			return &Parser{}
 		})
 }

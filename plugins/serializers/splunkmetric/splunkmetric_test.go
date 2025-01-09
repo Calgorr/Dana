@@ -165,7 +165,7 @@ func TestSerializeBatch(t *testing.T) {
 		time.Unix(0, 0),
 	)
 
-	metrics := []telegraf.Metric{m, n}
+	metrics := []Dana.Metric{m, n}
 	s := &Serializer{}
 	buf, err := s.SerializeBatch(metrics)
 	require.NoError(t, err)
@@ -185,7 +185,7 @@ func TestSerializeMulti(t *testing.T) {
 		time.Unix(0, 0),
 	)
 
-	metrics := []telegraf.Metric{m}
+	metrics := []Dana.Metric{m}
 	s := &Serializer{MultiMetric: true}
 	buf, err := s.SerializeBatch(metrics)
 	require.NoError(t, err)
@@ -211,7 +211,7 @@ func TestSerializeBatchHec(t *testing.T) {
 		},
 		time.Unix(0, 0),
 	)
-	metrics := []telegraf.Metric{m, n}
+	metrics := []Dana.Metric{m, n}
 	s := &Serializer{HecRouting: true}
 	buf, err := s.SerializeBatch(metrics)
 	require.NoError(t, err)
@@ -232,7 +232,7 @@ func TestSerializeMultiHec(t *testing.T) {
 		time.Unix(0, 0),
 	)
 
-	metrics := []telegraf.Metric{m}
+	metrics := []Dana.Metric{m}
 	s := &Serializer{
 		HecRouting:  true,
 		MultiMetric: true,
@@ -255,7 +255,7 @@ func TestSerializeOmitEvent(t *testing.T) {
 		time.Unix(0, 0),
 	)
 
-	metrics := []telegraf.Metric{m}
+	metrics := []Dana.Metric{m}
 	s := &Serializer{
 		HecRouting:   true,
 		MultiMetric:  true,

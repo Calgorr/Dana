@@ -95,11 +95,11 @@ func TestAuthenticatedUrl(t *testing.T) {
 
 func TestBuildTags(t *testing.T) {
 	var tagtests = []struct {
-		ptIn    []*telegraf.Tag
+		ptIn    []*Dana.Tag
 		outTags []string
 	}{
 		{
-			ptIn: []*telegraf.Tag{
+			ptIn: []*Dana.Tag{
 				{
 					Key:   "one",
 					Value: "two",
@@ -112,7 +112,7 @@ func TestBuildTags(t *testing.T) {
 			outTags: []string{"one:two", "three:four"},
 		},
 		{
-			ptIn: []*telegraf.Tag{
+			ptIn: []*Dana.Tag{
 				{
 					Key:   "aaa",
 					Value: "bbb",
@@ -121,7 +121,7 @@ func TestBuildTags(t *testing.T) {
 			outTags: []string{"aaa:bbb"},
 		},
 		{
-			ptIn:    make([]*telegraf.Tag, 0),
+			ptIn:    make([]*Dana.Tag, 0),
 			outTags: make([]string, 0),
 		},
 	}
@@ -135,7 +135,7 @@ func TestBuildTags(t *testing.T) {
 
 func TestBuildPoint(t *testing.T) {
 	var tagtests = []struct {
-		ptIn  telegraf.Metric
+		ptIn  Dana.Metric
 		outPt Point
 		err   error
 	}{
@@ -245,7 +245,7 @@ func TestBuildPoint(t *testing.T) {
 
 func TestVerifyValue(t *testing.T) {
 	var tagtests = []struct {
-		ptIn        telegraf.Metric
+		ptIn        Dana.Metric
 		validMetric bool
 	}{
 		{
@@ -274,7 +274,7 @@ func TestNaNIsSkipped(t *testing.T) {
 	err := plugin.Connect()
 	require.NoError(t, err)
 
-	err = plugin.Write([]telegraf.Metric{
+	err = plugin.Write([]Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},
@@ -295,7 +295,7 @@ func TestInfIsSkipped(t *testing.T) {
 	err := plugin.Connect()
 	require.NoError(t, err)
 
-	err = plugin.Write([]telegraf.Metric{
+	err = plugin.Write([]Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},
@@ -315,12 +315,12 @@ func TestNonZeroRateIntervalConvertsRatesToCount(t *testing.T) {
 
 	var tests = []struct {
 		name       string
-		metricsIn  []telegraf.Metric
+		metricsIn  []Dana.Metric
 		metricsOut []*Metric
 	}{
 		{
 			"convert counter metrics to rate",
-			[]telegraf.Metric{
+			[]Dana.Metric{
 				testutil.MustMetric(
 					"count_metric",
 					map[string]string{
@@ -330,7 +330,7 @@ func TestNonZeroRateIntervalConvertsRatesToCount(t *testing.T) {
 						"value": 100,
 					},
 					time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC),
-					telegraf.Counter,
+					Dana.Counter,
 				),
 			},
 			[]*Metric{
@@ -352,7 +352,7 @@ func TestNonZeroRateIntervalConvertsRatesToCount(t *testing.T) {
 		},
 		{
 			"convert count value in timing metrics to rate",
-			[]telegraf.Metric{
+			[]Dana.Metric{
 				testutil.MustMetric(
 					"timing_metric",
 					map[string]string{
@@ -368,7 +368,7 @@ func TestNonZeroRateIntervalConvertsRatesToCount(t *testing.T) {
 						"upper":  float64(10),
 					},
 					time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC),
-					telegraf.Untyped,
+					Dana.Untyped,
 				),
 			},
 			[]*Metric{
@@ -474,7 +474,7 @@ func TestNonZeroRateIntervalConvertsRatesToCount(t *testing.T) {
 		},
 		{
 			"convert count value in histogram metrics to rate",
-			[]telegraf.Metric{
+			[]Dana.Metric{
 				testutil.MustMetric(
 					"histogram_metric",
 					map[string]string{
@@ -490,7 +490,7 @@ func TestNonZeroRateIntervalConvertsRatesToCount(t *testing.T) {
 						"upper":  float64(10),
 					},
 					time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC),
-					telegraf.Untyped,
+					Dana.Untyped,
 				),
 			},
 			[]*Metric{
@@ -611,12 +611,12 @@ func TestZeroRateIntervalConvertsRatesToCount(t *testing.T) {
 
 	var tests = []struct {
 		name       string
-		metricsIn  []telegraf.Metric
+		metricsIn  []Dana.Metric
 		metricsOut []*Metric
 	}{
 		{
 			"does not convert counter metrics to rate",
-			[]telegraf.Metric{
+			[]Dana.Metric{
 				testutil.MustMetric(
 					"count_metric",
 					map[string]string{
@@ -626,7 +626,7 @@ func TestZeroRateIntervalConvertsRatesToCount(t *testing.T) {
 						"value": 100,
 					},
 					time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC),
-					telegraf.Counter,
+					Dana.Counter,
 				),
 			},
 			[]*Metric{
@@ -648,7 +648,7 @@ func TestZeroRateIntervalConvertsRatesToCount(t *testing.T) {
 		},
 		{
 			"does not convert count value in timing metrics to rate",
-			[]telegraf.Metric{
+			[]Dana.Metric{
 				testutil.MustMetric(
 					"timing_metric",
 					map[string]string{
@@ -664,7 +664,7 @@ func TestZeroRateIntervalConvertsRatesToCount(t *testing.T) {
 						"upper":  float64(10),
 					},
 					time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC),
-					telegraf.Untyped,
+					Dana.Untyped,
 				),
 			},
 			[]*Metric{
@@ -770,7 +770,7 @@ func TestZeroRateIntervalConvertsRatesToCount(t *testing.T) {
 		},
 		{
 			"does not convert count value in histogram metrics to rate",
-			[]telegraf.Metric{
+			[]Dana.Metric{
 				testutil.MustMetric(
 					"histogram_metric",
 					map[string]string{
@@ -786,7 +786,7 @@ func TestZeroRateIntervalConvertsRatesToCount(t *testing.T) {
 						"upper":  float64(10),
 					},
 					time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC),
-					telegraf.Untyped,
+					Dana.Untyped,
 				),
 			},
 			[]*Metric{

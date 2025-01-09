@@ -55,7 +55,7 @@ func (*Fluentd) SampleConfig() string {
 	return sampleConfig
 }
 
-func (h *Fluentd) Gather(acc telegraf.Accumulator) error {
+func (h *Fluentd) Gather(acc Dana.Accumulator) error {
 	_, err := url.Parse(h.Endpoint)
 	if err != nil {
 		return fmt.Errorf("invalid URL %q", h.Endpoint)
@@ -219,5 +219,5 @@ func parse(data []byte) (datapointArray []pluginData, err error) {
 }
 
 func init() {
-	inputs.Add("fluentd", func() telegraf.Input { return &Fluentd{} })
+	inputs.Add("fluentd", func() Dana.Input { return &Fluentd{} })
 }

@@ -112,6 +112,6 @@ func BenchmarkUnordered(b *testing.B) {
 	p.Stop()
 }
 
-func jobFunc(m telegraf.Metric) []telegraf.Metric {
-	return []telegraf.Metric{m}
+func jobFunc(m Dana.Metric) []Dana.Metric {
+	return []Dana.Metric{m}
 }

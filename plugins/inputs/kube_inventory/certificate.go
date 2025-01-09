@@ -12,7 +12,7 @@ import (
 	"Dana"
 )
 
-func collectSecrets(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory) {
+func collectSecrets(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory) {
 	list, err := ki.client.getTLSSecrets(ctx)
 	if err != nil {
 		acc.AddError(err)
@@ -59,7 +59,7 @@ func getTags(cert *x509.Certificate) map[string]string {
 	return tags
 }
 
-func gatherCertificates(r corev1.Secret, acc telegraf.Accumulator) {
+func gatherCertificates(r corev1.Secret, acc Dana.Accumulator) {
 	now := time.Now()
 
 	for resourceName, val := range r.Data {

@@ -24,22 +24,22 @@ func TestRunningProcessorInit(t *testing.T) {
 
 func TestRunningProcessorApply(t *testing.T) {
 	type args struct {
-		Processor telegraf.StreamingProcessor
+		Processor Dana.StreamingProcessor
 		Config    *models.ProcessorConfig
 	}
 
 	tests := []struct {
 		name     string
 		args     args
-		input    []telegraf.Metric
-		expected []telegraf.Metric
+		input    []Dana.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "inactive filter applies metrics",
 			args: args{
 				Processor: processors.NewStreamingProcessorFromProcessor(
 					&mockProcessor{
-						applyF: func(in ...telegraf.Metric) []telegraf.Metric {
+						applyF: func(in ...Dana.Metric) []Dana.Metric {
 							for _, m := range in {
 								m.AddTag("apply", "true")
 							}
@@ -51,7 +51,7 @@ func TestRunningProcessorApply(t *testing.T) {
 					Filter: models.Filter{},
 				},
 			},
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -61,7 +61,7 @@ func TestRunningProcessorApply(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -79,7 +79,7 @@ func TestRunningProcessorApply(t *testing.T) {
 			args: args{
 				Processor: processors.NewStreamingProcessorFromProcessor(
 					&mockProcessor{
-						applyF: func(in ...telegraf.Metric) []telegraf.Metric {
+						applyF: func(in ...Dana.Metric) []Dana.Metric {
 							for _, m := range in {
 								m.AddTag("apply", "true")
 							}
@@ -93,7 +93,7 @@ func TestRunningProcessorApply(t *testing.T) {
 					},
 				},
 			},
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -103,7 +103,7 @@ func TestRunningProcessorApply(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -121,7 +121,7 @@ func TestRunningProcessorApply(t *testing.T) {
 			args: args{
 				Processor: processors.NewStreamingProcessorFromProcessor(
 					&mockProcessor{
-						applyF: func(in ...telegraf.Metric) []telegraf.Metric {
+						applyF: func(in ...Dana.Metric) []Dana.Metric {
 							for _, m := range in {
 								m.AddTag("apply", "true")
 							}
@@ -135,7 +135,7 @@ func TestRunningProcessorApply(t *testing.T) {
 					},
 				},
 			},
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -145,7 +145,7 @@ func TestRunningProcessorApply(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -208,7 +208,7 @@ func TestRunningProcessorOrder(t *testing.T) {
 
 // mockProcessor is a processor with an overridable apply implementation.
 type mockProcessor struct {
-	applyF      func(in ...telegraf.Metric) []telegraf.Metric
+	applyF      func(in ...Dana.Metric) []Dana.Metric
 	hasBeenInit bool
 }
 
@@ -221,6 +221,6 @@ func (p *mockProcessor) Init() error {
 	return nil
 }
 
-func (p *mockProcessor) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (p *mockProcessor) Apply(in ...Dana.Metric) []Dana.Metric {
 	return p.applyF(in...)
 }

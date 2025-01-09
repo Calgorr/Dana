@@ -39,7 +39,7 @@ type BigQuery struct {
 	ReplaceHyphenTo string          `toml:"replace_hyphen_to"`
 	CompactTable    string          `toml:"compact_table"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	client *bigquery.Client
 
@@ -113,7 +113,7 @@ func (s *BigQuery) setUpDefaultClient() error {
 }
 
 // Write the metrics to Google Cloud BigQuery.
-func (s *BigQuery) Write(metrics []telegraf.Metric) error {
+func (s *BigQuery) Write(metrics []Dana.Metric) error {
 	if s.CompactTable != "" {
 		return s.writeCompact(metrics)
 	}
@@ -135,7 +135,7 @@ func (s *BigQuery) Write(metrics []telegraf.Metric) error {
 	return nil
 }
 
-func (s *BigQuery) writeCompact(metrics []telegraf.Metric) error {
+func (s *BigQuery) writeCompact(metrics []Dana.Metric) error {
 	ctx := context.Background()
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(s.Timeout))
 	defer cancel()
@@ -155,7 +155,7 @@ func (s *BigQuery) writeCompact(metrics []telegraf.Metric) error {
 	return inserter.Put(ctx, compactValues)
 }
 
-func (s *BigQuery) groupByMetricName(metrics []telegraf.Metric) map[string][]bigquery.ValueSaver {
+func (s *BigQuery) groupByMetricName(metrics []Dana.Metric) map[string][]bigquery.ValueSaver {
 	groupedMetrics := make(map[string][]bigquery.ValueSaver)
 
 	for _, m := range metrics {
@@ -166,7 +166,7 @@ func (s *BigQuery) groupByMetricName(metrics []telegraf.Metric) map[string][]big
 	return groupedMetrics
 }
 
-func newValuesSaver(m telegraf.Metric) *bigquery.ValuesSaver {
+func newValuesSaver(m Dana.Metric) *bigquery.ValuesSaver {
 	s := make(bigquery.Schema, 0)
 	r := make([]bigquery.Value, 0)
 	timeSchema := timeStampFieldSchema()
@@ -182,7 +182,7 @@ func newValuesSaver(m telegraf.Metric) *bigquery.ValuesSaver {
 	}
 }
 
-func (s *BigQuery) newCompactValuesSaver(m telegraf.Metric) (*bigquery.ValuesSaver, error) {
+func (s *BigQuery) newCompactValuesSaver(m Dana.Metric) (*bigquery.ValuesSaver, error) {
 	tags, err := json.Marshal(m.Tags())
 	if err != nil {
 		return nil, fmt.Errorf("serializing tags: %w", err)
@@ -241,7 +241,7 @@ func newJSONFieldSchema(name string) *bigquery.FieldSchema {
 	}
 }
 
-func tagsSchemaAndValues(m telegraf.Metric, s bigquery.Schema, r []bigquery.Value) ([]*bigquery.FieldSchema, []bigquery.Value) {
+func tagsSchemaAndValues(m Dana.Metric, s bigquery.Schema, r []bigquery.Value) ([]*bigquery.FieldSchema, []bigquery.Value) {
 	for _, t := range m.TagList() {
 		s = append(s, newStringFieldSchema(t.Key))
 		r = append(r, t.Value)
@@ -250,7 +250,7 @@ func tagsSchemaAndValues(m telegraf.Metric, s bigquery.Schema, r []bigquery.Valu
 	return s, r
 }
 
-func valuesSchemaAndValues(m telegraf.Metric, s bigquery.Schema, r []bigquery.Value) ([]*bigquery.FieldSchema, []bigquery.Value) {
+func valuesSchemaAndValues(m Dana.Metric, s bigquery.Schema, r []bigquery.Value) ([]*bigquery.FieldSchema, []bigquery.Value) {
 	for _, f := range m.FieldList() {
 		s = append(s, valuesSchema(f))
 		r = append(r, f.Value)
@@ -259,7 +259,7 @@ func valuesSchemaAndValues(m telegraf.Metric, s bigquery.Schema, r []bigquery.Va
 	return s, r
 }
 
-func valuesSchema(f *telegraf.Field) *bigquery.FieldSchema {
+func valuesSchema(f *Dana.Field) *bigquery.FieldSchema {
 	return &bigquery.FieldSchema{
 		Name: f.Key,
 		Type: valueToBqType(f.Value),
@@ -314,7 +314,7 @@ func (s *BigQuery) Close() error {
 }
 
 func init() {
-	outputs.Add("bigquery", func() telegraf.Output {
+	outputs.Add("bigquery", func() Dana.Output {
 		return &BigQuery{
 			Timeout:         defaultTimeout,
 			ReplaceHyphenTo: "_",

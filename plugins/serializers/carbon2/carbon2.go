@@ -15,9 +15,9 @@ import (
 const sanitizedChars = "!@#$%^&*()+`'\"[]{};<>,?/\\|="
 
 type Serializer struct {
-	Format              string          `toml:"carbon2_format"`
-	SanitizeReplaceChar string          `toml:"carbon2_sanitize_replace_char"`
-	Log                 telegraf.Logger `toml:"-"`
+	Format              string      `toml:"carbon2_format"`
+	SanitizeReplaceChar string      `toml:"carbon2_sanitize_replace_char"`
+	Log                 Dana.Logger `toml:"-"`
 
 	sanitizeReplacer *strings.Replacer
 	template         string
@@ -52,11 +52,11 @@ func (s *Serializer) Init() error {
 	return nil
 }
 
-func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
+func (s *Serializer) Serialize(metric Dana.Metric) ([]byte, error) {
 	return s.createObject(metric), nil
 }
 
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	var batch bytes.Buffer
 	for _, metric := range metrics {
 		batch.Write(s.createObject(metric))
@@ -64,7 +64,7 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
 	return batch.Bytes(), nil
 }
 
-func (s *Serializer) createObject(metric telegraf.Metric) []byte {
+func (s *Serializer) createObject(metric Dana.Metric) []byte {
 	var m bytes.Buffer
 
 	for fieldName, fieldValue := range metric.Fields() {
@@ -112,7 +112,7 @@ func (s *Serializer) createObject(metric telegraf.Metric) []byte {
 
 func init() {
 	serializers.Add("carbon2",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

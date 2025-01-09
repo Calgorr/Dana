@@ -30,7 +30,7 @@ func TestBasic(t *testing.T) {
 func TestNewRelic_Write(t *testing.T) {
 	tests := []struct {
 		name         string
-		metrics      []telegraf.Metric
+		metrics      []Dana.Metric
 		auditMessage string
 		wantErr      bool
 	}{
@@ -42,7 +42,7 @@ func TestNewRelic_Write(t *testing.T) {
 		},
 		{
 			name: "Test: Test string ",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.TestMetric("value1", "test_String"),
 			},
 			wantErr:      false,
@@ -50,7 +50,7 @@ func TestNewRelic_Write(t *testing.T) {
 		},
 		{
 			name: "Test: Test int64 ",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.TestMetric(int64(15), "test_int64"),
 			},
 			wantErr:      false,
@@ -58,7 +58,7 @@ func TestNewRelic_Write(t *testing.T) {
 		},
 		{
 			name: "Test: Test  uint64 ",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.TestMetric(uint64(20), "test_uint64"),
 			},
 			wantErr:      false,
@@ -66,7 +66,7 @@ func TestNewRelic_Write(t *testing.T) {
 		},
 		{
 			name: "Test: Test bool true ",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.TestMetric(bool(true), "test_bool_true"),
 			},
 			wantErr:      false,
@@ -74,7 +74,7 @@ func TestNewRelic_Write(t *testing.T) {
 		},
 		{
 			name: "Test: Test bool false ",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.TestMetric(bool(false), "test_bool_false"),
 			},
 			wantErr:      false,
@@ -82,7 +82,7 @@ func TestNewRelic_Write(t *testing.T) {
 		},
 		{
 			name: "Test: Test max float64 ",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.TestMetric(math.MaxFloat64, "test_maxfloat64"),
 			},
 			wantErr: false,
@@ -91,7 +91,7 @@ func TestNewRelic_Write(t *testing.T) {
 		},
 		{
 			name: "Test: Test NAN ",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.TestMetric(math.NaN, "test_NaN"),
 			},
 			wantErr:      false,

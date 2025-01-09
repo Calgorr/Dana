@@ -56,7 +56,7 @@ func Test(t *testing.T) {
 	tests := []struct {
 		name     string
 		client   *mockClient
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "no containers",
@@ -89,7 +89,7 @@ func Test(t *testing.T) {
 					return &response{Reader: bytes.NewBufferString("2020-04-28T18:43:16.432691200Z hello\n")}, nil
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{
@@ -133,7 +133,7 @@ func Test(t *testing.T) {
 					return &response{Reader: &buf}, err
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"docker_log",
 					map[string]string{

@@ -22,7 +22,7 @@ func (*NetStat) SampleConfig() string {
 	return sampleConfig
 }
 
-func (ns *NetStat) Gather(acc telegraf.Accumulator) error {
+func (ns *NetStat) Gather(acc Dana.Accumulator) error {
 	netconns, err := ns.ps.NetConnections()
 	if err != nil {
 		return fmt.Errorf("error getting net connections info: %w", err)
@@ -65,7 +65,7 @@ func (ns *NetStat) Gather(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("netstat", func() telegraf.Input {
+	inputs.Add("netstat", func() Dana.Input {
 		return &NetStat{ps: system.NewSystemPS()}
 	})
 }

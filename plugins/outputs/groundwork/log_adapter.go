@@ -9,27 +9,27 @@ import (
 	"Dana"
 )
 
-// newLogger creates telegraf.Logger adapter for slog.Logger
-func newLogger(l telegraf.Logger) *slog.Logger {
+// newLogger creates Dana.Logger adapter for slog.Logger
+func newLogger(l Dana.Logger) *slog.Logger {
 	return slog.New(&tlgHandler{Log: l})
 }
 
-// tlgHandler translates slog.Record into telegraf.Logger call
+// tlgHandler translates slog.Record into Dana.Logger call
 // inspired by https://github.com/golang/example/blob/master/slog-handler-guide/README.md
 type tlgHandler struct {
 	attrs  []slog.Attr
 	groups []string
 
-	Log telegraf.Logger
+	Log Dana.Logger
 }
 
 // Enabled implements slog.Handler interface
 // It interprets errors as errors and everything else as debug.
 func (h *tlgHandler) Enabled(_ context.Context, level slog.Level) bool {
 	if level == slog.LevelError {
-		return h.Log.Level() >= telegraf.Error
+		return h.Log.Level() >= Dana.Error
 	}
-	return h.Log.Level() >= telegraf.Debug
+	return h.Log.Level() >= Dana.Debug
 }
 
 // Handle implements slog.Handler interface

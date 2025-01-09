@@ -76,7 +76,7 @@ type VSphere struct {
 	ObjectDiscoveryInterval     config.Duration `toml:"object_discovery_interval"`
 	Timeout                     config.Duration `toml:"timeout"`
 	HistoricalInterval          config.Duration `toml:"historical_interval"`
-	Log                         telegraf.Logger `toml:"-"`
+	Log                         Dana.Logger     `toml:"-"`
 
 	tls.ClientConfig // Mix in the TLS/SSL goodness from core
 	proxy.HTTPProxy
@@ -91,7 +91,7 @@ func (*VSphere) SampleConfig() string {
 
 // Start is called from telegraf core when a plugin is started and allows it to
 // perform initialization tasks.
-func (v *VSphere) Start(_ telegraf.Accumulator) error {
+func (v *VSphere) Start(_ Dana.Accumulator) error {
 	v.Log.Info("Starting plugin")
 	ctx, cancel := context.WithCancel(context.Background())
 	v.cancel = cancel
@@ -135,7 +135,7 @@ func (v *VSphere) Stop() {
 
 // Gather is the main data collection function called by the Telegraf core. It performs all
 // the data collection and writes all metrics into the Accumulator passed as an argument.
-func (v *VSphere) Gather(acc telegraf.Accumulator) error {
+func (v *VSphere) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	for _, ep := range v.endpoints {
 		wg.Add(1)
@@ -157,7 +157,7 @@ func (v *VSphere) Gather(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("vsphere", func() telegraf.Input {
+	inputs.Add("vsphere", func() Dana.Input {
 		return &VSphere{
 			DatacenterInclude:           []string{"/*"},
 			ClusterInclude:              []string{"/*/host/**"},

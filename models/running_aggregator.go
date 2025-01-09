@@ -12,11 +12,11 @@ import (
 
 type RunningAggregator struct {
 	sync.Mutex
-	Aggregator  telegraf.Aggregator
+	Aggregator  Dana.Aggregator
 	Config      *AggregatorConfig
 	periodStart time.Time
 	periodEnd   time.Time
-	log         telegraf.Logger
+	log         Dana.Logger
 
 	MetricsPushed   selfstat.Stat
 	MetricsFiltered selfstat.Stat
@@ -24,7 +24,7 @@ type RunningAggregator struct {
 	PushTime        selfstat.Stat
 }
 
-func NewRunningAggregator(aggregator telegraf.Aggregator, config *AggregatorConfig) *RunningAggregator {
+func NewRunningAggregator(aggregator Dana.Aggregator, config *AggregatorConfig) *RunningAggregator {
 	tags := map[string]string{"aggregator": config.Name}
 	if config.Alias != "" {
 		tags["alias"] = config.Alias
@@ -90,7 +90,7 @@ func (r *RunningAggregator) LogName() string {
 }
 
 func (r *RunningAggregator) Init() error {
-	if p, ok := r.Aggregator.(telegraf.Initializer); ok {
+	if p, ok := r.Aggregator.(Dana.Initializer); ok {
 		err := p.Init()
 		if err != nil {
 			return err
@@ -100,7 +100,7 @@ func (r *RunningAggregator) Init() error {
 }
 
 func (r *RunningAggregator) ID() string {
-	if p, ok := r.Aggregator.(telegraf.PluginWithID); ok {
+	if p, ok := r.Aggregator.(Dana.PluginWithID); ok {
 		return p.ID()
 	}
 	return r.Config.ID
@@ -120,7 +120,7 @@ func (r *RunningAggregator) UpdateWindow(start, until time.Time) {
 	r.log.Debugf("Updated aggregation range [%s, %s]", start, until)
 }
 
-func (r *RunningAggregator) MakeMetric(telegrafMetric telegraf.Metric) telegraf.Metric {
+func (r *RunningAggregator) MakeMetric(telegrafMetric Dana.Metric) Dana.Metric {
 	m := makeMetric(
 		telegrafMetric,
 		r.Config.NameOverride,
@@ -136,7 +136,7 @@ func (r *RunningAggregator) MakeMetric(telegrafMetric telegraf.Metric) telegraf.
 
 // Add a metric to the aggregator and return true if the original metric
 // should be dropped.
-func (r *RunningAggregator) Add(m telegraf.Metric) bool {
+func (r *RunningAggregator) Add(m Dana.Metric) bool {
 	ok, err := r.Config.Filter.Select(m)
 	if err != nil {
 		r.log.Errorf("filtering failed: %v", err)
@@ -170,7 +170,7 @@ func (r *RunningAggregator) Add(m telegraf.Metric) bool {
 	return r.Config.DropOriginal
 }
 
-func (r *RunningAggregator) Push(acc telegraf.Accumulator) {
+func (r *RunningAggregator) Push(acc Dana.Accumulator) {
 	r.Lock()
 	defer r.Unlock()
 
@@ -185,6 +185,6 @@ func (r *RunningAggregator) Push(acc telegraf.Accumulator) {
 	r.Aggregator.Reset()
 }
 
-func (r *RunningAggregator) Log() telegraf.Logger {
+func (r *RunningAggregator) Log() Dana.Logger {
 	return r.log
 }

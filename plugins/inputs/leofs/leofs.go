@@ -157,7 +157,7 @@ func (*LeoFS) SampleConfig() string {
 	return sampleConfig
 }
 
-func (l *LeoFS) Gather(acc telegraf.Accumulator) error {
+func (l *LeoFS) Gather(acc Dana.Accumulator) error {
 	if len(l.Servers) == 0 {
 		return gatherServer(defaultEndpoint, serverTypeManagerMaster, acc)
 	}
@@ -192,7 +192,7 @@ func (l *LeoFS) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func gatherServer(endpoint string, serverType serverType, acc telegraf.Accumulator) error {
+func gatherServer(endpoint string, serverType serverType, acc Dana.Accumulator) error {
 	cmd := exec.Command("snmpwalk", "-v2c", "-cpublic", "-On", endpoint, oid)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
@@ -243,7 +243,7 @@ func retrieveTokenAfterColon(line string) (string, error) {
 }
 
 func init() {
-	inputs.Add("leofs", func() telegraf.Input {
+	inputs.Add("leofs", func() Dana.Input {
 		return &LeoFS{}
 	})
 }

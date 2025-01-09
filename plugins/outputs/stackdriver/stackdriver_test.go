@@ -178,7 +178,7 @@ func TestWriteTagsAsResourceLabels(t *testing.T) {
 		client: c,
 	}
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric("cpu",
 			map[string]string{
 				"job_name": "cpu",
@@ -245,7 +245,7 @@ func TestWriteMetricTypesOfficial(t *testing.T) {
 	}
 	require.NoError(t, s.Init())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric("mem_g",
 			map[string]string{},
 			map[string]interface{}{
@@ -271,7 +271,7 @@ func TestWriteMetricTypesOfficial(t *testing.T) {
 				"+Inf":  1.0,
 			},
 			time.Unix(3, 0),
-			telegraf.Histogram,
+			Dana.Histogram,
 		),
 	}
 
@@ -320,7 +320,7 @@ func TestWriteMetricTypesPath(t *testing.T) {
 	}
 	require.NoError(t, s.Init())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric("mem_g",
 			map[string]string{},
 			map[string]interface{}{
@@ -374,7 +374,7 @@ func TestWriteAscendingTime(t *testing.T) {
 	}
 
 	// Metrics in descending order of timestamp
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric("cpu",
 			map[string]string{},
 			map[string]interface{}{
@@ -450,7 +450,7 @@ func TestWriteBatchable(t *testing.T) {
 	}
 
 	// Metrics in descending order of timestamp
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric("cpu",
 			map[string]string{
 				"foo": "bar",
@@ -653,7 +653,7 @@ func TestWriteIgnoredErrors(t *testing.T) {
 }
 
 func TestGetStackdriverLabels(t *testing.T) {
-	tags := []*telegraf.Tag{
+	tags := []*Dana.Tag{
 		{Key: "project", Value: "bar"},
 		{Key: "discuss", Value: "revolutionary"},
 		{Key: "marble", Value: "discount"},
@@ -724,7 +724,7 @@ func TestGetStackdriverIntervalEndpoints(t *testing.T) {
 	later := time.Now().UTC().Add(time.Second * 10)
 
 	// Metrics in descending order of timestamp
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric("cpu",
 			map[string]string{
 				"foo": "bar",
@@ -733,7 +733,7 @@ func TestGetStackdriverIntervalEndpoints(t *testing.T) {
 				"value": 42,
 			},
 			now,
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		testutil.MustMetric("cpu",
 			map[string]string{
@@ -743,7 +743,7 @@ func TestGetStackdriverIntervalEndpoints(t *testing.T) {
 				"value": 43,
 			},
 			later,
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		testutil.MustMetric("uptime",
 			map[string]string{
@@ -753,7 +753,7 @@ func TestGetStackdriverIntervalEndpoints(t *testing.T) {
 				"value": 42,
 			},
 			now,
-			telegraf.Counter,
+			Dana.Counter,
 		),
 		testutil.MustMetric("uptime",
 			map[string]string{
@@ -763,7 +763,7 @@ func TestGetStackdriverIntervalEndpoints(t *testing.T) {
 				"value": 43,
 			},
 			later,
-			telegraf.Counter,
+			Dana.Counter,
 		),
 	}
 
@@ -908,7 +908,7 @@ func TestStackdriverMetricNamePath(t *testing.T) {
 			"value": 42,
 		},
 		time.Now(),
-		telegraf.Gauge,
+		Dana.Gauge,
 	)
 	require.Equal(t, "foo/namespace/uptime/key", s.generateMetricName(m, m.Type(), "key"))
 }
@@ -924,7 +924,7 @@ func TestStackdriverMetricNameOfficial(t *testing.T) {
 		name     string
 		key      string
 		expected string
-		metric   telegraf.Metric
+		metric   Dana.Metric
 	}{
 		{
 			name:     "gauge",
@@ -937,7 +937,7 @@ func TestStackdriverMetricNameOfficial(t *testing.T) {
 					"value": 42,
 				},
 				time.Now(),
-				telegraf.Gauge,
+				Dana.Gauge,
 			),
 		},
 		{
@@ -951,7 +951,7 @@ func TestStackdriverMetricNameOfficial(t *testing.T) {
 					"value": 42,
 				},
 				time.Now(),
-				telegraf.Untyped,
+				Dana.Untyped,
 			),
 		},
 		{
@@ -965,7 +965,7 @@ func TestStackdriverMetricNameOfficial(t *testing.T) {
 					"value": 42,
 				},
 				time.Now(),
-				telegraf.Histogram,
+				Dana.Histogram,
 			),
 		},
 		{
@@ -979,7 +979,7 @@ func TestStackdriverMetricNameOfficial(t *testing.T) {
 					"value": 42,
 				},
 				time.Now(),
-				telegraf.Counter,
+				Dana.Counter,
 			),
 		},
 		{
@@ -993,7 +993,7 @@ func TestStackdriverMetricNameOfficial(t *testing.T) {
 					"value": 42,
 				},
 				time.Now(),
-				telegraf.Summary,
+				Dana.Summary,
 			),
 		},
 	}
@@ -1012,7 +1012,7 @@ func TestGenerateHistogramName(t *testing.T) {
 		format    string
 		expected  string
 
-		metric telegraf.Metric
+		metric Dana.Metric
 	}{
 		{
 			name:      "path",
@@ -1025,7 +1025,7 @@ func TestGenerateHistogramName(t *testing.T) {
 				map[string]string{},
 				map[string]interface{}{"value": 42},
 				time.Now(),
-				telegraf.Histogram,
+				Dana.Histogram,
 			),
 		},
 		{
@@ -1039,7 +1039,7 @@ func TestGenerateHistogramName(t *testing.T) {
 				map[string]string{},
 				map[string]interface{}{"value": 42},
 				time.Now(),
-				telegraf.Histogram,
+				Dana.Histogram,
 			),
 		},
 		{
@@ -1053,7 +1053,7 @@ func TestGenerateHistogramName(t *testing.T) {
 				map[string]string{},
 				map[string]interface{}{"value": 42},
 				time.Now(),
-				telegraf.Histogram,
+				Dana.Histogram,
 			),
 		},
 		{
@@ -1067,7 +1067,7 @@ func TestGenerateHistogramName(t *testing.T) {
 				map[string]string{},
 				map[string]interface{}{"value": 42},
 				time.Now(),
-				telegraf.Histogram,
+				Dana.Histogram,
 			),
 		},
 		{
@@ -1081,7 +1081,7 @@ func TestGenerateHistogramName(t *testing.T) {
 				map[string]string{},
 				map[string]interface{}{"value": 42},
 				time.Now(),
-				telegraf.Histogram,
+				Dana.Histogram,
 			),
 		},
 		{
@@ -1095,7 +1095,7 @@ func TestGenerateHistogramName(t *testing.T) {
 				map[string]string{},
 				map[string]interface{}{"value": 42},
 				time.Now(),
-				telegraf.Histogram,
+				Dana.Histogram,
 			),
 		},
 	}

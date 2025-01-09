@@ -30,7 +30,7 @@ func TestAutoEncoding(t *testing.T) {
 	decoder, err := internal.NewContentDecoder("auto")
 	require.NoError(t, err)
 	plugin := &AMQPConsumer{
-		deliveries: make(map[telegraf.TrackingID]amqp091.Delivery),
+		deliveries: make(map[Dana.TrackingID]amqp091.Delivery),
 		decoder:    decoder,
 	}
 
@@ -122,7 +122,7 @@ func TestIntegration(t *testing.T) {
 		"test,source=B value=1i 1712780301000000100",
 		"test,source=C value=2i 1712780301000000200",
 	}
-	expected := make([]telegraf.Metric, 0, len(metrics))
+	expected := make([]Dana.Metric, 0, len(metrics))
 	for _, x := range metrics {
 		m, err := parser.Parse([]byte(x))
 		require.NoError(t, err)
@@ -341,7 +341,7 @@ func TestStartupErrorBehaviorRetry(t *testing.T) {
 		"test,source=B value=1i 1712780301000000100",
 		"test,source=C value=2i 1712780301000000200",
 	}
-	expected := make([]telegraf.Metric, 0, len(metrics))
+	expected := make([]Dana.Metric, 0, len(metrics))
 	for _, x := range metrics {
 		m, err := parser.Parse([]byte(x))
 		require.NoError(t, err)

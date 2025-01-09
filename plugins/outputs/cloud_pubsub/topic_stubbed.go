@@ -26,7 +26,7 @@ const (
 
 type (
 	testMetric struct {
-		m         telegraf.Metric
+		m         Dana.Metric
 		returnErr bool
 	}
 
@@ -46,7 +46,7 @@ type (
 	stubTopic struct {
 		Settings  pubsub.PublishSettings
 		ReturnErr map[string]bool
-		telegraf.Parser
+		Dana.Parser
 		*testing.T
 		Base64Data      bool
 		ContentEncoding string
@@ -62,12 +62,12 @@ type (
 	}
 )
 
-func getTestResources(tT *testing.T, settings pubsub.PublishSettings, testM []testMetric) (*PubSub, *stubTopic, []telegraf.Metric) {
+func getTestResources(tT *testing.T, settings pubsub.PublishSettings, testM []testMetric) (*PubSub, *stubTopic, []Dana.Metric) {
 	// Instantiate a Influx line-protocol serializer
 	s := &serializers_influx.Serializer{}
 	require.NoError(tT, s.Init())
 
-	metrics := make([]telegraf.Metric, 0, len(testM))
+	metrics := make([]Dana.Metric, 0, len(testM))
 	t := &stubTopic{
 		T:               tT,
 		ReturnErr:       make(map[string]bool),

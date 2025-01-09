@@ -12,12 +12,12 @@ func (i *Infiniband) Init() error {
 	return nil
 }
 
-func (*Infiniband) Gather(_ telegraf.Accumulator) error {
+func (*Infiniband) Gather(_ Dana.Accumulator) error {
 	return nil
 }
 
 func init() {
-	inputs.Add("infiniband", func() telegraf.Input {
+	inputs.Add("infiniband", func() Dana.Input {
 		return &Infiniband{}
 	})
 }

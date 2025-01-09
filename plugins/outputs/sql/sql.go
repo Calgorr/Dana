@@ -49,7 +49,7 @@ type SQL struct {
 	ConnectionMaxLifetime config.Duration `toml:"connection_max_lifetime"`
 	ConnectionMaxIdle     int             `toml:"connection_max_idle"`
 	ConnectionMaxOpen     int             `toml:"connection_max_open"`
-	Log                   telegraf.Logger `toml:"-"`
+	Log                   Dana.Logger     `toml:"-"`
 
 	db     *gosql.DB
 	tables map[string]bool
@@ -144,7 +144,7 @@ func (p *SQL) deriveDatatype(value interface{}) string {
 	return datatype
 }
 
-func (p *SQL) generateCreateTable(metric telegraf.Metric) string {
+func (p *SQL) generateCreateTable(metric Dana.Metric) string {
 	columns := make([]string, 0, len(metric.TagList())+len(metric.FieldList())+1)
 
 	if p.TimestampColumn != "" {
@@ -200,7 +200,7 @@ func (p *SQL) tableExists(tableName string) bool {
 	return err == nil
 }
 
-func (p *SQL) Write(metrics []telegraf.Metric) error {
+func (p *SQL) Write(metrics []Dana.Metric) error {
 	var err error
 
 	for _, metric := range metrics {
@@ -268,7 +268,7 @@ func (p *SQL) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("sql", func() telegraf.Output { return newSQL() })
+	outputs.Add("sql", func() Dana.Output { return newSQL() })
 }
 
 func newSQL() *SQL {

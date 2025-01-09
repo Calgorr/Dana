@@ -3,7 +3,7 @@ package serializers
 import "Dana"
 
 // Creator is the function to create a new serializer
-type Creator func() telegraf.Serializer
+type Creator func() Dana.Serializer
 
 // Serializers contains the registry of all known serializers (following the new style)
 var Serializers = make(map[string]Creator)

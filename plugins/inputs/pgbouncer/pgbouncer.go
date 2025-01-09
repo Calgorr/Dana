@@ -54,11 +54,11 @@ func (p *PgBouncer) Init() error {
 	return nil
 }
 
-func (p *PgBouncer) Start(_ telegraf.Accumulator) error {
+func (p *PgBouncer) Start(_ Dana.Accumulator) error {
 	return p.service.Start()
 }
 
-func (p *PgBouncer) Gather(acc telegraf.Accumulator) error {
+func (p *PgBouncer) Gather(acc Dana.Accumulator) error {
 	for _, cmd := range p.ShowCommands {
 		switch cmd {
 		case "stats":
@@ -122,7 +122,7 @@ func (p *PgBouncer) accRow(row *sql.Rows, columns []string) (map[string]string, 
 	return map[string]string{"server": p.service.SanitizedAddress, "db": dbname.String()}, columnMap, nil
 }
 
-func (p *PgBouncer) showStats(acc telegraf.Accumulator) error {
+func (p *PgBouncer) showStats(acc Dana.Accumulator) error {
 	// STATS
 	rows, err := p.service.DB.Query(`SHOW STATS`)
 	if err != nil {
@@ -170,7 +170,7 @@ func (p *PgBouncer) showStats(acc telegraf.Accumulator) error {
 	return rows.Err()
 }
 
-func (p *PgBouncer) showPools(acc telegraf.Accumulator) error {
+func (p *PgBouncer) showPools(acc Dana.Accumulator) error {
 	// POOLS
 	poolRows, err := p.service.DB.Query(`SHOW POOLS`)
 	if err != nil {
@@ -216,7 +216,7 @@ func (p *PgBouncer) showPools(acc telegraf.Accumulator) error {
 	return poolRows.Err()
 }
 
-func (p *PgBouncer) showLists(acc telegraf.Accumulator) error {
+func (p *PgBouncer) showLists(acc Dana.Accumulator) error {
 	// LISTS
 	rows, err := p.service.DB.Query(`SHOW LISTS`)
 	if err != nil {
@@ -257,7 +257,7 @@ func (p *PgBouncer) showLists(acc telegraf.Accumulator) error {
 	return rows.Err()
 }
 
-func (p *PgBouncer) showDatabase(acc telegraf.Accumulator) error {
+func (p *PgBouncer) showDatabase(acc Dana.Accumulator) error {
 	// DATABASES
 	rows, err := p.service.DB.Query(`SHOW DATABASES`)
 	if err != nil {
@@ -305,7 +305,7 @@ func (p *PgBouncer) showDatabase(acc telegraf.Accumulator) error {
 }
 
 func init() {
-	inputs.Add("pgbouncer", func() telegraf.Input {
+	inputs.Add("pgbouncer", func() Dana.Input {
 		return &PgBouncer{
 			Config: postgresql.Config{
 				MaxIdle:     1,

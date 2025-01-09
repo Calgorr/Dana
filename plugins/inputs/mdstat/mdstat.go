@@ -177,7 +177,7 @@ func (*Mdstat) SampleConfig() string {
 	return sampleConfig
 }
 
-func (k *Mdstat) Gather(acc telegraf.Accumulator) error {
+func (k *Mdstat) Gather(acc Dana.Accumulator) error {
 	data, err := k.getProcMdstat()
 	if err != nil {
 		return err
@@ -289,5 +289,5 @@ func (k *Mdstat) getProcMdstat() ([]byte, error) {
 }
 
 func init() {
-	inputs.Add("mdstat", func() telegraf.Input { return &Mdstat{} })
+	inputs.Add("mdstat", func() Dana.Input { return &Mdstat{} })
 }

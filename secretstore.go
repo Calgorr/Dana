@@ -1,4 +1,4 @@
-package telegraf
+package Dana
 
 // SecretStore is an interface defining functions that a secret-store plugin must satisfy.
 type SecretStore interface {

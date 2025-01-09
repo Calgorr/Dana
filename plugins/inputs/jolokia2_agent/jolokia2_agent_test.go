@@ -717,7 +717,7 @@ func TestIntegrationArtemis(t *testing.T) {
 	}
 
 	// Setup the expectations
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"artemis",
 			map[string]string{
@@ -904,7 +904,7 @@ func setupServer(resp string) *httptest.Server {
 	}))
 }
 
-func setupPlugin(t *testing.T, conf string) telegraf.Input {
+func setupPlugin(t *testing.T, conf string) Dana.Input {
 	table, err := toml.Parse([]byte(conf))
 	if err != nil {
 		t.Fatalf("Unable to parse config! %v", err)

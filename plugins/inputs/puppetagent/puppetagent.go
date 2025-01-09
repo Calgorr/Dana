@@ -86,7 +86,7 @@ func (*PuppetAgent) SampleConfig() string {
 }
 
 // Gather reads stats from all configured servers accumulates stats
-func (pa *PuppetAgent) Gather(acc telegraf.Accumulator) error {
+func (pa *PuppetAgent) Gather(acc Dana.Accumulator) error {
 	if len(pa.Location) == 0 {
 		pa.Location = "/var/lib/puppet/state/last_run_summary.yaml"
 	}
@@ -113,7 +113,7 @@ func (pa *PuppetAgent) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func structPrinter(s *state, acc telegraf.Accumulator, tags map[string]string) {
+func structPrinter(s *state, acc Dana.Accumulator, tags map[string]string) {
 	e := reflect.ValueOf(s).Elem()
 
 	fields := make(map[string]interface{})
@@ -134,7 +134,7 @@ func structPrinter(s *state, acc telegraf.Accumulator, tags map[string]string) {
 }
 
 func init() {
-	inputs.Add("puppetagent", func() telegraf.Input {
+	inputs.Add("puppetagent", func() Dana.Input {
 		return &PuppetAgent{}
 	})
 }

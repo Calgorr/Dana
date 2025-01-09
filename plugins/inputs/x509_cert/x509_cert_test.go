@@ -33,8 +33,8 @@ import (
 
 var pki = testutil.NewPKI("../../../testutil/pki")
 
-// Make sure X509Cert implements telegraf.Input
-var _ telegraf.Input = &X509Cert{}
+// Make sure X509Cert implements Dana.Input
+var _ Dana.Input = &X509Cert{}
 
 func TestGatherRemoteIntegration(t *testing.T) {
 	t.Skip("Skipping network-dependent test due to race condition when test-all")
@@ -588,7 +588,7 @@ func TestClassification(t *testing.T) {
 	require.NoError(t, plugin.Gather(&acc))
 	require.Empty(t, acc.Errors)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"x509_cert",
 			map[string]string{

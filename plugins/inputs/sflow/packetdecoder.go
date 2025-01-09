@@ -12,7 +12,7 @@ import (
 
 type packetDecoder struct {
 	onPacket func(p *v5Format)
-	Log      telegraf.Logger
+	Log      Dana.Logger
 }
 
 func newDecoder() *packetDecoder {

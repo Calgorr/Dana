@@ -234,7 +234,7 @@ func TestWriteMultiMeasuresSingleTableMode(t *testing.T) {
 	localTime, err := strconv.Atoi(time1Epoch)
 	require.NoError(t, err)
 
-	inputs := make([]telegraf.Metric, 0, recordCount+1)
+	inputs := make([]Dana.Metric, 0, recordCount+1)
 	for i := 1; i <= recordCount+1; i++ {
 		localTime++
 
@@ -292,7 +292,7 @@ func TestWriteMultiMeasuresMultiTableMode(t *testing.T) {
 	localTime, err := strconv.Atoi(time1Epoch)
 	require.NoError(t, err)
 
-	inputs := make([]telegraf.Metric, 0, recordCount)
+	inputs := make([]Dana.Metric, 0, recordCount)
 	for i := 1; i <= recordCount; i++ {
 		localTime++
 
@@ -418,7 +418,7 @@ func TestBuildMultiMeasuresInSingleAndMultiTableMode(t *testing.T) {
 	require.NoError(t, err, "Invalid configuration")
 
 	// validate multi-record generation with MappingModeMultiTable
-	result := plugin.TransformMetrics([]telegraf.Metric{input1, input2, input3, input4, input5, input6})
+	result := plugin.TransformMetrics([]Dana.Metric{input1, input2, input3, input4, input5, input6})
 	require.Len(t, result, 1, "Expected 1 WriteRecordsInput requests")
 
 	require.EqualValues(t, expectedResultMultiTable, result[0])
@@ -443,7 +443,7 @@ func TestBuildMultiMeasuresInSingleAndMultiTableMode(t *testing.T) {
 	expectedResultSingleTable := buildExpectedMultiRecords(metricName1, "singleTableName")
 
 	// validate multi-record generation with MappingModeSingleTable
-	result = plugin.TransformMetrics([]telegraf.Metric{input1, input2, input3, input4, input5, input6})
+	result = plugin.TransformMetrics([]Dana.Metric{input1, input2, input3, input4, input5, input6})
 	require.Len(t, result, 1, "Expected 1 WriteRecordsInput requests")
 
 	require.EqualValues(t, expectedResultSingleTable, result[0])
@@ -574,7 +574,7 @@ func TestThrottlingErrorIsReturnedToTelegraf(t *testing.T) {
 		time1,
 	)
 
-	err := plugin.Write([]telegraf.Metric{input})
+	err := plugin.Write([]Dana.Metric{input})
 
 	require.Error(t, err, "Expected an error to be returned to Telegraf, "+
 		"so that the write will be retried by Telegraf later.")
@@ -600,7 +600,7 @@ func TestRejectedRecordsErrorResultsInMetricsBeingSkipped(t *testing.T) {
 		time1,
 	)
 
-	err := plugin.Write([]telegraf.Metric{input})
+	err := plugin.Write([]Dana.Metric{input})
 
 	require.NoError(t, err, "Expected to silently swallow the RejectedRecordsException, "+
 		"as retrying this error doesn't make sense.")
@@ -626,7 +626,7 @@ func TestWriteWhenRequestsGreaterThanMaxWriteGoRoutinesCount(t *testing.T) {
 
 	require.NoError(t, plugin.Connect())
 
-	inputs := make([]telegraf.Metric, 0, totalRecords)
+	inputs := make([]Dana.Metric, 0, totalRecords)
 	for i := 1; i <= totalRecords; i++ {
 		fieldName := "value_supported" + strconv.Itoa(i)
 		inputs = append(inputs, testutil.MustMetric(
@@ -665,7 +665,7 @@ func TestWriteWhenRequestsLesserThanMaxWriteGoRoutinesCount(t *testing.T) {
 	}
 	require.NoError(t, plugin.Connect())
 
-	inputs := make([]telegraf.Metric, 0, totalRecords)
+	inputs := make([]Dana.Metric, 0, totalRecords)
 	for i := 1; i <= totalRecords; i++ {
 		fieldName := "value_supported" + strconv.Itoa(i)
 		inputs = append(inputs, testutil.MustMetric(
@@ -731,7 +731,7 @@ func TestTransformMetricsSkipEmptyMetric(t *testing.T) {
 	}
 
 	comparisonTest(t, MappingModeSingleTable,
-		[]telegraf.Metric{input1, input2, input3},
+		[]Dana.Metric{input1, input2, input3},
 		[]*timestreamwrite.WriteRecordsInput{expectedResultSingleTable})
 
 	recordsMulti := buildRecords([]SimpleInput{
@@ -757,14 +757,14 @@ func TestTransformMetricsSkipEmptyMetric(t *testing.T) {
 	}
 
 	comparisonTest(t, MappingModeMultiTable,
-		[]telegraf.Metric{input1, input2, input3},
+		[]Dana.Metric{input1, input2, input3},
 		[]*timestreamwrite.WriteRecordsInput{expectedResultMultiTable})
 }
 
 func TestTransformMetricsRequestsAboveLimitAreSplit(t *testing.T) {
 	const maxRecordsInWriteRecordsCall = 100
 
-	inputs := make([]telegraf.Metric, 0, maxRecordsInWriteRecordsCall+1)
+	inputs := make([]Dana.Metric, 0, maxRecordsInWriteRecordsCall+1)
 	for i := 1; i <= maxRecordsInWriteRecordsCall+1; i++ {
 		fieldName := "value_supported" + strconv.Itoa(i)
 		inputs = append(inputs, testutil.MustMetric(
@@ -822,7 +822,7 @@ func TestTransformMetricsRequestsAboveLimitAreSplitSingleTable(t *testing.T) {
 	localTime, err := strconv.Atoi(time1Epoch)
 	require.NoError(t, err)
 
-	inputs := make([]telegraf.Metric, 0, maxRecordsInWriteRecordsCall+1)
+	inputs := make([]Dana.Metric, 0, maxRecordsInWriteRecordsCall+1)
 	for i := 1; i <= maxRecordsInWriteRecordsCall+1; i++ {
 		localTime++
 
@@ -925,7 +925,7 @@ func TestTransformMetricsDifferentDimensionsSameTimestampsAreWrittenSeparate(t *
 	}
 
 	comparisonTest(t, MappingModeSingleTable,
-		[]telegraf.Metric{input1, input2},
+		[]Dana.Metric{input1, input2},
 		[]*timestreamwrite.WriteRecordsInput{expectedResultSingleTable})
 
 	expectedResult1MultiTable := buildExpectedInput(SimpleInput{
@@ -943,7 +943,7 @@ func TestTransformMetricsDifferentDimensionsSameTimestampsAreWrittenSeparate(t *
 	})
 
 	comparisonTest(t, MappingModeMultiTable,
-		[]telegraf.Metric{input1, input2},
+		[]Dana.Metric{input1, input2},
 		[]*timestreamwrite.WriteRecordsInput{expectedResult1MultiTable, expectedResult2MultiTable})
 }
 
@@ -988,7 +988,7 @@ func TestTransformMetricsSameDimensionsDifferentDimensionValuesAreWrittenSeparat
 	}
 
 	comparisonTest(t, MappingModeSingleTable,
-		[]telegraf.Metric{input1, input2},
+		[]Dana.Metric{input1, input2},
 		[]*timestreamwrite.WriteRecordsInput{expectedResultSingleTable})
 
 	expectedResult1MultiTable := buildExpectedInput(SimpleInput{
@@ -1005,7 +1005,7 @@ func TestTransformMetricsSameDimensionsDifferentDimensionValuesAreWrittenSeparat
 	})
 
 	comparisonTest(t, MappingModeMultiTable,
-		[]telegraf.Metric{input1, input2},
+		[]Dana.Metric{input1, input2},
 		[]*timestreamwrite.WriteRecordsInput{expectedResult1MultiTable, expectedResult2MultiTable})
 }
 
@@ -1050,7 +1050,7 @@ func TestTransformMetricsSameDimensionsDifferentTimestampsAreWrittenSeparate(t *
 	}
 
 	comparisonTest(t, MappingModeSingleTable,
-		[]telegraf.Metric{input1, input2},
+		[]Dana.Metric{input1, input2},
 		[]*timestreamwrite.WriteRecordsInput{expectedResultSingleTable})
 
 	recordsMultiTable := buildRecords([]SimpleInput{
@@ -1076,7 +1076,7 @@ func TestTransformMetricsSameDimensionsDifferentTimestampsAreWrittenSeparate(t *
 	}
 
 	comparisonTest(t, MappingModeMultiTable,
-		[]telegraf.Metric{input1, input2},
+		[]Dana.Metric{input1, input2},
 		[]*timestreamwrite.WriteRecordsInput{expectedResultMultiTable})
 }
 
@@ -1106,7 +1106,7 @@ func TestTransformMetricsSameDimensionsSameTimestampsAreWrittenTogether(t *testi
 	})
 
 	comparisonTest(t, MappingModeSingleTable,
-		[]telegraf.Metric{input1, input2},
+		[]Dana.Metric{input1, input2},
 		[]*timestreamwrite.WriteRecordsInput{expectedResultSingleTable})
 
 	expectedResultMultiTable := buildExpectedInput(SimpleInput{
@@ -1117,7 +1117,7 @@ func TestTransformMetricsSameDimensionsSameTimestampsAreWrittenTogether(t *testi
 	})
 
 	comparisonTest(t, MappingModeMultiTable,
-		[]telegraf.Metric{input1, input2},
+		[]Dana.Metric{input1, input2},
 		[]*timestreamwrite.WriteRecordsInput{expectedResultMultiTable})
 }
 
@@ -1162,7 +1162,7 @@ func TestTransformMetricsDifferentMetricsAreWrittenToDifferentTablesInMultiTable
 	}
 
 	comparisonTest(t, MappingModeSingleTable,
-		[]telegraf.Metric{input1, input2},
+		[]Dana.Metric{input1, input2},
 		[]*timestreamwrite.WriteRecordsInput{expectedResultSingleTable})
 
 	expectedResult1MultiTable := buildExpectedInput(SimpleInput{
@@ -1179,7 +1179,7 @@ func TestTransformMetricsDifferentMetricsAreWrittenToDifferentTablesInMultiTable
 	})
 
 	comparisonTest(t, MappingModeMultiTable,
-		[]telegraf.Metric{input1, input2},
+		[]Dana.Metric{input1, input2},
 		[]*timestreamwrite.WriteRecordsInput{expectedResult1MultiTable, expectedResult2MultiTable})
 }
 
@@ -1200,7 +1200,7 @@ func TestTransformMetricsUnsupportedFieldsAreSkipped(t *testing.T) {
 	})
 
 	comparisonTest(t, MappingModeSingleTable,
-		[]telegraf.Metric{metricWithUnsupportedField},
+		[]Dana.Metric{metricWithUnsupportedField},
 		[]*timestreamwrite.WriteRecordsInput{expectedResultSingleTable})
 
 	expectedResultMultiTable := buildExpectedInput(SimpleInput{
@@ -1211,7 +1211,7 @@ func TestTransformMetricsUnsupportedFieldsAreSkipped(t *testing.T) {
 	})
 
 	comparisonTest(t, MappingModeMultiTable,
-		[]telegraf.Metric{metricWithUnsupportedField},
+		[]Dana.Metric{metricWithUnsupportedField},
 		[]*timestreamwrite.WriteRecordsInput{expectedResultMultiTable})
 }
 
@@ -1233,7 +1233,7 @@ func TestCustomEndpoint(t *testing.T) {
 
 func comparisonTest(t *testing.T,
 	mappingMode string,
-	telegrafMetrics []telegraf.Metric,
+	telegrafMetrics []Dana.Metric,
 	timestreamRecords []*timestreamwrite.WriteRecordsInput,
 ) {
 	var plugin Timestream
@@ -1261,7 +1261,7 @@ func comparisonTest(t *testing.T,
 func comparison(t *testing.T,
 	plugin Timestream,
 	mappingMode string,
-	telegrafMetrics []telegraf.Metric,
+	telegrafMetrics []Dana.Metric,
 	timestreamRecords []*timestreamwrite.WriteRecordsInput) {
 	result := plugin.TransformMetrics(telegrafMetrics)
 

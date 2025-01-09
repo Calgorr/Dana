@@ -29,7 +29,7 @@ var sampleConfig string
 type NvidiaSMI struct {
 	BinPath string          `toml:"bin_path"`
 	Timeout config.Duration `toml:"timeout"`
-	Log     telegraf.Logger `toml:"-"`
+	Log     Dana.Logger     `toml:"-"`
 
 	ignorePlugin bool
 	once         sync.Once
@@ -39,7 +39,7 @@ func (*NvidiaSMI) SampleConfig() string {
 	return sampleConfig
 }
 
-func (smi *NvidiaSMI) Start(telegraf.Accumulator) error {
+func (smi *NvidiaSMI) Start(Dana.Accumulator) error {
 	if _, err := os.Stat(smi.BinPath); os.IsNotExist(err) {
 		binPath, err := exec.LookPath("nvidia-smi")
 		if err != nil {
@@ -54,7 +54,7 @@ func (smi *NvidiaSMI) Start(telegraf.Accumulator) error {
 func (*NvidiaSMI) Stop() {}
 
 // Gather implements the telegraf interface
-func (smi *NvidiaSMI) Gather(acc telegraf.Accumulator) error {
+func (smi *NvidiaSMI) Gather(acc Dana.Accumulator) error {
 	if smi.ignorePlugin {
 		return nil
 	}
@@ -69,7 +69,7 @@ func (smi *NvidiaSMI) Gather(acc telegraf.Accumulator) error {
 	return smi.parse(acc, data)
 }
 
-func (smi *NvidiaSMI) parse(acc telegraf.Accumulator, data []byte) error {
+func (smi *NvidiaSMI) parse(acc Dana.Accumulator, data []byte) error {
 	schema := "v11"
 
 	buf := bytes.NewBuffer(data)
@@ -117,7 +117,7 @@ func (smi *NvidiaSMI) parse(acc telegraf.Accumulator, data []byte) error {
 }
 
 func init() {
-	inputs.Add("nvidia_smi", func() telegraf.Input {
+	inputs.Add("nvidia_smi", func() Dana.Input {
 		return &NvidiaSMI{
 			BinPath: "/usr/bin/nvidia-smi",
 			Timeout: config.Duration(5 * time.Second),

@@ -29,9 +29,9 @@ type SocketWriter struct {
 	Address         string
 	KeepAlivePeriod *config.Duration
 	common_tls.ClientConfig
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 
 	encoder internal.ContentEncoder
 
@@ -42,7 +42,7 @@ func (*SocketWriter) SampleConfig() string {
 	return sampleConfig
 }
 
-func (sw *SocketWriter) SetSerializer(s telegraf.Serializer) {
+func (sw *SocketWriter) SetSerializer(s Dana.Serializer) {
 	sw.serializer = s
 }
 
@@ -131,7 +131,7 @@ func (sw *SocketWriter) setKeepAlive(c net.Conn) error {
 // Write writes the given metrics to the destination.
 // If an error is encountered, it is up to the caller to retry the same write again later.
 // Not parallel safe.
-func (sw *SocketWriter) Write(metrics []telegraf.Metric) error {
+func (sw *SocketWriter) Write(metrics []Dana.Metric) error {
 	if sw.Conn == nil {
 		// previous write failed with permanent error and socket was closed.
 		if err := sw.Connect(); err != nil {
@@ -179,7 +179,7 @@ func (sw *SocketWriter) Close() error {
 }
 
 func init() {
-	outputs.Add("socket_writer", func() telegraf.Output {
+	outputs.Add("socket_writer", func() Dana.Output {
 		return &SocketWriter{}
 	})
 }

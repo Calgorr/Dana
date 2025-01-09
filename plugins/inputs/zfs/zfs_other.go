@@ -7,12 +7,12 @@ import (
 	"Dana/plugins/inputs"
 )
 
-func (*Zfs) Gather(_ telegraf.Accumulator) error {
+func (*Zfs) Gather(_ Dana.Accumulator) error {
 	return nil
 }
 
 func init() {
-	inputs.Add("zfs", func() telegraf.Input {
+	inputs.Add("zfs", func() Dana.Input {
 		return &Zfs{}
 	})
 }

@@ -23,14 +23,14 @@ type Parser struct {
 	MetricVersion   int               `toml:"prometheus_metric_version"`
 	Header          http.Header       `toml:"-"` // set by the prometheus input
 	DefaultTags     map[string]string `toml:"-"`
-	Log             telegraf.Logger   `toml:"-"`
+	Log             Dana.Logger       `toml:"-"`
 }
 
 func (p *Parser) SetDefaultTags(tags map[string]string) {
 	p.DefaultTags = tags
 }
 
-func (p *Parser) Parse(data []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(data []byte) ([]Dana.Metric, error) {
 	// Determine the metric transport-type derived from the response header and
 	// create a matching decoder.
 	format := expfmt.NewFormat(expfmt.TypeProtoCompact)
@@ -51,7 +51,7 @@ func (p *Parser) Parse(data []byte) ([]telegraf.Metric, error) {
 	decoder := expfmt.NewDecoder(buf, format)
 
 	// Decode the input data into prometheus metrics
-	var metrics []telegraf.Metric
+	var metrics []Dana.Metric
 	for {
 		var mf dto.MetricFamily
 		if err := decoder.Decode(&mf); err != nil {
@@ -73,7 +73,7 @@ func (p *Parser) Parse(data []byte) ([]telegraf.Metric, error) {
 	return metrics, nil
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line))
 	if err != nil {
 		return nil, err
@@ -92,7 +92,7 @@ func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
 
 func init() {
 	parsers.Add("prometheus",
-		func(string) telegraf.Parser {
+		func(string) Dana.Parser {
 			return &Parser{}
 		},
 	)

@@ -29,7 +29,7 @@ type Parser struct {
 	SecurityLevel string   `toml:"collectd_security_level"`
 	TypesDB       []string `toml:"collectd_typesdb"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (p *Parser) Init() error {
@@ -65,13 +65,13 @@ func (p *Parser) Init() error {
 	return nil
 }
 
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
 	valueLists, err := network.Parse(buf, p.popts)
 	if err != nil {
 		return nil, fmt.Errorf("collectd parser error: %w", err)
 	}
 
-	metrics := make([]telegraf.Metric, 0, len(valueLists))
+	metrics := make([]Dana.Metric, 0, len(valueLists))
 	for _, valueList := range valueLists {
 		metrics = append(metrics, p.unmarshalValueList(valueList)...)
 	}
@@ -90,7 +90,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 	return metrics, nil
 }
 
-func (p *Parser) ParseLine(line string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(line string) (Dana.Metric, error) {
 	metrics, err := p.Parse([]byte(line))
 	if err != nil {
 		return nil, err
@@ -108,10 +108,10 @@ func (p *Parser) SetDefaultTags(tags map[string]string) {
 }
 
 // unmarshalValueList translates a ValueList into a Telegraf metric.
-func (p *Parser) unmarshalValueList(vl *api.ValueList) []telegraf.Metric {
+func (p *Parser) unmarshalValueList(vl *api.ValueList) []Dana.Metric {
 	timestamp := vl.Time.UTC()
 
-	var metrics []telegraf.Metric
+	var metrics []Dana.Metric
 
 	var multiValue = p.ParseMultiValue
 	// set multiValue to default "split" if nothing is specified
@@ -200,7 +200,7 @@ func LoadTypesDB(path string) (*api.TypesDB, error) {
 
 func init() {
 	parsers.Add("collectd",
-		func(string) telegraf.Parser {
+		func(string) Dana.Parser {
 			return &Parser{
 				AuthFile: DefaultAuthFile,
 			}

@@ -16,7 +16,7 @@ func TestSerialize(t *testing.T) {
 	tests := []struct {
 		name     string
 		config   FormatConfig
-		metric   telegraf.Metric
+		metric   Dana.Metric
 		expected []byte
 	}{
 		{
@@ -49,7 +49,7 @@ cpu_time_idle{host="example.org"} 42
 					"http_requests_total": 3.0,
 				},
 				time.Unix(0, 0),
-				telegraf.Untyped,
+				Dana.Untyped,
 			),
 			expected: []byte(`
 # HELP http_requests_total Telegraf collected metric
@@ -69,7 +69,7 @@ http_requests_total{code="400",method="post"} 3
 					"http_requests_total": 3.0,
 				},
 				time.Unix(0, 0),
-				telegraf.Counter,
+				Dana.Counter,
 			),
 			expected: []byte(`
 # HELP http_requests_total Telegraf collected metric
@@ -89,7 +89,7 @@ http_requests_total{code="400",method="post"} 3
 					"http_requests_total": 3.0,
 				},
 				time.Unix(0, 0),
-				telegraf.Gauge,
+				Dana.Gauge,
 			),
 			expected: []byte(`
 # HELP http_requests_total Telegraf collected metric
@@ -107,7 +107,7 @@ http_requests_total{code="400",method="post"} 3
 					"http_request_duration_seconds_count": 144320,
 				},
 				time.Unix(0, 0),
-				telegraf.Histogram,
+				Dana.Histogram,
 			),
 			expected: []byte(`
 # HELP http_request_duration_seconds Telegraf collected metric
@@ -128,7 +128,7 @@ http_request_duration_seconds_count 144320
 					"http_request_duration_seconds_bucket": 129389.0,
 				},
 				time.Unix(0, 0),
-				telegraf.Histogram,
+				Dana.Histogram,
 			),
 			expected: []byte(`
 # HELP http_request_duration_seconds Telegraf collected metric
@@ -249,12 +249,12 @@ func TestSerializeBatch(t *testing.T) {
 	tests := []struct {
 		name     string
 		config   FormatConfig
-		metrics  []telegraf.Metric
+		metrics  []Dana.Metric
 		expected []byte
 	}{
 		{
 			name: "simple",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -285,7 +285,7 @@ cpu_time_idle{host="two.example.org"} 42
 		},
 		{
 			name: "multiple metric families",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -309,7 +309,7 @@ cpu_time_idle{host="one.example.org"} 42
 		},
 		{
 			name: "histogram",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"prometheus",
 					map[string]string{},
@@ -318,7 +318,7 @@ cpu_time_idle{host="one.example.org"} 42
 						"http_request_duration_seconds_count": 144320,
 					},
 					time.Unix(0, 0),
-					telegraf.Histogram,
+					Dana.Histogram,
 				),
 				testutil.MustMetric(
 					"prometheus",
@@ -327,7 +327,7 @@ cpu_time_idle{host="one.example.org"} 42
 						"http_request_duration_seconds_bucket": 24054.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Histogram,
+					Dana.Histogram,
 				),
 				testutil.MustMetric(
 					"prometheus",
@@ -336,7 +336,7 @@ cpu_time_idle{host="one.example.org"} 42
 						"http_request_duration_seconds_bucket": 33444.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Histogram,
+					Dana.Histogram,
 				),
 				testutil.MustMetric(
 					"prometheus",
@@ -345,7 +345,7 @@ cpu_time_idle{host="one.example.org"} 42
 						"http_request_duration_seconds_bucket": 100392.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Histogram,
+					Dana.Histogram,
 				),
 				testutil.MustMetric(
 					"prometheus",
@@ -354,7 +354,7 @@ cpu_time_idle{host="one.example.org"} 42
 						"http_request_duration_seconds_bucket": 129389.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Histogram,
+					Dana.Histogram,
 				),
 				testutil.MustMetric(
 					"prometheus",
@@ -363,7 +363,7 @@ cpu_time_idle{host="one.example.org"} 42
 						"http_request_duration_seconds_bucket": 133988.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Histogram,
+					Dana.Histogram,
 				),
 				testutil.MustMetric(
 					"prometheus",
@@ -372,7 +372,7 @@ cpu_time_idle{host="one.example.org"} 42
 						"http_request_duration_seconds_bucket": 144320.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Histogram,
+					Dana.Histogram,
 				),
 			},
 			expected: []byte(`
@@ -390,7 +390,7 @@ http_request_duration_seconds_count 144320
 		},
 		{
 			name: "",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"prometheus",
 					map[string]string{},
@@ -399,7 +399,7 @@ http_request_duration_seconds_count 144320
 						"rpc_duration_seconds_count": 2693,
 					},
 					time.Unix(0, 0),
-					telegraf.Summary,
+					Dana.Summary,
 				),
 				testutil.MustMetric(
 					"prometheus",
@@ -408,7 +408,7 @@ http_request_duration_seconds_count 144320
 						"rpc_duration_seconds": 3102.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Summary,
+					Dana.Summary,
 				),
 				testutil.MustMetric(
 					"prometheus",
@@ -417,7 +417,7 @@ http_request_duration_seconds_count 144320
 						"rpc_duration_seconds": 3272.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Summary,
+					Dana.Summary,
 				),
 				testutil.MustMetric(
 					"prometheus",
@@ -426,7 +426,7 @@ http_request_duration_seconds_count 144320
 						"rpc_duration_seconds": 4773.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Summary,
+					Dana.Summary,
 				),
 				testutil.MustMetric(
 					"prometheus",
@@ -435,7 +435,7 @@ http_request_duration_seconds_count 144320
 						"rpc_duration_seconds": 9001.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Summary,
+					Dana.Summary,
 				),
 				testutil.MustMetric(
 					"prometheus",
@@ -444,7 +444,7 @@ http_request_duration_seconds_count 144320
 						"rpc_duration_seconds": 76656.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Summary,
+					Dana.Summary,
 				),
 			},
 			expected: []byte(`
@@ -461,7 +461,7 @@ rpc_duration_seconds_count 2693
 		},
 		{
 			name: "newer sample",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -487,7 +487,7 @@ cpu_time_idle 43
 		},
 		{
 			name: "colons are not replaced in metric name from measurement",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu::xyzzy",
 					map[string]string{},
@@ -505,7 +505,7 @@ cpu::xyzzy_time_idle 42
 		},
 		{
 			name: "colons are not replaced in metric name from field",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -523,7 +523,7 @@ cpu_time:idle 42
 		},
 		{
 			name: "invalid label",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -543,7 +543,7 @@ cpu_time_idle{host_name="example.org"} 42
 		},
 		{
 			name: "colons are replaced in label name",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -563,7 +563,7 @@ cpu_time_idle{host_name="example.org"} 42
 		},
 		{
 			name: "discard strings",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -585,7 +585,7 @@ cpu_time_idle 42
 			config: FormatConfig{
 				StringAsLabel: true,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -607,7 +607,7 @@ cpu_time_idle{cpu="cpu0"} 42
 			config: FormatConfig{
 				StringAsLabel: true,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -631,7 +631,7 @@ cpu_time_idle{cpu="cpu0"} 42
 			config: FormatConfig{
 				StringAsLabel: true,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -650,7 +650,7 @@ cpu_time_idle{host_name="example.org"} 42
 		},
 		{
 			name: "multiple fields grouping",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -723,7 +723,7 @@ cpu_time_user{cpu="cpu3"} 94148
 		},
 		{
 			name: "summary with no quantile",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"prometheus",
 					map[string]string{},
@@ -732,7 +732,7 @@ cpu_time_user{cpu="cpu3"} 94148
 						"rpc_duration_seconds_count": 2693,
 					},
 					time.Unix(0, 0),
-					telegraf.Summary,
+					Dana.Summary,
 				),
 			},
 			expected: []byte(`

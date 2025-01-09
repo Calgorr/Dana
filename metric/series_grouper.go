@@ -11,9 +11,9 @@ import (
 
 // NewSeriesGrouper returns a type that can be used to group fields by series
 // and time, so that fields which share these values will be combined into a
-// single telegraf.Metric.
+// single Dana.Metric.
 //
-// This is useful to build telegraf.Metric's when all fields for a series are
+// This is useful to build Dana.Metric's when all fields for a series are
 // not available at once.
 //
 // ex:
@@ -22,15 +22,15 @@ import (
 // + cpu,host=localhost idle_time=42,usage_time=42
 func NewSeriesGrouper() *SeriesGrouper {
 	return &SeriesGrouper{
-		metrics:  make(map[uint64]telegraf.Metric),
-		ordered:  make([]telegraf.Metric, 0),
+		metrics:  make(map[uint64]Dana.Metric),
+		ordered:  make([]Dana.Metric, 0),
 		hashSeed: maphash.MakeSeed(),
 	}
 }
 
 type SeriesGrouper struct {
-	metrics map[uint64]telegraf.Metric
-	ordered []telegraf.Metric
+	metrics map[uint64]Dana.Metric
+	ordered []Dana.Metric
 
 	hashSeed maphash.Seed
 }
@@ -43,10 +43,10 @@ func (g *SeriesGrouper) Add(
 	field string,
 	fieldValue interface{},
 ) {
-	taglist := make([]*telegraf.Tag, 0, len(tags))
+	taglist := make([]*Dana.Tag, 0, len(tags))
 	for k, v := range tags {
 		taglist = append(taglist,
-			&telegraf.Tag{Key: k, Value: v})
+			&Dana.Tag{Key: k, Value: v})
 	}
 	sort.Slice(taglist, func(i, j int) bool { return taglist[i].Key < taglist[j].Key })
 
@@ -63,7 +63,7 @@ func (g *SeriesGrouper) Add(
 
 // AddMetric adds a metric to the series, merging with any previous matching metrics.
 func (g *SeriesGrouper) AddMetric(
-	metric telegraf.Metric,
+	metric Dana.Metric,
 ) {
 	id := groupID(g.hashSeed, metric.Name(), metric.TagList(), metric.Time())
 	m := g.metrics[id]
@@ -79,11 +79,11 @@ func (g *SeriesGrouper) AddMetric(
 }
 
 // Metrics returns the metrics grouped by series and time.
-func (g *SeriesGrouper) Metrics() []telegraf.Metric {
+func (g *SeriesGrouper) Metrics() []Dana.Metric {
 	return g.ordered
 }
 
-func groupID(seed maphash.Seed, measurement string, taglist []*telegraf.Tag, tm time.Time) uint64 {
+func groupID(seed maphash.Seed, measurement string, taglist []*Dana.Tag, tm time.Time) uint64 {
 	var mh maphash.Hash
 	mh.SetSeed(seed)
 

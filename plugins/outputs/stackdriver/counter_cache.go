@@ -16,7 +16,7 @@ import (
 type counterCache struct {
 	sync.RWMutex
 	cache map[string]*counterCacheEntry
-	log   telegraf.Logger
+	log   Dana.Logger
 }
 
 type counterCacheEntry struct {
@@ -71,7 +71,7 @@ func (cc *counterCache) GetStartTime(key string, value *monpb.TypedValue, endTim
 	return lastObserved.StartTime
 }
 
-func NewCounterCache(log telegraf.Logger) *counterCache {
+func NewCounterCache(log Dana.Logger) *counterCache {
 	return &counterCache{
 		cache: make(map[string]*counterCacheEntry),
 		log:   log}
@@ -84,7 +84,7 @@ func NewCounterCacheEntry(value *monpb.TypedValue, ts *tspb.Timestamp) *counterC
 	return &counterCacheEntry{LastValue: value, StartTime: tspb.New(backDatedStart)}
 }
 
-func GetCounterCacheKey(m telegraf.Metric, f *telegraf.Field) string {
+func GetCounterCacheKey(m Dana.Metric, f *Dana.Field) string {
 	// normalize tag list to form a predictable key
 	tags := make([]string, 0, len(m.TagList()))
 	for _, t := range m.TagList() {

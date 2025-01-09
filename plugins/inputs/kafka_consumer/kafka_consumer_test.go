@@ -371,7 +371,7 @@ func TestConsumerGroupHandlerConsumeClaim(t *testing.T) {
 	err = cg.Cleanup(session)
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},
@@ -391,7 +391,7 @@ func TestConsumerGroupHandlerHandle(t *testing.T) {
 		maxMessageLen       int
 		topicTag            string
 		msg                 *sarama.ConsumerMessage
-		expected            []telegraf.Metric
+		expected            []Dana.Metric
 		expectedHandleError string
 	}{
 		{
@@ -400,7 +400,7 @@ func TestConsumerGroupHandlerHandle(t *testing.T) {
 				Topic: "telegraf",
 				Value: []byte("42"),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -435,7 +435,7 @@ func TestConsumerGroupHandlerHandle(t *testing.T) {
 				Topic: "telegraf",
 				Value: []byte("42"),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -650,7 +650,7 @@ func TestKafkaTimestampSourceIntegration(t *testing.T) {
 		t.Skip("Skipping integration test in short mode")
 	}
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{},
@@ -917,7 +917,7 @@ func TestStartupErrorBehaviorRetryIntegration(t *testing.T) {
 	defer output.Close()
 
 	// Send some data to the broker so we have something to receive
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{},

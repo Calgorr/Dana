@@ -35,13 +35,13 @@ type WebSocket struct {
 	ReadTimeout    config.Duration           `toml:"read_timeout"`
 	Headers        map[string]*config.Secret `toml:"headers"`
 	UseTextFrames  bool                      `toml:"use_text_frames"`
-	Log            telegraf.Logger           `toml:"-"`
+	Log            Dana.Logger               `toml:"-"`
 	proxy.HTTPProxy
 	proxy.Socks5ProxyConfig
 	tls.ClientConfig
 
 	conn       *ws.Conn
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 }
 
 func (*WebSocket) SampleConfig() string {
@@ -49,7 +49,7 @@ func (*WebSocket) SampleConfig() string {
 }
 
 // SetSerializer implements serializers.SerializerOutput.
-func (w *WebSocket) SetSerializer(serializer telegraf.Serializer) {
+func (w *WebSocket) SetSerializer(serializer Dana.Serializer) {
 	w.serializer = serializer
 }
 
@@ -152,7 +152,7 @@ func (w *WebSocket) read(conn *ws.Conn) {
 }
 
 // Write writes the given metrics to the destination. Not thread-safe.
-func (w *WebSocket) Write(metrics []telegraf.Metric) error {
+func (w *WebSocket) Write(metrics []Dana.Metric) error {
 	if w.conn == nil {
 		// Previous write failed with error and ws conn was closed.
 		if err := w.Connect(); err != nil {
@@ -202,7 +202,7 @@ func newWebSocket() *WebSocket {
 }
 
 func init() {
-	outputs.Add("websocket", func() telegraf.Output {
+	outputs.Add("websocket", func() Dana.Output {
 		return newWebSocket()
 	})
 }

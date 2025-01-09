@@ -207,13 +207,13 @@ test_counter{label="test"} 1 1685443805885`
 	require.NoError(t, err)
 	tsAddress := u.Hostname()
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"test_counter",
 			map[string]string{"address": tsAddress, "label": "test"},
 			map[string]interface{}{"counter": float64(1.0)},
 			time.UnixMilli(1685443805885),
-			telegraf.Counter,
+			Dana.Counter,
 		),
 	}
 
@@ -466,7 +466,7 @@ go_gc_duration_seconds_count 42`
 	err = p.Gather(&acc)
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"prometheus",
 			map[string]string{
@@ -476,7 +476,7 @@ go_gc_duration_seconds_count 42`
 				"go_gc_duration_seconds": math.NaN(),
 			},
 			time.Unix(0, 0),
-			telegraf.Summary,
+			Dana.Summary,
 		),
 		testutil.MustMetric(
 			"prometheus",
@@ -487,7 +487,7 @@ go_gc_duration_seconds_count 42`
 				"go_gc_duration_seconds": math.NaN(),
 			},
 			time.Unix(0, 0),
-			telegraf.Summary,
+			Dana.Summary,
 		),
 		testutil.MustMetric(
 			"prometheus",
@@ -496,7 +496,7 @@ go_gc_duration_seconds_count 42`
 				"go_gc_duration_seconds_sum":   float64(42.0),
 				"go_gc_duration_seconds_count": float64(42)},
 			time.Unix(0, 0),
-			telegraf.Summary,
+			Dana.Summary,
 		),
 		testutil.MustMetric(
 			"prometheus_request",
@@ -505,7 +505,7 @@ go_gc_duration_seconds_count 42`
 				"content_length": int64(1),
 				"response_time":  float64(0)},
 			time.Unix(0, 0),
-			telegraf.Untyped,
+			Dana.Untyped,
 		),
 	}
 
@@ -666,7 +666,7 @@ test_counter{label="test"} 1 1685443805885`
 	require.NoError(t, err)
 	tsAddress := u.Hostname()
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"prometheus_request",
 			map[string]string{
@@ -675,7 +675,7 @@ test_counter{label="test"} 1 1685443805885`
 				"content_length": int64(1),
 				"response_time":  float64(0)},
 			time.UnixMilli(0),
-			telegraf.Untyped,
+			Dana.Untyped,
 		),
 	}
 
@@ -710,7 +710,7 @@ func TestPrometheusInternalContentBadFormat(t *testing.T) {
 	require.NoError(t, err)
 	tsAddress := u.Hostname()
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"prometheus_request",
 			map[string]string{
@@ -719,7 +719,7 @@ func TestPrometheusInternalContentBadFormat(t *testing.T) {
 				"content_length": int64(94),
 				"response_time":  float64(0)},
 			time.UnixMilli(0),
-			telegraf.Untyped,
+			Dana.Untyped,
 		),
 	}
 
@@ -745,7 +745,7 @@ func TestPrometheusInternalNoWeb(t *testing.T) {
 	require.NoError(t, err)
 	tsAddress := u.Hostname()
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"prometheus_request",
 			map[string]string{
@@ -754,7 +754,7 @@ func TestPrometheusInternalNoWeb(t *testing.T) {
 				"content_length": int64(94),
 				"response_time":  float64(0)},
 			time.UnixMilli(0),
-			telegraf.Untyped,
+			Dana.Untyped,
 		),
 	}
 
@@ -799,27 +799,27 @@ go_memstats_heap_alloc_bytes 1.581062048e+09
 	var acc testutil.Accumulator
 	require.NoError(t, p.Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"openmetric",
 			map[string]string{},
 			map[string]interface{}{"go_memstats_gc_cpu_fraction": float64(-0.00014404354379774563)},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		testutil.MustMetric(
 			"openmetric",
 			map[string]string{},
 			map[string]interface{}{"go_memstats_gc_sys_bytes": 6.0936192e+07},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		testutil.MustMetric(
 			"openmetric",
 			map[string]string{},
 			map[string]interface{}{"go_memstats_heap_alloc_bytes": 1.581062048e+09},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 	}
 
@@ -851,27 +851,27 @@ func TestOpenmetricsProtobuf(t *testing.T) {
 	var acc testutil.Accumulator
 	require.NoError(t, p.Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"openmetric",
 			map[string]string{},
 			map[string]interface{}{"go_memstats_gc_cpu_fraction": float64(-0.00014404354379774563)},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		testutil.MustMetric(
 			"openmetric",
 			map[string]string{},
 			map[string]interface{}{"go_memstats_gc_sys_bytes": 6.0936192e+07},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		testutil.MustMetric(
 			"openmetric",
 			map[string]string{},
 			map[string]interface{}{"go_memstats_heap_alloc_bytes": 1.581062048e+09},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 	}
 
@@ -914,27 +914,27 @@ go_memstats_heap_alloc_bytes 1.581062048e+09
 	var acc testutil.Accumulator
 	require.NoError(t, p.Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"openmetric",
 			map[string]string{},
 			map[string]interface{}{"go_memstats_gc_cpu_fraction": float64(-0.00014404354379774563)},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		testutil.MustMetric(
 			"openmetric",
 			map[string]string{},
 			map[string]interface{}{"go_memstats_gc_sys_bytes": 6.0936192e+07},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 		testutil.MustMetric(
 			"openmetric",
 			map[string]string{},
 			map[string]interface{}{"go_memstats_heap_alloc_bytes": 1.581062048e+09},
 			time.Unix(0, 0),
-			telegraf.Gauge,
+			Dana.Gauge,
 		),
 	}
 

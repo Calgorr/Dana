@@ -79,7 +79,7 @@ func (cb *Couchbase) Init() error {
 
 // Gather reads stats from all configured clusters. Accumulates stats.
 // Returns one of the errors encountered while gathering stats (if any).
-func (cb *Couchbase) Gather(acc telegraf.Accumulator) error {
+func (cb *Couchbase) Gather(acc Dana.Accumulator) error {
 	if len(cb.Servers) == 0 {
 		return cb.gatherServer(acc, "http://localhost:8091/")
 	}
@@ -98,7 +98,7 @@ func (cb *Couchbase) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (cb *Couchbase) gatherServer(acc telegraf.Accumulator, addr string) error {
+func (cb *Couchbase) gatherServer(acc Dana.Accumulator, addr string) error {
 	escapedAddr := regexpURI.ReplaceAllString(addr, "${1}")
 
 	client, err := couchbase.Connect(addr)
@@ -474,7 +474,7 @@ func (cb *Couchbase) queryDetailedBucketStats(server, bucket, nodeHostname strin
 }
 
 func init() {
-	inputs.Add("couchbase", func() telegraf.Input {
+	inputs.Add("couchbase", func() Dana.Input {
 		return &Couchbase{
 			BucketStatsIncluded: []string{"quota_percent_used", "ops_per_sec", "disk_fetches", "item_count", "disk_used", "data_used", "mem_used"},
 			ClusterBucketStats:  true,

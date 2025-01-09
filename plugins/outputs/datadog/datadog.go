@@ -30,7 +30,7 @@ type Datadog struct {
 	URL          string          `toml:"url"`
 	Compression  string          `toml:"compression"`
 	RateInterval config.Duration `toml:"rate_interval"`
-	Log          telegraf.Logger `toml:"-"`
+	Log          Dana.Logger     `toml:"-"`
 
 	client *http.Client
 	proxy.HTTPProxy
@@ -76,7 +76,7 @@ func (d *Datadog) Connect() error {
 	return nil
 }
 
-func (d *Datadog) convertToDatadogMetric(metrics []telegraf.Metric) []*Metric {
+func (d *Datadog) convertToDatadogMetric(metrics []Dana.Metric) []*Metric {
 	tempSeries := make([]*Metric, 0, len(metrics))
 	for _, m := range metrics {
 		if dogMs, err := buildMetrics(m); err == nil {
@@ -102,19 +102,19 @@ func (d *Datadog) convertToDatadogMetric(metrics []telegraf.Metric) []*Metric {
 				var interval int64
 				interval = 1
 				switch m.Type() {
-				case telegraf.Counter, telegraf.Untyped:
+				case Dana.Counter, Dana.Untyped:
 					if d.RateInterval > 0 && isRateable(statsDMetricType, fieldName) {
 						// interval is expected to be in seconds
 						rateIntervalSeconds := time.Duration(d.RateInterval).Seconds()
 						interval = int64(rateIntervalSeconds)
 						dogM[1] = dogM[1] / rateIntervalSeconds
 						tname = "rate"
-					} else if m.Type() == telegraf.Counter {
+					} else if m.Type() == Dana.Counter {
 						tname = "count"
 					} else {
 						tname = ""
 					}
-				case telegraf.Gauge:
+				case Dana.Gauge:
 					tname = "gauge"
 				default:
 					tname = ""
@@ -136,7 +136,7 @@ func (d *Datadog) convertToDatadogMetric(metrics []telegraf.Metric) []*Metric {
 	return tempSeries
 }
 
-func (d *Datadog) Write(metrics []telegraf.Metric) error {
+func (d *Datadog) Write(metrics []Dana.Metric) error {
 	ts := TimeSeries{}
 	tempSeries := d.convertToDatadogMetric(metrics)
 
@@ -202,7 +202,7 @@ func (d *Datadog) authenticatedURL() string {
 	return fmt.Sprintf("%s?%s", d.URL, q.Encode())
 }
 
-func buildMetrics(m telegraf.Metric) (map[string]Point, error) {
+func buildMetrics(m Dana.Metric) (map[string]Point, error) {
 	ms := make(map[string]Point)
 	for _, field := range m.FieldList() {
 		if !verifyValue(field.Value) {
@@ -218,7 +218,7 @@ func buildMetrics(m telegraf.Metric) (map[string]Point, error) {
 	return ms, nil
 }
 
-func buildTags(tagList []*telegraf.Tag) []string {
+func buildTags(tagList []*Dana.Tag) []string {
 	tags := make([]string, 0, len(tagList))
 	for _, tag := range tagList {
 		tags = append(tags, fmt.Sprintf("%s:%s", tag.Key, tag.Value))
@@ -275,7 +275,7 @@ func (d *Datadog) Close() error {
 }
 
 func init() {
-	outputs.Add("datadog", func() telegraf.Output {
+	outputs.Add("datadog", func() Dana.Output {
 		return &Datadog{
 			URL:         datadogAPI,
 			Compression: "none",

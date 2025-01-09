@@ -40,7 +40,7 @@ const measurementSentinels = "redis_sentinel_sentinels"
 const measurementReplicas = "redis_sentinel_replicas"
 
 func init() {
-	inputs.Add("redis_sentinel", func() telegraf.Input {
+	inputs.Add("redis_sentinel", func() Dana.Input {
 		return &RedisSentinel{}
 	})
 }
@@ -172,13 +172,13 @@ func prepareFieldValues(fields map[string]string, typeMap map[string]configField
 
 // Reads stats from all configured servers accumulates stats.
 // Returns one of the errors encountered while gather stats (if any).
-func (r *RedisSentinel) Gather(acc telegraf.Accumulator) error {
+func (r *RedisSentinel) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	for _, client := range r.clients {
 		wg.Add(1)
 
-		go func(acc telegraf.Accumulator, client *RedisSentinelClient) {
+		go func(acc Dana.Accumulator, client *RedisSentinelClient) {
 			defer wg.Done()
 
 			masters, err := client.gatherMasterStats(acc)
@@ -198,7 +198,7 @@ func (r *RedisSentinel) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (client *RedisSentinelClient) gatherInfoStats(acc telegraf.Accumulator) error {
+func (client *RedisSentinelClient) gatherInfoStats(acc Dana.Accumulator) error {
 	infoCmd := redis.NewStringCmd("info", "all")
 	if err := client.sentinel.Process(infoCmd); err != nil {
 		return err
@@ -220,7 +220,7 @@ func (client *RedisSentinelClient) gatherInfoStats(acc telegraf.Accumulator) err
 	return nil
 }
 
-func (client *RedisSentinelClient) gatherMasterStats(acc telegraf.Accumulator) ([]string, error) {
+func (client *RedisSentinelClient) gatherMasterStats(acc Dana.Accumulator) ([]string, error) {
 	mastersCmd := redis.NewSliceCmd("sentinel", "masters")
 	if err := client.sentinel.Process(mastersCmd); err != nil {
 		return nil, err
@@ -262,7 +262,7 @@ func (client *RedisSentinelClient) gatherMasterStats(acc telegraf.Accumulator) (
 	return masterNames, nil
 }
 
-func (client *RedisSentinelClient) gatherReplicaStats(acc telegraf.Accumulator, masterName string) error {
+func (client *RedisSentinelClient) gatherReplicaStats(acc Dana.Accumulator, masterName string) error {
 	replicasCmd := redis.NewSliceCmd("sentinel", "replicas", masterName)
 	if err := client.sentinel.Process(replicasCmd); err != nil {
 		return err
@@ -294,7 +294,7 @@ func (client *RedisSentinelClient) gatherReplicaStats(acc telegraf.Accumulator, 
 	return nil
 }
 
-func (client *RedisSentinelClient) gatherSentinelStats(acc telegraf.Accumulator, masterName string) error {
+func (client *RedisSentinelClient) gatherSentinelStats(acc Dana.Accumulator, masterName string) error {
 	sentinelsCmd := redis.NewSliceCmd("sentinel", "sentinels", masterName)
 	if err := client.sentinel.Process(sentinelsCmd); err != nil {
 		return err

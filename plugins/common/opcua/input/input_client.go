@@ -119,7 +119,7 @@ func (o *InputClientConfig) Validate() error {
 	return nil
 }
 
-func (o *InputClientConfig) CreateInputClient(log telegraf.Logger) (*OpcUAInputClient, error) {
+func (o *InputClientConfig) CreateInputClient(log Dana.Logger) (*OpcUAInputClient, error) {
 	if err := o.Validate(); err != nil {
 		return nil, err
 	}
@@ -201,7 +201,7 @@ type NodeValue struct {
 type OpcUAInputClient struct {
 	*opcua.OpcUAClient
 	Config InputClientConfig
-	Log    telegraf.Logger
+	Log    Dana.Logger
 
 	NodeMetricMapping []NodeMetricMapping
 	NodeIDs           []*ua.NodeID
@@ -415,7 +415,7 @@ func (o *OpcUAInputClient) UpdateNodeValue(nodeIdx int, d *ua.DataValue) {
 	o.LastReceivedData[nodeIdx].SourceTime = d.SourceTimestamp
 }
 
-func (o *OpcUAInputClient) MetricForNode(nodeIdx int) telegraf.Metric {
+func (o *OpcUAInputClient) MetricForNode(nodeIdx int) Dana.Metric {
 	nmm := &o.NodeMetricMapping[nodeIdx]
 	fields := make(map[string]interface{})
 	tags := map[string]string{

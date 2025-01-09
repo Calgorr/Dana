@@ -33,11 +33,11 @@ type Execd struct {
 	Signal       string          `toml:"signal"`
 	RestartDelay config.Duration `toml:"restart_delay"`
 	StopOnError  bool            `toml:"stop_on_error"`
-	Log          telegraf.Logger `toml:"-"`
+	Log          Dana.Logger     `toml:"-"`
 
 	process      *process.Process
-	acc          telegraf.Accumulator
-	parser       telegraf.Parser
+	acc          Dana.Accumulator
+	parser       Dana.Parser
 	outputReader func(io.Reader)
 }
 
@@ -52,7 +52,7 @@ func (e *Execd) Init() error {
 	return nil
 }
 
-func (e *Execd) SetParser(parser telegraf.Parser) {
+func (e *Execd) SetParser(parser Dana.Parser) {
 	e.parser = parser
 	e.outputReader = e.cmdReadOut
 
@@ -64,7 +64,7 @@ func (e *Execd) SetParser(parser telegraf.Parser) {
 	}
 }
 
-func (e *Execd) Start(acc telegraf.Accumulator) error {
+func (e *Execd) Start(acc Dana.Accumulator) error {
 	e.acc = acc
 	var err error
 	e.process, err = process.New(e.Command, e.Environment)
@@ -176,7 +176,7 @@ func (e *Execd) cmdReadErr(out io.Reader) {
 }
 
 func init() {
-	inputs.Add("execd", func() telegraf.Input {
+	inputs.Add("execd", func() Dana.Input {
 		return &Execd{
 			Signal:       "none",
 			RestartDelay: config.Duration(10 * time.Second),

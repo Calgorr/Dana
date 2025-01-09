@@ -34,7 +34,7 @@ type OpensearchQuery struct {
 	HealthCheckInterval config.Duration `toml:"health_check_interval"`
 	Aggregations        []osAggregation `toml:"aggregation"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	common_tls.ClientConfig
 	osClient *opensearch.Client
@@ -86,7 +86,7 @@ func (o *OpensearchQuery) Init() error {
 	return nil
 }
 
-func (o *OpensearchQuery) Gather(acc telegraf.Accumulator) error {
+func (o *OpensearchQuery) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	for _, agg := range o.Aggregations {
@@ -151,7 +151,7 @@ func (o *OpensearchQuery) initAggregation(agg osAggregation, i int) (err error) 
 	return nil
 }
 
-func (o *OpensearchQuery) osAggregationQuery(acc telegraf.Accumulator, aggregation osAggregation) error {
+func (o *OpensearchQuery) osAggregationQuery(acc Dana.Accumulator, aggregation osAggregation) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(o.Timeout))
 	defer cancel()
 
@@ -262,7 +262,7 @@ func (aggregation *osAggregation) buildAggregationQuery() error {
 }
 
 func init() {
-	inputs.Add("opensearch_query", func() telegraf.Input {
+	inputs.Add("opensearch_query", func() Dana.Input {
 		return &OpensearchQuery{
 			Timeout:             config.Duration(time.Second * 5),
 			HealthCheckInterval: config.Duration(time.Second * 10),

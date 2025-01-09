@@ -40,7 +40,7 @@ func TestParse(t *testing.T) {
 	inoutBytes, err := prompbInput.Marshal()
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"prometheus_remote_write",
 			map[string]string{
@@ -138,7 +138,7 @@ func TestHistograms(t *testing.T) {
 	inoutBytes, err := prompbInput.Marshal()
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"prometheus_remote_write",
 			map[string]string{},
@@ -200,7 +200,7 @@ func TestDefaultTags(t *testing.T) {
 	inoutBytes, err := prompbInput.Marshal()
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"prometheus_remote_write",
 			map[string]string{
@@ -246,7 +246,7 @@ func TestMetricsWithTimestamp(t *testing.T) {
 	inoutBytes, err := prompbInput.Marshal()
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"prometheus_remote_write",
 			map[string]string{
@@ -296,7 +296,7 @@ var benchmarkData = prompb.WriteRequest{
 }
 
 func TestBenchmarkData(t *testing.T) {
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"prometheus_remote_write",
 			map[string]string{

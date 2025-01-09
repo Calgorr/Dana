@@ -22,7 +22,7 @@ type Proxmox struct {
 	NodeName        string          `toml:"node_name"`
 	tls.ClientConfig
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	httpClient *http.Client
 

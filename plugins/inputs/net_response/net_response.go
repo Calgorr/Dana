@@ -77,7 +77,7 @@ func (n *NetResponse) Init() error {
 	return nil
 }
 
-func (n *NetResponse) Gather(acc telegraf.Accumulator) error {
+func (n *NetResponse) Gather(acc Dana.Accumulator) error {
 	// Prepare host and port
 	host, port, err := net.SplitHostPort(n.Address)
 	if err != nil {
@@ -261,7 +261,7 @@ func setResult(result resultType, fields map[string]interface{}, tags map[string
 }
 
 func init() {
-	inputs.Add("net_response", func() telegraf.Input {
+	inputs.Add("net_response", func() Dana.Input {
 		return &NetResponse{}
 	})
 }

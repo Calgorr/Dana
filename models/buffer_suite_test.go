@@ -176,7 +176,7 @@ func (s *BufferSuiteTest) TestBufferBatchLatest() {
 	tx := buf.BeginTransaction(2)
 
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(1, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(2, 0)),
 		}, tx.Batch)
@@ -198,7 +198,7 @@ func (s *BufferSuiteTest) TestBufferBatchLatestWrap() {
 	tx := buf.BeginTransaction(2)
 
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(2, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(3, 0)),
 		}, tx.Batch)
@@ -216,7 +216,7 @@ func (s *BufferSuiteTest) TestBufferMultipleBatch() {
 	buf.Add(metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(6, 0)))
 	tx := buf.BeginTransaction(5)
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(1, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(2, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(3, 0)),
@@ -227,7 +227,7 @@ func (s *BufferSuiteTest) TestBufferMultipleBatch() {
 	buf.EndTransaction(tx)
 	tx = buf.BeginTransaction(5)
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(6, 0)),
 		}, tx.Batch)
 	tx.AcceptAll()
@@ -251,7 +251,7 @@ func (s *BufferSuiteTest) TestBufferRejectWithRoom() {
 
 	tx = buf.BeginTransaction(5)
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(1, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(2, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(3, 0)),
@@ -277,7 +277,7 @@ func (s *BufferSuiteTest) TestBufferRejectNothingNewFull() {
 
 	tx = buf.BeginTransaction(5)
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(1, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(2, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(3, 0)),
@@ -311,7 +311,7 @@ func (s *BufferSuiteTest) TestBufferRejectNoRoom() {
 
 	tx = buf.BeginTransaction(5)
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(4, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(5, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(6, 0)),
@@ -338,7 +338,7 @@ func (s *BufferSuiteTest) TestBufferRejectRoomExact() {
 
 	tx = buf.BeginTransaction(5)
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(1, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(2, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(3, 0)),
@@ -370,7 +370,7 @@ func (s *BufferSuiteTest) TestBufferRejectRoomOverwriteOld() {
 
 	tx = buf.BeginTransaction(5)
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(2, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(3, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(4, 0)),
@@ -402,7 +402,7 @@ func (s *BufferSuiteTest) TestBufferRejectPartialRoom() {
 
 	tx = buf.BeginTransaction(5)
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(3, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(4, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(5, 0)),
@@ -452,7 +452,7 @@ func (s *BufferSuiteTest) TestBufferRejectNewMetricsWrapped() {
 
 	tx = buf.BeginTransaction(5)
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(11, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(12, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(13, 0)),
@@ -490,7 +490,7 @@ func (s *BufferSuiteTest) TestBufferRejectWrapped() {
 
 	tx = buf.BeginTransaction(5)
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(8, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(9, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(10, 0)),
@@ -544,7 +544,7 @@ func (s *BufferSuiteTest) TestBufferRejectAdjustFirst() {
 
 	tx = buf.BeginTransaction(10)
 	testutil.RequireMetricsEqual(s.T(),
-		[]telegraf.Metric{
+		[]Dana.Metric{
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(10, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(11, 0)),
 			metric.New("cpu", map[string]string{}, map[string]interface{}{"value": 42.0}, time.Unix(12, 0)),
@@ -935,7 +935,7 @@ func (s *BufferSuiteTest) TestPartialWriteBackToFront() {
 }
 
 type mockMetric struct {
-	telegraf.Metric
+	Dana.Metric
 	AcceptF func()
 	RejectF func()
 	DropF   func()

@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type Baseband struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*Baseband) SampleConfig() string { return sampleConfig }
@@ -23,10 +23,10 @@ func (b *Baseband) Init() error {
 	b.Log.Warn("Current platform is not supported")
 	return nil
 }
-func (*Baseband) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Baseband) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("intel_baseband", func() telegraf.Input {
+	inputs.Add("intel_baseband", func() Dana.Input {
 		return &Baseband{}
 	})
 }

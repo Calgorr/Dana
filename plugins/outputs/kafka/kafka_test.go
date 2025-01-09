@@ -113,7 +113,7 @@ func TestRoutingKey(t *testing.T) {
 	tests := []struct {
 		name   string
 		kafka  *Kafka
-		metric telegraf.Metric
+		metric Dana.Metric
 		check  func(t *testing.T, routingKey string)
 	}{
 		{
@@ -121,7 +121,7 @@ func TestRoutingKey(t *testing.T) {
 			kafka: &Kafka{
 				RoutingKey: "static",
 			},
-			metric: func() telegraf.Metric {
+			metric: func() Dana.Metric {
 				m := metric.New(
 					"cpu",
 					map[string]string{},
@@ -141,7 +141,7 @@ func TestRoutingKey(t *testing.T) {
 			kafka: &Kafka{
 				RoutingKey: "random",
 			},
-			metric: func() telegraf.Metric {
+			metric: func() Dana.Metric {
 				m := metric.New(
 					"cpu",
 					map[string]string{},
@@ -194,7 +194,7 @@ func TestTopicTag(t *testing.T) {
 	tests := []struct {
 		name   string
 		plugin *Kafka
-		input  []telegraf.Metric
+		input  []Dana.Metric
 		topic  string
 		value  string
 	}{
@@ -205,7 +205,7 @@ func TestTopicTag(t *testing.T) {
 				Topic:        "telegraf",
 				producerFunc: NewMockProducer,
 			},
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -226,7 +226,7 @@ func TestTopicTag(t *testing.T) {
 				TopicTag:     "topic",
 				producerFunc: NewMockProducer,
 			},
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -249,7 +249,7 @@ func TestTopicTag(t *testing.T) {
 				TopicTag:     "topic",
 				producerFunc: NewMockProducer,
 			},
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -271,7 +271,7 @@ func TestTopicTag(t *testing.T) {
 				ExcludeTopicTag: true,
 				producerFunc:    NewMockProducer,
 			},
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{

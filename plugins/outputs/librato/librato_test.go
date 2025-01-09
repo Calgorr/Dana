@@ -38,7 +38,7 @@ func TestUriOverride(t *testing.T) {
 	l.APIUser = config.NewSecret([]byte("telegraf@influxdb.com"))
 	l.APIToken = config.NewSecret([]byte("123456"))
 	require.NoError(t, l.Connect())
-	require.NoError(t, l.Write([]telegraf.Metric{newHostMetric(int32(0), "name", "host")}))
+	require.NoError(t, l.Write([]Dana.Metric{newHostMetric(int32(0), "name", "host")}))
 }
 
 func TestBadStatusCode(t *testing.T) {
@@ -52,14 +52,14 @@ func TestBadStatusCode(t *testing.T) {
 	l.APIUser = config.NewSecret([]byte("telegraf@influxdb.com"))
 	l.APIToken = config.NewSecret([]byte("123456"))
 	require.NoError(t, l.Connect())
-	err := l.Write([]telegraf.Metric{newHostMetric(int32(0), "name", "host")})
+	err := l.Write([]Dana.Metric{newHostMetric(int32(0), "name", "host")})
 	require.ErrorContains(t, err, "received bad status code, 503")
 }
 
 func TestBuildGauge(t *testing.T) {
 	mtime := time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC).Unix()
 	var gaugeTests = []struct {
-		ptIn     telegraf.Metric
+		ptIn     Dana.Metric
 		outGauge *Gauge
 		err      error
 	}{
@@ -153,7 +153,7 @@ func TestBuildGauge(t *testing.T) {
 	}
 }
 
-func newHostMetric(value interface{}, name, host string) telegraf.Metric {
+func newHostMetric(value interface{}, name, host string) Dana.Metric {
 	m := metric.New(
 		name,
 		map[string]string{"host": host},
@@ -196,7 +196,7 @@ func TestBuildGaugeWithSource(t *testing.T) {
 		mtime,
 	)
 	var gaugeTests = []struct {
-		ptIn     telegraf.Metric
+		ptIn     Dana.Metric
 		template string
 		outGauge *Gauge
 		err      error

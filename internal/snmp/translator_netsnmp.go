@@ -15,10 +15,10 @@ import (
 // struct that implements the translator interface. This calls existing
 // code to exec netsnmp's snmptranslate program
 type netsnmpTranslator struct {
-	log telegraf.Logger
+	log Dana.Logger
 }
 
-func NewNetsnmpTranslator(log telegraf.Logger) *netsnmpTranslator {
+func NewNetsnmpTranslator(log Dana.Logger) *netsnmpTranslator {
 	return &netsnmpTranslator{log: log}
 }
 

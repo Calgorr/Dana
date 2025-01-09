@@ -14,7 +14,7 @@ import (
 	"Dana/testutil"
 )
 
-var first5 = []telegraf.Metric{
+var first5 = []Dana.Metric{
 	testutil.TestMetric(101, "metric1"),
 	testutil.TestMetric(101, "metric2"),
 	testutil.TestMetric(101, "metric3"),
@@ -22,7 +22,7 @@ var first5 = []telegraf.Metric{
 	testutil.TestMetric(101, "metric5"),
 }
 
-var next5 = []telegraf.Metric{
+var next5 = []Dana.Metric{
 	testutil.TestMetric(101, "metric6"),
 	testutil.TestMetric(101, "metric7"),
 	testutil.TestMetric(101, "metric8"),
@@ -408,7 +408,7 @@ func TestRunningOutputWriteFailOrder3(t *testing.T) {
 	// Verify that 6 metrics were written
 	require.Len(t, m.Metrics(), 6)
 	// Verify that they are in order
-	expected := []telegraf.Metric{first5[0], first5[1], first5[2], first5[3], first5[4], next5[0]}
+	expected := []Dana.Metric{first5[0], first5[1], first5[2], first5[3], first5[4], next5[0]}
 	require.Equal(t, expected, m.Metrics())
 }
 
@@ -423,7 +423,7 @@ func TestRunningOutputInternalMetrics(t *testing.T) {
 		5,
 		10)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"internal_write",
 			map[string]string{
@@ -446,7 +446,7 @@ func TestRunningOutputInternalMetrics(t *testing.T) {
 		),
 	}
 
-	var actual []telegraf.Metric
+	var actual []Dana.Metric
 	for _, m := range selfstat.Metrics() {
 		output, _ := m.GetTag("output")
 		if m.Name() == "internal_write" && output == "test_name" {
@@ -751,7 +751,7 @@ func TestRunningOutputWritePartialSuccessAndLoss(t *testing.T) {
 	for _, metric := range next5 {
 		model.AddMetric(metric)
 	}
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		/* fatal, */ first5[1], first5[2], first5[3],
 		/* fatal, */ next5[0], next5[1], next5[2],
 		next5[3], next5[4],
@@ -836,7 +836,7 @@ func TestRunningOutputWriteBatchPartialSuccessAndLoss(t *testing.T) {
 	for _, metric := range next5 {
 		model.AddMetric(metric)
 	}
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		/* fatal, */ first5[1], first5[2], first5[3],
 		/* fatal, */ next5[0], next5[1], next5[2],
 		next5[3], next5[4],
@@ -909,7 +909,7 @@ func BenchmarkRunningOutputAddFailWrites(b *testing.B) {
 type mockOutput struct {
 	sync.Mutex
 
-	metrics []telegraf.Metric
+	metrics []Dana.Metric
 
 	// Failing output simulation
 	batchAcceptSize  int
@@ -939,7 +939,7 @@ func (*mockOutput) SampleConfig() string {
 	return ""
 }
 
-func (m *mockOutput) Write(metrics []telegraf.Metric) error {
+func (m *mockOutput) Write(metrics []Dana.Metric) error {
 	m.writes++
 
 	m.Lock()
@@ -969,7 +969,7 @@ func (m *mockOutput) Write(metrics []telegraf.Metric) error {
 	return werr
 }
 
-func (m *mockOutput) Metrics() []telegraf.Metric {
+func (m *mockOutput) Metrics() []Dana.Metric {
 	m.Lock()
 	defer m.Unlock()
 	return m.metrics
@@ -992,7 +992,7 @@ func (*perfOutput) SampleConfig() string {
 	return ""
 }
 
-func (m *perfOutput) Write([]telegraf.Metric) error {
+func (m *perfOutput) Write([]Dana.Metric) error {
 	if m.failWrite {
 		return errors.New("failed write")
 	}

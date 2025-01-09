@@ -7,7 +7,7 @@ import (
 )
 
 type telegrafLoggerWrapper struct {
-	telegraf.Logger
+	Dana.Logger
 }
 
 func (t *telegrafLoggerWrapper) Log(args ...interface{}) {

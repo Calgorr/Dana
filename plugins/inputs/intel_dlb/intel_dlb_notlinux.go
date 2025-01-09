@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type IntelDLB struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*IntelDLB) SampleConfig() string { return sampleConfig }
@@ -23,10 +23,10 @@ func (i *IntelDLB) Init() error {
 	i.Log.Warn("Current platform is not supported")
 	return nil
 }
-func (*IntelDLB) Gather(_ telegraf.Accumulator) error { return nil }
+func (*IntelDLB) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("intel_dlb", func() telegraf.Input {
+	inputs.Add("intel_dlb", func() Dana.Input {
 		return &IntelDLB{}
 	})
 }

@@ -20,7 +20,7 @@ type Metric struct {
 	Tags        map[string]string
 	Fields      map[string]interface{}
 	Time        time.Time
-	Type        telegraf.ValueType
+	Type        Dana.ValueType
 }
 
 func (p *Metric) String() string {
@@ -31,12 +31,12 @@ func (p *Metric) String() string {
 type Accumulator struct {
 	nMetrics    uint64 // Needs to be first to avoid unaligned atomic operations on 32-bit archs
 	Metrics     []*Metric
-	accumulated []telegraf.Metric
+	accumulated []Dana.Metric
 	Discard     bool
 	Errors      []error
 	debug       bool
-	deliverChan chan telegraf.DeliveryInfo
-	delivered   []telegraf.DeliveryInfo
+	deliverChan chan Dana.DeliveryInfo
+	delivered   []Dana.DeliveryInfo
 
 	TimeFunc func() time.Time
 
@@ -57,18 +57,18 @@ func (a *Accumulator) NDelivered() int {
 
 // GetTelegrafMetrics returns all the metrics collected by the accumulator
 // If you are getting race conditions here then you are not waiting for all of your metrics to arrive: see Wait()
-func (a *Accumulator) GetTelegrafMetrics() []telegraf.Metric {
+func (a *Accumulator) GetTelegrafMetrics() []Dana.Metric {
 	a.Lock()
 	defer a.Unlock()
-	metrics := make([]telegraf.Metric, 0, len(a.accumulated))
+	metrics := make([]Dana.Metric, 0, len(a.accumulated))
 	metrics = append(metrics, a.accumulated...)
 	return metrics
 }
 
-func (a *Accumulator) GetDeliveries() []telegraf.DeliveryInfo {
+func (a *Accumulator) GetDeliveries() []Dana.DeliveryInfo {
 	a.Lock()
 	defer a.Unlock()
-	info := make([]telegraf.DeliveryInfo, 0, len(a.delivered))
+	info := make([]Dana.DeliveryInfo, 0, len(a.delivered))
 	info = append(info, a.delivered...)
 	return info
 }
@@ -85,14 +85,14 @@ func (a *Accumulator) ClearMetrics() {
 	defer a.Unlock()
 	atomic.StoreUint64(&a.nMetrics, 0)
 	a.Metrics = make([]*Metric, 0)
-	a.accumulated = make([]telegraf.Metric, 0)
+	a.accumulated = make([]Dana.Metric, 0)
 }
 
 func (a *Accumulator) addMeasurement(
 	measurement string,
 	tags map[string]string,
 	fields map[string]interface{},
-	tp telegraf.ValueType,
+	tp Dana.ValueType,
 	timestamp ...time.Time,
 ) {
 	a.Lock()
@@ -149,7 +149,7 @@ func (a *Accumulator) AddFields(
 	tags map[string]string,
 	timestamp ...time.Time,
 ) {
-	a.addMeasurement(measurement, tags, fields, telegraf.Untyped, timestamp...)
+	a.addMeasurement(measurement, tags, fields, Dana.Untyped, timestamp...)
 }
 
 func (a *Accumulator) AddCounter(
@@ -158,7 +158,7 @@ func (a *Accumulator) AddCounter(
 	tags map[string]string,
 	timestamp ...time.Time,
 ) {
-	a.addMeasurement(measurement, tags, fields, telegraf.Counter, timestamp...)
+	a.addMeasurement(measurement, tags, fields, Dana.Counter, timestamp...)
 }
 
 func (a *Accumulator) AddGauge(
@@ -167,10 +167,10 @@ func (a *Accumulator) AddGauge(
 	tags map[string]string,
 	timestamp ...time.Time,
 ) {
-	a.addMeasurement(measurement, tags, fields, telegraf.Gauge, timestamp...)
+	a.addMeasurement(measurement, tags, fields, Dana.Gauge, timestamp...)
 }
 
-func (a *Accumulator) AddMetrics(metrics []telegraf.Metric) {
+func (a *Accumulator) AddMetrics(metrics []Dana.Metric) {
 	for _, m := range metrics {
 		a.AddMetric(m)
 	}
@@ -182,7 +182,7 @@ func (a *Accumulator) AddSummary(
 	tags map[string]string,
 	timestamp ...time.Time,
 ) {
-	a.addMeasurement(measurement, tags, fields, telegraf.Summary, timestamp...)
+	a.addMeasurement(measurement, tags, fields, Dana.Summary, timestamp...)
 }
 
 func (a *Accumulator) AddHistogram(
@@ -191,10 +191,10 @@ func (a *Accumulator) AddHistogram(
 	tags map[string]string,
 	timestamp ...time.Time,
 ) {
-	a.addMeasurement(measurement, tags, fields, telegraf.Histogram, timestamp...)
+	a.addMeasurement(measurement, tags, fields, Dana.Histogram, timestamp...)
 }
 
-func (a *Accumulator) AddMetric(m telegraf.Metric) {
+func (a *Accumulator) AddMetric(m Dana.Metric) {
 	a.Lock()
 	defer a.Unlock()
 	atomic.AddUint64(&a.nMetrics, 1)
@@ -214,21 +214,21 @@ func (a *Accumulator) AddMetric(m telegraf.Metric) {
 	a.accumulated = append(a.accumulated, m)
 }
 
-func (a *Accumulator) WithTracking(maxTracked int) telegraf.TrackingAccumulator {
+func (a *Accumulator) WithTracking(maxTracked int) Dana.TrackingAccumulator {
 	a.trackingMutex.Lock()
 	defer a.trackingMutex.Unlock()
-	a.deliverChan = make(chan telegraf.DeliveryInfo, maxTracked)
-	a.delivered = make([]telegraf.DeliveryInfo, 0, maxTracked)
+	a.deliverChan = make(chan Dana.DeliveryInfo, maxTracked)
+	a.delivered = make([]Dana.DeliveryInfo, 0, maxTracked)
 	return a
 }
 
-func (a *Accumulator) AddTrackingMetric(m telegraf.Metric) telegraf.TrackingID {
+func (a *Accumulator) AddTrackingMetric(m Dana.Metric) Dana.TrackingID {
 	dm, id := metric.WithTracking(m, a.onDelivery)
 	a.AddMetric(dm)
 	return id
 }
 
-func (a *Accumulator) AddTrackingMetricGroup(group []telegraf.Metric) telegraf.TrackingID {
+func (a *Accumulator) AddTrackingMetricGroup(group []Dana.Metric) Dana.TrackingID {
 	db, id := metric.WithGroupTracking(group, a.onDelivery)
 	for _, m := range db {
 		a.AddMetric(m)
@@ -236,7 +236,7 @@ func (a *Accumulator) AddTrackingMetricGroup(group []telegraf.Metric) telegraf.T
 	return id
 }
 
-func (a *Accumulator) onDelivery(info telegraf.DeliveryInfo) {
+func (a *Accumulator) onDelivery(info Dana.DeliveryInfo) {
 	select {
 	case a.deliverChan <- info:
 	default:
@@ -246,7 +246,7 @@ func (a *Accumulator) onDelivery(info telegraf.DeliveryInfo) {
 	}
 }
 
-func (a *Accumulator) Delivered() <-chan telegraf.DeliveryInfo {
+func (a *Accumulator) Delivered() <-chan Dana.DeliveryInfo {
 	a.trackingMutex.Lock()
 	defer a.trackingMutex.Unlock()
 	return a.deliverChan
@@ -328,7 +328,7 @@ func (a *Accumulator) TagValue(measurement, key string) string {
 }
 
 // GatherError calls the given Gather function and returns the first error found.
-func (a *Accumulator) GatherError(gf func(telegraf.Accumulator) error) error {
+func (a *Accumulator) GatherError(gf func(Dana.Accumulator) error) error {
 	if err := gf(a); err != nil {
 		return err
 	}
@@ -766,7 +766,7 @@ func (n *NopAccumulator) AddSummary(_ string, _ map[string]interface{}, _ map[st
 }
 func (n *NopAccumulator) AddHistogram(_ string, _ map[string]interface{}, _ map[string]string, _ ...time.Time) {
 }
-func (n *NopAccumulator) AddMetric(telegraf.Metric)                       {}
-func (n *NopAccumulator) SetPrecision(_ time.Duration)                    {}
-func (n *NopAccumulator) AddError(_ error)                                {}
-func (n *NopAccumulator) WithTracking(_ int) telegraf.TrackingAccumulator { return nil }
+func (n *NopAccumulator) AddMetric(Dana.Metric)                       {}
+func (n *NopAccumulator) SetPrecision(_ time.Duration)                {}
+func (n *NopAccumulator) AddError(_ error)                            {}
+func (n *NopAccumulator) WithTracking(_ int) Dana.TrackingAccumulator { return nil }

@@ -53,7 +53,7 @@ type RabbitMQ struct {
 	FederationUpstreamInclude []string `toml:"federation_upstream_include"`
 	FederationUpstreamExclude []string `toml:"federation_upstream_exclude"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	client            *http.Client
 	excludeEveryQueue bool
@@ -240,7 +240,7 @@ type errorResponse struct {
 	Reason string `json:"reason"`
 }
 
-type gatherFunc func(r *RabbitMQ, acc telegraf.Accumulator)
+type gatherFunc func(r *RabbitMQ, acc Dana.Accumulator)
 
 var gatherFunctions = map[string]gatherFunc{
 	"exchange":   gatherExchanges,
@@ -293,7 +293,7 @@ func (r *RabbitMQ) Init() error {
 	return nil
 }
 
-func (r *RabbitMQ) Gather(acc telegraf.Accumulator) error {
+func (r *RabbitMQ) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	for name, f := range gatherFunctions {
 		// Query only metrics that are supported
@@ -381,7 +381,7 @@ func (r *RabbitMQ) requestJSON(u string, target interface{}) error {
 	return nil
 }
 
-func gatherOverview(r *RabbitMQ, acc telegraf.Accumulator) {
+func gatherOverview(r *RabbitMQ, acc Dana.Accumulator) {
 	overview := &overviewResponse{}
 
 	err := r.requestJSON("/api/overview", &overview)
@@ -429,7 +429,7 @@ func gatherOverview(r *RabbitMQ, acc telegraf.Accumulator) {
 	acc.AddFields("rabbitmq_overview", fields, tags)
 }
 
-func gatherNodes(r *RabbitMQ, acc telegraf.Accumulator) {
+func gatherNodes(r *RabbitMQ, acc Dana.Accumulator) {
 	allNodes := make([]*node, 0)
 
 	err := r.requestJSON("/api/nodes", &allNodes)
@@ -545,7 +545,7 @@ func gatherNodes(r *RabbitMQ, acc telegraf.Accumulator) {
 	wg.Wait()
 }
 
-func gatherQueues(r *RabbitMQ, acc telegraf.Accumulator) {
+func gatherQueues(r *RabbitMQ, acc Dana.Accumulator) {
 	if r.excludeEveryQueue {
 		return
 	}
@@ -611,7 +611,7 @@ func gatherQueues(r *RabbitMQ, acc telegraf.Accumulator) {
 	}
 }
 
-func gatherExchanges(r *RabbitMQ, acc telegraf.Accumulator) {
+func gatherExchanges(r *RabbitMQ, acc Dana.Accumulator) {
 	// Gather information about exchanges
 	exchanges := make([]exchange, 0)
 	err := r.requestJSON("/api/exchanges", &exchanges)
@@ -647,7 +647,7 @@ func gatherExchanges(r *RabbitMQ, acc telegraf.Accumulator) {
 	}
 }
 
-func gatherFederationLinks(r *RabbitMQ, acc telegraf.Accumulator) {
+func gatherFederationLinks(r *RabbitMQ, acc Dana.Accumulator) {
 	// Gather information about federation links
 	federationLinks := make([]federationLink, 0)
 	err := r.requestJSON("/api/federation-links", &federationLinks)
@@ -768,7 +768,7 @@ func (r *RabbitMQ) shouldGatherFederationLink(link federationLink) bool {
 }
 
 func init() {
-	inputs.Add("rabbitmq", func() telegraf.Input {
+	inputs.Add("rabbitmq", func() Dana.Input {
 		return &RabbitMQ{
 			ResponseHeaderTimeout: config.Duration(defaultResponseHeaderTimeout * time.Second),
 			ClientTimeout:         config.Duration(defaultClientTimeout * time.Second),

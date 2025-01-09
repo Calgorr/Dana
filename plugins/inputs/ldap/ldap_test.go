@@ -40,7 +40,7 @@ func TestMockResult(t *testing.T) {
 	require.NoError(t, plugin.Init())
 
 	// Setup the expectations
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"openldap",
 			map[string]string{
@@ -118,7 +118,7 @@ func TestOpenLDAPIntegration(t *testing.T) {
 	require.NoError(t, plugin.Init())
 
 	// Setup the expectations
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"openldap",
 			map[string]string{
@@ -210,7 +210,7 @@ func TestOpenLDAPReverseDNIntegration(t *testing.T) {
 	require.NoError(t, plugin.Init())
 
 	// Setup the expectations
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"openldap",
 			map[string]string{
@@ -318,7 +318,7 @@ func TestOpenLDAPStartTLSIntegration(t *testing.T) {
 	require.NoError(t, plugin.Init())
 
 	// Setup the expectations
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"openldap",
 			map[string]string{
@@ -425,7 +425,7 @@ func TestOpenLDAPLDAPSIntegration(t *testing.T) {
 	require.NoError(t, plugin.Init())
 
 	// Setup the expectations
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"openldap",
 			map[string]string{
@@ -516,7 +516,7 @@ func Test389dsIntegration(t *testing.T) {
 	require.NoError(t, plugin.Init())
 
 	// Setup the expectations
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"389ds",
 			map[string]string{

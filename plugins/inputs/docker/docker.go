@@ -81,7 +81,7 @@ type Docker struct {
 
 	IncludeSourceTag bool `toml:"source_tag"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	common_tls.ClientConfig
 
@@ -150,7 +150,7 @@ func (d *Docker) Init() error {
 	return nil
 }
 
-func (d *Docker) Gather(acc telegraf.Accumulator) error {
+func (d *Docker) Gather(acc Dana.Accumulator) error {
 	if d.client == nil {
 		c, err := d.getNewClient()
 		if err != nil {
@@ -253,7 +253,7 @@ func (d *Docker) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (d *Docker) gatherSwarmInfo(acc telegraf.Accumulator) error {
+func (d *Docker) gatherSwarmInfo(acc Dana.Accumulator) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(d.Timeout))
 	defer cancel()
 
@@ -335,7 +335,7 @@ func (d *Docker) gatherSwarmInfo(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (d *Docker) gatherInfo(acc telegraf.Accumulator) error {
+func (d *Docker) gatherInfo(acc Dana.Accumulator) error {
 	// Init vars
 	dataFields := make(map[string]interface{})
 	metadataFields := make(map[string]interface{})
@@ -480,7 +480,7 @@ func parseContainerName(containerNames []string) string {
 
 func (d *Docker) gatherContainer(
 	cntnr types.Container,
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 ) error {
 	var v *container.StatsResponse
 
@@ -541,7 +541,7 @@ func (d *Docker) gatherContainer(
 
 func (d *Docker) gatherContainerInspect(
 	cntnr types.Container,
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	tags map[string]string,
 	daemonOSType string,
 	v *container.StatsResponse,
@@ -617,7 +617,7 @@ func (d *Docker) gatherContainerInspect(
 
 func (d *Docker) parseContainerStats(
 	stat *container.StatsResponse,
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	tags map[string]string,
 	id, daemonOSType string,
 ) {
@@ -854,7 +854,7 @@ func getDeviceStatMap(blkioStats container.BlkioStats) map[string]map[string]int
 }
 
 func (d *Docker) gatherBlockIOMetrics(
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	stat *container.StatsResponse,
 	tags map[string]string,
 	tm time.Time,
@@ -906,7 +906,7 @@ func (d *Docker) gatherBlockIOMetrics(
 	}
 }
 
-func (d *Docker) gatherDiskUsage(acc telegraf.Accumulator, opts types.DiskUsageOptions) {
+func (d *Docker) gatherDiskUsage(acc Dana.Accumulator, opts types.DiskUsageOptions) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(d.Timeout))
 	defer cancel()
 
@@ -1071,7 +1071,7 @@ func (d *Docker) getNewClient() (dockerClient, error) {
 }
 
 func init() {
-	inputs.Add("docker", func() telegraf.Input {
+	inputs.Add("docker", func() Dana.Input {
 		return &Docker{
 			PerDevice:        true,
 			PerDeviceInclude: []string{"cpu"},

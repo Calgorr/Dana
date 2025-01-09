@@ -24,7 +24,7 @@ type Process struct {
 	ReadStderrFn func(io.Reader)
 	RestartDelay time.Duration
 	StopOnError  bool
-	Log          telegraf.Logger
+	Log          Dana.Logger
 
 	name       string
 	args       []string

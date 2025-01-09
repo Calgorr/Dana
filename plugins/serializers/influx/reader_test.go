@@ -17,14 +17,14 @@ func TestReader(t *testing.T) {
 		name         string
 		maxLineBytes int
 		bufferSize   int
-		input        []telegraf.Metric
+		input        []Dana.Metric
 		expected     []byte
 	}{
 		{
 			name:         "minimal",
 			maxLineBytes: 4096,
 			bufferSize:   20,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -40,7 +40,7 @@ func TestReader(t *testing.T) {
 			name:         "multiple lines",
 			maxLineBytes: 4096,
 			bufferSize:   20,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -64,7 +64,7 @@ func TestReader(t *testing.T) {
 			name:         "exact fit",
 			maxLineBytes: 4096,
 			bufferSize:   15,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -80,7 +80,7 @@ func TestReader(t *testing.T) {
 			name:         "continue on failed metrics",
 			maxLineBytes: 4096,
 			bufferSize:   15,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New(
 					"",
 					map[string]string{},
@@ -104,7 +104,7 @@ func TestReader(t *testing.T) {
 			name:         "last metric failed regression",
 			maxLineBytes: 4096,
 			bufferSize:   15,
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -166,7 +166,7 @@ func TestZeroLengthBufferNoError(t *testing.T) {
 	serializer := &Serializer{
 		SortFields: true,
 	}
-	reader := NewReader([]telegraf.Metric{m}, serializer)
+	reader := NewReader([]Dana.Metric{m}, serializer)
 
 	readbuf := make([]byte, 0)
 
@@ -238,7 +238,7 @@ func BenchmarkReader(b *testing.B) {
 		},
 		time.Unix(0, 1517620624000000000),
 	)
-	metrics := make([]telegraf.Metric, 0, 1000)
+	metrics := make([]Dana.Metric, 0, 1000)
 	for i := 0; i < 1000; i++ {
 		metrics = append(metrics, m)
 	}

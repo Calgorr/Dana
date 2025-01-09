@@ -87,7 +87,7 @@ func TestListFiles(t *testing.T) {
 		name        string
 		properties  map[string]properties
 		line        string
-		expected    []telegraf.Metric
+		expected    []Dana.Metric
 		expectedErr string
 	}{
 		{
@@ -104,7 +104,7 @@ func TestListFiles(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -136,7 +136,7 @@ func TestListFiles(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -168,7 +168,7 @@ func TestListFiles(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -200,7 +200,7 @@ func TestListFiles(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -287,7 +287,7 @@ func TestShow(t *testing.T) {
 	tests := []struct {
 		name        string
 		properties  map[string]properties
-		expected    []telegraf.Metric
+		expected    []Dana.Metric
 		expectedErr string
 	}{
 		{
@@ -317,7 +317,7 @@ func TestShow(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -367,7 +367,7 @@ func TestShow(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -421,7 +421,7 @@ func TestShow(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -468,7 +468,7 @@ func TestShow(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -540,7 +540,7 @@ func TestShow(t *testing.T) {
 					},
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -611,12 +611,12 @@ func TestMultiInstance(t *testing.T) {
 	tests := []struct {
 		name     string
 		pattern  string
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name:    "multiple without concrete instance",
 			pattern: "examp* user@*",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -667,7 +667,7 @@ func TestMultiInstance(t *testing.T) {
 		{
 			name:    "multiple without instance prefix",
 			pattern: "user@1*",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -703,7 +703,7 @@ func TestMultiInstance(t *testing.T) {
 		{
 			name:    "multiple with concrete instance",
 			pattern: "user@1001.service",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -724,7 +724,7 @@ func TestMultiInstance(t *testing.T) {
 		{
 			name:    "static but loaded instance",
 			pattern: "shadow*",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -745,7 +745,7 @@ func TestMultiInstance(t *testing.T) {
 		{
 			name:    "static but not loaded instance",
 			pattern: "cups*",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"systemd_units",
 					map[string]string{
@@ -1008,7 +1008,7 @@ func (c *fakeClient) ListUnitsContext(_ context.Context) ([]sdbus.UnitStatus, er
 }
 
 // Slightly adapted version of 'parseListUnits()' function of 'subcommand_list.go'
-func oldParseListUnits(line string) ([]telegraf.Metric, error) {
+func oldParseListUnits(line string) ([]Dana.Metric, error) {
 	data := strings.Fields(line)
 	if len(data) < 4 {
 		return nil, fmt.Errorf("parsing line failed (expected at least 4 fields): %s", line)
@@ -1045,5 +1045,5 @@ func oldParseListUnits(line string) ([]telegraf.Metric, error) {
 		"sub_code":    subCode,
 	}
 
-	return []telegraf.Metric{metric.New("systemd_units", tags, fields, time.Now())}, nil
+	return []Dana.Metric{metric.New("systemd_units", tags, fields, time.Now())}, nil
 }

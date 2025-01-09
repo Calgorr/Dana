@@ -13,9 +13,9 @@ import (
 var sampleConfig string
 
 type Filter struct {
-	Rules         []rule          `toml:"rule"`
-	DefaultAction string          `toml:"default"`
-	Log           telegraf.Logger `toml:"-"`
+	Rules         []rule      `toml:"rule"`
+	DefaultAction string      `toml:"default"`
+	Log           Dana.Logger `toml:"-"`
 	defaultPass   bool
 }
 
@@ -47,8 +47,8 @@ func (f *Filter) Init() error {
 	return nil
 }
 
-func (f *Filter) Apply(in ...telegraf.Metric) []telegraf.Metric {
-	out := make([]telegraf.Metric, 0, len(in))
+func (f *Filter) Apply(in ...Dana.Metric) []Dana.Metric {
+	out := make([]Dana.Metric, 0, len(in))
 	for _, m := range in {
 		if f.applyRules(m) {
 			out = append(out, m)
@@ -59,7 +59,7 @@ func (f *Filter) Apply(in ...telegraf.Metric) []telegraf.Metric {
 	return out
 }
 
-func (f *Filter) applyRules(m telegraf.Metric) bool {
+func (f *Filter) applyRules(m Dana.Metric) bool {
 	for _, r := range f.Rules {
 		if pass, applies := r.apply(m); applies {
 			return pass
@@ -69,7 +69,7 @@ func (f *Filter) applyRules(m telegraf.Metric) bool {
 }
 
 func init() {
-	processors.Add("filter", func() telegraf.Processor {
+	processors.Add("filter", func() Dana.Processor {
 		return &Filter{}
 	})
 }

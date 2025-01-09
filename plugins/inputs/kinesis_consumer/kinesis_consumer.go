@@ -26,23 +26,23 @@ var sampleConfig string
 var once sync.Once
 
 type KinesisConsumer struct {
-	StreamName             string          `toml:"streamname"`
-	ShardIteratorType      string          `toml:"shard_iterator_type"`
-	DynamoDB               *dynamoDB       `toml:"checkpoint_dynamodb"`
-	MaxUndeliveredMessages int             `toml:"max_undelivered_messages"`
-	ContentEncoding        string          `toml:"content_encoding"`
-	Log                    telegraf.Logger `toml:"-"`
+	StreamName             string      `toml:"streamname"`
+	ShardIteratorType      string      `toml:"shard_iterator_type"`
+	DynamoDB               *dynamoDB   `toml:"checkpoint_dynamodb"`
+	MaxUndeliveredMessages int         `toml:"max_undelivered_messages"`
+	ContentEncoding        string      `toml:"content_encoding"`
+	Log                    Dana.Logger `toml:"-"`
 	common_aws.CredentialConfig
 
 	cons   *consumer.Consumer
-	parser telegraf.Parser
+	parser Dana.Parser
 	cancel context.CancelFunc
-	acc    telegraf.TrackingAccumulator
+	acc    Dana.TrackingAccumulator
 	sem    chan struct{}
 
 	checkpoint    consumer.Store
 	checkpoints   map[string]checkpoint
-	records       map[telegraf.TrackingID]string
+	records       map[Dana.TrackingID]string
 	checkpointTex sync.Mutex
 	recordsTex    sync.Mutex
 	wg            sync.WaitGroup
@@ -88,15 +88,15 @@ func (k *KinesisConsumer) Init() error {
 	return nil
 }
 
-func (k *KinesisConsumer) SetParser(parser telegraf.Parser) {
+func (k *KinesisConsumer) SetParser(parser Dana.Parser) {
 	k.parser = parser
 }
 
-func (k *KinesisConsumer) Start(acc telegraf.Accumulator) error {
+func (k *KinesisConsumer) Start(acc Dana.Accumulator) error {
 	return k.connect(acc)
 }
 
-func (k *KinesisConsumer) Gather(acc telegraf.Accumulator) error {
+func (k *KinesisConsumer) Gather(acc Dana.Accumulator) error {
 	if k.cons == nil {
 		return k.connect(acc)
 	}
@@ -129,7 +129,7 @@ func (k *KinesisConsumer) SetCheckpoint(streamName, shardID, sequenceNumber stri
 	return nil
 }
 
-func (k *KinesisConsumer) connect(acc telegraf.Accumulator) error {
+func (k *KinesisConsumer) connect(acc Dana.Accumulator) error {
 	cfg, err := k.CredentialConfig.Credentials()
 	if err != nil {
 		return err
@@ -172,7 +172,7 @@ func (k *KinesisConsumer) connect(acc telegraf.Accumulator) error {
 	k.cons = cons
 
 	k.acc = acc.WithTracking(k.MaxUndeliveredMessages)
-	k.records = make(map[telegraf.TrackingID]string, k.MaxUndeliveredMessages)
+	k.records = make(map[Dana.TrackingID]string, k.MaxUndeliveredMessages)
 	k.checkpoints = make(map[string]checkpoint, k.MaxUndeliveredMessages)
 	k.sem = make(chan struct{}, k.MaxUndeliveredMessages)
 
@@ -212,7 +212,7 @@ func (k *KinesisConsumer) connect(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (k *KinesisConsumer) onMessage(acc telegraf.TrackingAccumulator, r *consumer.Record) error {
+func (k *KinesisConsumer) onMessage(acc Dana.TrackingAccumulator, r *consumer.Record) error {
 	data, err := k.contentDecodingFunc(r.Data)
 	if err != nil {
 		return err
@@ -282,7 +282,7 @@ func (k *KinesisConsumer) onDelivery(ctx context.Context) {
 }
 
 func init() {
-	inputs.Add("kinesis_consumer", func() telegraf.Input {
+	inputs.Add("kinesis_consumer", func() Dana.Input {
 		return &KinesisConsumer{}
 	})
 }

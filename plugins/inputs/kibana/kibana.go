@@ -29,7 +29,7 @@ type Kibana struct {
 	Username string   `toml:"username"`
 	Password string   `toml:"password"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	client *http.Client
 	common_http.HTTPClientConfig
@@ -101,11 +101,11 @@ func (*Kibana) SampleConfig() string {
 	return sampleConfig
 }
 
-func (*Kibana) Start(telegraf.Accumulator) error {
+func (*Kibana) Start(Dana.Accumulator) error {
 	return nil
 }
 
-func (k *Kibana) Gather(acc telegraf.Accumulator) error {
+func (k *Kibana) Gather(acc Dana.Accumulator) error {
 	if k.client == nil {
 		client, err := k.createHTTPClient()
 
@@ -119,7 +119,7 @@ func (k *Kibana) Gather(acc telegraf.Accumulator) error {
 	wg.Add(len(k.Servers))
 
 	for _, serv := range k.Servers {
-		go func(baseUrl string, acc telegraf.Accumulator) {
+		go func(baseUrl string, acc Dana.Accumulator) {
 			defer wg.Done()
 			if err := k.gatherKibanaStatus(baseUrl, acc); err != nil {
 				acc.AddError(fmt.Errorf("[url=%s]: %w", baseUrl, err))
@@ -143,7 +143,7 @@ func (k *Kibana) createHTTPClient() (*http.Client, error) {
 	return k.HTTPClientConfig.CreateClient(ctx, k.Log)
 }
 
-func (k *Kibana) gatherKibanaStatus(baseURL string, acc telegraf.Accumulator) error {
+func (k *Kibana) gatherKibanaStatus(baseURL string, acc Dana.Accumulator) error {
 	kibanaStatus := &kibanaStatus{}
 	url := baseURL + statusPath
 
@@ -248,7 +248,7 @@ func newKibana() *Kibana {
 }
 
 func init() {
-	inputs.Add("kibana", func() telegraf.Input {
+	inputs.Add("kibana", func() Dana.Input {
 		return newKibana()
 	})
 }

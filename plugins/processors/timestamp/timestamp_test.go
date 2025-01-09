@@ -14,8 +14,8 @@ func TestCases(t *testing.T) {
 	type testcase struct {
 		name      string
 		timestamp Timestamp
-		input     telegraf.Metric
-		expected  telegraf.Metric
+		input     Dana.Metric
+		expected  Dana.Metric
 	}
 
 	testcases := []testcase{
@@ -158,7 +158,7 @@ func TestCases(t *testing.T) {
 
 			output := processor.Apply(tc.input)
 			require.Len(t, output, 1)
-			testutil.RequireMetricsEqual(t, []telegraf.Metric{tc.expected}, output)
+			testutil.RequireMetricsEqual(t, []Dana.Metric{tc.expected}, output)
 		})
 	}
 }

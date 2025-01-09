@@ -50,7 +50,7 @@ func (cfg *apiConfig) mbeansEndpoint(server, core string) string {
 	return strings.TrimSuffix(server, "/") + "/solr/" + strings.Trim(core, "/") + cfg.endpointMBeans
 }
 
-func (cfg *apiConfig) parseCore(acc telegraf.Accumulator, coreStr string, data *mBeansData, ts time.Time) {
+func (cfg *apiConfig) parseCore(acc Dana.Accumulator, coreStr string, data *mBeansData, ts time.Time) {
 	// Determine the core information element
 	var coreData json.RawMessage
 	for i := 0; i < len(data.SolrMbeans); i += 2 {
@@ -88,7 +88,7 @@ func (cfg *apiConfig) parseCore(acc telegraf.Accumulator, coreStr string, data *
 	}
 }
 
-func (cfg *apiConfig) parseCache(acc telegraf.Accumulator, core string, data *mBeansData, ts time.Time) {
+func (cfg *apiConfig) parseCache(acc Dana.Accumulator, core string, data *mBeansData, ts time.Time) {
 	// Determine the cache information element
 	var cacheData json.RawMessage
 	for i := 0; i < len(data.SolrMbeans); i += 2 {
@@ -135,7 +135,7 @@ func (cfg *apiConfig) parseCache(acc telegraf.Accumulator, core string, data *mB
 	}
 }
 
-func (cfg *apiConfig) parseQueryHandler(acc telegraf.Accumulator, core string, data *mBeansData, ts time.Time) {
+func (cfg *apiConfig) parseQueryHandler(acc Dana.Accumulator, core string, data *mBeansData, ts time.Time) {
 	// Determine the query-handler information element
 	var queryData json.RawMessage
 	for i := 0; i < len(data.SolrMbeans); i += 2 {
@@ -202,7 +202,7 @@ func (cfg *apiConfig) parseQueryHandler(acc telegraf.Accumulator, core string, d
 	}
 }
 
-func (cfg *apiConfig) parseUpdateHandler(acc telegraf.Accumulator, core string, data *mBeansData, ts time.Time) {
+func (cfg *apiConfig) parseUpdateHandler(acc Dana.Accumulator, core string, data *mBeansData, ts time.Time) {
 	// Determine the update-handler information element
 	var updateData json.RawMessage
 	for i := 0; i < len(data.SolrMbeans); i += 2 {

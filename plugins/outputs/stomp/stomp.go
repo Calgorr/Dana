@@ -20,11 +20,11 @@ import (
 var sampleConfig string
 
 type STOMP struct {
-	Host      string          `toml:"host"`
-	Username  config.Secret   `toml:"username"`
-	Password  config.Secret   `toml:"password"`
-	QueueName string          `toml:"queueName"`
-	Log       telegraf.Logger `toml:"-"`
+	Host      string        `toml:"host"`
+	Username  config.Secret `toml:"username"`
+	Password  config.Secret `toml:"password"`
+	QueueName string        `toml:"queueName"`
+	Log       Dana.Logger   `toml:"-"`
 
 	HeartBeatSend config.Duration `toml:"heartbeat_timeout_send"`
 	HeartBeatRec  config.Duration `toml:"heartbeat_timeout_receive"`
@@ -34,7 +34,7 @@ type STOMP struct {
 	conn  net.Conn
 	stomp *stomp.Conn
 
-	serialize telegraf.Serializer
+	serialize Dana.Serializer
 }
 
 func (q *STOMP) Connect() error {
@@ -70,11 +70,11 @@ func (q *STOMP) Connect() error {
 	return nil
 }
 
-func (q *STOMP) SetSerializer(serializer telegraf.Serializer) {
+func (q *STOMP) SetSerializer(serializer Dana.Serializer) {
 	q.serialize = serializer
 }
 
-func (q *STOMP) Write(metrics []telegraf.Metric) error {
+func (q *STOMP) Write(metrics []Dana.Metric) error {
 	for _, metric := range metrics {
 		values, err := q.serialize.Serialize(metric)
 		if err != nil {
@@ -110,7 +110,7 @@ func (q *STOMP) getAuthOption() (func(*stomp.Conn) error, error) {
 }
 
 func init() {
-	outputs.Add("stomp", func() telegraf.Output {
+	outputs.Add("stomp", func() Dana.Output {
 		return &STOMP{
 			Host:      "localhost:61613",
 			QueueName: "telegraf",

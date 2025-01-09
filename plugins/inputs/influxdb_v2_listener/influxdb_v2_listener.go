@@ -53,11 +53,11 @@ type InfluxDBV2Listener struct {
 	BucketTag             string          `toml:"bucket_tag"`
 	ParserType            string          `toml:"parser_type"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	ctx                 context.Context
 	cancel              context.CancelFunc
-	trackingMetricCount map[telegraf.TrackingID]int64
+	trackingMetricCount map[Dana.TrackingID]int64
 	countLock           sync.Mutex
 
 	totalUndeliveredMetrics atomic.Int64
@@ -66,9 +66,9 @@ type InfluxDBV2Listener struct {
 	listener net.Listener
 
 	server http.Server
-	acc    telegraf.Accumulator
+	acc    Dana.Accumulator
 
-	trackingAcc     telegraf.TrackingAccumulator
+	trackingAcc     Dana.TrackingAccumulator
 	bytesRecv       selfstat.Stat
 	requestsServed  selfstat.Stat
 	writesServed    selfstat.Stat
@@ -120,16 +120,16 @@ func (h *InfluxDBV2Listener) Init() error {
 	return nil
 }
 
-func (*InfluxDBV2Listener) Gather(telegraf.Accumulator) error {
+func (*InfluxDBV2Listener) Gather(Dana.Accumulator) error {
 	return nil
 }
 
-func (h *InfluxDBV2Listener) Start(acc telegraf.Accumulator) error {
+func (h *InfluxDBV2Listener) Start(acc Dana.Accumulator) error {
 	h.acc = acc
 	h.ctx, h.cancel = context.WithCancel(context.Background())
 	if h.MaxUndeliveredMetrics > 0 {
 		h.trackingAcc = h.acc.WithTracking(h.MaxUndeliveredMetrics)
-		h.trackingMetricCount = make(map[telegraf.TrackingID]int64, h.MaxUndeliveredMetrics)
+		h.trackingMetricCount = make(map[Dana.TrackingID]int64, h.MaxUndeliveredMetrics)
 		go func() {
 			for {
 				select {
@@ -298,7 +298,7 @@ func (h *InfluxDBV2Listener) handleWrite() http.HandlerFunc {
 
 		precisionStr := req.URL.Query().Get("precision")
 
-		var metrics []telegraf.Metric
+		var metrics []Dana.Metric
 		var err error
 		if h.ParserType == "upstream" {
 			parser := influx_upstream.Parser{}
@@ -358,7 +358,7 @@ func (h *InfluxDBV2Listener) handleWrite() http.HandlerFunc {
 	}
 }
 
-func (h *InfluxDBV2Listener) writeWithTracking(res http.ResponseWriter, metrics []telegraf.Metric) {
+func (h *InfluxDBV2Listener) writeWithTracking(res http.ResponseWriter, metrics []Dana.Metric) {
 	if len(metrics) > h.MaxUndeliveredMetrics {
 		res.WriteHeader(http.StatusRequestEntityTooLarge)
 		h.Log.Debugf("status %d, always rejecting batch of %d metrics: larger than max_undelivered_metrics %d",
@@ -384,7 +384,7 @@ func (h *InfluxDBV2Listener) writeWithTracking(res http.ResponseWriter, metrics 
 	res.WriteHeader(http.StatusNoContent)
 }
 
-func (h *InfluxDBV2Listener) write(res http.ResponseWriter, metrics []telegraf.Metric) {
+func (h *InfluxDBV2Listener) write(res http.ResponseWriter, metrics []Dana.Metric) {
 	for _, m := range metrics {
 		h.acc.AddMetric(m)
 	}
@@ -445,7 +445,7 @@ func getPrecisionMultiplier(precision string) time.Duration {
 }
 
 func init() {
-	inputs.Add("influxdb_v2_listener", func() telegraf.Input {
+	inputs.Add("influxdb_v2_listener", func() Dana.Input {
 		return &InfluxDBV2Listener{
 			ServiceAddress: ":8086",
 			timeFunc:       time.Now,

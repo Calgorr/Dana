@@ -15,12 +15,12 @@ import (
 
 type MandrillWebhook struct {
 	Path string
-	acc  telegraf.Accumulator
-	log  telegraf.Logger
+	acc  Dana.Accumulator
+	log  Dana.Logger
 	auth.BasicAuth
 }
 
-func (md *MandrillWebhook) Register(router *mux.Router, acc telegraf.Accumulator, log telegraf.Logger) {
+func (md *MandrillWebhook) Register(router *mux.Router, acc Dana.Accumulator, log Dana.Logger) {
 	router.HandleFunc(md.Path, returnOK).Methods("HEAD")
 	router.HandleFunc(md.Path, md.eventHandler).Methods("POST")
 

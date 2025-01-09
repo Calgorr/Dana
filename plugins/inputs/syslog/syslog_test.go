@@ -115,7 +115,7 @@ func TestUnixgram(t *testing.T) {
 	require.NoError(t, err)
 
 	// Do the comparison
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"syslog",
 			map[string]string{
@@ -158,7 +158,7 @@ func TestCases(t *testing.T) {
 	require.NoError(t, err)
 
 	// Register the plugin
-	inputs.Add("syslog", func() telegraf.Input {
+	inputs.Add("syslog", func() Dana.Input {
 		return &Syslog{
 			Trailer: nontransparent.LF,
 			Log:     testutil.Logger{},
@@ -195,7 +195,7 @@ func TestCases(t *testing.T) {
 			}
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)

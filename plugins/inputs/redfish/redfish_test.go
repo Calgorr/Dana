@@ -43,7 +43,7 @@ func TestDellApis(t *testing.T) {
 	address, _, err := net.SplitHostPort(u.Host)
 	require.NoError(t, err)
 
-	expectedMetrics := []telegraf.Metric{
+	expectedMetrics := []Dana.Metric{
 		testutil.MustMetric(
 			"redfish_thermal_temperatures",
 			map[string]string{
@@ -466,7 +466,7 @@ func TestHPApis(t *testing.T) {
 	address, _, err := net.SplitHostPort(u.Host)
 	require.NoError(t, err)
 
-	expectedMetricsHp := []telegraf.Metric{
+	expectedMetricsHp := []Dana.Metric{
 		testutil.MustMetric(
 			"redfish_thermal_temperatures",
 			map[string]string{
@@ -645,7 +645,7 @@ func TestHPilo4Apis(t *testing.T) {
 	address, _, err := net.SplitHostPort(u.Host)
 	require.NoError(t, err)
 
-	expectedMetricsHp := []telegraf.Metric{
+	expectedMetricsHp := []Dana.Metric{
 		testutil.MustMetric(
 			"redfish_thermal_temperatures",
 			map[string]string{
@@ -957,7 +957,7 @@ func TestIncludeTagSetsConfiguration(t *testing.T) {
 	address, _, err := net.SplitHostPort(u.Host)
 	require.NoError(t, err)
 
-	expectedMetricsHp := []telegraf.Metric{
+	expectedMetricsHp := []Dana.Metric{
 		testutil.MustMetric(
 			"redfish_thermal_temperatures",
 			map[string]string{

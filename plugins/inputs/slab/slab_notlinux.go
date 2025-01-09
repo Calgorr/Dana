@@ -14,18 +14,18 @@ import (
 var sampleConfig string
 
 type Slab struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (s *Slab) Init() error {
 	s.Log.Warn("current platform is not supported")
 	return nil
 }
-func (*Slab) SampleConfig() string                { return sampleConfig }
-func (*Slab) Gather(_ telegraf.Accumulator) error { return nil }
+func (*Slab) SampleConfig() string            { return sampleConfig }
+func (*Slab) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("slab", func() telegraf.Input {
+	inputs.Add("slab", func() Dana.Input {
 		return &Slab{}
 	})
 }

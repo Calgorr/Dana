@@ -43,7 +43,7 @@ type Graphite struct {
 	Template  string          `toml:"template"`
 	Templates []string        `toml:"templates"`
 	Timeout   config.Duration `toml:"timeout"`
-	Log       telegraf.Logger `toml:"-"`
+	Log       Dana.Logger     `toml:"-"`
 	common_tls.ClientConfig
 
 	connections []connection
@@ -212,7 +212,7 @@ func (g *Graphite) checkEOF(conn net.Conn) error {
 
 // Choose a random server in the cluster to write to until a successful write
 // occurs, logging each unsuccessful. If all servers fail, return error.
-func (g *Graphite) Write(metrics []telegraf.Metric) error {
+func (g *Graphite) Write(metrics []Dana.Metric) error {
 	// Prepare data
 	var batch []byte
 	for _, metric := range metrics {
@@ -300,7 +300,7 @@ func (g *Graphite) send(batch []byte) error {
 }
 
 func init() {
-	outputs.Add("graphite", func() telegraf.Output {
+	outputs.Add("graphite", func() Dana.Output {
 		return &Graphite{Timeout: config.Duration(2 * time.Second)}
 	})
 }

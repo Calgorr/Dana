@@ -39,7 +39,7 @@ type OpenTelemetry struct {
 	Attributes  map[string]string `toml:"attributes"`
 	Coralogix   *CoralogixConfig  `toml:"coralogix"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	metricsConverter     *influx2otel.LineProtocolToOtelMetrics
 	grpcClientConn       *grpc.ClientConn
@@ -123,15 +123,15 @@ func (o *OpenTelemetry) Close() error {
 }
 
 // Split metrics up by timestamp and send to Google Cloud Stackdriver
-func (o *OpenTelemetry) Write(metrics []telegraf.Metric) error {
-	metricBatch := make(map[int64][]telegraf.Metric)
+func (o *OpenTelemetry) Write(metrics []Dana.Metric) error {
+	metricBatch := make(map[int64][]Dana.Metric)
 	timestamps := make([]int64, 0, len(metrics))
 	for _, metric := range metrics {
 		timestamp := metric.Time().UnixNano()
 		if existingSlice, ok := metricBatch[timestamp]; ok {
 			metricBatch[timestamp] = append(existingSlice, metric)
 		} else {
-			metricBatch[timestamp] = []telegraf.Metric{metric}
+			metricBatch[timestamp] = []Dana.Metric{metric}
 			timestamps = append(timestamps, timestamp)
 		}
 	}
@@ -149,20 +149,20 @@ func (o *OpenTelemetry) Write(metrics []telegraf.Metric) error {
 	return nil
 }
 
-func (o *OpenTelemetry) sendBatch(metrics []telegraf.Metric) error {
+func (o *OpenTelemetry) sendBatch(metrics []Dana.Metric) error {
 	batch := o.metricsConverter.NewBatch()
 	for _, metric := range metrics {
 		var vType common.InfluxMetricValueType
 		switch metric.Type() {
-		case telegraf.Gauge:
+		case Dana.Gauge:
 			vType = common.InfluxMetricValueTypeGauge
-		case telegraf.Untyped:
+		case Dana.Untyped:
 			vType = common.InfluxMetricValueTypeUntyped
-		case telegraf.Counter:
+		case Dana.Counter:
 			vType = common.InfluxMetricValueTypeSum
-		case telegraf.Histogram:
+		case Dana.Histogram:
 			vType = common.InfluxMetricValueTypeHistogram
-		case telegraf.Summary:
+		case Dana.Summary:
 			vType = common.InfluxMetricValueTypeSummary
 		default:
 			o.Log.Warnf("Unrecognized metric type %v", metric.Type())
@@ -205,7 +205,7 @@ const (
 )
 
 func init() {
-	outputs.Add("opentelemetry", func() telegraf.Output {
+	outputs.Add("opentelemetry", func() Dana.Output {
 		return &OpenTelemetry{
 			ServiceAddress: defaultServiceAddress,
 			Timeout:        defaultTimeout,

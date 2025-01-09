@@ -33,12 +33,12 @@ type NATS struct {
 	Jetstream   *StreamConfig `toml:"jetstream"`
 	tls.ClientConfig
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	conn                  *nats.Conn
 	jetstreamClient       jetstream.JetStream
 	jetstreamStreamConfig *jetstream.StreamConfig
-	serializer            telegraf.Serializer
+	serializer            Dana.Serializer
 }
 
 // StreamConfig is the configuration for creating stream
@@ -82,7 +82,7 @@ func (*NATS) SampleConfig() string {
 	return sampleConfig
 }
 
-func (n *NATS) SetSerializer(serializer telegraf.Serializer) {
+func (n *NATS) SetSerializer(serializer Dana.Serializer) {
 	n.serializer = serializer
 }
 
@@ -254,7 +254,7 @@ func (n *NATS) Close() error {
 	return nil
 }
 
-func (n *NATS) Write(metrics []telegraf.Metric) error {
+func (n *NATS) Write(metrics []Dana.Metric) error {
 	if len(metrics) == 0 {
 		return nil
 	}
@@ -274,7 +274,7 @@ func (n *NATS) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("nats", func() telegraf.Output {
+	outputs.Add("nats", func() Dana.Output {
 		return &NATS{}
 	})
 }

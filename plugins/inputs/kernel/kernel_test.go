@@ -34,7 +34,7 @@ func TestFullProcFile(t *testing.T) {
 	acc := testutil.Accumulator{}
 	require.NoError(t, k.Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"kernel",
 			map[string]string{},
@@ -136,7 +136,7 @@ func TestKsmEnabledValidKsmDirectory(t *testing.T) {
 	acc := testutil.Accumulator{}
 	require.NoError(t, k.Gather(&acc))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"kernel",
 			map[string]string{},

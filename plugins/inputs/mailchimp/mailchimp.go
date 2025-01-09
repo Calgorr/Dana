@@ -14,10 +14,10 @@ import (
 var sampleConfig string
 
 type MailChimp struct {
-	APIKey     string          `toml:"api_key"`
-	DaysOld    int             `toml:"days_old"`
-	CampaignID string          `toml:"campaign_id"`
-	Log        telegraf.Logger `toml:"-"`
+	APIKey     string      `toml:"api_key"`
+	DaysOld    int         `toml:"days_old"`
+	CampaignID string      `toml:"campaign_id"`
+	Log        Dana.Logger `toml:"-"`
 
 	api *chimpAPI
 }
@@ -32,7 +32,7 @@ func (m *MailChimp) Init() error {
 	return nil
 }
 
-func (m *MailChimp) Gather(acc telegraf.Accumulator) error {
+func (m *MailChimp) Gather(acc Dana.Accumulator) error {
 	if m.CampaignID == "" {
 		since := ""
 		if m.DaysOld > 0 {
@@ -67,7 +67,7 @@ func (m *MailChimp) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func gatherReport(acc telegraf.Accumulator, report report, now time.Time) {
+func gatherReport(acc Dana.Accumulator, report report, now time.Time) {
 	tags := make(map[string]string)
 	tags["id"] = report.ID
 	tags["campaign_title"] = report.CampaignTitle
@@ -106,7 +106,7 @@ func gatherReport(acc telegraf.Accumulator, report report, now time.Time) {
 }
 
 func init() {
-	inputs.Add("mailchimp", func() telegraf.Input {
+	inputs.Add("mailchimp", func() Dana.Input {
 		return &MailChimp{}
 	})
 }

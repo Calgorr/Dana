@@ -59,7 +59,7 @@ type Endpoint struct {
 	customAttrEnabled bool
 	metricNameLookup  map[int32]string
 	metricNameMux     sync.RWMutex
-	log               telegraf.Logger
+	log               Dana.Logger
 	apiVersion        string
 }
 
@@ -119,7 +119,7 @@ func (e *Endpoint) getParent(obj *objectRef, res *resourceKind) (*objectRef, boo
 
 // NewEndpoint returns a new connection to a vCenter based on the URL and configuration passed
 // as parameters.
-func NewEndpoint(ctx context.Context, parent *VSphere, address *url.URL, log telegraf.Logger) (*Endpoint, error) {
+func NewEndpoint(ctx context.Context, parent *VSphere, address *url.URL, log Dana.Logger) (*Endpoint, error) {
 	e := Endpoint{
 		URL:               address,
 		Parent:            parent,
@@ -940,7 +940,7 @@ func (e *Endpoint) Close() {
 }
 
 // Collect runs a round of data collections as specified in the configuration.
-func (e *Endpoint) Collect(ctx context.Context, acc telegraf.Accumulator) error {
+func (e *Endpoint) Collect(ctx context.Context, acc Dana.Accumulator) error {
 	// Connection could have failed on init, so we need to check for a deferred
 	// init request.
 	if !e.initialized {
@@ -1098,7 +1098,7 @@ func (e *Endpoint) chunkify(ctx context.Context, res *resourceKind, now, latest 
 	te.Wait()
 }
 
-func (e *Endpoint) collectResource(ctx context.Context, resourceType string, acc telegraf.Accumulator) error {
+func (e *Endpoint) collectResource(ctx context.Context, resourceType string, acc Dana.Accumulator) error {
 	res := e.resourceKinds[resourceType]
 	client, err := e.clientFactory.GetClient(ctx)
 	if err != nil {
@@ -1220,7 +1220,7 @@ func (e *Endpoint) collectChunk(
 	ctx context.Context,
 	pqs queryChunk,
 	res *resourceKind,
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	interval time.Duration,
 ) (int, time.Time, error) {
 	e.log.Debugf("Query for %s has %d QuerySpecs", res.name, len(pqs))

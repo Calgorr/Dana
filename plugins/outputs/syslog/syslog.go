@@ -35,7 +35,7 @@ type Syslog struct {
 	Separator           string `toml:"sdparam_separator"`
 	Framing             string `toml:"framing"`
 	Trailer             nontransparent.TrailerType
-	Log                 telegraf.Logger `toml:"-"`
+	Log                 Dana.Logger `toml:"-"`
 	net.Conn
 	common_tls.ClientConfig
 	mapper *SyslogMapper
@@ -113,7 +113,7 @@ func (s *Syslog) Close() error {
 	return err
 }
 
-func (s *Syslog) Write(metrics []telegraf.Metric) (err error) {
+func (s *Syslog) Write(metrics []Dana.Metric) (err error) {
 	if s.Conn == nil {
 		// previous write failed with permanent error and socket was closed.
 		if err := s.Connect(); err != nil {
@@ -188,5 +188,5 @@ func newSyslog() *Syslog {
 }
 
 func init() {
-	outputs.Add("syslog", func() telegraf.Output { return newSyslog() })
+	outputs.Add("syslog", func() Dana.Output { return newSyslog() })
 }

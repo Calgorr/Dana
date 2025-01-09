@@ -45,7 +45,7 @@ func (i *lldInfo) hash() uint64 {
 	return h.Sum64()
 }
 
-func (i *lldInfo) metric(hostTag string) (telegraf.Metric, error) {
+func (i *lldInfo) metric(hostTag string) (Dana.Metric, error) {
 	values := make([]map[string]string, 0, len(i.Data))
 	for _, v := range i.Data {
 		values = append(values, v)
@@ -69,7 +69,7 @@ func (i *lldInfo) metric(hostTag string) (telegraf.Metric, error) {
 }
 
 type zabbixLLD struct {
-	log telegraf.Logger
+	log Dana.Logger
 
 	// current is the collection of metrics added during the recent period
 	current map[uint64]lldInfo
@@ -94,8 +94,8 @@ type zabbixLLD struct {
 // It will have only one tag, with the host.
 // It will have an uniq field, with the LLD key as the key name and the JSON data as the value
 // Eg.: lld,host=hostA disk.device.fstype.mode.path="{\"data\":[...
-func (zl *zabbixLLD) Push() []telegraf.Metric {
-	metrics := make([]telegraf.Metric, 0, len(zl.current))
+func (zl *zabbixLLD) Push() []Dana.Metric {
+	metrics := make([]Dana.Metric, 0, len(zl.current))
 	newPrevious := make(map[uint64]lldInfo, len(zl.current))
 
 	// Iterate over the data collected in the closing period and determine which
@@ -164,7 +164,7 @@ func (zl *zabbixLLD) Push() []telegraf.Metric {
 }
 
 // Add parse a metric and add it to the LLD cache.
-func (zl *zabbixLLD) Add(in telegraf.Metric) error {
+func (zl *zabbixLLD) Add(in Dana.Metric) error {
 	// Extract all necessary information from the metric
 	// Get the metric tags. The tag-list is already sorted by key name
 	tagList := in.TagList()

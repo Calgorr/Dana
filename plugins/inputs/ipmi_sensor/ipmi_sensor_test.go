@@ -684,7 +684,7 @@ func Test_parseV2(t *testing.T) {
 	tests := []struct {
 		name     string
 		args     args
-		expected []telegraf.Metric
+		expected []Dana.Metric
 		wantErr  bool
 	}{
 		{
@@ -694,7 +694,7 @@ func Test_parseV2(t *testing.T) {
 				cmdOut:     []byte("Power Supply 1   | 03h | ok  | 10.1 | 110 Watts, Presence detected"),
 				measuredAt: time.Now(),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("ipmi_sensor",
 					map[string]string{
 						"name":        "power_supply_1",
@@ -717,7 +717,7 @@ func Test_parseV2(t *testing.T) {
 				cmdOut:     []byte("Intrusion        | 73h | ok  |  7.1 |"),
 				measuredAt: time.Now(),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("ipmi_sensor",
 					map[string]string{
 						"name":        "intrusion",
@@ -739,7 +739,7 @@ func Test_parseV2(t *testing.T) {
 				cmdOut:     []byte("DIMM Thrm Mrgn 1 | B0h | ok  |  8.1 | -55 degrees C"),
 				measuredAt: time.Now(),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("ipmi_sensor",
 					map[string]string{
 						"name":        "dimm_thrm_mrgn_1",
@@ -780,7 +780,7 @@ func Test_parsePowerStatus(t *testing.T) {
 	tests := []struct {
 		name     string
 		args     args
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "Test correct parse power status off",
@@ -789,7 +789,7 @@ func Test_parsePowerStatus(t *testing.T) {
 				cmdOut:     []byte("Chassis Power is off"),
 				measuredAt: time.Now(),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("ipmi_sensor",
 					map[string]string{
 						"name":   "chassis_power_status",
@@ -807,7 +807,7 @@ func Test_parsePowerStatus(t *testing.T) {
 				cmdOut:     []byte("Chassis Power is on"),
 				measuredAt: time.Now(),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("ipmi_sensor",
 					map[string]string{
 						"name":   "chassis_power_status",
@@ -840,7 +840,7 @@ Sampling period:                          00699043 Seconds.
 Power reading state is:                   activated
 `
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("ipmi_sensor",
 			map[string]string{
 				"name":   "instantaneous_power_reading",

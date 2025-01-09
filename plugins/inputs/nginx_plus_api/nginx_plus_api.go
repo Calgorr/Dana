@@ -53,7 +53,7 @@ func (*NginxPlusAPI) SampleConfig() string {
 	return sampleConfig
 }
 
-func (n *NginxPlusAPI) Gather(acc telegraf.Accumulator) error {
+func (n *NginxPlusAPI) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	// Create an HTTP client that is re-used for each
@@ -110,7 +110,7 @@ func (n *NginxPlusAPI) createHTTPClient() (*http.Client, error) {
 }
 
 func init() {
-	inputs.Add("nginx_plus_api", func() telegraf.Input {
+	inputs.Add("nginx_plus_api", func() Dana.Input {
 		return &NginxPlusAPI{}
 	})
 }

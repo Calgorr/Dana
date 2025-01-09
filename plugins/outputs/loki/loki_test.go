@@ -20,7 +20,7 @@ import (
 	"Dana/testutil"
 )
 
-func getMetric() telegraf.Metric {
+func getMetric() Dana.Metric {
 	return testutil.MustMetric(
 		"log",
 		map[string]string{
@@ -34,8 +34,8 @@ func getMetric() telegraf.Metric {
 	)
 }
 
-func getOutOfOrderMetrics() []telegraf.Metric {
-	return []telegraf.Metric{
+func getOutOfOrderMetrics() []Dana.Metric {
+	return []Dana.Metric{
 		testutil.MustMetric(
 			"log",
 			map[string]string{
@@ -124,7 +124,7 @@ func TestStatusCode(t *testing.T) {
 
 			require.NoError(t, tt.plugin.Connect())
 
-			err = tt.plugin.Write([]telegraf.Metric{getMetric()})
+			err = tt.plugin.Write([]Dana.Metric{getMetric()})
 			tt.errFunc(t, err)
 		})
 	}
@@ -173,7 +173,7 @@ func TestContentType(t *testing.T) {
 
 			require.NoError(t, tt.plugin.Connect())
 
-			err = tt.plugin.Write([]telegraf.Metric{getMetric()})
+			err = tt.plugin.Write([]Dana.Metric{getMetric()})
 			require.NoError(t, err)
 		})
 	}
@@ -282,7 +282,7 @@ func TestContentEncodingGzip(t *testing.T) {
 
 			require.NoError(t, tt.plugin.Connect())
 
-			err = tt.plugin.Write([]telegraf.Metric{getMetric()})
+			err = tt.plugin.Write([]Dana.Metric{getMetric()})
 			require.NoError(t, err)
 		})
 	}
@@ -349,7 +349,7 @@ func TestMetricNameLabel(t *testing.T) {
 				MetricNameLabel: tt.metricNameLabel,
 			}
 			require.NoError(t, l.Connect())
-			require.NoError(t, l.Write([]telegraf.Metric{getMetric()}))
+			require.NoError(t, l.Write([]Dana.Metric{getMetric()}))
 		})
 	}
 }
@@ -400,7 +400,7 @@ func TestBasicAuth(t *testing.T) {
 			}
 			require.NoError(t, plugin.Connect())
 
-			require.NoError(t, plugin.Write([]telegraf.Metric{getMetric()}))
+			require.NoError(t, plugin.Write([]Dana.Metric{getMetric()}))
 		})
 	}
 }
@@ -470,7 +470,7 @@ func TestOAuthClientCredentialsGrant(t *testing.T) {
 
 			require.NoError(t, tt.plugin.Connect())
 
-			err = tt.plugin.Write([]telegraf.Metric{getMetric()})
+			err = tt.plugin.Write([]Dana.Metric{getMetric()})
 			require.NoError(t, err)
 		})
 	}
@@ -499,7 +499,7 @@ func TestDefaultUserAgent(t *testing.T) {
 
 		require.NoError(t, client.Connect())
 
-		err = client.Write([]telegraf.Metric{getMetric()})
+		err = client.Write([]Dana.Metric{getMetric()})
 		require.NoError(t, err)
 	})
 }

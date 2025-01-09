@@ -24,7 +24,7 @@ func TestMetricVersion1(t *testing.T) {
 	tests := []struct {
 		name     string
 		output   *PrometheusClient
-		metrics  []telegraf.Metric
+		metrics  []Dana.Metric
 		expected []byte
 	}{
 		{
@@ -36,7 +36,7 @@ func TestMetricVersion1(t *testing.T) {
 				Path:              "/metrics",
 				Log:               logger,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{
@@ -63,7 +63,7 @@ cpu_time_idle{host="example.org"} 42
 				Path:              "/metrics",
 				Log:               logger,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu_time_idle",
 					map[string]string{
@@ -90,7 +90,7 @@ cpu_time_idle{host="example.org"} 42
 				Path:              "/metrics",
 				Log:               logger,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu_time_idle",
 					map[string]string{
@@ -100,7 +100,7 @@ cpu_time_idle{host="example.org"} 42
 						"counter": 42.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Counter,
+					Dana.Counter,
 				),
 			},
 			expected: []byte(`
@@ -119,7 +119,7 @@ cpu_time_idle{host="example.org"} 42
 				ExportTimestamp:   true,
 				Log:               logger,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu_time_idle",
 					map[string]string{
@@ -129,7 +129,7 @@ cpu_time_idle{host="example.org"} 42
 						"counter": 42.0,
 					},
 					time.Unix(1257894000, 0),
-					telegraf.Counter,
+					Dana.Counter,
 				),
 			},
 			expected: []byte(`
@@ -148,7 +148,7 @@ cpu_time_idle{host="example.org"} 42 1257894000000
 				StringAsLabel:     true,
 				Log:               logger,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu_time_idle",
 					map[string]string{},
@@ -157,7 +157,7 @@ cpu_time_idle{host="example.org"} 42 1257894000000
 						"counter":   42.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Counter,
+					Dana.Counter,
 				),
 			},
 			expected: []byte(`
@@ -175,7 +175,7 @@ cpu_time_idle{host_name="example.org"} 42
 				Path:              "/metrics",
 				Log:               logger,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu_time_idle",
 					map[string]string{
@@ -185,7 +185,7 @@ cpu_time_idle{host_name="example.org"} 42
 						"gauge": 42.0,
 					},
 					time.Unix(0, 0),
-					telegraf.Gauge,
+					Dana.Gauge,
 				),
 			},
 			expected: []byte(`
@@ -203,7 +203,7 @@ cpu_time_idle{host="example.org"} 42
 				Path:              "/metrics",
 				Log:               logger,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"http_request_duration_seconds",
 					map[string]string{},
@@ -218,7 +218,7 @@ cpu_time_idle{host="example.org"} 42
 						"count": 144320,
 					},
 					time.Unix(0, 0),
-					telegraf.Histogram,
+					Dana.Histogram,
 				),
 			},
 			expected: []byte(`
@@ -243,7 +243,7 @@ http_request_duration_seconds_count 144320
 				Path:              "/metrics",
 				Log:               logger,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"rpc_duration_seconds",
 					map[string]string{},
@@ -257,7 +257,7 @@ http_request_duration_seconds_count 144320
 						"sum":   17560473,
 					},
 					time.Unix(0, 0),
-					telegraf.Summary,
+					Dana.Summary,
 				),
 			},
 			expected: []byte(`
@@ -282,7 +282,7 @@ rpc_duration_seconds_count 2693
 				TypeMappings:      prometheus.MetricTypes{Counter: []string{"cpu_time_idle"}},
 				Log:               logger,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu_time_idle",
 					map[string]string{
@@ -310,7 +310,7 @@ cpu_time_idle{host="example.org"} 42
 				TypeMappings:      prometheus.MetricTypes{Gauge: []string{"cpu_time_idle"}},
 				Log:               logger,
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu_time_idle",
 					map[string]string{

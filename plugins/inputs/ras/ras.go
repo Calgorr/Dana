@@ -26,7 +26,7 @@ var sampleConfig string
 type Ras struct {
 	DBPath string `toml:"db_path"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	db                *sql.DB
 	latestTimestamp   time.Time
@@ -77,7 +77,7 @@ func (*Ras) SampleConfig() string {
 }
 
 // Start initializes connection to DB, metrics are gathered in Gather
-func (r *Ras) Start(telegraf.Accumulator) error {
+func (r *Ras) Start(Dana.Accumulator) error {
 	err := validateDbPath(r.DBPath)
 	if err != nil {
 		return err
@@ -102,7 +102,7 @@ func (r *Ras) Stop() {
 }
 
 // Gather reads the stats provided by RASDaemon and writes it to the Accumulator.
-func (r *Ras) Gather(acc telegraf.Accumulator) error {
+func (r *Ras) Gather(acc Dana.Accumulator) error {
 	rows, err := r.db.Query(mceQuery, r.latestTimestamp)
 	if err != nil {
 		return err
@@ -279,7 +279,7 @@ func (r *Ras) updateMemoryCounters(mcError *machineCheckError) {
 	}
 }
 
-func addCPUSocketMetrics(acc telegraf.Accumulator, cpuSocketCounters map[int]metricCounters) {
+func addCPUSocketMetrics(acc Dana.Accumulator, cpuSocketCounters map[int]metricCounters) {
 	for socketID, data := range cpuSocketCounters {
 		tags := map[string]string{
 			"socket_id": strconv.Itoa(socketID),
@@ -294,7 +294,7 @@ func addCPUSocketMetrics(acc telegraf.Accumulator, cpuSocketCounters map[int]met
 	}
 }
 
-func addServerMetrics(acc telegraf.Accumulator, counters map[string]int64) {
+func addServerMetrics(acc Dana.Accumulator, counters map[string]int64) {
 	fields := make(map[string]interface{})
 	for errorName, count := range counters {
 		fields[errorName] = count
@@ -319,7 +319,7 @@ func parseDate(date string) (time.Time, error) {
 }
 
 func init() {
-	inputs.Add("ras", func() telegraf.Input {
+	inputs.Add("ras", func() Dana.Input {
 		//nolint:errcheck // known timestamp
 		defaultTimestamp, _ := parseDate("1970-01-01 00:00:01 -0700")
 		return &Ras{

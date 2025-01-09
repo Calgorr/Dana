@@ -9,7 +9,7 @@ import (
 	"Dana"
 )
 
-func collectPersistentVolumes(ctx context.Context, acc telegraf.Accumulator, ki *KubernetesInventory) {
+func collectPersistentVolumes(ctx context.Context, acc Dana.Accumulator, ki *KubernetesInventory) {
 	list, err := ki.client.getPersistentVolumes(ctx)
 	if err != nil {
 		acc.AddError(err)
@@ -20,7 +20,7 @@ func collectPersistentVolumes(ctx context.Context, acc telegraf.Accumulator, ki 
 	}
 }
 
-func gatherPersistentVolume(pv *corev1.PersistentVolume, acc telegraf.Accumulator) {
+func gatherPersistentVolume(pv *corev1.PersistentVolume, acc Dana.Accumulator) {
 	phaseType := 5
 	switch strings.ToLower(string(pv.Status.Phase)) {
 	case "bound":

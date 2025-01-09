@@ -29,16 +29,16 @@ type metricMeta struct {
 }
 
 type Groundwork struct {
-	Server              string          `toml:"url"`
-	AgentID             string          `toml:"agent_id"`
-	Username            config.Secret   `toml:"username"`
-	Password            config.Secret   `toml:"password"`
-	DefaultAppType      string          `toml:"default_app_type"`
-	DefaultHost         string          `toml:"default_host"`
-	DefaultServiceState string          `toml:"default_service_state"`
-	GroupTag            string          `toml:"group_tag"`
-	ResourceTag         string          `toml:"resource_tag"`
-	Log                 telegraf.Logger `toml:"-"`
+	Server              string        `toml:"url"`
+	AgentID             string        `toml:"agent_id"`
+	Username            config.Secret `toml:"username"`
+	Password            config.Secret `toml:"password"`
+	DefaultAppType      string        `toml:"default_app_type"`
+	DefaultHost         string        `toml:"default_host"`
+	DefaultServiceState string        `toml:"default_service_state"`
+	GroupTag            string        `toml:"group_tag"`
+	ResourceTag         string        `toml:"resource_tag"`
+	Log                 Dana.Logger   `toml:"-"`
 	client              clients.GWClient
 }
 
@@ -116,7 +116,7 @@ func (g *Groundwork) Close() error {
 	return nil
 }
 
-func (g *Groundwork) Write(metrics []telegraf.Metric) error {
+func (g *Groundwork) Write(metrics []Dana.Metric) error {
 	groupMap := make(map[string][]transit.ResourceRef)
 	resourceToServicesMap := make(map[string][]transit.MonitoredService)
 	for _, metric := range metrics {
@@ -194,7 +194,7 @@ func (g *Groundwork) Write(metrics []telegraf.Metric) error {
 }
 
 func init() {
-	outputs.Add("groundwork", func() telegraf.Output {
+	outputs.Add("groundwork", func() Dana.Output {
 		return &Groundwork{
 			GroupTag:            "group",
 			ResourceTag:         "host",
@@ -205,7 +205,7 @@ func init() {
 	})
 }
 
-func (g *Groundwork) parseMetric(metric telegraf.Metric) (metricMeta, *transit.MonitoredService) {
+func (g *Groundwork) parseMetric(metric Dana.Metric) (metricMeta, *transit.MonitoredService) {
 	group, _ := metric.GetTag(g.GroupTag)
 
 	resource := g.DefaultHost

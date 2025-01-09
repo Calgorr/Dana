@@ -82,7 +82,7 @@ func (d *DNSQuery) Init() error {
 	return nil
 }
 
-func (d *DNSQuery) Gather(acc telegraf.Accumulator) error {
+func (d *DNSQuery) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	for _, domain := range d.Domains {
@@ -246,7 +246,7 @@ func extractIP(record dns.RR) (string, bool) {
 }
 
 func init() {
-	inputs.Add("dns_query", func() telegraf.Input {
+	inputs.Add("dns_query", func() Dana.Input {
 		return &DNSQuery{
 			Timeout: config.Duration(2 * time.Second),
 		}

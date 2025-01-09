@@ -46,13 +46,13 @@ func TestAddNoiseToMetric(t *testing.T) {
 func TestAddNoise(t *testing.T) {
 	tests := []struct {
 		name         string
-		input        []telegraf.Metric
-		expected     []telegraf.Metric
+		input        []Dana.Metric
+		expected     []Dana.Metric
 		distribution distuv.Rander
 	}{
 		{
 			name: "int64",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": int64(5)},
@@ -64,7 +64,7 @@ func TestAddNoise(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": int64(4)},
@@ -80,7 +80,7 @@ func TestAddNoise(t *testing.T) {
 		},
 		{
 			name: "uint64",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": uint64(25)},
@@ -92,7 +92,7 @@ func TestAddNoise(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": uint64(26)},
@@ -108,7 +108,7 @@ func TestAddNoise(t *testing.T) {
 		},
 		{
 			name: "float64",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": float64(0.0005)},
@@ -120,7 +120,7 @@ func TestAddNoise(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": float64(5.0005)},
@@ -136,7 +136,7 @@ func TestAddNoise(t *testing.T) {
 		},
 		{
 			name: "float64",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": float64(0.0005)},
@@ -148,7 +148,7 @@ func TestAddNoise(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{"value": float64(-0.4995)},
@@ -183,13 +183,13 @@ func TestAddNoise(t *testing.T) {
 func TestAddNoiseOverflowCheck(t *testing.T) {
 	tests := []struct {
 		name         string
-		input        []telegraf.Metric
-		expected     []telegraf.Metric
+		input        []Dana.Metric
+		expected     []Dana.Metric
 		distribution distuv.Rander
 	}{
 		{
 			name: "underflow",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("underflow_int64",
 					map[string]string{},
 					map[string]interface{}{"value": int64(math.MinInt64)},
@@ -206,7 +206,7 @@ func TestAddNoiseOverflowCheck(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("underflow_int64",
 					map[string]string{},
 					map[string]interface{}{"value": int64(math.MinInt64)},
@@ -227,7 +227,7 @@ func TestAddNoiseOverflowCheck(t *testing.T) {
 		},
 		{
 			name: "overflow",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("overflow_int64",
 					map[string]string{},
 					map[string]interface{}{"value": int64(math.MaxInt64)},
@@ -244,7 +244,7 @@ func TestAddNoiseOverflowCheck(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("overflow_int64",
 					map[string]string{},
 					map[string]interface{}{"value": int64(math.MaxInt64)},
@@ -265,7 +265,7 @@ func TestAddNoiseOverflowCheck(t *testing.T) {
 		},
 		{
 			name: "non-numeric fields",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -275,7 +275,7 @@ func TestAddNoiseOverflowCheck(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("cpu",
 					map[string]string{},
 					map[string]interface{}{
@@ -308,13 +308,13 @@ func TestAddNoiseOverflowCheck(t *testing.T) {
 func TestAddNoiseWithZeroValue(t *testing.T) {
 	tests := []struct {
 		name         string
-		input        []telegraf.Metric
-		expected     []telegraf.Metric
+		input        []Dana.Metric
+		expected     []Dana.Metric
 		distribution distuv.Rander
 	}{
 		{
 			name: "zeros",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				testutil.MustMetric("zero_uint64",
 					map[string]string{},
 					map[string]interface{}{"value": uint64(0)},
@@ -331,7 +331,7 @@ func TestAddNoiseWithZeroValue(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric("zero_uint64",
 					map[string]string{},
 					map[string]interface{}{"value": uint64(13)},
@@ -381,7 +381,7 @@ func TestInvalidDistributionFunction(t *testing.T) {
 
 func TestTracking(t *testing.T) {
 	// Setup raw input and expected output
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New(
 			"zero_uint64",
 			map[string]string{},
@@ -402,7 +402,7 @@ func TestTracking(t *testing.T) {
 		),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"zero_uint64",
 			map[string]string{},
@@ -425,15 +425,15 @@ func TestTracking(t *testing.T) {
 
 	// Create fake notification for testing
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
 	// Convert raw input to tracking metric
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)

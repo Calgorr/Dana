@@ -49,7 +49,7 @@ type Opensearch struct {
 	HealthCheckInterval config.Duration `toml:"health_check_interval"`
 	HealthCheckTimeout  config.Duration `toml:"health_check_timeout"`
 	URLs                []string        `toml:"urls"`
-	Log                 telegraf.Logger `toml:"-"`
+	Log                 Dana.Logger     `toml:"-"`
 	tls.ClientConfig
 
 	pipelineName string
@@ -117,7 +117,7 @@ func (o *Opensearch) Init() error {
 }
 
 func init() {
-	outputs.Add("opensearch", func() telegraf.Output {
+	outputs.Add("opensearch", func() Dana.Output {
 		return &Opensearch{
 			Timeout:             config.Duration(time.Second * 5),
 			HealthCheckInterval: config.Duration(time.Second * 10),
@@ -202,7 +202,7 @@ func (o *Opensearch) newClient() error {
 // getPointID generates a unique ID for a Metric Point
 // Timestamp(ns),measurement name and Series Hash for compute the final
 // SHA256 based hash ID
-func getPointID(m telegraf.Metric) string {
+func getPointID(m Dana.Metric) string {
 	var buffer bytes.Buffer
 	buffer.WriteString(strconv.FormatInt(m.Time().Local().UnixNano(), 10))
 	buffer.WriteString(m.Name())
@@ -211,7 +211,7 @@ func getPointID(m telegraf.Metric) string {
 	return fmt.Sprintf("%x", sha256.Sum256(buffer.Bytes()))
 }
 
-func (o *Opensearch) Write(metrics []telegraf.Metric) error {
+func (o *Opensearch) Write(metrics []Dana.Metric) error {
 	// get indexers based on unique pipeline values
 	indexers := getTargetIndexers(metrics, o)
 	if len(indexers) == 0 {
@@ -312,7 +312,7 @@ func (o *Opensearch) Write(metrics []telegraf.Metric) error {
 }
 
 // BulkIndexer supports pipeline at config level so separate indexer instance for each unique pipeline
-func getTargetIndexers(metrics []telegraf.Metric, osInst *Opensearch) map[string]opensearchutil.BulkIndexer {
+func getTargetIndexers(metrics []Dana.Metric, osInst *Opensearch) map[string]opensearchutil.BulkIndexer {
 	var indexers = make(map[string]opensearchutil.BulkIndexer)
 
 	if osInst.UsePipeline != "" {
@@ -359,7 +359,7 @@ func createBulkIndexer(osInst *Opensearch, pipelineName string) (opensearchutil.
 	return opensearchutil.NewBulkIndexer(bulkIndexerConfig)
 }
 
-func (o *Opensearch) GetIndexName(metric telegraf.Metric) (string, error) {
+func (o *Opensearch) GetIndexName(metric Dana.Metric) (string, error) {
 	var buf bytes.Buffer
 	err := o.indexTmpl.Execute(&buf, metric)
 
@@ -373,7 +373,7 @@ func (o *Opensearch) GetIndexName(metric telegraf.Metric) (string, error) {
 	return indexName, nil
 }
 
-func (o *Opensearch) getPipelineName(metric telegraf.Metric) (string, error) {
+func (o *Opensearch) getPipelineName(metric Dana.Metric) (string, error) {
 	if o.UsePipeline == "" || !strings.Contains(o.UsePipeline, "{{") {
 		return o.UsePipeline, nil
 	}

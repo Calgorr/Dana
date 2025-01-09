@@ -39,7 +39,7 @@ type MongoDB struct {
 	common_tls.ClientConfig
 	Ssl ssl
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	clients   []*server
 	tlsConfig *tls.Config
@@ -95,7 +95,7 @@ func (m *MongoDB) Init() error {
 }
 
 // Start runs after init and setup mongodb connections
-func (m *MongoDB) Start(telegraf.Accumulator) error {
+func (m *MongoDB) Start(Dana.Accumulator) error {
 	for _, connURL := range m.Servers {
 		if err := m.setupConnection(connURL); err != nil {
 			return err
@@ -105,7 +105,7 @@ func (m *MongoDB) Start(telegraf.Accumulator) error {
 	return nil
 }
 
-func (m *MongoDB) Gather(acc telegraf.Accumulator) error {
+func (m *MongoDB) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	for _, client := range m.clients {
 		wg.Add(1)
@@ -188,7 +188,7 @@ func (m *MongoDB) setupConnection(connURL string) error {
 }
 
 func init() {
-	inputs.Add("mongodb", func() telegraf.Input {
+	inputs.Add("mongodb", func() Dana.Input {
 		return &MongoDB{
 			GatherClusterStatus: true,
 			GatherPerdbStats:    false,

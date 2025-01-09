@@ -1,4 +1,4 @@
-package telegraf
+package Dana
 
 // Processor is a processor plugin interface for defining new inline processors.
 // these are extremely efficient and should be used over StreamingProcessor if

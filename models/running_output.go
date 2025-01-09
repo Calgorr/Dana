@@ -50,7 +50,7 @@ type RunningOutput struct {
 	newMetricsCount int64
 	droppedMetrics  int64
 
-	Output            telegraf.Output
+	Output            Dana.Output
 	Config            *OutputConfig
 	MetricBufferLimit int
 	MetricBatchSize   int
@@ -62,7 +62,7 @@ type RunningOutput struct {
 	BatchReady chan time.Time
 
 	buffer Buffer
-	log    telegraf.Logger
+	log    Dana.Logger
 
 	started bool
 	retries uint64
@@ -70,7 +70,7 @@ type RunningOutput struct {
 	aggMutex sync.Mutex
 }
 
-func NewRunningOutput(output telegraf.Output, config *OutputConfig, batchSize, bufferLimit int) *RunningOutput {
+func NewRunningOutput(output Dana.Output, config *OutputConfig, batchSize, bufferLimit int) *RunningOutput {
 	tags := map[string]string{"output": config.Name}
 	if config.Alias != "" {
 		tags["alias"] = config.Alias
@@ -136,13 +136,13 @@ func (r *RunningOutput) LogName() string {
 	return logName("outputs", r.Config.Name, r.Config.Alias)
 }
 
-func (r *RunningOutput) metricFiltered(metric telegraf.Metric) {
+func (r *RunningOutput) metricFiltered(metric Dana.Metric) {
 	r.MetricsFiltered.Incr(1)
 	metric.Drop()
 }
 
 func (r *RunningOutput) ID() string {
-	if p, ok := r.Output.(telegraf.PluginWithID); ok {
+	if p, ok := r.Output.(Dana.PluginWithID); ok {
 		return p.ID()
 	}
 	return r.Config.ID
@@ -155,7 +155,7 @@ func (r *RunningOutput) Init() error {
 		return fmt.Errorf("invalid 'startup_error_behavior' setting %q", r.Config.StartupErrorBehavior)
 	}
 
-	if p, ok := r.Output.(telegraf.Initializer); ok {
+	if p, ok := r.Output.(Dana.Initializer); ok {
 		err := p.Init()
 		if err != nil {
 			return err
@@ -207,7 +207,7 @@ func (r *RunningOutput) Close() {
 
 // AddMetric adds a metric to the output.
 // The given metric will be copied if the output selects the metric.
-func (r *RunningOutput) AddMetric(metric telegraf.Metric) {
+func (r *RunningOutput) AddMetric(metric Dana.Metric) {
 	ok, err := r.Config.Filter.Select(metric)
 	if err != nil {
 		r.log.Errorf("filtering failed: %v", err)
@@ -221,7 +221,7 @@ func (r *RunningOutput) AddMetric(metric telegraf.Metric) {
 
 // AddMetricNoCopy adds a metric to the output.
 // Takes ownership of metric regardless of whether the output selects it for outputting.
-func (r *RunningOutput) AddMetricNoCopy(metric telegraf.Metric) {
+func (r *RunningOutput) AddMetricNoCopy(metric Dana.Metric) {
 	ok, err := r.Config.Filter.Select(metric)
 	if err != nil {
 		r.log.Errorf("filtering failed: %v", err)
@@ -233,14 +233,14 @@ func (r *RunningOutput) AddMetricNoCopy(metric telegraf.Metric) {
 	r.add(metric)
 }
 
-func (r *RunningOutput) add(metric telegraf.Metric) {
+func (r *RunningOutput) add(metric Dana.Metric) {
 	r.Config.Filter.Modify(metric)
 	if len(metric.FieldList()) == 0 {
 		r.metricFiltered(metric)
 		return
 	}
 
-	if output, ok := r.Output.(telegraf.AggregatingOutput); ok {
+	if output, ok := r.Output.(Dana.AggregatingOutput); ok {
 		r.aggMutex.Lock()
 		output.Add(metric)
 		r.aggMutex.Unlock()
@@ -291,7 +291,7 @@ func (r *RunningOutput) Write() error {
 		}
 	}
 
-	if output, ok := r.Output.(telegraf.AggregatingOutput); ok {
+	if output, ok := r.Output.(Dana.AggregatingOutput); ok {
 		r.aggMutex.Lock()
 		metrics := output.Push()
 		r.buffer.Add(metrics...)
@@ -344,7 +344,7 @@ func (r *RunningOutput) WriteBatch() error {
 	return err
 }
 
-func (r *RunningOutput) writeMetrics(metrics []telegraf.Metric) error {
+func (r *RunningOutput) writeMetrics(metrics []Dana.Metric) error {
 	dropped := atomic.LoadInt64(&r.droppedMetrics)
 	if dropped > 0 {
 		r.log.Warnf("Metric buffer overflow; %d metrics have been dropped", dropped)
@@ -391,7 +391,7 @@ func (r *RunningOutput) LogBufferStatus() {
 	}
 }
 
-func (r *RunningOutput) Log() telegraf.Logger {
+func (r *RunningOutput) Log() Dana.Logger {
 	return r.log
 }
 

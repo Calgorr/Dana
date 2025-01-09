@@ -86,7 +86,7 @@ func (m *Mock) Init() error {
 	return nil
 }
 
-func (m *Mock) Gather(acc telegraf.Accumulator) error {
+func (m *Mock) Gather(acc Dana.Accumulator) error {
 	fields := make(map[string]interface{})
 	m.generateRandomFloat64(fields)
 	m.generateStockPrice(fields)
@@ -156,7 +156,7 @@ func (m *Mock) generateStockPrice(fields map[string]interface{}) {
 }
 
 func init() {
-	inputs.Add("mock", func() telegraf.Input {
+	inputs.Add("mock", func() Dana.Input {
 		return &Mock{}
 	})
 }

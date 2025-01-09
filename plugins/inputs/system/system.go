@@ -22,14 +22,14 @@ import (
 var sampleConfig string
 
 type SystemStats struct {
-	Log telegraf.Logger
+	Log Dana.Logger
 }
 
 func (*SystemStats) SampleConfig() string {
 	return sampleConfig
 }
 
-func (s *SystemStats) Gather(acc telegraf.Accumulator) error {
+func (s *SystemStats) Gather(acc Dana.Accumulator) error {
 	loadavg, err := load.Avg()
 	if err != nil && !strings.Contains(err.Error(), "not implemented") {
 		return err
@@ -111,7 +111,7 @@ func formatUptime(uptime uint64) string {
 }
 
 func init() {
-	inputs.Add("system", func() telegraf.Input {
+	inputs.Add("system", func() Dana.Input {
 		return &SystemStats{}
 	})
 }

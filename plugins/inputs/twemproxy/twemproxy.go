@@ -26,7 +26,7 @@ func (*Twemproxy) SampleConfig() string {
 }
 
 // Gather data from all Twemproxy instances
-func (t *Twemproxy) Gather(acc telegraf.Accumulator) error {
+func (t *Twemproxy) Gather(acc Dana.Accumulator) error {
 	conn, err := net.DialTimeout("tcp", t.Addr, 1*time.Second)
 	if err != nil {
 		return err
@@ -50,7 +50,7 @@ func (t *Twemproxy) Gather(acc telegraf.Accumulator) error {
 
 // Process Twemproxy server stats
 func (t *Twemproxy) processStat(
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	tags map[string]string,
 	data map[string]interface{},
 ) {
@@ -83,7 +83,7 @@ func (t *Twemproxy) processStat(
 }
 
 // Process pool data in Twemproxy stats
-func processPool(acc telegraf.Accumulator, tags map[string]string, data map[string]interface{}) {
+func processPool(acc Dana.Accumulator, tags map[string]string, data map[string]interface{}) {
 	serverTags := make(map[string]map[string]string)
 
 	fields := make(map[string]interface{})
@@ -107,7 +107,7 @@ func processPool(acc telegraf.Accumulator, tags map[string]string, data map[stri
 }
 
 // Process backend server(redis/memcached) stats
-func processServer(acc telegraf.Accumulator, tags map[string]string, data map[string]interface{}) {
+func processServer(acc Dana.Accumulator, tags map[string]string, data map[string]interface{}) {
 	fields := make(map[string]interface{})
 	for key, value := range data {
 		if val, ok := value.(float64); ok {
@@ -127,7 +127,7 @@ func copyTags(tags map[string]string) map[string]string {
 }
 
 func init() {
-	inputs.Add("twemproxy", func() telegraf.Input {
+	inputs.Add("twemproxy", func() Dana.Input {
 		return &Twemproxy{}
 	})
 }

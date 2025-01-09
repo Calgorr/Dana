@@ -323,7 +323,7 @@ func setChassisTags(chassis *chassis, tags map[string]string) {
 	tags["chassis_health"] = chassis.Status.Health
 }
 
-func (r *Redfish) Gather(acc telegraf.Accumulator) error {
+func (r *Redfish) Gather(acc Dana.Accumulator) error {
 	address, _, err := net.SplitHostPort(r.baseURL.Host)
 	if err != nil {
 		address = r.baseURL.Host
@@ -358,7 +358,7 @@ func (r *Redfish) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (r *Redfish) gatherThermal(acc telegraf.Accumulator, address string, system *system, chassis *chassis) error {
+func (r *Redfish) gatherThermal(acc Dana.Accumulator, address string, system *system, chassis *chassis) error {
 	thermal, err := r.getThermal(chassis.Thermal.Ref)
 	if err != nil {
 		return err
@@ -430,7 +430,7 @@ func (r *Redfish) gatherThermal(acc telegraf.Accumulator, address string, system
 	return nil
 }
 
-func (r *Redfish) gatherPower(acc telegraf.Accumulator, address string, system *system, chassis *chassis) error {
+func (r *Redfish) gatherPower(acc Dana.Accumulator, address string, system *system, chassis *chassis) error {
 	power, err := r.getPower(chassis.Power.Ref)
 	if err != nil {
 		return err
@@ -526,7 +526,7 @@ func (r *Redfish) gatherPower(acc telegraf.Accumulator, address string, system *
 }
 
 func init() {
-	inputs.Add("redfish", func() telegraf.Input {
+	inputs.Add("redfish", func() Dana.Input {
 		return &Redfish{
 			// default tag set of chassis.location required for backwards compatibility
 			IncludeTagSets: []string{tagSetChassisLocation},

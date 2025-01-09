@@ -53,7 +53,7 @@ func TestSingleMetricTDigest(t *testing.T) {
 	err := q.Init()
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"test",
 			map[string]string{"foo": "bar"},
@@ -84,7 +84,7 @@ func TestSingleMetricTDigest(t *testing.T) {
 		),
 	}
 
-	metrics := make([]telegraf.Metric, 0, 100)
+	metrics := make([]Dana.Metric, 0, 100)
 	for i := 0; i < 100; i++ {
 		metrics = append(metrics, testutil.MustMetric(
 			"test",
@@ -123,7 +123,7 @@ func TestMultipleMetricsTDigest(t *testing.T) {
 	err := q.Init()
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"test",
 			map[string]string{"series": "foo"},
@@ -144,8 +144,8 @@ func TestMultipleMetricsTDigest(t *testing.T) {
 		),
 	}
 
-	metricsA := make([]telegraf.Metric, 0, 100)
-	metricsB := make([]telegraf.Metric, 0, 100)
+	metricsA := make([]Dana.Metric, 0, 100)
+	metricsB := make([]Dana.Metric, 0, 100)
 	for i := 0; i < 100; i++ {
 		metricsA = append(metricsA, testutil.MustMetric(
 			"test",
@@ -185,7 +185,7 @@ func TestSingleMetricExactR7(t *testing.T) {
 	err := q.Init()
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"test",
 			map[string]string{"foo": "bar"},
@@ -216,7 +216,7 @@ func TestSingleMetricExactR7(t *testing.T) {
 		),
 	}
 
-	metrics := make([]telegraf.Metric, 0, 100)
+	metrics := make([]Dana.Metric, 0, 100)
 	for i := 0; i < 100; i++ {
 		metrics = append(metrics, testutil.MustMetric(
 			"test",
@@ -255,7 +255,7 @@ func TestMultipleMetricsExactR7(t *testing.T) {
 	err := q.Init()
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"test",
 			map[string]string{"series": "foo"},
@@ -276,8 +276,8 @@ func TestMultipleMetricsExactR7(t *testing.T) {
 		),
 	}
 
-	metricsA := make([]telegraf.Metric, 0, 100)
-	metricsB := make([]telegraf.Metric, 0, 100)
+	metricsA := make([]Dana.Metric, 0, 100)
+	metricsB := make([]Dana.Metric, 0, 100)
 	for i := 0; i < 100; i++ {
 		metricsA = append(metricsA, testutil.MustMetric(
 			"test",
@@ -317,7 +317,7 @@ func TestSingleMetricExactR8(t *testing.T) {
 	err := q.Init()
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"test",
 			map[string]string{"foo": "bar"},
@@ -348,7 +348,7 @@ func TestSingleMetricExactR8(t *testing.T) {
 		),
 	}
 
-	metrics := make([]telegraf.Metric, 0, 100)
+	metrics := make([]Dana.Metric, 0, 100)
 	for i := 0; i < 100; i++ {
 		metrics = append(metrics, testutil.MustMetric(
 			"test",
@@ -387,7 +387,7 @@ func TestMultipleMetricsExactR8(t *testing.T) {
 	err := q.Init()
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"test",
 			map[string]string{"series": "foo"},
@@ -408,8 +408,8 @@ func TestMultipleMetricsExactR8(t *testing.T) {
 		),
 	}
 
-	metricsA := make([]telegraf.Metric, 0, 100)
-	metricsB := make([]telegraf.Metric, 0, 100)
+	metricsA := make([]Dana.Metric, 0, 100)
+	metricsB := make([]Dana.Metric, 0, 100)
 	for i := 0; i < 100; i++ {
 		metricsA = append(metricsA, testutil.MustMetric(
 			"test",
@@ -440,7 +440,7 @@ func TestMultipleMetricsExactR8(t *testing.T) {
 }
 
 func BenchmarkDefaultTDigest(b *testing.B) {
-	metrics := make([]telegraf.Metric, 0, 100)
+	metrics := make([]Dana.Metric, 0, 100)
 	for i := 0; i < 100; i++ {
 		metrics = append(metrics, testutil.MustMetric(
 			"test",
@@ -476,7 +476,7 @@ func BenchmarkDefaultTDigest(b *testing.B) {
 }
 
 func BenchmarkDefaultTDigest100Q(b *testing.B) {
-	metrics := make([]telegraf.Metric, 0, 100)
+	metrics := make([]Dana.Metric, 0, 100)
 	for i := 0; i < 100; i++ {
 		metrics = append(metrics, testutil.MustMetric(
 			"test",
@@ -517,7 +517,7 @@ func BenchmarkDefaultTDigest100Q(b *testing.B) {
 }
 
 func BenchmarkDefaultExactR7(b *testing.B) {
-	metrics := make([]telegraf.Metric, 0, 100)
+	metrics := make([]Dana.Metric, 0, 100)
 	for i := 0; i < 100; i++ {
 		metrics = append(metrics, testutil.MustMetric(
 			"test",
@@ -553,7 +553,7 @@ func BenchmarkDefaultExactR7(b *testing.B) {
 }
 
 func BenchmarkDefaultExactR7100Q(b *testing.B) {
-	metrics := make([]telegraf.Metric, 0, 100)
+	metrics := make([]Dana.Metric, 0, 100)
 	for i := 0; i < 100; i++ {
 		metrics = append(metrics, testutil.MustMetric(
 			"test",
@@ -594,7 +594,7 @@ func BenchmarkDefaultExactR7100Q(b *testing.B) {
 }
 
 func BenchmarkDefaultExactR8(b *testing.B) {
-	metrics := make([]telegraf.Metric, 0, 100)
+	metrics := make([]Dana.Metric, 0, 100)
 	for i := 0; i < 100; i++ {
 		metrics = append(metrics, testutil.MustMetric(
 			"test",
@@ -630,7 +630,7 @@ func BenchmarkDefaultExactR8(b *testing.B) {
 }
 
 func BenchmarkDefaultExactR8100Q(b *testing.B) {
-	metrics := make([]telegraf.Metric, 0, 100)
+	metrics := make([]Dana.Metric, 0, 100)
 	for i := 0; i < 100; i++ {
 		metrics = append(metrics, testutil.MustMetric(
 			"test",

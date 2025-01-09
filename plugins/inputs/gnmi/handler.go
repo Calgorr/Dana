@@ -47,12 +47,12 @@ type handler struct {
 	tagPathPrefix       bool
 	guessPathStrategy   string
 	decoder             *yangmodel.Decoder
-	log                 telegraf.Logger
+	log                 Dana.Logger
 	keepalive.ClientParameters
 }
 
 // SubscribeGNMI and extract telemetry data
-func (h *handler) subscribeGNMI(ctx context.Context, acc telegraf.Accumulator, tlscfg *tls.Config, request *gnmi.SubscribeRequest) error {
+func (h *handler) subscribeGNMI(ctx context.Context, acc Dana.Accumulator, tlscfg *tls.Config, request *gnmi.SubscribeRequest) error {
 	var creds credentials.TransportCredentials
 	if tlscfg != nil {
 		creds = credentials.NewTLS(tlscfg)
@@ -126,7 +126,7 @@ func (h *handler) subscribeGNMI(ctx context.Context, acc telegraf.Accumulator, t
 }
 
 // Handle SubscribeResponse_Update message from gNMI and parse contained telemetry data
-func (h *handler) handleSubscribeResponseUpdate(acc telegraf.Accumulator, response *gnmi.SubscribeResponse_Update, extension []*gnmi_ext.Extension) {
+func (h *handler) handleSubscribeResponseUpdate(acc Dana.Accumulator, response *gnmi.SubscribeResponse_Update, extension []*gnmi_ext.Extension) {
 	grouper := metric.NewSeriesGrouper()
 	timestamp := time.Unix(0, response.Update.Timestamp)
 

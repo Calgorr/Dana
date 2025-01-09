@@ -76,10 +76,10 @@ func RegisterTiming(measurement, field string, tags map[string]string) Stat {
 }
 
 // Metrics returns all registered stats as telegraf metrics.
-func Metrics() []telegraf.Metric {
+func Metrics() []Dana.Metric {
 	registry.mu.Lock()
 	now := time.Now()
-	metrics := make([]telegraf.Metric, 0, len(registry.stats))
+	metrics := make([]Dana.Metric, 0, len(registry.stats))
 	for _, stats := range registry.stats {
 		if len(stats) > 0 {
 			var tags map[string]string

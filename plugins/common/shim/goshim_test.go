@@ -65,12 +65,12 @@ func (i *erroringInput) SampleConfig() string {
 	return ""
 }
 
-func (i *erroringInput) Gather(acc telegraf.Accumulator) error {
+func (i *erroringInput) Gather(acc Dana.Accumulator) error {
 	acc.AddError(errors.New("intentional"))
 	return nil
 }
 
-func (i *erroringInput) Start(_ telegraf.Accumulator) error {
+func (i *erroringInput) Start(_ Dana.Accumulator) error {
 	return nil
 }
 

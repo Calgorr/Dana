@@ -37,7 +37,7 @@ type Syslog struct {
 	Trailer        nontransparent.TrailerType `toml:"trailer"`
 	BestEffort     bool                       `toml:"best_effort"`
 	Separator      string                     `toml:"sdparam_separator"`
-	Log            telegraf.Logger            `toml:"-"`
+	Log            Dana.Logger                `toml:"-"`
 	socket.Config
 
 	mu sync.Mutex
@@ -114,12 +114,12 @@ func (s *Syslog) Init() error {
 }
 
 // Gather ...
-func (*Syslog) Gather(_ telegraf.Accumulator) error {
+func (*Syslog) Gather(_ Dana.Accumulator) error {
 	return nil
 }
 
 // Start starts the service.
-func (s *Syslog) Start(acc telegraf.Accumulator) error {
+func (s *Syslog) Start(acc Dana.Accumulator) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -157,7 +157,7 @@ func (s *Syslog) Stop() {
 	s.wg.Wait()
 }
 
-func (s *Syslog) createStreamDataHandler(acc telegraf.Accumulator) socket.CallbackConnection {
+func (s *Syslog) createStreamDataHandler(acc Dana.Accumulator) socket.CallbackConnection {
 	// Create parser options
 	var opts []syslog.ParserOption
 	if s.BestEffort {
@@ -201,7 +201,7 @@ func (s *Syslog) createStreamDataHandler(acc telegraf.Accumulator) socket.Callba
 	}
 }
 
-func (s *Syslog) createDatagramDataHandler(acc telegraf.Accumulator) socket.CallbackData {
+func (s *Syslog) createDatagramDataHandler(acc Dana.Accumulator) socket.CallbackData {
 	// Create the parser depending on syslog standard and other settings
 	var parser syslog.Machine
 	switch s.SyslogStandard {
@@ -329,7 +329,7 @@ func fields(msg syslog.Message, separator string) map[string]interface{} {
 }
 
 func init() {
-	inputs.Add("syslog", func() telegraf.Input {
+	inputs.Add("syslog", func() Dana.Input {
 		return &Syslog{
 			Trailer: nontransparent.LF,
 		}

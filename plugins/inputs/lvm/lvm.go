@@ -33,7 +33,7 @@ func (*LVM) SampleConfig() string {
 	return sampleConfig
 }
 
-func (lvm *LVM) Gather(acc telegraf.Accumulator) error {
+func (lvm *LVM) Gather(acc Dana.Accumulator) error {
 	if err := lvm.gatherPhysicalVolumes(acc); err != nil {
 		return err
 	} else if err := lvm.gatherVolumeGroups(acc); err != nil {
@@ -45,7 +45,7 @@ func (lvm *LVM) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (lvm *LVM) gatherPhysicalVolumes(acc telegraf.Accumulator) error {
+func (lvm *LVM) gatherPhysicalVolumes(acc Dana.Accumulator) error {
 	args := []string{
 		"--reportformat", "json", "--units", "b", "--nosuffix",
 		"-o", "pv_name,vg_name,pv_size,pv_free,pv_used",
@@ -99,7 +99,7 @@ func (lvm *LVM) gatherPhysicalVolumes(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (lvm *LVM) gatherVolumeGroups(acc telegraf.Accumulator) error {
+func (lvm *LVM) gatherVolumeGroups(acc Dana.Accumulator) error {
 	args := []string{
 		"--reportformat", "json", "--units", "b", "--nosuffix",
 		"-o", "vg_name,pv_count,lv_count,snap_count,vg_size,vg_free",
@@ -162,7 +162,7 @@ func (lvm *LVM) gatherVolumeGroups(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (lvm *LVM) gatherLogicalVolumes(acc telegraf.Accumulator) error {
+func (lvm *LVM) gatherLogicalVolumes(acc Dana.Accumulator) error {
 	args := []string{
 		"--reportformat", "json", "--units", "b", "--nosuffix",
 		"-o", "lv_name,vg_name,lv_size,data_percent,metadata_percent",
@@ -278,7 +278,7 @@ type lvsReport struct {
 }
 
 func init() {
-	inputs.Add("lvm", func() telegraf.Input {
+	inputs.Add("lvm", func() Dana.Input {
 		return &LVM{
 			PVSBinary: "/usr/sbin/pvs",
 			VGSBinary: "/usr/sbin/vgs",

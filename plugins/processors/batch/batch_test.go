@@ -28,7 +28,7 @@ func Test_MetricsSmallerThanBatchSizeAreInDifferentBatches(t *testing.T) {
 		NumBatches: 3,
 	}
 
-	ms := make([]telegraf.Metric, 0, 2)
+	ms := make([]Dana.Metric, 0, 2)
 	for range cap(ms) {
 		ms = append(ms, testutil.MockMetrics()...)
 	}
@@ -50,7 +50,7 @@ func Test_MetricsEqualToBatchSizeInDifferentBatches(t *testing.T) {
 		NumBatches: 3,
 	}
 
-	ms := make([]telegraf.Metric, 0, 3)
+	ms := make([]Dana.Metric, 0, 3)
 	for range cap(ms) {
 		ms = append(ms, testutil.MockMetrics()...)
 	}
@@ -75,7 +75,7 @@ func Test_MetricsMoreThanBatchSizeInSameBatch(t *testing.T) {
 		NumBatches: 2,
 	}
 
-	ms := make([]telegraf.Metric, 0, 3)
+	ms := make([]Dana.Metric, 0, 3)
 	for range cap(ms) {
 		ms = append(ms, testutil.MockMetrics()...)
 	}

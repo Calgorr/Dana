@@ -19,27 +19,27 @@ func TestMetrics(t *testing.T) {
 
 	tests := []struct {
 		name         string
-		input        []telegraf.Metric
-		expected     []telegraf.Metric
-		cacheContent []telegraf.Metric
+		input        []Dana.Metric
+		expected     []Dana.Metric
+		cacheContent []Dana.Metric
 	}{
 		{
 			name: "retain metric",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New("m1",
 					map[string]string{"tag": "tag_value"},
 					map[string]interface{}{"value": 1},
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New("m1",
 					map[string]string{"tag": "tag_value"},
 					map[string]interface{}{"value": 1},
 					now,
 				),
 			},
-			cacheContent: []telegraf.Metric{
+			cacheContent: []Dana.Metric{
 				metric.New("m1",
 					map[string]string{"tag": "tag_value"},
 					map[string]interface{}{"value": 1},
@@ -49,7 +49,7 @@ func TestMetrics(t *testing.T) {
 		},
 		{
 			name: "suppress repeated metric",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New(
 					"m1",
 					map[string]string{"tag": "tag_value"},
@@ -63,7 +63,7 @@ func TestMetrics(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"m1",
 					map[string]string{"tag": "tag_value"},
@@ -71,7 +71,7 @@ func TestMetrics(t *testing.T) {
 					now.Add(-1*time.Second),
 				),
 			},
-			cacheContent: []telegraf.Metric{
+			cacheContent: []Dana.Metric{
 				metric.New(
 					"m1",
 					map[string]string{"tag": "tag_value"},
@@ -88,7 +88,7 @@ func TestMetrics(t *testing.T) {
 		},
 		{
 			name: "pass updated metric",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New(
 					"m1",
 					map[string]string{"tag": "tag_value"},
@@ -102,7 +102,7 @@ func TestMetrics(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"m1",
 					map[string]string{"tag": "tag_value"},
@@ -116,7 +116,7 @@ func TestMetrics(t *testing.T) {
 					now,
 				),
 			},
-			cacheContent: []telegraf.Metric{
+			cacheContent: []Dana.Metric{
 				metric.New(
 					"m1",
 					map[string]string{"tag": "tag_value"},
@@ -133,7 +133,7 @@ func TestMetrics(t *testing.T) {
 		},
 		{
 			name: "pass after cache expired",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New(
 					"m1",
 					map[string]string{"tag": "tag_value"},
@@ -147,7 +147,7 @@ func TestMetrics(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"m1",
 					map[string]string{"tag": "tag_value"},
@@ -161,7 +161,7 @@ func TestMetrics(t *testing.T) {
 					now,
 				),
 			},
-			cacheContent: []telegraf.Metric{
+			cacheContent: []Dana.Metric{
 				metric.New(
 					"m1",
 					map[string]string{"tag": "tag_value"},
@@ -178,7 +178,7 @@ func TestMetrics(t *testing.T) {
 		},
 		{
 			name: "cache retains metrics",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New(
 					"m1",
 					map[string]string{"tag": "tag_value"},
@@ -198,7 +198,7 @@ func TestMetrics(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"m1",
 					map[string]string{"tag": "tag_value"},
@@ -218,7 +218,7 @@ func TestMetrics(t *testing.T) {
 					now,
 				),
 			},
-			cacheContent: []telegraf.Metric{
+			cacheContent: []Dana.Metric{
 				metric.New(
 					"m1",
 					map[string]string{"tag": "tag_value"},
@@ -241,7 +241,7 @@ func TestMetrics(t *testing.T) {
 		},
 		{
 			name: "same timestamp",
-			input: []telegraf.Metric{
+			input: []Dana.Metric{
 				metric.New("metric",
 					map[string]string{"tag": "value"},
 					map[string]interface{}{"foo": 1}, // field
@@ -266,7 +266,7 @@ func TestMetrics(t *testing.T) {
 					now,
 				),
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				metric.New(
 					"metric",
 					map[string]string{"tag": "value"},
@@ -286,7 +286,7 @@ func TestMetrics(t *testing.T) {
 					now,
 				),
 			},
-			cacheContent: []telegraf.Metric{
+			cacheContent: []Dana.Metric{
 				metric.New("metric",
 					map[string]string{"tag": "value"},
 					map[string]interface{}{"foo": 1},
@@ -320,11 +320,11 @@ func TestMetrics(t *testing.T) {
 			plugin := &Dedup{
 				DedupInterval: config.Duration(10 * time.Minute),
 				FlushTime:     now.Add(-1 * time.Second),
-				Cache:         make(map[uint64]telegraf.Metric),
+				Cache:         make(map[uint64]Dana.Metric),
 			}
 
 			// Feed the input metrics and record the outputs
-			var actual []telegraf.Metric
+			var actual []Dana.Metric
 			for i, m := range tt.input {
 				actual = append(actual, plugin.Apply(m)...)
 
@@ -352,11 +352,11 @@ func TestCacheShrink(t *testing.T) {
 	plugin := &Dedup{
 		DedupInterval: config.Duration(10 * time.Minute),
 		FlushTime:     now.Add(-2 * time.Hour),
-		Cache:         make(map[uint64]telegraf.Metric),
+		Cache:         make(map[uint64]Dana.Metric),
 	}
 
 	// Time offset is more than 1 * DedupInterval
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New(
 			"m1",
 			map[string]string{"tag": "tag_value"},
@@ -373,7 +373,7 @@ func TestCacheShrink(t *testing.T) {
 func TestTracking(t *testing.T) {
 	now := time.Now()
 
-	inputRaw := []telegraf.Metric{
+	inputRaw := []Dana.Metric{
 		metric.New("metric",
 			map[string]string{"tag": "value"},
 			map[string]interface{}{"foo": 1},
@@ -403,20 +403,20 @@ func TestTracking(t *testing.T) {
 	}
 
 	var mu sync.Mutex
-	delivered := make([]telegraf.DeliveryInfo, 0, len(inputRaw))
-	notify := func(di telegraf.DeliveryInfo) {
+	delivered := make([]Dana.DeliveryInfo, 0, len(inputRaw))
+	notify := func(di Dana.DeliveryInfo) {
 		mu.Lock()
 		defer mu.Unlock()
 		delivered = append(delivered, di)
 	}
 
-	input := make([]telegraf.Metric, 0, len(inputRaw))
+	input := make([]Dana.Metric, 0, len(inputRaw))
 	for _, m := range inputRaw {
 		tm, _ := metric.WithTracking(m, notify)
 		input = append(input, tm)
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New("metric",
 			map[string]string{"tag": "value"},
 			map[string]interface{}{"foo": 1},
@@ -439,7 +439,7 @@ func TestTracking(t *testing.T) {
 	plugin := &Dedup{
 		DedupInterval: config.Duration(10 * time.Minute),
 		FlushTime:     now.Add(-1 * time.Second),
-		Cache:         make(map[uint64]telegraf.Metric),
+		Cache:         make(map[uint64]Dana.Metric),
 	}
 
 	// Process expected metrics and compare with resulting metrics
@@ -464,7 +464,7 @@ func TestStatePersistence(t *testing.T) {
 
 	// Define the metrics and states
 	state := fmt.Sprintf("metric,tag=value foo=1i %d\n", now.Add(-1*time.Minute).UnixNano())
-	input := []telegraf.Metric{
+	input := []Dana.Metric{
 		metric.New("metric",
 			map[string]string{"tag": "value"},
 			map[string]interface{}{"foo": 1},
@@ -483,7 +483,7 @@ func TestStatePersistence(t *testing.T) {
 		),
 	}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New("metric",
 			map[string]string{"tag": "pass"},
 			map[string]interface{}{"foo": 1},
@@ -505,12 +505,12 @@ func TestStatePersistence(t *testing.T) {
 	plugin := &Dedup{
 		DedupInterval: config.Duration(10 * time.Hour), // use a long interval to avoid flaky tests
 		FlushTime:     now.Add(-1 * time.Second),
-		Cache:         make(map[uint64]telegraf.Metric),
+		Cache:         make(map[uint64]Dana.Metric),
 	}
 	require.Empty(t, plugin.Cache)
 
 	// Setup the "persisted" state
-	var pi telegraf.StatefulPlugin = plugin
+	var pi Dana.StatefulPlugin = plugin
 	require.NoError(t, pi.SetState([]byte(state)))
 	require.Len(t, plugin.Cache, 1)
 

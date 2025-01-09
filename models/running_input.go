@@ -18,13 +18,13 @@ var (
 )
 
 type RunningInput struct {
-	Input  telegraf.Input
+	Input  Dana.Input
 	Config *InputConfig
 
-	log         telegraf.Logger
+	log         Dana.Logger
 	defaultTags map[string]string
 
-	startAcc    telegraf.Accumulator
+	startAcc    Dana.Accumulator
 	started     bool
 	retries     uint64
 	gatherStart time.Time
@@ -36,7 +36,7 @@ type RunningInput struct {
 	StartupErrors   selfstat.Stat
 }
 
-func NewRunningInput(input telegraf.Input, config *InputConfig) *RunningInput {
+func NewRunningInput(input Dana.Input, config *InputConfig) *RunningInput {
 	tags := map[string]string{"input": config.Name}
 	if config.Alias != "" {
 		tags["alias"] = config.Alias
@@ -102,7 +102,7 @@ type InputConfig struct {
 	AlwaysIncludeGlobalTags bool
 }
 
-func (r *RunningInput) metricFiltered(metric telegraf.Metric) {
+func (r *RunningInput) metricFiltered(metric Dana.Metric) {
 	metric.Drop()
 }
 
@@ -125,14 +125,14 @@ func (r *RunningInput) Init() error {
 		return fmt.Errorf("invalid 'time_source' setting %q", r.Config.TimeSource)
 	}
 
-	if p, ok := r.Input.(telegraf.Initializer); ok {
+	if p, ok := r.Input.(Dana.Initializer); ok {
 		return p.Init()
 	}
 	return nil
 }
 
-func (r *RunningInput) Start(acc telegraf.Accumulator) error {
-	plugin, ok := r.Input.(telegraf.ServiceInput)
+func (r *RunningInput) Start(acc Dana.Accumulator) error {
+	plugin, ok := r.Input.(Dana.ServiceInput)
 	if !ok {
 		return nil
 	}
@@ -171,19 +171,19 @@ func (r *RunningInput) Start(acc telegraf.Accumulator) error {
 }
 
 func (r *RunningInput) Stop() {
-	if plugin, ok := r.Input.(telegraf.ServiceInput); ok {
+	if plugin, ok := r.Input.(Dana.ServiceInput); ok {
 		plugin.Stop()
 	}
 }
 
 func (r *RunningInput) ID() string {
-	if p, ok := r.Input.(telegraf.PluginWithID); ok {
+	if p, ok := r.Input.(Dana.PluginWithID); ok {
 		return p.ID()
 	}
 	return r.Config.ID
 }
 
-func (r *RunningInput) MakeMetric(metric telegraf.Metric) telegraf.Metric {
+func (r *RunningInput) MakeMetric(metric Dana.Metric) Dana.Metric {
 	ok, err := r.Config.Filter.Select(metric)
 	if err != nil {
 		r.log.Errorf("filtering failed: %v", err)
@@ -230,9 +230,9 @@ func (r *RunningInput) MakeMetric(metric telegraf.Metric) telegraf.Metric {
 	return metric
 }
 
-func (r *RunningInput) Gather(acc telegraf.Accumulator) error {
+func (r *RunningInput) Gather(acc Dana.Accumulator) error {
 	// Try to connect if we are not yet started up
-	if plugin, ok := r.Input.(telegraf.ServiceInput); ok && !r.started {
+	if plugin, ok := r.Input.(Dana.ServiceInput); ok && !r.started {
 		r.retries++
 		if err := plugin.Start(r.startAcc); err != nil {
 			var serr *internal.StartupError
@@ -259,7 +259,7 @@ func (r *RunningInput) SetDefaultTags(tags map[string]string) {
 	r.defaultTags = tags
 }
 
-func (r *RunningInput) Log() telegraf.Logger {
+func (r *RunningInput) Log() Dana.Logger {
 	return r.log
 }
 

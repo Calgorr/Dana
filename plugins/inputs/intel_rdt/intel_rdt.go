@@ -47,13 +47,13 @@ const (
 )
 
 type IntelRDT struct {
-	PqosPath         string          `toml:"pqos_path"`
-	Cores            []string        `toml:"cores"`
-	Processes        []string        `toml:"processes"`
-	SamplingInterval int32           `toml:"sampling_interval"`
-	ShortenedMetrics bool            `toml:"shortened_metrics"`
-	UseSudo          bool            `toml:"use_sudo"`
-	Log              telegraf.Logger `toml:"-"`
+	PqosPath         string      `toml:"pqos_path"`
+	Cores            []string    `toml:"cores"`
+	Processes        []string    `toml:"processes"`
+	SamplingInterval int32       `toml:"sampling_interval"`
+	ShortenedMetrics bool        `toml:"shortened_metrics"`
+	UseSudo          bool        `toml:"use_sudo"`
+	Log              Dana.Logger `toml:"-"`
 
 	publisher        publisher
 	processor        processesHandler
@@ -81,7 +81,7 @@ func (*IntelRDT) SampleConfig() string {
 	return sampleConfig
 }
 
-func (r *IntelRDT) Start(acc telegraf.Accumulator) error {
+func (r *IntelRDT) Start(acc Dana.Accumulator) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	r.cancel = cancel
 
@@ -100,7 +100,7 @@ func (r *IntelRDT) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*IntelRDT) Gather(telegraf.Accumulator) error {
+func (*IntelRDT) Gather(Dana.Accumulator) error {
 	return nil
 }
 
@@ -545,7 +545,7 @@ func makeRange(low, high int) []int {
 }
 
 func init() {
-	inputs.Add("intel_rdt", func() telegraf.Input {
+	inputs.Add("intel_rdt", func() Dana.Input {
 		rdt := IntelRDT{}
 		pathPqos, err := exec.LookPath("pqos")
 		if len(pathPqos) > 0 && err != nil {

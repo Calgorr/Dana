@@ -21,7 +21,7 @@ import (
 	"Dana/testutil"
 )
 
-func newInfluxParser() (telegraf.Parser, error) {
+func newInfluxParser() (Dana.Parser, error) {
 	parser := &influx.Parser{}
 	if err := parser.Init(); err != nil {
 		return nil, err
@@ -291,7 +291,7 @@ func TestGrokParseLogFilesWithMultilineTailerCloseFlushesMultilineBuffer(t *test
 		})
 }
 
-func createGrokParser() (telegraf.Parser, error) {
+func createGrokParser() (Dana.Parser, error) {
 	parser := &grok.Parser{
 		Measurement:        "tail_grok",
 		Patterns:           []string{"%{TEST_LOG_MULTILINE}"},
@@ -316,7 +316,7 @@ cpu,42
 	plugin.Log = testutil.Logger{}
 	plugin.FromBeginning = true
 	plugin.Files = []string{tmpfile}
-	plugin.SetParserFunc(func() (telegraf.Parser, error) {
+	plugin.SetParserFunc(func() (Dana.Parser, error) {
 		parser := csv.Parser{
 			MeasurementColumn: "measurement",
 			HeaderRowCount:    1,
@@ -327,7 +327,7 @@ cpu,42
 	})
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("cpu",
 			map[string]string{
 				"path": tmpfile,
@@ -367,7 +367,7 @@ skip2,mem,100
 	tmpfile := filepath.Join(t.TempDir(), "input.csv")
 	require.NoError(t, os.WriteFile(tmpfile, []byte(content), 0600))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("cpu",
 			map[string]string{
 				"path": tmpfile,
@@ -390,7 +390,7 @@ skip2,mem,100
 	plugin.Log = testutil.Logger{}
 	plugin.FromBeginning = true
 	plugin.Files = []string{tmpfile}
-	plugin.SetParserFunc(func() (telegraf.Parser, error) {
+	plugin.SetParserFunc(func() (Dana.Parser, error) {
 		parser := csv.Parser{
 			MeasurementColumn: "measurement1",
 			HeaderRowCount:    2,
@@ -425,7 +425,7 @@ func TestMultipleMetricsOnFirstLine(t *testing.T) {
 	tmpfile := filepath.Join(t.TempDir(), "input.csv")
 	require.NoError(t, os.WriteFile(tmpfile, []byte(content), 0600))
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("cpu",
 			map[string]string{
 				"customPathTagMyFile": tmpfile,
@@ -449,7 +449,7 @@ func TestMultipleMetricsOnFirstLine(t *testing.T) {
 	plugin.FromBeginning = true
 	plugin.Files = []string{tmpfile}
 	plugin.PathTag = "customPathTagMyFile"
-	plugin.SetParserFunc(func() (telegraf.Parser, error) {
+	plugin.SetParserFunc(func() (Dana.Parser, error) {
 		p := &json.Parser{MetricName: "cpu"}
 		err := p.Init()
 		return p, err
@@ -470,7 +470,7 @@ func TestMultipleMetricsOnFirstLine(t *testing.T) {
 }
 
 func TestCharacterEncoding(t *testing.T) {
-	full := []telegraf.Metric{
+	full := []Dana.Metric{
 		testutil.MustMetric("cpu",
 			map[string]string{
 				"cpu": "cpu0",
@@ -529,7 +529,7 @@ func TestCharacterEncoding(t *testing.T) {
 		fromBeginning     bool
 		characterEncoding string
 		offset            int64
-		expected          []telegraf.Metric
+		expected          []Dana.Metric
 	}{
 		{
 			name:              "utf-8",
@@ -655,7 +655,7 @@ func TestCSVBehavior(t *testing.T) {
 	require.NoError(t, input.Sync())
 
 	// Setup the CSV parser creator function
-	parserFunc := func() (telegraf.Parser, error) {
+	parserFunc := func() (Dana.Parser, error) {
 		parser := &csv.Parser{
 			MetricName:     "tail",
 			HeaderRowCount: 1,
@@ -676,7 +676,7 @@ func TestCSVBehavior(t *testing.T) {
 	plugin.SetParserFunc(parserFunc)
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"tail",
 			map[string]string{
@@ -747,7 +747,7 @@ func TestStatePersistence(t *testing.T) {
 	// Define the metrics and state to skip the first metric
 	state := map[string]int64{inputFilename: int64(len(lines[0]))}
 	expectedState := map[string]int64{inputFilename: int64(len(content))}
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New("metric",
 			map[string]string{"tag": "value"},
 			map[string]interface{}{"foo": 2},
@@ -772,7 +772,7 @@ func TestStatePersistence(t *testing.T) {
 	require.Empty(t, plugin.offsets)
 
 	// Setup the "persisted" state
-	var pi telegraf.StatefulPlugin = plugin
+	var pi Dana.StatefulPlugin = plugin
 	require.NoError(t, pi.SetState(state))
 	require.Len(t, plugin.offsets, 1)
 

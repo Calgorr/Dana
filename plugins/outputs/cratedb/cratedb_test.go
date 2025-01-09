@@ -150,7 +150,7 @@ func TestConnectionIssueAtStartup(t *testing.T) {
 
 func TestInsertSQL(t *testing.T) {
 	tests := []struct {
-		Metrics []telegraf.Metric
+		Metrics []Dana.Metric
 		Want    string
 	}{
 		{

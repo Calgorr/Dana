@@ -36,7 +36,7 @@ func (l Log) String() string {
 	return fmt.Errorf("%s: "+l.format, append([]interface{}{l.level}, l.args...)...).Error()
 }
 
-// LogAccumulator is a log collector that satisfies telegraf.Logger.
+// LogAccumulator is a log collector that satisfies Dana.Logger.
 type LogAccumulator struct {
 	logs      []Log
 	cond      *sync.Cond
@@ -51,18 +51,18 @@ func NewLogAccumulator(tb testing.TB) *LogAccumulator {
 	}
 }
 
-func (la *LogAccumulator) Level() telegraf.LogLevel {
+func (la *LogAccumulator) Level() Dana.LogLevel {
 	switch la.emitLevel {
 	case pgx.LogLevelInfo:
-		return telegraf.Info
+		return Dana.Info
 	case pgx.LogLevelWarn:
-		return telegraf.Warn
+		return Dana.Warn
 	case pgx.LogLevelError:
-		return telegraf.Error
+		return Dana.Error
 	case pgx.LogLevelNone:
-		return telegraf.None
+		return Dana.None
 	}
-	return telegraf.Debug
+	return Dana.Debug
 }
 
 // Unused
@@ -386,7 +386,7 @@ func newMetric(
 	suffix string,
 	tags map[string]string,
 	fields map[string]interface{},
-) telegraf.Metric {
+) Dana.Metric {
 	return testutil.MustMetric(t.Name()+suffix, tags, fields, time.Now())
 }
 
@@ -421,7 +421,7 @@ func TestWriteIntegration_sequential(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "_a", MSS{}, MSI{"v": 1}),
 		newMetric(t, "_b", MSS{}, MSI{"v": 2}),
 		newMetric(t, "_a", MSS{}, MSI{"v": 3}),
@@ -461,7 +461,7 @@ func TestWriteIntegration_concurrent(t *testing.T) {
 	require.NoError(t, p.Connect())
 
 	// Write a metric so it creates a table we can lock.
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "_a", MSS{}, MSI{"v": 1}),
 	}
 	require.NoError(t, p.Write(metrics))
@@ -476,7 +476,7 @@ func TestWriteIntegration_concurrent(t *testing.T) {
 	_, err = tx.Exec(ctx, "LOCK TABLE "+utils.QuoteIdentifier(t.Name()+"_a"))
 	require.NoError(t, err)
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "_a", MSS{}, MSI{"v": 2}),
 	}
 	require.NoError(t, p.Write(metrics))
@@ -485,7 +485,7 @@ func TestWriteIntegration_concurrent(t *testing.T) {
 	// this should be practically impossible, and trying to engineer a solution to account for it would be even more
 	// complex than we already are.
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "_b", MSS{}, MSI{"v": 3}),
 	}
 	require.NoError(t, p.Write(metrics))
@@ -519,13 +519,13 @@ func TestWriteIntegration_sequentialPermError(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "_a", MSS{}, MSI{"v": 1}),
 		newMetric(t, "_b", MSS{}, MSI{"v": 2}),
 	}
 	require.NoError(t, p.Write(metrics))
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "_a", MSS{}, MSI{"v": "a"}),
 		newMetric(t, "_b", MSS{}, MSI{"v": 3}),
 	}
@@ -556,12 +556,12 @@ func TestWriteIntegration_sequentialSinglePermError(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{}, MSI{"v": 1}),
 	}
 	require.NoError(t, p.Write(metrics))
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "", MSS{}, MSI{"v": "a"}),
 	}
 	require.NoError(t, p.Write(metrics))
@@ -578,13 +578,13 @@ func TestWriteIntegration_concurrentPermError(t *testing.T) {
 	p.dbConfig.MaxConns = 2
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "_a", MSS{}, MSI{"v": 1}),
 	}
 	require.NoError(t, p.Write(metrics))
 	p.Logger.WaitForCopy(t.Name()+"_a", false)
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "_a", MSS{}, MSI{"v": "a"}),
 		newMetric(t, "_b", MSS{}, MSI{"v": 2}),
 	}
@@ -646,7 +646,7 @@ func TestWriteIntegration_sequentialTempError(t *testing.T) {
 	p.Logger.Infof("release wg")
 	wg.Wait()
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "_a", MSS{}, MSI{"v": 1}),
 	}
 	require.Error(t, p.Write(metrics))
@@ -698,7 +698,7 @@ func TestWriteIntegration_concurrentTempError(t *testing.T) {
 	p.Logger.Infof("release wg")
 	wg.Wait()
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "_a", MSS{}, MSI{"v": 1}),
 	}
 	require.NoError(t, p.Write(metrics))
@@ -728,7 +728,7 @@ func TestTimestampColumnNameIntegration(t *testing.T) {
 	require.NoError(t, p.Init())
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		metric.New(t.Name(), map[string]string{}, map[string]interface{}{"v": 42}, time.Unix(1691747345, 0)),
 	}
 	require.NoError(t, p.Write(metrics))
@@ -761,7 +761,7 @@ func TestWriteTagTableIntegration(t *testing.T) {
 	p.TagsAsForeignKeys = true
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"v": 1}),
 	}
 	require.NoError(t, p.Write(metrics))
@@ -798,7 +798,7 @@ func TestWriteIntegration_tagError(t *testing.T) {
 	p.TagsAsForeignKeys = true
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"v": 1}),
 	}
 	require.NoError(t, p.Write(metrics))
@@ -807,7 +807,7 @@ func TestWriteIntegration_tagError(t *testing.T) {
 	_, err = p.db.Exec(ctx, "DROP TABLE \""+t.Name()+"_tag\"")
 	require.NoError(t, err)
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"v": 2}),
 	}
 	require.NoError(t, p.Write(metrics))
@@ -830,7 +830,7 @@ func TestWriteIntegration_tagError_foreignConstraint(t *testing.T) {
 	p.ForeignTagConstraint = true
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "foo"}, MSI{"v": 1}),
 	}
 	require.NoError(t, p.Write(metrics))
@@ -839,7 +839,7 @@ func TestWriteIntegration_tagError_foreignConstraint(t *testing.T) {
 	_, err = p.db.Exec(ctx, "DROP TABLE \""+t.Name()+"_tag\"")
 	require.NoError(t, err)
 
-	metrics = []telegraf.Metric{
+	metrics = []Dana.Metric{
 		newMetric(t, "", MSS{"tag": "bar"}, MSI{"v": 2}),
 	}
 	require.NoError(t, p.Write(metrics))
@@ -867,7 +867,7 @@ func TestWriteIntegration_utf8(t *testing.T) {
 	p.TagsAsForeignKeys = true
 	require.NoError(t, p.Connect())
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "Ѧ𝙱Ƈᗞ",
 			MSS{"ăѣ𝔠ծ": "𝘈Ḇ𝖢𝕯٤ḞԍНǏ𝙅ƘԸⲘ𝙉০Ρ𝗤Ɍ𝓢ȚЦ𝒱Ѡ𝓧ƳȤ"},
 			MSI{"АḂⲤ𝗗": "𝘢ƀ𝖼ḋếᵮℊ𝙝Ꭵ𝕛кιṃդⱺ𝓅𝘲𝕣𝖘ŧ𝑢ṽẉ𝘅ყž𝜡"},
@@ -902,7 +902,7 @@ func TestWriteIntegration_UnsignedIntegers(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{}, MSI{"v": uint64(math.MaxUint64)}),
 	}
 	require.NoError(t, p.Write(metrics))
@@ -917,7 +917,7 @@ func TestWriteIntegration_UnsignedIntegers(t *testing.T) {
 func TestStressConcurrencyIntegration(t *testing.T) {
 	t.Skip("Skipping very long test - run locally with no timeout")
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		newMetric(t, "", MSS{"foo": "bar"}, MSI{"a": 1}),
 		newMetric(t, "", MSS{"pop": "tart"}, MSI{"b": 1}),
 		newMetric(t, "", MSS{"foo": "bar", "pop": "tart"}, MSI{"a": 2, "b": 2}),
@@ -938,7 +938,7 @@ func TestStressConcurrencyIntegration(t *testing.T) {
 		wgDone.Add(concurrency)
 		for j := 0; j < concurrency; j++ {
 			go func() {
-				mShuf := make([]telegraf.Metric, len(metrics))
+				mShuf := make([]Dana.Metric, len(metrics))
 				copy(mShuf, metrics)
 				rand.Shuffle(len(mShuf), func(a, b int) { mShuf[a], mShuf[b] = mShuf[b], mShuf[a] })
 
@@ -989,7 +989,7 @@ func TestLongColumnNamesErrorIntegration(t *testing.T) {
 	require.NoError(t, p.Connect())
 
 	// Define the metric to send
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		metric.New(
 			t.Name(),
 			map[string]string{},
@@ -1084,7 +1084,7 @@ func TestLongColumnNamesClipIntegration(t *testing.T) {
 	require.NoError(t, p.Connect())
 
 	// Define the metric to send
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		metric.New(
 			t.Name(),
 			map[string]string{},

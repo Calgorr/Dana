@@ -21,7 +21,7 @@ func TestParseLine(t *testing.T) {
 	var tests = []struct {
 		name     string
 		input    string
-		expected telegraf.Metric
+		expected Dana.Metric
 	}{
 		{
 			name:  "minimal case",
@@ -110,12 +110,12 @@ func TestParse(t *testing.T) {
 	var tests = []struct {
 		name     string
 		input    []byte
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name:  "single line with no newline",
 			input: []byte("put sys.cpu.user " + strTimeSec + " 42.5 host=webserver01 cpu=7"),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"sys.cpu.user",
 					map[string]string{
@@ -132,7 +132,7 @@ func TestParse(t *testing.T) {
 		{
 			name:  "single line with LF",
 			input: []byte("put sys.cpu.user " + strTimeSec + " 42.5 host=webserver01 cpu=7\n"),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"sys.cpu.user",
 					map[string]string{
@@ -149,7 +149,7 @@ func TestParse(t *testing.T) {
 		{
 			name:  "single line with CR+LF",
 			input: []byte("put sys.cpu.user " + strTimeSec + " 42.5 host=webserver01 cpu=7\r\n"),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"sys.cpu.user",
 					map[string]string{
@@ -167,7 +167,7 @@ func TestParse(t *testing.T) {
 			name: "double lines",
 			input: []byte("put sys.cpu.user " + strTimeSec + " 42.5 host=webserver01 cpu=7\r\n" +
 				"put sys.cpu.user " + strTimeSec + " 53.5 host=webserver02 cpu=3\r\n"),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"sys.cpu.user",
 					map[string]string{
@@ -199,7 +199,7 @@ func TestParse(t *testing.T) {
 					"put sys.cpu.user " + strTimeSec + " 42.5 host=webserver01 cpu=7\r\n" +
 					"put sys.cpu.user " + strTimeSec + " 53.5 host=webserver02 cpu=3\r\n",
 			),
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"sys.cpu.user",
 					map[string]string{
@@ -247,7 +247,7 @@ func TestParse_DefaultTags(t *testing.T) {
 		name        string
 		input       []byte
 		defaultTags map[string]string
-		expected    []telegraf.Metric
+		expected    []Dana.Metric
 	}{
 		{
 			name:  "single default tag",
@@ -255,7 +255,7 @@ func TestParse_DefaultTags(t *testing.T) {
 			defaultTags: map[string]string{
 				"foo": "bar",
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"sys.cpu.user",
 					map[string]string{
@@ -277,7 +277,7 @@ func TestParse_DefaultTags(t *testing.T) {
 				"foo1": "bar1",
 				"foo2": "bar2",
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"sys.cpu.user",
 					map[string]string{
@@ -315,7 +315,7 @@ put benchmark_b 1653643420 5 tags_host=myhost tags_platform=python tags_sdkver=3
 func TestBenchmarkData(t *testing.T) {
 	plugin := &Parser{}
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"benchmark_a",
 			map[string]string{

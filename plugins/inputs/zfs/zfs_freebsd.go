@@ -40,7 +40,7 @@ func (z *Zfs) Init() error {
 	return nil
 }
 
-func (z *Zfs) Gather(acc telegraf.Accumulator) error {
+func (z *Zfs) Gather(acc Dana.Accumulator) error {
 	tags := map[string]string{}
 
 	poolNames, err := z.gatherPoolStats(acc)
@@ -89,7 +89,7 @@ func (z *Zfs) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (z *Zfs) gatherPoolStats(acc telegraf.Accumulator) (string, error) {
+func (z *Zfs) gatherPoolStats(acc Dana.Accumulator) (string, error) {
 	lines, err := z.zpool()
 	if err != nil {
 		return "", err
@@ -160,7 +160,7 @@ func (z *Zfs) gatherPoolStats(acc telegraf.Accumulator) (string, error) {
 	return strings.Join(pools, "::"), nil
 }
 
-func (z *Zfs) gatherDatasetStats(acc telegraf.Accumulator) (string, error) {
+func (z *Zfs) gatherDatasetStats(acc Dana.Accumulator) (string, error) {
 	properties := []string{"name", "avail", "used", "usedsnap", "usedds"}
 
 	lines, err := z.zdataset(properties)
@@ -248,7 +248,7 @@ func uname() (string, error) {
 }
 
 func init() {
-	inputs.Add("zfs", func() telegraf.Input {
+	inputs.Add("zfs", func() Dana.Input {
 		return &Zfs{
 			sysctl:   sysctl,
 			zpool:    zpool,

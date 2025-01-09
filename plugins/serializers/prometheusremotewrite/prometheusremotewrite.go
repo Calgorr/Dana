@@ -20,16 +20,16 @@ import (
 type MetricKey uint64
 
 type Serializer struct {
-	SortMetrics   bool            `toml:"prometheus_sort_metrics"`
-	StringAsLabel bool            `toml:"prometheus_string_as_label"`
-	Log           telegraf.Logger `toml:"-"`
+	SortMetrics   bool        `toml:"prometheus_sort_metrics"`
+	StringAsLabel bool        `toml:"prometheus_string_as_label"`
+	Log           Dana.Logger `toml:"-"`
 }
 
-func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
-	return s.SerializeBatch([]telegraf.Metric{metric})
+func (s *Serializer) Serialize(metric Dana.Metric) ([]byte, error) {
+	return s.SerializeBatch([]Dana.Metric{metric})
 }
 
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	var lastErr error
 	// traceAndKeepErr logs on Trace level every passed error.
 	// with each call it updates lastErr, so it can be logged later with higher level.
@@ -54,18 +54,18 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
 			}
 
 			switch metric.Type() {
-			case telegraf.Counter:
+			case Dana.Counter:
 				fallthrough
-			case telegraf.Gauge:
+			case Dana.Gauge:
 				fallthrough
-			case telegraf.Untyped:
+			case Dana.Untyped:
 				value, ok := prometheus.SampleValue(field.Value)
 				if !ok {
 					traceAndKeepErr("failed to parse %q: bad sample value %#v", metricName, field.Value)
 					continue
 				}
 				metrickey, promts = getPromTS(metricName, labels, value, metric.Time())
-			case telegraf.Histogram:
+			case Dana.Histogram:
 				switch {
 				case strings.HasSuffix(field.Key, "_bucket"):
 					// if bucket only, init sum, count, inf
@@ -137,7 +137,7 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
 					traceAndKeepErr("failed to parse %q: series %q should have `_count`, `_sum` or `_bucket` suffix", metricName, field.Key)
 					continue
 				}
-			case telegraf.Summary:
+			case Dana.Summary:
 				switch {
 				case strings.HasSuffix(field.Key, "_sum"):
 					sum, ok := prometheus.SampleSum(field.Value)
@@ -252,15 +252,15 @@ func hasLabel(name string, labels []prompb.Label) bool {
 	return false
 }
 
-func (s *Serializer) appendCommonLabels(labels []prompb.Label, metric telegraf.Metric) []prompb.Label {
+func (s *Serializer) appendCommonLabels(labels []prompb.Label, metric Dana.Metric) []prompb.Label {
 	for _, tag := range metric.TagList() {
 		// Ignore special tags for histogram and summary types.
 		switch metric.Type() {
-		case telegraf.Histogram:
+		case Dana.Histogram:
 			if tag.Key == "le" {
 				continue
 			}
-		case telegraf.Summary:
+		case Dana.Summary:
 			if tag.Key == "quantile" {
 				continue
 			}
@@ -350,7 +350,7 @@ func (sl sortableLabels) Swap(i, j int) {
 
 func init() {
 	serializers.Add("prometheusremotewrite",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

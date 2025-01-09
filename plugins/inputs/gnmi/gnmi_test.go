@@ -222,7 +222,7 @@ func TestNotification(t *testing.T) {
 		name     string
 		plugin   *GNMI
 		server   *mockServer
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "multiple metrics",
@@ -256,7 +256,7 @@ func TestNotification(t *testing.T) {
 					return server.Send(&gnmi.SubscribeResponse{Response: &gnmi.SubscribeResponse_Update{Update: notification}})
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"alias",
 					map[string]string{
@@ -367,7 +367,7 @@ func TestNotification(t *testing.T) {
 					return server.Send(response)
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"PHY_COUNTERS",
 					map[string]string{
@@ -486,7 +486,7 @@ func TestNotification(t *testing.T) {
 					return server.Send(taggedResponse)
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"oc-intf-counters",
 					map[string]string{
@@ -641,7 +641,7 @@ func TestNotification(t *testing.T) {
 					return server.Send(taggedResponse)
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"oc-neigh-state",
 					map[string]string{
@@ -750,7 +750,7 @@ func TestNotification(t *testing.T) {
 					return server.Send(response)
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"interfaces",
 					map[string]string{
@@ -886,7 +886,7 @@ func TestNotification(t *testing.T) {
 					return server.Send(response)
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"temperature",
 					map[string]string{
@@ -974,7 +974,7 @@ func TestNotification(t *testing.T) {
 					return server.Send(response)
 				},
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"type",
 					map[string]string{
@@ -1135,7 +1135,7 @@ func TestCases(t *testing.T) {
 			require.NoError(t, parser.Init())
 
 			// Read the expected output if any
-			var expected []telegraf.Metric
+			var expected []Dana.Metric
 			if _, err := os.Stat(expectedFilename); err == nil {
 				var err error
 				expected, err = testutil.ParseMetricsFromFile(expectedFilename, parser)

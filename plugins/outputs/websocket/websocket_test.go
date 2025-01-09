@@ -23,11 +23,11 @@ func newTestSerializer() *testSerializer {
 	return &testSerializer{}
 }
 
-func (t testSerializer) Serialize(_ telegraf.Metric) ([]byte, error) {
+func (t testSerializer) Serialize(_ Dana.Metric) ([]byte, error) {
 	return []byte("1"), nil
 }
 
-func (t testSerializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (t testSerializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	return []byte(strconv.Itoa(len(metrics))), nil
 }
 
@@ -152,7 +152,7 @@ func TestWebSocket_Write_OK(t *testing.T) {
 	w := initWebSocket(s)
 	connect(t, w)
 
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.TestMetric(0.4, "test"),
 		testutil.TestMetric(0.5, "test"),
 	}
@@ -176,7 +176,7 @@ func TestWebSocket_Write_Error(t *testing.T) {
 
 	require.NoError(t, w.conn.Close())
 
-	metrics := []telegraf.Metric{testutil.TestMetric(0.4, "test")}
+	metrics := []Dana.Metric{testutil.TestMetric(0.4, "test")}
 	err := w.Write(metrics)
 	require.Error(t, err)
 	require.Nil(t, w.conn)
@@ -192,7 +192,7 @@ func TestWebSocket_Write_Reconnect(t *testing.T) {
 	w.UseTextFrames = true
 	connect(t, w)
 
-	metrics := []telegraf.Metric{testutil.TestMetric(0.4, "test")}
+	metrics := []Dana.Metric{testutil.TestMetric(0.4, "test")}
 
 	require.NoError(t, w.conn.Close())
 

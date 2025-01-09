@@ -20,7 +20,7 @@ func (*Pivot) SampleConfig() string {
 	return sampleConfig
 }
 
-func (p *Pivot) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
+func (p *Pivot) Apply(metrics ...Dana.Metric) []Dana.Metric {
 	for _, m := range metrics {
 		key, ok := m.GetTag(p.TagKey)
 		if !ok {
@@ -40,7 +40,7 @@ func (p *Pivot) Apply(metrics ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("pivot", func() telegraf.Processor {
+	processors.Add("pivot", func() Dana.Processor {
 		return &Pivot{}
 	})
 }

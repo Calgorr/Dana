@@ -16,11 +16,11 @@ import (
 func TestConsulStats(t *testing.T) {
 	var applyTests = []struct {
 		name     string
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name: "Metrics",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"consul.rpc.request",
 					map[string]string{},

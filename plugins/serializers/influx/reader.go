@@ -11,14 +11,14 @@ import (
 
 // reader is an io.Reader for line protocol.
 type reader struct {
-	metrics    []telegraf.Metric
+	metrics    []Dana.Metric
 	serializer *Serializer
 	offset     int
 	buf        *bytes.Buffer
 }
 
 // NewReader creates a new reader over the given metrics.
-func NewReader(metrics []telegraf.Metric, serializer *Serializer) io.Reader {
+func NewReader(metrics []Dana.Metric, serializer *Serializer) io.Reader {
 	return &reader{
 		metrics:    metrics,
 		serializer: serializer,
@@ -28,7 +28,7 @@ func NewReader(metrics []telegraf.Metric, serializer *Serializer) io.Reader {
 }
 
 // SetMetrics changes the metrics to be read.
-func (r *reader) SetMetrics(metrics []telegraf.Metric) {
+func (r *reader) SetMetrics(metrics []Dana.Metric) {
 	r.metrics = metrics
 	r.offset = 0
 	r.buf.Reset()

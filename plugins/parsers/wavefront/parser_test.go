@@ -163,7 +163,7 @@ func TestParseMultiple(t *testing.T) {
 	require.NoError(t, err)
 	testMetric1 := metric.New("test.metric", map[string]string{}, map[string]interface{}{"value": 1.}, time.Unix(0, 0))
 	testMetric2 := metric.New("test.metric2", map[string]string{}, map[string]interface{}{"value": 2.}, time.Unix(1530939936, 0))
-	testMetrics := []telegraf.Metric{testMetric1, testMetric2}
+	testMetrics := []Dana.Metric{testMetric1, testMetric2}
 	require.Equal(t, parsedMetrics[0].Name(), testMetrics[0].Name())
 	require.Equal(t, parsedMetrics[0].Fields(), testMetrics[0].Fields())
 	require.EqualValues(t, parsedMetrics[1], testMetrics[1])
@@ -172,7 +172,7 @@ func TestParseMultiple(t *testing.T) {
 	require.NoError(t, err)
 	testMetric1 = metric.New("test.metric", map[string]string{"source": "mysource"}, map[string]interface{}{"value": 1.}, time.Unix(1530939936, 0))
 	testMetric2 = metric.New("test.metric", map[string]string{"source": "mysource"}, map[string]interface{}{"value": 1.1234}, time.Unix(1530939936, 0))
-	testMetrics = []telegraf.Metric{testMetric1, testMetric2}
+	testMetrics = []Dana.Metric{testMetric1, testMetric2}
 	require.EqualValues(t, parsedMetrics, testMetrics)
 
 	parsedMetrics, err = parser.Parse(
@@ -194,7 +194,7 @@ func TestParseMultiple(t *testing.T) {
 		map[string]interface{}{"value": 1.1234},
 		time.Unix(1530939936, 0),
 	)
-	testMetrics = []telegraf.Metric{testMetric1, testMetric2}
+	testMetrics = []Dana.Metric{testMetric1, testMetric2}
 	require.EqualValues(t, parsedMetrics, testMetrics)
 
 	parsedMetrics, err = parser.Parse(
@@ -204,7 +204,7 @@ func TestParseMultiple(t *testing.T) {
 	testMetric1 = metric.New("test.metric", map[string]string{"source": "mysource"}, map[string]interface{}{"value": 1.}, time.Unix(1530939936, 0))
 	testMetric2 = metric.New("test.metric", map[string]string{"source": "mysource"}, map[string]interface{}{"value": 1.1234}, time.Unix(1530939936, 0))
 	testMetric3 := metric.New("test.metric3", map[string]string{"tagit": "valueit"}, map[string]interface{}{"value": 333.}, time.Unix(1530939936, 0))
-	testMetrics = []telegraf.Metric{testMetric1, testMetric2, testMetric3}
+	testMetrics = []Dana.Metric{testMetric1, testMetric2, testMetric3}
 	require.EqualValues(t, parsedMetrics, testMetrics)
 }
 
@@ -299,7 +299,7 @@ func TestBenchmarkData(t *testing.T) {
 	plugin := &Parser{}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"benchmark",
 			map[string]string{

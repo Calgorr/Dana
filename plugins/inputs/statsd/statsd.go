@@ -118,7 +118,7 @@ type Statsd struct {
 
 	// Max duration for each metric to stay cached without being updated.
 	MaxTTL config.Duration `toml:"max_ttl"`
-	Log    telegraf.Logger `toml:"-"`
+	Log    Dana.Logger     `toml:"-"`
 
 	sync.Mutex
 	// Lock for preventing a data race during resource cleanup
@@ -152,7 +152,7 @@ type Statsd struct {
 	// track current connections so we can close them in Stop()
 	conns          map[string]*net.TCPConn
 	graphiteParser *graphite.Parser
-	acc            telegraf.Accumulator
+	acc            Dana.Accumulator
 	bufPool        sync.Pool // pool of byte slices to handle parsing
 
 	// Internal statistics counters
@@ -230,7 +230,7 @@ func (*Statsd) SampleConfig() string {
 	return sampleConfig
 }
 
-func (s *Statsd) Gather(acc telegraf.Accumulator) error {
+func (s *Statsd) Gather(acc Dana.Accumulator) error {
 	s.Lock()
 	defer s.Unlock()
 	now := time.Now()
@@ -334,7 +334,7 @@ func (s *Statsd) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (s *Statsd) Start(ac telegraf.Accumulator) error {
+func (s *Statsd) Start(ac Dana.Accumulator) error {
 	if s.ParseDataDogTags {
 		s.DataDogExtensions = true
 	}
@@ -1076,7 +1076,7 @@ func (s *Statsd) expireCachedMetrics() {
 }
 
 func init() {
-	inputs.Add("statsd", func() telegraf.Input {
+	inputs.Add("statsd", func() Dana.Input {
 		return &Statsd{
 			Protocol:               defaultProtocol,
 			ServiceAddress:         ":8125",

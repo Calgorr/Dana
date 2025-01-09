@@ -8,7 +8,7 @@ import (
 
 type Ordered struct {
 	wg sync.WaitGroup
-	fn func(telegraf.Metric) []telegraf.Metric
+	fn func(Dana.Metric) []Dana.Metric
 
 	// queue of jobs coming in. Workers pick jobs off this queue for processing
 	workerQueue chan job
@@ -17,7 +17,7 @@ type Ordered struct {
 	queue chan futureMetric
 }
 
-func NewOrdered(acc telegraf.Accumulator, fn func(telegraf.Metric) []telegraf.Metric, orderedQueueSize, workerCount int) *Ordered {
+func NewOrdered(acc Dana.Accumulator, fn func(Dana.Metric) []Dana.Metric, orderedQueueSize, workerCount int) *Ordered {
 	p := &Ordered{
 		fn:          fn,
 		workerQueue: make(chan job, workerCount),
@@ -32,7 +32,7 @@ func NewOrdered(acc telegraf.Accumulator, fn func(telegraf.Metric) []telegraf.Me
 	return p
 }
 
-func (p *Ordered) Enqueue(metric telegraf.Metric) {
+func (p *Ordered) Enqueue(metric Dana.Metric) {
 	future := make(futureMetric)
 	p.queue <- future
 
@@ -45,7 +45,7 @@ func (p *Ordered) Enqueue(metric telegraf.Metric) {
 	}
 }
 
-func (p *Ordered) readQueue(acc telegraf.Accumulator) {
+func (p *Ordered) readQueue(acc Dana.Accumulator) {
 	// wait for the response from each worker in order
 	for mCh := range p.queue {
 		// allow each worker to write out multiple metrics
@@ -76,9 +76,9 @@ func (p *Ordered) Stop() {
 	p.wg.Wait()
 }
 
-type futureMetric chan []telegraf.Metric
+type futureMetric chan []Dana.Metric
 
 type job struct {
 	future futureMetric
-	metric telegraf.Metric
+	metric Dana.Metric
 }

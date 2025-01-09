@@ -26,7 +26,7 @@ type Ethtool struct {
 	// Normalization on the key names
 	NormalizeKeys []string `toml:"normalize_keys"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (e *Ethtool) Init() error {
@@ -34,12 +34,12 @@ func (e *Ethtool) Init() error {
 	return nil
 }
 
-func (*Ethtool) Gather(_ telegraf.Accumulator) error {
+func (*Ethtool) Gather(_ Dana.Accumulator) error {
 	return nil
 }
 
 func init() {
-	inputs.Add(pluginName, func() telegraf.Input {
+	inputs.Add(pluginName, func() Dana.Input {
 		return &Ethtool{}
 	})
 }

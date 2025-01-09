@@ -30,7 +30,7 @@ type CPUStats struct {
 	ReportActive   bool `toml:"report_active"`
 	CoreTags       bool `toml:"core_tags"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*CPUStats) SampleConfig() string {
@@ -56,7 +56,7 @@ func (c *CPUStats) Init() error {
 	return nil
 }
 
-func (c *CPUStats) Gather(acc telegraf.Accumulator) error {
+func (c *CPUStats) Gather(acc Dana.Accumulator) error {
 	times, err := c.ps.CPUTimes(c.PerCPU, c.TotalCPU)
 	if err != nil {
 		return fmt.Errorf("error getting CPU info: %w", err)
@@ -157,7 +157,7 @@ func activeCPUTime(t cpu.TimesStat) float64 {
 }
 
 func init() {
-	inputs.Add("cpu", func() telegraf.Input {
+	inputs.Add("cpu", func() Dana.Input {
 		return &CPUStats{
 			PerCPU:   true,
 			TotalCPU: true,

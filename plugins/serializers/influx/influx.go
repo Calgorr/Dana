@@ -67,10 +67,10 @@ func (s *Serializer) Init() error {
 	return nil
 }
 
-// Serialize writes the telegraf.Metric to a byte slice.  May produce multiple
+// Serialize writes the Dana.Metric to a byte slice.  May produce multiple
 // lines of output if longer than maximum line length.  Lines are terminated
 // with a newline (LF) char.
-func (s *Serializer) Serialize(m telegraf.Metric) ([]byte, error) {
+func (s *Serializer) Serialize(m Dana.Metric) ([]byte, error) {
 	s.buf.Reset()
 	err := s.writeMetric(&s.buf, m)
 	if err != nil {
@@ -83,7 +83,7 @@ func (s *Serializer) Serialize(m telegraf.Metric) ([]byte, error) {
 
 // SerializeBatch writes the slice of metrics and returns a byte slice of the
 // results.  The returned byte slice may contain multiple lines of data.
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	s.buf.Reset()
 	for _, m := range metrics {
 		err := s.Write(&s.buf, m)
@@ -98,7 +98,7 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
 	out := make([]byte, 0, s.buf.Len())
 	return append(out, s.buf.Bytes()...), nil
 }
-func (s *Serializer) Write(w io.Writer, m telegraf.Metric) error {
+func (s *Serializer) Write(w io.Writer, m Dana.Metric) error {
 	return s.writeMetric(w, m)
 }
 
@@ -114,7 +114,7 @@ func (s *Serializer) writeBytes(w io.Writer, b []byte) error {
 	return err
 }
 
-func (s *Serializer) buildHeader(m telegraf.Metric) error {
+func (s *Serializer) buildHeader(m Dana.Metric) error {
 	s.header = s.header[:0]
 
 	name := nameEscape(m.Name())
@@ -152,7 +152,7 @@ func (s *Serializer) buildHeader(m telegraf.Metric) error {
 	return nil
 }
 
-func (s *Serializer) buildFooter(m telegraf.Metric) {
+func (s *Serializer) buildFooter(m Dana.Metric) {
 	s.footer = s.footer[:0]
 	if !s.OmitTimestamp {
 		s.footer = append(s.footer, ' ')
@@ -181,7 +181,7 @@ func (s *Serializer) buildFieldPair(key string, value interface{}) error {
 	return nil
 }
 
-func (s *Serializer) writeMetric(w io.Writer, m telegraf.Metric) error {
+func (s *Serializer) writeMetric(w io.Writer, m Dana.Metric) error {
 	var err error
 
 	err = s.buildHeader(m)
@@ -328,7 +328,7 @@ func appendStringField(buf []byte, value string) []byte {
 
 func init() {
 	serializers.Add("influx",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

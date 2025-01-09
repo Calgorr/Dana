@@ -25,7 +25,7 @@ const measurement = "amd_rocm_smi"
 type ROCmSMI struct {
 	BinPath string          `toml:"bin_path"`
 	Timeout config.Duration `toml:"timeout"`
-	Log     telegraf.Logger `toml:"-"`
+	Log     Dana.Logger     `toml:"-"`
 }
 
 type gpu struct {
@@ -110,7 +110,7 @@ func (*ROCmSMI) SampleConfig() string {
 	return sampleConfig
 }
 
-func (rsmi *ROCmSMI) Start(telegraf.Accumulator) error {
+func (rsmi *ROCmSMI) Start(Dana.Accumulator) error {
 	if _, err := os.Stat(rsmi.BinPath); os.IsNotExist(err) {
 		binPath, err := exec.LookPath("rocm-smi")
 		if err != nil {
@@ -122,7 +122,7 @@ func (rsmi *ROCmSMI) Start(telegraf.Accumulator) error {
 	return nil
 }
 
-func (rsmi *ROCmSMI) Gather(acc telegraf.Accumulator) error {
+func (rsmi *ROCmSMI) Gather(acc Dana.Accumulator) error {
 	data, err := rsmi.pollROCmSMI()
 	if err != nil {
 		return fmt.Errorf("failed to execute command in pollROCmSMI: %w", err)
@@ -230,7 +230,7 @@ func genTagsFields(gpus map[string]gpu, system map[string]sysInfo) []metric {
 	return metrics
 }
 
-func gatherROCmSMI(ret []byte, acc telegraf.Accumulator) error {
+func gatherROCmSMI(ret []byte, acc Dana.Accumulator) error {
 	var gpus map[string]gpu
 	var sys map[string]sysInfo
 
@@ -296,7 +296,7 @@ func setIfUsed(t string, m map[string]interface{}, k, v string) {
 }
 
 func init() {
-	inputs.Add("amd_rocm_smi", func() telegraf.Input {
+	inputs.Add("amd_rocm_smi", func() Dana.Input {
 		return &ROCmSMI{
 			BinPath: "/opt/rocm/bin/rocm-smi",
 			Timeout: config.Duration(5 * time.Second),

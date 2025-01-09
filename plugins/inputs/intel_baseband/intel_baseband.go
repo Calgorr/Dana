@@ -51,7 +51,7 @@ type Baseband struct {
 	SocketAccessTimeout       config.Duration `toml:"socket_access_timeout"`
 	WaitForTelemetryTimeout   config.Duration `toml:"wait_for_telemetry_timeout"`
 
-	Log      telegraf.Logger `toml:"-"`
+	Log      Dana.Logger `toml:"-"`
 	logConn  *logConnector
 	sockConn *socketConnector
 }
@@ -100,7 +100,7 @@ func (b *Baseband) Init() error {
 	return nil
 }
 
-func (b *Baseband) Gather(acc telegraf.Accumulator) error {
+func (b *Baseband) Gather(acc Dana.Accumulator) error {
 	err := b.sockConn.dumpTelemetryToLog()
 	if err != nil {
 		return err
@@ -138,7 +138,7 @@ func (b *Baseband) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (b *Baseband) gatherVFMetric(acc telegraf.Accumulator, metricName string) error {
+func (b *Baseband) gatherVFMetric(acc Dana.Accumulator, metricName string) error {
 	metrics, err := b.logConn.getMetrics(metricName)
 	if err != nil {
 		return fmt.Errorf("error accessing information about the metric %q: %w", metricName, err)
@@ -170,7 +170,7 @@ func (b *Baseband) gatherVFMetric(acc telegraf.Accumulator, metricName string) e
 	return nil
 }
 
-func (b *Baseband) gatherEngineMetric(acc telegraf.Accumulator, metricName string) error {
+func (b *Baseband) gatherEngineMetric(acc Dana.Accumulator, metricName string) error {
 	metrics, err := b.logConn.getMetrics(metricName)
 	if err != nil {
 		return fmt.Errorf("error in accessing information about the metric %q: %w", metricName, err)
@@ -221,7 +221,7 @@ func newBaseband() *Baseband {
 }
 
 func init() {
-	inputs.Add("intel_baseband", func() telegraf.Input {
+	inputs.Add("intel_baseband", func() Dana.Input {
 		return newBaseband()
 	})
 }

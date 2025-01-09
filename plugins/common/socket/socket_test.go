@@ -31,7 +31,7 @@ func TestListenData(t *testing.T) {
 		[]byte("test,foo=bar v=1i 123456789\ntest,foo=baz v=2i 123456790\n"),
 		[]byte("test,foo=zab v=3i 123456791\n"),
 	}
-	expectedTemplates := []telegraf.Metric{
+	expectedTemplates := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"foo": "bar"},
@@ -187,7 +187,7 @@ func TestListenData(t *testing.T) {
 			require.NoError(t, err)
 
 			// Conditionally add the source address to the expectation
-			expected := make([]telegraf.Metric, 0, len(expectedTemplates))
+			expected := make([]Dana.Metric, 0, len(expectedTemplates))
 			for _, tmpl := range expectedTemplates {
 				m := tmpl.Copy()
 				switch proto {
@@ -233,7 +233,7 @@ func TestListenConnection(t *testing.T) {
 		[]byte("test,foo=bar v=1i 123456789\ntest,foo=baz v=2i 123456790\n"),
 		[]byte("test,foo=zab v=3i 123456791\n"),
 	}
-	expectedTemplates := []telegraf.Metric{
+	expectedTemplates := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"foo": "bar"},
@@ -391,7 +391,7 @@ func TestListenConnection(t *testing.T) {
 			require.NoError(t, err)
 
 			// Conditionally add the source address to the expectation
-			expected := make([]telegraf.Metric, 0, len(expectedTemplates))
+			expected := make([]Dana.Metric, 0, len(expectedTemplates))
 			for _, tmpl := range expectedTemplates {
 				m := tmpl.Copy()
 				switch proto {
@@ -628,7 +628,7 @@ func TestNoSplitter(t *testing.T) {
 		[]byte("test,foo=bar v"),
 		[]byte("=1i 123456789\ntest,foo=baz v=2i 123456790\ntest,foo=zab v=3i 123456791\n"),
 	}
-	expectedTemplates := []telegraf.Metric{
+	expectedTemplates := []Dana.Metric{
 		metric.New(
 			"test",
 			map[string]string{"foo": "bar"},
@@ -700,7 +700,7 @@ func TestNoSplitter(t *testing.T) {
 	require.NoError(t, err)
 
 	// Conditionally add the source address to the expectation
-	expected := make([]telegraf.Metric, 0, len(expectedTemplates))
+	expected := make([]Dana.Metric, 0, len(expectedTemplates))
 	for _, tmpl := range expectedTemplates {
 		m := tmpl.Copy()
 		laddr := client.LocalAddr().String()

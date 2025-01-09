@@ -38,7 +38,7 @@ type streamListener struct {
 	ReadTimeout     config.Duration
 	KeepAlivePeriod *config.Duration
 	Splitter        bufio.SplitFunc
-	Log             telegraf.Logger
+	Log             Dana.Logger
 
 	listener    net.Listener
 	connections uint64
@@ -50,7 +50,7 @@ type streamListener struct {
 	sync.Mutex
 }
 
-func newStreamListener(conf Config, splitter bufio.SplitFunc, log telegraf.Logger) *streamListener {
+func newStreamListener(conf Config, splitter bufio.SplitFunc, log Dana.Logger) *streamListener {
 	return &streamListener{
 		ReadBufferSize:  int(conf.ReadBufferSize),
 		ReadTimeout:     conf.ReadTimeout,

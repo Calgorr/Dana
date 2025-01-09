@@ -205,7 +205,7 @@ func TestSendMetrics(t *testing.T) {
 		map[string]string{},
 		map[string]interface{}{"value": float64(3.14), "counter": 5},
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
-		telegraf.Counter,
+		Dana.Counter,
 	)
 
 	expected = append(expected,
@@ -223,7 +223,7 @@ func TestSendMetrics(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics := []telegraf.Metric{m1, m2, m3}
+	metrics := []Dana.Metric{m1, m2, m3}
 
 	err = d.Write(metrics)
 	require.NoError(t, err)
@@ -314,7 +314,7 @@ func TestSendMetricsWithPatterns(t *testing.T) {
 		map[string]string{},
 		map[string]interface{}{"value": float64(3.14), "counter": 5},
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
-		telegraf.Counter,
+		Dana.Counter,
 	)
 
 	m4 := metric.New(
@@ -322,7 +322,7 @@ func TestSendMetricsWithPatterns(t *testing.T) {
 		map[string]string{},
 		map[string]interface{}{"value": float64(3.14), "counter": 5},
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
-		telegraf.Counter,
+		Dana.Counter,
 	)
 
 	expected = append(expected,
@@ -341,7 +341,7 @@ func TestSendMetricsWithPatterns(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics := []telegraf.Metric{m1, m2, m3, m4, m5}
+	metrics := []Dana.Metric{m1, m2, m3, m4, m5}
 
 	err = d.Write(metrics)
 	require.NoError(t, err)
@@ -422,7 +422,7 @@ func TestSendSingleMetricWithUnorderedTags(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics := []telegraf.Metric{m1}
+	metrics := []Dana.Metric{m1}
 
 	err = d.Write(metrics)
 	require.NoError(t, err)
@@ -473,7 +473,7 @@ func TestSendMetricWithoutTags(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics := []telegraf.Metric{m1}
+	metrics := []Dana.Metric{m1}
 
 	err = d.Write(metrics)
 	require.NoError(t, err)
@@ -555,7 +555,7 @@ func TestSendMetricWithUpperCaseTagKeys(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics := []telegraf.Metric{m1}
+	metrics := []Dana.Metric{m1}
 
 	err = d.Write(metrics)
 	require.NoError(t, err)
@@ -616,7 +616,7 @@ func TestSendBooleanMetricWithoutTags(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics := []telegraf.Metric{m1}
+	metrics := []Dana.Metric{m1}
 
 	err = d.Write(metrics)
 	require.NoError(t, err)
@@ -687,7 +687,7 @@ func TestSendMetricWithDefaultDimensions(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics := []telegraf.Metric{m1}
+	metrics := []Dana.Metric{m1}
 
 	err = d.Write(metrics)
 	require.NoError(t, err)
@@ -757,7 +757,7 @@ func TestMetricDimensionsOverrideDefault(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics := []telegraf.Metric{m1}
+	metrics := []Dana.Metric{m1}
 
 	err = d.Write(metrics)
 	require.NoError(t, err)
@@ -824,7 +824,7 @@ func TestStaticDimensionsOverrideMetric(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics := []telegraf.Metric{m1}
+	metrics := []Dana.Metric{m1}
 
 	err = d.Write(metrics)
 	require.NoError(t, err)
@@ -868,7 +868,7 @@ func TestSendUnsupportedMetric(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics := []telegraf.Metric{m1}
+	metrics := []Dana.Metric{m1}
 
 	err = d.Write(metrics)
 	require.NoError(t, err)
@@ -887,7 +887,7 @@ func TestSendUnsupportedMetric(t *testing.T) {
 		time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC),
 	)
 
-	metrics = []telegraf.Metric{m2}
+	metrics = []Dana.Metric{m2}
 
 	err = d.Write(metrics)
 	require.NoError(t, err)

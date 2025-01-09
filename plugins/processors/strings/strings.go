@@ -55,7 +55,7 @@ type converter struct {
 	fn ConvertFunc
 }
 
-func (c *converter) convertTag(metric telegraf.Metric) {
+func (c *converter) convertTag(metric Dana.Metric) {
 	var tags map[string]string
 	if c.Tag == "*" {
 		tags = metric.Tags()
@@ -76,7 +76,7 @@ func (c *converter) convertTag(metric telegraf.Metric) {
 	}
 }
 
-func (c *converter) convertTagKey(metric telegraf.Metric) {
+func (c *converter) convertTagKey(metric Dana.Metric) {
 	var tags map[string]string
 	if c.TagKey == "*" {
 		tags = metric.Tags()
@@ -97,7 +97,7 @@ func (c *converter) convertTagKey(metric telegraf.Metric) {
 	}
 }
 
-func (c *converter) convertField(metric telegraf.Metric) {
+func (c *converter) convertField(metric Dana.Metric) {
 	var fields map[string]interface{}
 	if c.Field == "*" {
 		fields = metric.Fields()
@@ -120,7 +120,7 @@ func (c *converter) convertField(metric telegraf.Metric) {
 	}
 }
 
-func (c *converter) convertFieldKey(metric telegraf.Metric) {
+func (c *converter) convertFieldKey(metric Dana.Metric) {
 	var fields map[string]interface{}
 	if c.FieldKey == "*" {
 		fields = metric.Fields()
@@ -141,7 +141,7 @@ func (c *converter) convertFieldKey(metric telegraf.Metric) {
 	}
 }
 
-func (c *converter) convertMeasurement(metric telegraf.Metric) {
+func (c *converter) convertMeasurement(metric Dana.Metric) {
 	if metric.Name() != c.Measurement && c.Measurement != "*" {
 		return
 	}
@@ -149,7 +149,7 @@ func (c *converter) convertMeasurement(metric telegraf.Metric) {
 	metric.SetName(c.fn(metric.Name()))
 }
 
-func (c *converter) convert(metric telegraf.Metric) {
+func (c *converter) convert(metric Dana.Metric) {
 	if c.Field != "" {
 		c.convertField(metric)
 	}
@@ -269,7 +269,7 @@ func (*Strings) SampleConfig() string {
 	return sampleConfig
 }
 
-func (s *Strings) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (s *Strings) Apply(in ...Dana.Metric) []Dana.Metric {
 	s.initOnce()
 
 	for _, metric := range in {
@@ -282,7 +282,7 @@ func (s *Strings) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("strings", func() telegraf.Processor {
+	processors.Add("strings", func() Dana.Processor {
 		return &Strings{}
 	})
 }

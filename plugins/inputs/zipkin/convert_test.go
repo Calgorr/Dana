@@ -13,7 +13,7 @@ import (
 func TestLineProtocolConverter_Record(t *testing.T) {
 	mockAcc := testutil.Accumulator{}
 	type fields struct {
-		acc telegraf.Accumulator
+		acc Dana.Accumulator
 	}
 	type args struct {
 		t trace.Trace
@@ -119,7 +119,7 @@ func TestLineProtocolConverter_Record(t *testing.T) {
 						"duration_ns": (time.Duration(53106) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851331000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -137,7 +137,7 @@ func TestLineProtocolConverter_Record(t *testing.T) {
 						"duration_ns": (time.Duration(53106) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851331000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -152,7 +152,7 @@ func TestLineProtocolConverter_Record(t *testing.T) {
 						"duration_ns": (time.Duration(50410) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360904552000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -170,7 +170,7 @@ func TestLineProtocolConverter_Record(t *testing.T) {
 						"duration_ns": (time.Duration(50410) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360904552000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -185,7 +185,7 @@ func TestLineProtocolConverter_Record(t *testing.T) {
 						"duration_ns": (time.Duration(103680) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851318000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -202,7 +202,7 @@ func TestLineProtocolConverter_Record(t *testing.T) {
 						"duration_ns": (time.Duration(103680) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851318000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -219,7 +219,7 @@ func TestLineProtocolConverter_Record(t *testing.T) {
 						"duration_ns": (time.Duration(103680) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851318000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -236,7 +236,7 @@ func TestLineProtocolConverter_Record(t *testing.T) {
 						"duration_ns": (time.Duration(103680) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851318000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -254,7 +254,7 @@ func TestLineProtocolConverter_Record(t *testing.T) {
 						"duration_ns": (time.Duration(103680) * time.Microsecond).Nanoseconds(),
 					},
 					Time: time.Unix(0, 1498688360851318000).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 			},
 			wantErr: false,
@@ -302,7 +302,7 @@ func TestLineProtocolConverter_Record(t *testing.T) {
 						"duration_ns": (time.Duration(1) * time.Nanosecond).Nanoseconds(),
 					},
 					Time: time.Unix(1, 0).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 				{
 					Measurement: "zipkin",
@@ -319,7 +319,7 @@ func TestLineProtocolConverter_Record(t *testing.T) {
 						"duration_ns": (time.Duration(1) * time.Nanosecond).Nanoseconds(),
 					},
 					Time: time.Unix(1, 0).UTC(),
-					Type: telegraf.Untyped,
+					Type: Dana.Untyped,
 				},
 			},
 		},

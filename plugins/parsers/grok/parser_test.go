@@ -1005,7 +1005,7 @@ func TestMultilinePatterns(t *testing.T) {
 	buf, err := os.ReadFile("./testdata/test_multiline.log")
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"multiline",
 			map[string]string{},
@@ -1197,7 +1197,7 @@ func TestBenchmarkData(t *testing.T) {
 	}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"benchmark",
 			map[string]string{

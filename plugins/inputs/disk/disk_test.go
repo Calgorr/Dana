@@ -492,7 +492,7 @@ func TestDiskUsageIssues(t *testing.T) {
 		name     string
 		prefix   string
 		du       disk.UsageStat
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name:   "success",
@@ -505,7 +505,7 @@ func TestDiskUsageIssues(t *testing.T) {
 				InodesFree:  468,
 				InodesUsed:  2000,
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"disk",
 					map[string]string{
@@ -525,7 +525,7 @@ func TestDiskUsageIssues(t *testing.T) {
 						"inodes_used_percent": float64(81.03727714748784),
 					},
 					time.Unix(0, 0),
-					telegraf.Gauge,
+					Dana.Gauge,
 				),
 				testutil.MustMetric(
 					"disk",
@@ -546,7 +546,7 @@ func TestDiskUsageIssues(t *testing.T) {
 						"inodes_used_percent": float64(81.03727714748784),
 					},
 					time.Unix(0, 0),
-					telegraf.Gauge,
+					Dana.Gauge,
 				),
 			},
 		},
@@ -561,7 +561,7 @@ func TestDiskUsageIssues(t *testing.T) {
 				InodesFree:  468,
 				InodesUsed:  2000,
 			},
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"disk",
 					map[string]string{
@@ -582,7 +582,7 @@ func TestDiskUsageIssues(t *testing.T) {
 						"inodes_used_percent": float64(81.03727714748784),
 					},
 					time.Unix(0, 0),
-					telegraf.Gauge,
+					Dana.Gauge,
 				),
 				testutil.MustMetric(
 					"disk",
@@ -604,7 +604,7 @@ func TestDiskUsageIssues(t *testing.T) {
 						"inodes_used_percent": float64(81.03727714748784),
 					},
 					time.Unix(0, 0),
-					telegraf.Gauge,
+					Dana.Gauge,
 				),
 			},
 		},

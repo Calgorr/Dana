@@ -29,7 +29,7 @@ type ClientConfig struct {
 	timeout           time.Duration
 	auth              []amqp.Authentication
 	dialer            *proxy.ProxiedDialer
-	log               telegraf.Logger
+	log               Dana.Logger
 }
 
 type client struct {

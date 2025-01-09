@@ -26,7 +26,7 @@ type Clarify struct {
 	Timeout         config.Duration `toml:"timeout"`
 	IDTags          []string        `toml:"id_tags"`
 	ClarifyIDTag    string          `toml:"clarify_id_tag"`
-	Log             telegraf.Logger `toml:"-"`
+	Log             Dana.Logger     `toml:"-"`
 
 	client *clarify.Client
 }
@@ -80,7 +80,7 @@ func (c *Clarify) Connect() error {
 	return nil
 }
 
-func (c *Clarify) Write(metrics []telegraf.Metric) error {
+func (c *Clarify) Write(metrics []Dana.Metric) error {
 	frame, signals := c.processMetrics(metrics)
 
 	ctx := context.Background()
@@ -98,7 +98,7 @@ func (c *Clarify) Write(metrics []telegraf.Metric) error {
 	return nil
 }
 
-func (c *Clarify) processMetrics(metrics []telegraf.Metric) (views.DataFrame, map[string]views.SignalSave) {
+func (c *Clarify) processMetrics(metrics []Dana.Metric) (views.DataFrame, map[string]views.SignalSave) {
 	signals := make(map[string]views.SignalSave)
 	frame := views.DataFrame{}
 
@@ -147,7 +147,7 @@ func normalizeID(id string) string {
 	}, id)
 }
 
-func (c *Clarify) generateID(m telegraf.Metric, f *telegraf.Field) (string, error) {
+func (c *Clarify) generateID(m Dana.Metric, f *Dana.Field) (string, error) {
 	var id string
 	if c.ClarifyIDTag != "" {
 		if cid, exist := m.GetTag(c.ClarifyIDTag); exist && len(m.FieldList()) == 1 {
@@ -182,7 +182,7 @@ func (c *Clarify) Close() error {
 }
 
 func init() {
-	outputs.Add("clarify", func() telegraf.Output {
+	outputs.Add("clarify", func() Dana.Output {
 		return &Clarify{
 			Timeout: defaultTimeout,
 		}

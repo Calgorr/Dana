@@ -20,7 +20,7 @@ func TestResourceQuota(t *testing.T) {
 	tests := []struct {
 		name     string
 		handler  *mockHandler
-		output   []telegraf.Metric
+		output   []Dana.Metric
 		hasError bool
 	}{
 		{
@@ -66,7 +66,7 @@ func TestResourceQuota(t *testing.T) {
 					},
 				},
 			},
-			output: []telegraf.Metric{
+			output: []Dana.Metric{
 				testutil.MustMetric(
 					resourcequotaMeasurement,
 					map[string]string{

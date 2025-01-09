@@ -5,7 +5,7 @@ import (
 )
 
 type mqttLogger struct {
-	telegraf.Logger
+	Dana.Logger
 }
 
 func (l mqttLogger) Printf(fmt string, args ...interface{}) {

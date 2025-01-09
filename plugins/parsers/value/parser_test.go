@@ -318,7 +318,7 @@ func TestBenchmarkData(t *testing.T) {
 	plugin := &Parser{}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"",
 			map[string]string{},

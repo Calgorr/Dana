@@ -296,7 +296,7 @@ func TestParseLine(t *testing.T) {
 	m, err := parser.ParseLine(string(bytes))
 	require.NoError(t, err)
 
-	assertEqualMetrics(t, singleMetric.expected, []telegraf.Metric{m})
+	assertEqualMetrics(t, singleMetric.expected, []Dana.Metric{m})
 }
 
 func writeValueList(valueLists []api.ValueList) (*network.Buffer, error) {
@@ -313,7 +313,7 @@ func writeValueList(valueLists []api.ValueList) (*network.Buffer, error) {
 	return buffer, nil
 }
 
-func assertEqualMetrics(t *testing.T, expected []metricData, received []telegraf.Metric) {
+func assertEqualMetrics(t *testing.T, expected []metricData, received []Dana.Metric) {
 	require.Equal(t, len(expected), len(received))
 	for i, m := range received {
 		require.Equal(t, expected[i].name, m.Name())
@@ -352,7 +352,7 @@ var benchmarkData = []api.ValueList{
 }
 
 func TestBenchmarkData(t *testing.T) {
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"cpu_value",
 			map[string]string{

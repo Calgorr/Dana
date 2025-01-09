@@ -10,7 +10,7 @@ import (
 	"Dana/metric"
 )
 
-func createTestMetric() telegraf.Metric {
+func createTestMetric() Dana.Metric {
 	m := metric.New("m1",
 		map[string]string{
 			"tag":           "tag_value",
@@ -29,12 +29,12 @@ func createTestMetric() telegraf.Metric {
 	return m
 }
 
-func calculateProcessedValues(mapper EnumMapper, m telegraf.Metric) map[string]interface{} {
+func calculateProcessedValues(mapper EnumMapper, m Dana.Metric) map[string]interface{} {
 	processed := mapper.Apply(m)
 	return processed[0].Fields()
 }
 
-func calculateProcessedTags(mapper EnumMapper, m telegraf.Metric) map[string]string {
+func calculateProcessedTags(mapper EnumMapper, m Dana.Metric) map[string]string {
 	processed := mapper.Apply(m)
 	return processed[0].Tags()
 }
@@ -200,7 +200,7 @@ func TestTagGlobMatching(t *testing.T) {
 func TestTracking(t *testing.T) {
 	m := createTestMetric()
 	var delivered bool
-	notify := func(telegraf.DeliveryInfo) {
+	notify := func(Dana.DeliveryInfo) {
 		delivered = true
 	}
 	m, _ = metric.WithTracking(m, notify)

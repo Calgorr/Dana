@@ -34,7 +34,7 @@ type HTTP struct {
 	Token              config.Secret     `toml:"token"`
 	SuccessStatusCodes []int             `toml:"success_status_codes"`
 	Transformation     string            `toml:"transformation"`
-	Log                telegraf.Logger   `toml:"-"`
+	Log                Dana.Logger       `toml:"-"`
 	common_http.HTTPClientConfig
 	DecryptionConfig
 
@@ -120,7 +120,7 @@ func (h *HTTP) List() ([]string, error) {
 }
 
 // GetResolver returns a function to resolve the given key.
-func (h *HTTP) GetResolver(key string) (telegraf.ResolveFunc, error) {
+func (h *HTTP) GetResolver(key string) (Dana.ResolveFunc, error) {
 	// Download and parse the credentials
 	if err := h.download(); err != nil {
 		return nil, err
@@ -235,7 +235,7 @@ func (h *HTTP) setRequestAuth(request *http.Request) error {
 
 // Register the secret-store on load.
 func init() {
-	secretstores.Add("http", func(string) telegraf.SecretStore {
+	secretstores.Add("http", func(string) Dana.SecretStore {
 		return &HTTP{}
 	})
 }

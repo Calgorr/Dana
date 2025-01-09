@@ -8,7 +8,7 @@ import (
 	"Dana"
 )
 
-var _ telegraf.Logger = &CaptureLogger{}
+var _ Dana.Logger = &CaptureLogger{}
 
 const (
 	LevelError = 'E'
@@ -50,8 +50,8 @@ func (l *CaptureLogger) loga(level byte, args ...any) {
 	l.print(Entry{level, l.Name, fmt.Sprint(args...)})
 }
 
-func (l *CaptureLogger) Level() telegraf.LogLevel {
-	return telegraf.Trace
+func (l *CaptureLogger) Level() Dana.LogLevel {
+	return Dana.Trace
 }
 
 // Adding attributes is not supported by the test-logger

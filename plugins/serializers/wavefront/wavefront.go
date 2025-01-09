@@ -27,7 +27,7 @@ type MetricPoint struct {
 	Tags      map[string]string
 }
 
-func (s *Serializer) serializeMetric(m telegraf.Metric) {
+func (s *Serializer) serializeMetric(m Dana.Metric) {
 	const metricSeparator = "."
 
 	for fieldName, value := range m.Fields() {
@@ -63,7 +63,7 @@ func (s *Serializer) serializeMetric(m telegraf.Metric) {
 }
 
 // Serialize : Serialize based on Wavefront format
-func (s *Serializer) Serialize(m telegraf.Metric) ([]byte, error) {
+func (s *Serializer) Serialize(m Dana.Metric) ([]byte, error) {
 	s.mu.Lock()
 	s.scratch.Reset()
 	s.serializeMetric(m)
@@ -72,7 +72,7 @@ func (s *Serializer) Serialize(m telegraf.Metric) ([]byte, error) {
 	return out, nil
 }
 
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	s.mu.Lock()
 	s.scratch.Reset()
 	for _, m := range metrics {
@@ -189,7 +189,7 @@ func (b *buffer) WriteFloat64(val float64) {
 
 func init() {
 	serializers.Add("wavefront",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

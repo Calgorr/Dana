@@ -42,7 +42,7 @@ func (*NSD) SampleConfig() string {
 	return sampleConfig
 }
 
-func (s *NSD) Gather(acc telegraf.Accumulator) error {
+func (s *NSD) Gather(acc Dana.Accumulator) error {
 	out, err := s.run(s.Binary, s.Timeout, s.UseSudo, s.Server, s.ConfigFile)
 	if err != nil {
 		return fmt.Errorf("error gathering metrics: %w", err)
@@ -134,7 +134,7 @@ func nsdRunner(cmdName string, timeout config.Duration, useSudo bool, server, co
 }
 
 func init() {
-	inputs.Add("nsd", func() telegraf.Input {
+	inputs.Add("nsd", func() Dana.Input {
 		return &NSD{
 			run:        nsdRunner,
 			Binary:     defaultBinary,

@@ -86,7 +86,7 @@ func (c *CrateDB) Connect() error {
 	return nil
 }
 
-func (c *CrateDB) Write(metrics []telegraf.Metric) error {
+func (c *CrateDB) Write(metrics []Dana.Metric) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(c.Timeout))
 	defer cancel()
 
@@ -103,7 +103,7 @@ func (c *CrateDB) Write(metrics []telegraf.Metric) error {
 	return nil
 }
 
-func insertSQL(table, keyReplacement string, metrics []telegraf.Metric) (string, error) {
+func insertSQL(table, keyReplacement string, metrics []Dana.Metric) (string, error) {
 	rows := make([]string, 0, len(metrics))
 	for _, m := range metrics {
 		cols := []interface{}{
@@ -222,7 +222,7 @@ func escapeString(s, quote string) string {
 // and because a cryptographic hash makes more sense for the use case of
 // deduplication.
 // [1] https://github.com/influxdata/telegraf/pull/3210#discussion_r148411201
-func hashID(m telegraf.Metric) int64 {
+func hashID(m Dana.Metric) int64 {
 	h := sha512.New()
 	h.Write([]byte(m.Name()))
 	tags := m.Tags()
@@ -254,7 +254,7 @@ func (c *CrateDB) Close() error {
 }
 
 func init() {
-	outputs.Add("cratedb", func() telegraf.Output {
+	outputs.Add("cratedb", func() Dana.Output {
 		return &CrateDB{
 			Timeout: config.Duration(time.Second * 5),
 		}

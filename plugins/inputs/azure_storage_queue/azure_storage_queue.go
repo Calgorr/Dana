@@ -22,7 +22,7 @@ type AzureStorageQueue struct {
 	StorageAccountName   string `toml:"account_name"`
 	StorageAccountKey    string `toml:"account_key"`
 	PeekOldestMessageAge bool   `toml:"peek_oldest_message_age"`
-	Log                  telegraf.Logger
+	Log                  Dana.Logger
 
 	serviceURL *azqueue.ServiceURL
 }
@@ -42,7 +42,7 @@ func (a *AzureStorageQueue) Init() error {
 	return nil
 }
 
-func (a *AzureStorageQueue) Gather(acc telegraf.Accumulator) error {
+func (a *AzureStorageQueue) Gather(acc Dana.Accumulator) error {
 	serviceURL, err := a.getServiceURL()
 	if err != nil {
 		return err
@@ -107,7 +107,7 @@ func (a *AzureStorageQueue) getServiceURL() (azqueue.ServiceURL, error) {
 }
 
 func (a *AzureStorageQueue) gatherQueueMetrics(
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	queueItem azqueue.QueueItem,
 	properties *azqueue.QueueGetPropertiesResponse,
 	peekedMessage *azqueue.PeekedMessage,
@@ -124,7 +124,7 @@ func (a *AzureStorageQueue) gatherQueueMetrics(
 }
 
 func init() {
-	inputs.Add("azure_storage_queue", func() telegraf.Input {
+	inputs.Add("azure_storage_queue", func() Dana.Input {
 		return &AzureStorageQueue{PeekOldestMessageAge: true}
 	})
 }

@@ -429,7 +429,7 @@ func TestRequestTypesCoil(t *testing.T) {
 				},
 			}
 
-			expected := []telegraf.Metric{
+			expected := []Dana.Metric{
 				testutil.MustMetric(
 					"modbus",
 					map[string]string{
@@ -1058,7 +1058,7 @@ func TestRequestTypesHoldingABCD(t *testing.T) {
 				},
 			}
 
-			expected := []telegraf.Metric{
+			expected := []Dana.Metric{
 				testutil.MustMetric(
 					"modbus",
 					map[string]string{
@@ -1678,7 +1678,7 @@ func TestRequestTypesHoldingDCBA(t *testing.T) {
 				},
 			}
 
-			expected := []telegraf.Metric{
+			expected := []Dana.Metric{
 				testutil.MustMetric(
 					"modbus",
 					map[string]string{
@@ -2137,7 +2137,7 @@ func TestRequestStartingWithOmits(t *testing.T) {
 	_, err := client.WriteMultipleRegisters(uint16(0), 3, []byte{0x00, 0x01, 0x00, 0x02, 0x00, 0x03})
 	require.NoError(t, err)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"modbus",
 			map[string]string{
@@ -2326,7 +2326,7 @@ func TestRequestMultipleSlavesOneFail(t *testing.T) {
 		},
 	)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"modbus",
 			map[string]string{

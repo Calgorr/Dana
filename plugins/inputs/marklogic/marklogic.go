@@ -112,7 +112,7 @@ func (c *Marklogic) Init() error {
 	return nil
 }
 
-func (c *Marklogic) Gather(accumulator telegraf.Accumulator) error {
+func (c *Marklogic) Gather(accumulator Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	if c.client == nil {
@@ -140,7 +140,7 @@ func (c *Marklogic) Gather(accumulator telegraf.Accumulator) error {
 	return nil
 }
 
-func (c *Marklogic) fetchAndInsertData(acc telegraf.Accumulator, address string) error {
+func (c *Marklogic) fetchAndInsertData(acc Dana.Accumulator, address string) error {
 	ml := &mlHost{}
 	if err := c.gatherJSONData(address, ml); err != nil {
 		return err
@@ -226,7 +226,7 @@ func (c *Marklogic) gatherJSONData(address string, v interface{}) error {
 }
 
 func init() {
-	inputs.Add("marklogic", func() telegraf.Input {
+	inputs.Add("marklogic", func() Dana.Input {
 		return &Marklogic{}
 	})
 }

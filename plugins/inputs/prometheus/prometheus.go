@@ -83,7 +83,7 @@ type Prometheus struct {
 	// Consul discovery
 	ConsulConfig consulConfig `toml:"consul"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 	common_http.HTTPClientConfig
 
 	client      *http.Client
@@ -253,7 +253,7 @@ func (p *Prometheus) Init() error {
 }
 
 // Start will start the Kubernetes and/or Consul scraping if enabled in the configuration
-func (p *Prometheus) Start(_ telegraf.Accumulator) error {
+func (p *Prometheus) Start(_ Dana.Accumulator) error {
 	var ctx context.Context
 	p.wg = sync.WaitGroup{}
 	ctx, p.cancel = context.WithCancel(context.Background())
@@ -271,7 +271,7 @@ func (p *Prometheus) Start(_ telegraf.Accumulator) error {
 	return nil
 }
 
-func (p *Prometheus) Gather(acc telegraf.Accumulator) error {
+func (p *Prometheus) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	allURLs, err := p.getAllURLs()
@@ -404,7 +404,7 @@ func (p *Prometheus) getAllURLs() (map[string]urlAndAddress, error) {
 	return allURLs, nil
 }
 
-func (p *Prometheus) gatherURL(u urlAndAddress, acc telegraf.Accumulator) (map[string]interface{}, map[string]string, error) {
+func (p *Prometheus) gatherURL(u urlAndAddress, acc Dana.Accumulator) (map[string]interface{}, map[string]string, error) {
 	var req *http.Request
 	var uClient *http.Client
 	requestFields := make(map[string]interface{})
@@ -547,7 +547,7 @@ func (p *Prometheus) gatherURL(u urlAndAddress, acc telegraf.Accumulator) (map[s
 	}
 
 	// Parse the metrics
-	var metricParser telegraf.Parser
+	var metricParser Dana.Parser
 	if openmetrics.AcceptsContent(resp.Header) {
 		metricParser = &openmetrics.Parser{
 			Header:          resp.Header,
@@ -583,13 +583,13 @@ func (p *Prometheus) gatherURL(u urlAndAddress, acc telegraf.Accumulator) (map[s
 		}
 
 		switch metric.Type() {
-		case telegraf.Counter:
+		case Dana.Counter:
 			acc.AddCounter(metric.Name(), metric.Fields(), tags, metric.Time())
-		case telegraf.Gauge:
+		case Dana.Gauge:
 			acc.AddGauge(metric.Name(), metric.Fields(), tags, metric.Time())
-		case telegraf.Summary:
+		case Dana.Summary:
 			acc.AddSummary(metric.Name(), metric.Fields(), tags, metric.Time())
-		case telegraf.Histogram:
+		case Dana.Histogram:
 			acc.AddHistogram(metric.Name(), metric.Fields(), tags, metric.Time())
 		default:
 			acc.AddFields(metric.Name(), metric.Fields(), tags, metric.Time())
@@ -630,7 +630,7 @@ func fieldSelectorIsSupported(fieldSelector fields.Selector) (bool, string) {
 }
 
 func init() {
-	inputs.Add("prometheus", func() telegraf.Input {
+	inputs.Add("prometheus", func() Dana.Input {
 		return &Prometheus{
 			kubernetesPods: make(map[podID]urlAndAddress),
 			consulServices: make(map[string]urlAndAddress),

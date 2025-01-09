@@ -78,7 +78,7 @@ func TestSocketWriter_unixgram(t *testing.T) {
 }
 
 func testSocketWriterStream(t *testing.T, sw *SocketWriter, lconn net.Conn) {
-	metrics := []telegraf.Metric{testutil.TestMetric(1, "test")}
+	metrics := []Dana.Metric{testutil.TestMetric(1, "test")}
 	mbs1out, err := sw.serializer.Serialize(metrics[0])
 	require.NoError(t, err)
 	mbs1out, err = sw.encoder.Encode(mbs1out)
@@ -103,7 +103,7 @@ func testSocketWriterStream(t *testing.T, sw *SocketWriter, lconn net.Conn) {
 }
 
 func testSocketWriterPacket(t *testing.T, sw *SocketWriter, lconn net.PacketConn) {
-	metrics := []telegraf.Metric{testutil.TestMetric(1, "test")}
+	metrics := []Dana.Metric{testutil.TestMetric(1, "test")}
 	mbs1out, err := sw.serializer.Serialize(metrics[0])
 	require.NoError(t, err)
 	mbs1out, err = sw.encoder.Encode(mbs1out)
@@ -145,7 +145,7 @@ func TestSocketWriter_Write_err(t *testing.T) {
 	err = lconn.(*net.TCPConn).SetWriteBuffer(256)
 	require.NoError(t, err)
 
-	metrics := []telegraf.Metric{testutil.TestMetric(1, "testerr")}
+	metrics := []Dana.Metric{testutil.TestMetric(1, "testerr")}
 
 	// close the socket to generate an error
 	err = lconn.Close()
@@ -184,7 +184,7 @@ func TestSocketWriter_Write_reconnect(t *testing.T) {
 		wg.Done()
 	}()
 
-	metrics := []telegraf.Metric{testutil.TestMetric(1, "testerr")}
+	metrics := []Dana.Metric{testutil.TestMetric(1, "testerr")}
 	err = sw.Write(metrics)
 	require.NoError(t, err)
 

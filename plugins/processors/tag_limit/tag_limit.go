@@ -13,9 +13,9 @@ import (
 var sampleConfig string
 
 type TagLimit struct {
-	Limit    int             `toml:"limit"`
-	Keep     []string        `toml:"keep"`
-	Log      telegraf.Logger `toml:"-"`
+	Limit    int         `toml:"limit"`
+	Keep     []string    `toml:"keep"`
+	Log      Dana.Logger `toml:"-"`
 	init     bool
 	keepTags map[string]string
 }
@@ -40,7 +40,7 @@ func (*TagLimit) SampleConfig() string {
 	return sampleConfig
 }
 
-func (d *TagLimit) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (d *TagLimit) Apply(in ...Dana.Metric) []Dana.Metric {
 	err := d.initOnce()
 	if err != nil {
 		d.Log.Errorf("Could not create tag_limit processor: %v", err)
@@ -72,7 +72,7 @@ func (d *TagLimit) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("tag_limit", func() telegraf.Processor {
+	processors.Add("tag_limit", func() Dana.Processor {
 		return &TagLimit{}
 	})
 }

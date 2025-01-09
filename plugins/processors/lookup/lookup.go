@@ -21,13 +21,13 @@ import (
 var sampleConfig string
 
 type Processor struct {
-	Filenames   []string        `toml:"files"`
-	Fileformat  string          `toml:"format"`
-	KeyTemplate string          `toml:"key"`
-	Log         telegraf.Logger `toml:"-"`
+	Filenames   []string    `toml:"files"`
+	Fileformat  string      `toml:"format"`
+	KeyTemplate string      `toml:"key"`
+	Log         Dana.Logger `toml:"-"`
 
 	tmpl     *template.Template
-	mappings map[string][]telegraf.Tag
+	mappings map[string][]Dana.Tag
 }
 
 func (*Processor) SampleConfig() string {
@@ -49,7 +49,7 @@ func (p *Processor) Init() error {
 	}
 	p.tmpl = tmpl
 
-	p.mappings = make(map[string][]telegraf.Tag)
+	p.mappings = make(map[string][]Dana.Tag)
 	switch strings.ToLower(p.Fileformat) {
 	case "", "json":
 		return p.loadJSONFiles()
@@ -62,11 +62,11 @@ func (p *Processor) Init() error {
 	return fmt.Errorf("invalid format %q", p.Fileformat)
 }
 
-func (p *Processor) Apply(in ...telegraf.Metric) []telegraf.Metric {
-	out := make([]telegraf.Metric, 0, len(in))
+func (p *Processor) Apply(in ...Dana.Metric) []Dana.Metric {
+	out := make([]Dana.Metric, 0, len(in))
 	for _, raw := range in {
 		m := raw
-		if wm, ok := raw.(telegraf.UnwrappableMetric); ok {
+		if wm, ok := raw.(Dana.UnwrappableMetric); ok {
 			m = wm.Unwrap()
 		}
 
@@ -98,7 +98,7 @@ func (p *Processor) loadJSONFiles() error {
 
 		for key, tags := range data {
 			for k, v := range tags {
-				p.mappings[key] = append(p.mappings[key], telegraf.Tag{Key: k, Value: v})
+				p.mappings[key] = append(p.mappings[key], Dana.Tag{Key: k, Value: v})
 			}
 		}
 	}
@@ -146,7 +146,7 @@ func (p *Processor) loadCSVKeyNameValueFile(fn string) error {
 		key := data[0]
 		for i := 1; i < len(data)-1; i += 2 {
 			k, v := data[i], data[i+1]
-			p.mappings[key] = append(p.mappings[key], telegraf.Tag{Key: k, Value: v})
+			p.mappings[key] = append(p.mappings[key], Dana.Tag{Key: k, Value: v})
 		}
 	}
 
@@ -201,7 +201,7 @@ func (p *Processor) loadCSVKeyValuesFile(fn string) error {
 		for i, v := range data[1:] {
 			v = strings.TrimSpace(v)
 			if v != "" {
-				p.mappings[key] = append(p.mappings[key], telegraf.Tag{Key: header[i], Value: v})
+				p.mappings[key] = append(p.mappings[key], Dana.Tag{Key: header[i], Value: v})
 			}
 		}
 	}
@@ -209,7 +209,7 @@ func (p *Processor) loadCSVKeyValuesFile(fn string) error {
 	return nil
 }
 func init() {
-	processors.Add("lookup", func() telegraf.Processor {
+	processors.Add("lookup", func() Dana.Processor {
 		return &Processor{}
 	})
 }

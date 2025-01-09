@@ -50,7 +50,7 @@ func TestFileTag(t *testing.T) {
 	}
 	require.NoError(t, r.Init())
 
-	r.SetParserFunc(func() (telegraf.Parser, error) {
+	r.SetParserFunc(func() (Dana.Parser, error) {
 		p := &json.Parser{}
 		err := p.Init()
 		return p, err
@@ -77,7 +77,7 @@ func TestJSONParserCompile(t *testing.T) {
 	}
 	require.NoError(t, r.Init())
 
-	r.SetParserFunc(func() (telegraf.Parser, error) {
+	r.SetParserFunc(func() (Dana.Parser, error) {
 		p := &json.Parser{TagKeys: []string{"parent_ignored_child"}}
 		err := p.Init()
 		return p, err
@@ -99,7 +99,7 @@ func TestGrokParser(t *testing.T) {
 	err = r.Init()
 	require.NoError(t, err)
 
-	r.SetParserFunc(func() (telegraf.Parser, error) {
+	r.SetParserFunc(func() (Dana.Parser, error) {
 		parser := &grok.Parser{
 			Patterns: []string{"%{COMMON_LOG_FORMAT}"},
 			Log:      testutil.Logger{},
@@ -115,7 +115,7 @@ func TestGrokParser(t *testing.T) {
 }
 
 func TestCharacterEncoding(t *testing.T) {
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("file",
 			map[string]string{
 				"dest": "example.org",
@@ -254,7 +254,7 @@ func TestCharacterEncoding(t *testing.T) {
 			err := tt.plugin.Init()
 			require.NoError(t, err)
 
-			tt.plugin.SetParserFunc(func() (telegraf.Parser, error) {
+			tt.plugin.SetParserFunc(func() (Dana.Parser, error) {
 				parser := tt.csv
 				err := parser.Init()
 				return &parser, err
@@ -270,7 +270,7 @@ func TestCharacterEncoding(t *testing.T) {
 }
 
 func TestStatefulParsers(t *testing.T) {
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("file",
 			map[string]string{
 				"dest": "example.org",
@@ -370,7 +370,7 @@ func TestStatefulParsers(t *testing.T) {
 			err := tt.plugin.Init()
 			require.NoError(t, err)
 
-			tt.plugin.SetParserFunc(func() (telegraf.Parser, error) {
+			tt.plugin.SetParserFunc(func() (Dana.Parser, error) {
 				parser := tt.csv
 				err := parser.Init()
 				return &parser, err
@@ -389,7 +389,7 @@ func TestStatefulParsers(t *testing.T) {
 
 func TestCSVBehavior(t *testing.T) {
 	// Setup the CSV parser creator function
-	parserFunc := func() (telegraf.Parser, error) {
+	parserFunc := func() (Dana.Parser, error) {
 		parser := &csv.Parser{
 			MetricName:     "file",
 			HeaderRowCount: 1,
@@ -406,7 +406,7 @@ func TestCSVBehavior(t *testing.T) {
 	plugin.SetParserFunc(parserFunc)
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"file",
 			map[string]string{},

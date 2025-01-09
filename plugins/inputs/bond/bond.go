@@ -36,7 +36,7 @@ func (*Bond) SampleConfig() string {
 	return sampleConfig
 }
 
-func (bond *Bond) Gather(acc telegraf.Accumulator) error {
+func (bond *Bond) Gather(acc Dana.Accumulator) error {
 	// load proc path, get default value if config value and env variable are empty
 	bond.loadPaths()
 	// list bond interfaces from bonding directory or gather all interfaces.
@@ -72,7 +72,7 @@ func (bond *Bond) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (bond *Bond) gatherBondInterface(bondName, rawFile string, acc telegraf.Accumulator) error {
+func (bond *Bond) gatherBondInterface(bondName, rawFile string, acc Dana.Accumulator) error {
 	splitIndex := strings.Index(rawFile, "Slave Interface:")
 	if splitIndex == -1 {
 		splitIndex = len(rawFile)
@@ -91,7 +91,7 @@ func (bond *Bond) gatherBondInterface(bondName, rawFile string, acc telegraf.Acc
 	return nil
 }
 
-func (bond *Bond) gatherBondPart(bondName, rawFile string, acc telegraf.Accumulator) error {
+func (bond *Bond) gatherBondPart(bondName, rawFile string, acc Dana.Accumulator) error {
 	fields := make(map[string]interface{})
 	tags := map[string]string{
 		"bond": bondName,
@@ -164,7 +164,7 @@ func (bond *Bond) readSysFiles(bondDir string) (sysFiles, error) {
 	return output, nil
 }
 
-func gatherSysDetails(bondName string, files sysFiles, acc telegraf.Accumulator) {
+func gatherSysDetails(bondName string, files sysFiles, acc Dana.Accumulator) {
 	var slaves []string
 	var adPortCount int
 
@@ -203,7 +203,7 @@ func gatherSysDetails(bondName string, files sysFiles, acc telegraf.Accumulator)
 	acc.AddFields("bond_sys", fields, tags)
 }
 
-func (bond *Bond) gatherSlavePart(bondName, rawFile string, acc telegraf.Accumulator) error {
+func (bond *Bond) gatherSlavePart(bondName, rawFile string, acc Dana.Accumulator) error {
 	var slaveCount int
 	tags := map[string]string{
 		"bond": bondName,
@@ -304,7 +304,7 @@ func (bond *Bond) listInterfaces() ([]string, error) {
 }
 
 func init() {
-	inputs.Add("bond", func() telegraf.Input {
+	inputs.Add("bond", func() Dana.Input {
 		return &Bond{}
 	})
 }

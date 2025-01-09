@@ -332,7 +332,7 @@ func TestWriteRetentionPolicyTag(t *testing.T) {
 	require.NoError(t, resp.Body.Close())
 	require.Equal(t, 204, resp.StatusCode)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{

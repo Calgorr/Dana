@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type Synproxy struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	// Synproxy stats filename (proc filesystem)
 	statFile string
@@ -25,7 +25,7 @@ func (*Synproxy) SampleConfig() string {
 }
 
 func init() {
-	inputs.Add("synproxy", func() telegraf.Input {
+	inputs.Add("synproxy", func() Dana.Input {
 		return &Synproxy{
 			statFile: path.Join(internal.GetProcPath(), "/net/stat/synproxy"),
 		}

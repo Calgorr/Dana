@@ -25,7 +25,7 @@ type parseTest struct {
 	name     string
 	input    []byte
 	timeFunc TimeFunc
-	metrics  []telegraf.Metric
+	metrics  []Dana.Metric
 	err      error
 }
 
@@ -52,7 +52,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "minimal",
 			input: []byte("cpu value=42 0"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -67,7 +67,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "minimal with newline",
 			input: []byte("cpu value=42 0\n"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -82,7 +82,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "measurement escape space",
 			input: []byte(`c\ pu value=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"c pu",
 					map[string]string{},
@@ -97,7 +97,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "measurement escape comma",
 			input: []byte(`c\,pu value=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"c,pu",
 					map[string]string{},
@@ -112,7 +112,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "tags",
 			input: []byte(`cpu,cpu=cpu0,host=localhost value=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{
@@ -130,7 +130,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "tags escape unescapable",
 			input: []byte(`cpu,ho\st=localhost value=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{
@@ -147,7 +147,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "tags escape equals",
 			input: []byte(`cpu,ho\=st=localhost value=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{
@@ -164,7 +164,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "tags escape comma",
 			input: []byte(`cpu,ho\,st=localhost value=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{
@@ -181,7 +181,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "tag value escape space",
 			input: []byte(`cpu,host=two\ words value=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{
@@ -198,7 +198,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "tag value double escape space",
 			input: []byte(`cpu,host=two\\ words value=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{
@@ -215,7 +215,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "tag value triple escape space",
 			input: []byte(`cpu,host=two\\\ words value=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{
@@ -232,7 +232,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field key escape not escapable",
 			input: []byte(`cpu va\lue=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -247,7 +247,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field key escape equals",
 			input: []byte(`cpu va\=lue=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -262,7 +262,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field key escape comma",
 			input: []byte(`cpu va\,lue=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -277,7 +277,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field key escape space",
 			input: []byte(`cpu va\ lue=42`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -292,7 +292,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field int",
 			input: []byte("cpu value=42i"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -320,7 +320,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field int max value",
 			input: []byte("cpu value=9223372036854775807i"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -335,7 +335,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field uint",
 			input: []byte("cpu value=42u"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -363,7 +363,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field uint max value",
 			input: []byte("cpu value=18446744073709551615u"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -378,7 +378,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field boolean",
 			input: []byte("cpu value=true"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -393,7 +393,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field string",
 			input: []byte(`cpu value="42"`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -408,7 +408,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field string escape quote",
 			input: []byte(`cpu value="how\"dy"`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -423,7 +423,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field string escape backslash",
 			input: []byte(`cpu value="how\\dy"`),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -438,7 +438,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "field string newline",
 			input: []byte("cpu value=\"4\n2\""),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -453,7 +453,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "no timestamp",
 			input: []byte("cpu value=42"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -471,7 +471,7 @@ func parseTests(stream bool) []parseTest {
 			timeFunc: func() time.Time {
 				return time.Unix(42, 123456789)
 			},
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -486,7 +486,7 @@ func parseTests(stream bool) []parseTest {
 		{
 			name:  "multiple lines",
 			input: []byte("cpu value=42\ncpu value=42"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -535,7 +535,7 @@ func parseTests(stream bool) []parseTest {
 					"rlimit_nice_priority_soft=0i,rlimit_memory_rss_hard=2147483647i,rlimit_memory_vms_soft=2147483647i,rlimit_realtime_priority_hard=0i " +
 					"1517620624000000000",
 			),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"procstat",
 					map[string]string{
@@ -679,7 +679,7 @@ func TestSeriesParser(t *testing.T) {
 		name     string
 		input    []byte
 		timeFunc func() time.Time
-		metrics  []telegraf.Metric
+		metrics  []Dana.Metric
 		err      error
 	}{
 		{
@@ -689,7 +689,7 @@ func TestSeriesParser(t *testing.T) {
 		{
 			name:  "minimal",
 			input: []byte("cpu"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -701,7 +701,7 @@ func TestSeriesParser(t *testing.T) {
 		{
 			name:  "tags",
 			input: []byte("cpu,a=x,b=y"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{
@@ -768,14 +768,14 @@ func TestParserTimestampPrecision(t *testing.T) {
 		name      string
 		precision string
 		input     []byte
-		metrics   []telegraf.Metric
+		metrics   []Dana.Metric
 		err       error
 	}{
 		{
 			name:      "default - nanosecond",
 			precision: "",
 			input:     []byte("cpu value=1 1234567890123123123"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -790,7 +790,7 @@ func TestParserTimestampPrecision(t *testing.T) {
 			name:      "nanosecond",
 			precision: "1ns",
 			input:     []byte("cpu value=2 1234567890123123999"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -805,7 +805,7 @@ func TestParserTimestampPrecision(t *testing.T) {
 			name:      "microsecond",
 			precision: "1us",
 			input:     []byte("cpu value=3 1234567890123123"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -820,7 +820,7 @@ func TestParserTimestampPrecision(t *testing.T) {
 			name:      "millisecond",
 			precision: "1ms",
 			input:     []byte("cpu value=4 1234567890123"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -835,7 +835,7 @@ func TestParserTimestampPrecision(t *testing.T) {
 			name:      "second",
 			precision: "1s",
 			input:     []byte("cpu value=5 1234567890"),
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				metric.New(
 					"cpu",
 					map[string]string{},
@@ -1029,7 +1029,7 @@ func TestBenchmarkData(t *testing.T) {
 	plugin := &Parser{}
 	require.NoError(t, plugin.Init())
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"benchmark",
 			map[string]string{

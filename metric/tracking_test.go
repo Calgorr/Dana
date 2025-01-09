@@ -14,24 +14,24 @@ func mustMetric(
 	tags map[string]string,
 	fields map[string]interface{},
 	tm time.Time,
-	tp ...telegraf.ValueType,
-) telegraf.Metric {
+	tp ...Dana.ValueType,
+) Dana.Metric {
 	m := New(name, tags, fields, tm, tp...)
 	return m
 }
 
 type deliveries struct {
-	Info map[telegraf.TrackingID]telegraf.DeliveryInfo
+	Info map[Dana.TrackingID]Dana.DeliveryInfo
 }
 
-func (d *deliveries) onDelivery(info telegraf.DeliveryInfo) {
+func (d *deliveries) onDelivery(info Dana.DeliveryInfo) {
 	d.Info[info.ID()] = info
 }
 
 func TestNewTrackingID(t *testing.T) {
 	var wg sync.WaitGroup
-	var a [100000]telegraf.TrackingID
-	var b [100000]telegraf.TrackingID
+	var a [100000]Dana.TrackingID
+	var b [100000]Dana.TrackingID
 
 	wg.Add(2)
 	go func() {
@@ -68,8 +68,8 @@ func TestNewTrackingID(t *testing.T) {
 func TestTracking(t *testing.T) {
 	tests := []struct {
 		name      string
-		metric    telegraf.Metric
-		actions   func(metric telegraf.Metric)
+		metric    Dana.Metric
+		actions   func(metric Dana.Metric)
 		delivered bool
 	}{
 		{
@@ -81,9 +81,9 @@ func TestTracking(t *testing.T) {
 					"value": 42,
 				},
 				time.Unix(0, 0),
-				telegraf.Gauge,
+				Dana.Gauge,
 			),
-			actions: func(m telegraf.Metric) {
+			actions: func(m Dana.Metric) {
 				m.Accept()
 			},
 			delivered: true,
@@ -97,9 +97,9 @@ func TestTracking(t *testing.T) {
 					"value": 42,
 				},
 				time.Unix(0, 0),
-				telegraf.Gauge,
+				Dana.Gauge,
 			),
-			actions: func(m telegraf.Metric) {
+			actions: func(m Dana.Metric) {
 				m.Reject()
 			},
 			delivered: false,
@@ -113,9 +113,9 @@ func TestTracking(t *testing.T) {
 					"value": 42,
 				},
 				time.Unix(0, 0),
-				telegraf.Gauge,
+				Dana.Gauge,
 			),
-			actions: func(m telegraf.Metric) {
+			actions: func(m Dana.Metric) {
 				m2 := m.Copy()
 				m.Accept()
 				m2.Accept()
@@ -131,9 +131,9 @@ func TestTracking(t *testing.T) {
 					"value": 42,
 				},
 				time.Unix(0, 0),
-				telegraf.Gauge,
+				Dana.Gauge,
 			),
-			actions: func(m telegraf.Metric) {
+			actions: func(m Dana.Metric) {
 				m2 := m.Copy()
 				m.Accept()
 				m2.Drop()
@@ -149,9 +149,9 @@ func TestTracking(t *testing.T) {
 					"value": 42,
 				},
 				time.Unix(0, 0),
-				telegraf.Gauge,
+				Dana.Gauge,
 			),
-			actions: func(m telegraf.Metric) {
+			actions: func(m Dana.Metric) {
 				m2 := m.Copy()
 				m.Accept()
 				m2.Reject()
@@ -162,7 +162,7 @@ func TestTracking(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			d := &deliveries{
-				Info: make(map[telegraf.TrackingID]telegraf.DeliveryInfo),
+				Info: make(map[Dana.TrackingID]Dana.DeliveryInfo),
 			}
 			metric, id := WithTracking(tt.metric, d.onDelivery)
 			tt.actions(metric)
@@ -176,13 +176,13 @@ func TestTracking(t *testing.T) {
 func TestGroupTracking(t *testing.T) {
 	tests := []struct {
 		name      string
-		metrics   []telegraf.Metric
-		actions   func(metrics []telegraf.Metric)
+		metrics   []Dana.Metric
+		actions   func(metrics []Dana.Metric)
 		delivered bool
 	}{
 		{
 			name: "accept",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				mustMetric(
 					"cpu",
 					map[string]string{},
@@ -200,7 +200,7 @@ func TestGroupTracking(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			actions: func(metrics []telegraf.Metric) {
+			actions: func(metrics []Dana.Metric) {
 				metrics[0].Accept()
 				metrics[1].Accept()
 			},
@@ -208,7 +208,7 @@ func TestGroupTracking(t *testing.T) {
 		},
 		{
 			name: "reject",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				mustMetric(
 					"cpu",
 					map[string]string{},
@@ -226,7 +226,7 @@ func TestGroupTracking(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			actions: func(metrics []telegraf.Metric) {
+			actions: func(metrics []Dana.Metric) {
 				metrics[0].Reject()
 				metrics[1].Reject()
 			},
@@ -234,7 +234,7 @@ func TestGroupTracking(t *testing.T) {
 		},
 		{
 			name: "remove",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				mustMetric(
 					"cpu",
 					map[string]string{},
@@ -252,7 +252,7 @@ func TestGroupTracking(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			actions: func(metrics []telegraf.Metric) {
+			actions: func(metrics []Dana.Metric) {
 				metrics[0].Drop()
 				metrics[1].Drop()
 			},
@@ -260,7 +260,7 @@ func TestGroupTracking(t *testing.T) {
 		},
 		{
 			name: "mixed",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				mustMetric(
 					"cpu",
 					map[string]string{},
@@ -278,7 +278,7 @@ func TestGroupTracking(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			actions: func(metrics []telegraf.Metric) {
+			actions: func(metrics []Dana.Metric) {
 				metrics[0].Accept()
 				metrics[1].Reject()
 			},
@@ -288,7 +288,7 @@ func TestGroupTracking(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			d := &deliveries{
-				Info: make(map[telegraf.TrackingID]telegraf.DeliveryInfo),
+				Info: make(map[Dana.TrackingID]Dana.DeliveryInfo),
 			}
 			metrics, id := WithGroupTracking(tt.metrics, d.onDelivery)
 			tt.actions(metrics)

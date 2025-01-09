@@ -14,7 +14,7 @@ import (
 var sampleConfig string
 
 type IntelPowerstat struct {
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 }
 
 func (*IntelPowerstat) SampleConfig() string { return sampleConfig }
@@ -24,10 +24,10 @@ func (i *IntelPowerstat) Init() error {
 	return nil
 }
 
-func (*IntelPowerstat) Gather(_ telegraf.Accumulator) error { return nil }
+func (*IntelPowerstat) Gather(_ Dana.Accumulator) error { return nil }
 
 func init() {
-	inputs.Add("intel_powerstat", func() telegraf.Input {
+	inputs.Add("intel_powerstat", func() Dana.Input {
 		return &IntelPowerstat{}
 	})
 }

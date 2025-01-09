@@ -57,7 +57,7 @@ func (*Openntpd) SampleConfig() string {
 	return sampleConfig
 }
 
-func (n *Openntpd) Gather(acc telegraf.Accumulator) error {
+func (n *Openntpd) Gather(acc Dana.Accumulator) error {
 	out, err := n.run(n.Binary, n.Timeout, n.UseSudo)
 	if err != nil {
 		return fmt.Errorf("error gathering metrics: %w", err)
@@ -190,7 +190,7 @@ func openntpdRunner(cmdName string, timeout config.Duration, useSudo bool) (*byt
 }
 
 func init() {
-	inputs.Add("openntpd", func() telegraf.Input {
+	inputs.Add("openntpd", func() Dana.Input {
 		return &Openntpd{
 			run:     openntpdRunner,
 			Binary:  defaultBinary,

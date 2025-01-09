@@ -21,7 +21,7 @@ type SystemdUnits struct {
 	Details         bool            `toml:"details"`
 	CollectDisabled bool            `toml:"collect_disabled_units"`
 	Timeout         config.Duration `toml:"timeout"`
-	Log             telegraf.Logger `toml:"-"`
+	Log             Dana.Logger     `toml:"-"`
 	archParams
 }
 
@@ -30,7 +30,7 @@ func (*SystemdUnits) SampleConfig() string {
 }
 
 func init() {
-	inputs.Add("systemd_units", func() telegraf.Input {
+	inputs.Add("systemd_units", func() Dana.Input {
 		return &SystemdUnits{Timeout: config.Duration(5 * time.Second)}
 	})
 }

@@ -66,11 +66,11 @@ func (s *Serializer) Init() error {
 	return nil
 }
 
-func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
-	return s.SerializeBatch([]telegraf.Metric{metric})
+func (s *Serializer) Serialize(metric Dana.Metric) ([]byte, error) {
+	return s.SerializeBatch([]Dana.Metric{metric})
 }
 
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	if len(metrics) < 1 {
 		return nil, nil
 	}
@@ -109,7 +109,7 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
 	return s.buffer.Bytes(), nil
 }
 
-func (s *Serializer) writeHeader(metric telegraf.Metric) error {
+func (s *Serializer) writeHeader(metric Dana.Metric) error {
 	columns := []string{
 		"timestamp",
 		"measurement",
@@ -152,7 +152,7 @@ func (s *Serializer) writeHeaderOrdered() error {
 	return s.writer.Write(columns)
 }
 
-func (s *Serializer) writeData(metric telegraf.Metric) error {
+func (s *Serializer) writeData(metric Dana.Metric) error {
 	var timestamp string
 
 	// Format the time
@@ -192,7 +192,7 @@ func (s *Serializer) writeData(metric telegraf.Metric) error {
 	return s.writer.Write(columns)
 }
 
-func (s *Serializer) writeDataOrdered(metric telegraf.Metric) error {
+func (s *Serializer) writeDataOrdered(metric Dana.Metric) error {
 	var timestamp string
 
 	// Format the time
@@ -238,7 +238,7 @@ func (s *Serializer) writeDataOrdered(metric telegraf.Metric) error {
 
 func init() {
 	serializers.Add("csv",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

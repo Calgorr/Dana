@@ -31,7 +31,7 @@ const measurement = "socketstat"
 type Socketstat struct {
 	SocketProto []string        `toml:"protocols"`
 	Timeout     config.Duration `toml:"timeout"`
-	Log         telegraf.Logger `toml:"-"`
+	Log         Dana.Logger     `toml:"-"`
 
 	isNewConnection *regexp.Regexp
 	validValues     *regexp.Regexp
@@ -46,7 +46,7 @@ func (*Socketstat) SampleConfig() string {
 }
 
 // Gather gathers indicators from established connections
-func (ss *Socketstat) Gather(acc telegraf.Accumulator) error {
+func (ss *Socketstat) Gather(acc Dana.Accumulator) error {
 	// best effort : we continue through the protocols even if an error is encountered,
 	// but we keep track of the last error.
 	for _, proto := range ss.SocketProto {
@@ -73,7 +73,7 @@ func socketList(cmdName, proto string, timeout config.Duration) (*bytes.Buffer, 
 	return &out, nil
 }
 
-func (ss *Socketstat) parseAndGather(acc telegraf.Accumulator, data *bytes.Buffer, proto string) {
+func (ss *Socketstat) parseAndGather(acc Dana.Accumulator, data *bytes.Buffer, proto string) {
 	scanner := bufio.NewScanner(data)
 	tags := make(map[string]string)
 	fields := make(map[string]interface{})
@@ -140,7 +140,7 @@ func (ss *Socketstat) parseAndGather(acc telegraf.Accumulator, data *bytes.Buffe
 	}
 }
 
-func getTagsAndState(proto string, words []string, log telegraf.Logger) (map[string]string, map[string]interface{}) {
+func getTagsAndState(proto string, words []string, log Dana.Logger) (map[string]string, map[string]interface{}) {
 	tags := map[string]string{
 		"proto": proto,
 	}
@@ -208,7 +208,7 @@ func (ss *Socketstat) Init() error {
 }
 
 func init() {
-	inputs.Add("socketstat", func() telegraf.Input {
+	inputs.Add("socketstat", func() Dana.Input {
 		return &Socketstat{Timeout: config.Duration(time.Second)}
 	})
 }

@@ -21,7 +21,7 @@ func (*Printer) SampleConfig() string {
 	return sampleConfig
 }
 
-func (p *Printer) Apply(in ...telegraf.Metric) []telegraf.Metric {
+func (p *Printer) Apply(in ...Dana.Metric) []Dana.Metric {
 	for _, metric := range in {
 		octets, err := p.Serialize(metric)
 		if err != nil {
@@ -33,7 +33,7 @@ func (p *Printer) Apply(in ...telegraf.Metric) []telegraf.Metric {
 }
 
 func init() {
-	processors.Add("printer", func() telegraf.Processor {
+	processors.Add("printer", func() Dana.Processor {
 		return &Printer{}
 	})
 }

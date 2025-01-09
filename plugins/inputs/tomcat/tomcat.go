@@ -79,7 +79,7 @@ func (*Tomcat) SampleConfig() string {
 	return sampleConfig
 }
 
-func (s *Tomcat) Gather(acc telegraf.Accumulator) error {
+func (s *Tomcat) Gather(acc Dana.Accumulator) error {
 	if s.client == nil {
 		client, err := s.createHTTPClient()
 		if err != nil {
@@ -194,7 +194,7 @@ func (s *Tomcat) createHTTPClient() (*http.Client, error) {
 }
 
 func init() {
-	inputs.Add("tomcat", func() telegraf.Input {
+	inputs.Add("tomcat", func() Dana.Input {
 		return &Tomcat{
 			URL:      "http://127.0.0.1:8080/manager/status/all?XML=true",
 			Username: "tomcat",

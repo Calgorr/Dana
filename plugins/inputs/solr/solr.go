@@ -27,7 +27,7 @@ type Solr struct {
 	Password    string          `toml:"password"`
 	HTTPTimeout config.Duration `toml:"timeout"`
 	Cores       []string        `toml:"cores"`
-	Log         telegraf.Logger `toml:"-"`
+	Log         Dana.Logger     `toml:"-"`
 
 	client  *http.Client
 	configs map[string]*apiConfig
@@ -60,7 +60,7 @@ func (s *Solr) Init() error {
 	return nil
 }
 
-func (s *Solr) Start(_ telegraf.Accumulator) error {
+func (s *Solr) Start(_ Dana.Accumulator) error {
 	for _, server := range s.Servers {
 		// Simply fill the cache for all available servers
 		_ = s.getAPIConfig(server)
@@ -70,7 +70,7 @@ func (s *Solr) Start(_ telegraf.Accumulator) error {
 
 func (*Solr) Stop() {}
 
-func (s *Solr) Gather(acc telegraf.Accumulator) error {
+func (s *Solr) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 	for _, srv := range s.Servers {
 		wg.Add(1)
@@ -117,7 +117,7 @@ func (s *Solr) getAPIConfig(server string) *apiConfig {
 	return s.configs[server]
 }
 
-func (s *Solr) collect(acc telegraf.Accumulator, cfg *apiConfig, server string) {
+func (s *Solr) collect(acc Dana.Accumulator, cfg *apiConfig, server string) {
 	now := time.Now()
 
 	var coreStatus adminCoresStatus
@@ -220,7 +220,7 @@ func (s *Solr) determineServerAPIVersion(server string) (int, error) {
 }
 
 func init() {
-	inputs.Add("solr", func() telegraf.Input {
+	inputs.Add("solr", func() Dana.Input {
 		return &Solr{
 			HTTPTimeout: config.Duration(time.Second * 5),
 		}

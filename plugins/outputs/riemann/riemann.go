@@ -30,7 +30,7 @@ type Riemann struct {
 	Tags                   []string        `toml:"tags"`
 	DescriptionText        string          `toml:"description_text"`
 	Timeout                config.Duration `toml:"timeout"`
-	Log                    telegraf.Logger `toml:"-"`
+	Log                    Dana.Logger     `toml:"-"`
 
 	client *raidman.Client
 }
@@ -63,7 +63,7 @@ func (r *Riemann) Close() (err error) {
 	return err
 }
 
-func (r *Riemann) Write(metrics []telegraf.Metric) error {
+func (r *Riemann) Write(metrics []Dana.Metric) error {
 	if len(metrics) == 0 {
 		return nil
 	}
@@ -88,7 +88,7 @@ func (r *Riemann) Write(metrics []telegraf.Metric) error {
 	return nil
 }
 
-func (r *Riemann) buildRiemannEvents(m telegraf.Metric) []*raidman.Event {
+func (r *Riemann) buildRiemannEvents(m Dana.Metric) []*raidman.Event {
 	events := make([]*raidman.Event, 0, len(m.Fields()))
 	for fieldName, value := range m.Fields() {
 		// get host for Riemann event
@@ -184,7 +184,7 @@ func (r *Riemann) tags(tags map[string]string) []string {
 }
 
 func init() {
-	outputs.Add("riemann", func() telegraf.Output {
+	outputs.Add("riemann", func() Dana.Output {
 		return &Riemann{
 			Timeout: config.Duration(time.Second * 5),
 		}

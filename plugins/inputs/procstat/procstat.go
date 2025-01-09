@@ -31,27 +31,27 @@ var execCommand = exec.Command
 type pid int32
 
 type Procstat struct {
-	PidFinder              string          `toml:"pid_finder"`
-	PidFile                string          `toml:"pid_file"`
-	Exe                    string          `toml:"exe"`
-	Pattern                string          `toml:"pattern"`
-	Prefix                 string          `toml:"prefix"`
-	CmdLineTag             bool            `toml:"cmdline_tag" deprecated:"1.29.0;1.40.0;use 'tag_with' instead"`
-	ProcessName            string          `toml:"process_name"`
-	User                   string          `toml:"user"`
-	SystemdUnit            string          `toml:"systemd_unit"`
-	SupervisorUnit         []string        `toml:"supervisor_unit" deprecated:"1.29.0;1.40.0;use 'supervisor_units' instead"`
-	SupervisorUnits        []string        `toml:"supervisor_units"`
-	IncludeSystemdChildren bool            `toml:"include_systemd_children"`
-	CGroup                 string          `toml:"cgroup"`
-	PidTag                 bool            `toml:"pid_tag" deprecated:"1.29.0;1.40.0;use 'tag_with' instead"`
-	WinService             string          `toml:"win_service"`
-	Mode                   string          `toml:"mode"`
-	Properties             []string        `toml:"properties"`
-	SocketProtocols        []string        `toml:"socket_protocols"`
-	TagWith                []string        `toml:"tag_with"`
-	Filter                 []filter        `toml:"filter"`
-	Log                    telegraf.Logger `toml:"-"`
+	PidFinder              string      `toml:"pid_finder"`
+	PidFile                string      `toml:"pid_file"`
+	Exe                    string      `toml:"exe"`
+	Pattern                string      `toml:"pattern"`
+	Prefix                 string      `toml:"prefix"`
+	CmdLineTag             bool        `toml:"cmdline_tag" deprecated:"1.29.0;1.40.0;use 'tag_with' instead"`
+	ProcessName            string      `toml:"process_name"`
+	User                   string      `toml:"user"`
+	SystemdUnit            string      `toml:"systemd_unit"`
+	SupervisorUnit         []string    `toml:"supervisor_unit" deprecated:"1.29.0;1.40.0;use 'supervisor_units' instead"`
+	SupervisorUnits        []string    `toml:"supervisor_units"`
+	IncludeSystemdChildren bool        `toml:"include_systemd_children"`
+	CGroup                 string      `toml:"cgroup"`
+	PidTag                 bool        `toml:"pid_tag" deprecated:"1.29.0;1.40.0;use 'tag_with' instead"`
+	WinService             string      `toml:"win_service"`
+	Mode                   string      `toml:"mode"`
+	Properties             []string    `toml:"properties"`
+	SocketProtocols        []string    `toml:"socket_protocols"`
+	TagWith                []string    `toml:"tag_with"`
+	Filter                 []filter    `toml:"filter"`
+	Log                    Dana.Logger `toml:"-"`
 
 	finder    pidFinder
 	processes map[pid]process
@@ -208,7 +208,7 @@ func (p *Procstat) Init() error {
 	return nil
 }
 
-func (p *Procstat) Gather(acc telegraf.Accumulator) error {
+func (p *Procstat) Gather(acc Dana.Accumulator) error {
 	if p.oldMode {
 		return p.gatherOld(acc)
 	}
@@ -216,7 +216,7 @@ func (p *Procstat) Gather(acc telegraf.Accumulator) error {
 	return p.gatherNew(acc)
 }
 
-func (p *Procstat) gatherOld(acc telegraf.Accumulator) error {
+func (p *Procstat) gatherOld(acc Dana.Accumulator) error {
 	now := time.Now()
 	results, err := p.findPids()
 	if err != nil {
@@ -322,7 +322,7 @@ func (p *Procstat) gatherOld(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (p *Procstat) gatherNew(acc telegraf.Accumulator) error {
+func (p *Procstat) gatherNew(acc Dana.Accumulator) error {
 	now := time.Now()
 	running := make(map[pid]bool)
 	for _, f := range p.Filter {
@@ -680,7 +680,7 @@ func (p *Procstat) winServicePIDs() ([]pid, error) {
 }
 
 func init() {
-	inputs.Add("procstat", func() telegraf.Input {
+	inputs.Add("procstat", func() Dana.Input {
 		return &Procstat{
 			Properties:    []string{"cpu", "memory", "mmap"},
 			createProcess: newProc,

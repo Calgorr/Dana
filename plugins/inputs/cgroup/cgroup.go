@@ -29,5 +29,5 @@ func (cg *CGroup) Init() error {
 }
 
 func init() {
-	inputs.Add("cgroup", func() telegraf.Input { return &CGroup{} })
+	inputs.Add("cgroup", func() Dana.Input { return &CGroup{} })
 }

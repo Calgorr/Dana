@@ -34,7 +34,7 @@ func TestSimple(t *testing.T) {
 	final.Add(m3)
 	final.Push(&acc)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"m1",
 			tags,
@@ -72,7 +72,7 @@ func TestTwoTags(t *testing.T) {
 	final.Add(m3)
 	final.Push(&acc)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"m1",
 			tags2,
@@ -126,7 +126,7 @@ func TestLongDifference(t *testing.T) {
 	final.Add(m4)
 	final.Push(&acc)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"m",
 			tags,
@@ -190,7 +190,7 @@ func TestOutputStrategyTimeout(t *testing.T) {
 	final.Add(m4)
 	final.Push(&acc)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric(
 			"m",
 			tags,
@@ -246,7 +246,7 @@ func TestOutputStrategyPeriodic(t *testing.T) {
 	final.Add(m4)
 	final.Push(&acc)
 
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"m",
 			tags,
@@ -294,7 +294,7 @@ func TestKeepOriginalFieldNames(t *testing.T) {
 	var acc testutil.Accumulator
 	final.Add(m1)
 	final.Push(&acc)
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"m",
 			tags,

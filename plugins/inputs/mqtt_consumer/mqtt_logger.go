@@ -5,7 +5,7 @@ import (
 )
 
 type mqttLogger struct {
-	telegraf.Logger
+	Dana.Logger
 }
 
 // Printf implements mqtt.Logger

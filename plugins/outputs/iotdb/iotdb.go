@@ -38,7 +38,7 @@ type IoTDB struct {
 	TimeStampUnit   string          `toml:"timestamp_precision"`
 	TreatTagsAs     string          `toml:"convert_tags_to"`
 	SanitizeTags    string          `toml:"sanitize_tag"`
-	Log             telegraf.Logger `toml:"-"`
+	Log             Dana.Logger     `toml:"-"`
 
 	sanityRegex []*regexp.Regexp
 	session     *client.Session
@@ -52,7 +52,7 @@ type recordsWithTags struct {
 	DataTypesList    [][]client.TSDataType
 	TimestampList    []int64
 	// extra tags
-	TagsList [][]*telegraf.Tag
+	TagsList [][]*Dana.Tag
 }
 
 func (*IoTDB) SampleConfig() string {
@@ -140,7 +140,7 @@ func (s *IoTDB) Close() error {
 // Write should write immediately to the output, and not buffer writes
 // (Telegraf manages the buffer for you). Returning an error will fail this
 // batch of writes and the entire batch will be retried automatically.
-func (s *IoTDB) Write(metrics []telegraf.Metric) error {
+func (s *IoTDB) Write(metrics []Dana.Metric) error {
 	// Convert Metrics to Records with Tags
 	rwt, err := s.convertMetricsToRecordsWithTags(metrics)
 	if err != nil {
@@ -189,7 +189,7 @@ func (s *IoTDB) getDataTypeAndValue(value interface{}) (client.TSDataType, inter
 }
 
 // convert Timestamp Unit according to config
-func (s *IoTDB) convertTimestampOfMetric(m telegraf.Metric) (int64, error) {
+func (s *IoTDB) convertTimestampOfMetric(m Dana.Metric) (int64, error) {
 	switch s.TimeStampUnit {
 	case "second":
 		return m.Time().Unix(), nil
@@ -205,17 +205,17 @@ func (s *IoTDB) convertTimestampOfMetric(m telegraf.Metric) (int64, error) {
 }
 
 // convert Metrics to Records with tags
-func (s *IoTDB) convertMetricsToRecordsWithTags(metrics []telegraf.Metric) (*recordsWithTags, error) {
+func (s *IoTDB) convertMetricsToRecordsWithTags(metrics []Dana.Metric) (*recordsWithTags, error) {
 	timestampList := make([]int64, 0, len(metrics))
 	deviceidList := make([]string, 0, len(metrics))
 	measurementsList := make([][]string, 0, len(metrics))
 	valuesList := make([][]interface{}, 0, len(metrics))
 	dataTypesList := make([][]client.TSDataType, 0, len(metrics))
-	tagsList := make([][]*telegraf.Tag, 0, len(metrics))
+	tagsList := make([][]*Dana.Tag, 0, len(metrics))
 
 	for _, metric := range metrics {
 		// write `metric` to the output sink here
-		var tags []*telegraf.Tag
+		var tags []*Dana.Tag
 		tags = append(tags, metric.TagList()...)
 		// deal with basic parameter
 		var keys []string
@@ -331,7 +331,7 @@ func (s *IoTDB) writeRecordsWithTags(rwt *recordsWithTags) error {
 }
 
 func init() {
-	outputs.Add("iotdb", func() telegraf.Output { return newIoTDB() })
+	outputs.Add("iotdb", func() Dana.Output { return newIoTDB() })
 }
 
 // create a new IoTDB struct with default values.

@@ -30,7 +30,7 @@ type Dynatrace struct {
 	URL                       string          `toml:"url"`
 	APIToken                  config.Secret   `toml:"api_token"`
 	Prefix                    string          `toml:"prefix"`
-	Log                       telegraf.Logger `toml:"-"`
+	Log                       Dana.Logger     `toml:"-"`
 	Timeout                   config.Duration `toml:"timeout"`
 	AddCounterMetrics         []string        `toml:"additional_counters"`
 	AddCounterMetricsPatterns []string        `toml:"additional_counters_patterns"`
@@ -62,7 +62,7 @@ func (d *Dynatrace) Close() error {
 	return nil
 }
 
-func (d *Dynatrace) Write(metrics []telegraf.Metric) error {
+func (d *Dynatrace) Write(metrics []Dana.Metric) error {
 	if len(metrics) == 0 {
 		return nil
 	}
@@ -73,11 +73,11 @@ func (d *Dynatrace) Write(metrics []telegraf.Metric) error {
 		for _, tag := range tm.TagList() {
 			// Ignore special tags for histogram and summary types.
 			switch tm.Type() {
-			case telegraf.Histogram:
+			case Dana.Histogram:
 				if tag.Key == "le" || tag.Key == "gt" {
 					continue
 				}
-			case telegraf.Summary:
+			case Dana.Summary:
 				if tag.Key == "quantile" {
 					continue
 				}
@@ -222,14 +222,14 @@ func (d *Dynatrace) Init() error {
 }
 
 func init() {
-	outputs.Add("dynatrace", func() telegraf.Output {
+	outputs.Add("dynatrace", func() Dana.Output {
 		return &Dynatrace{
 			Timeout: config.Duration(time.Second * 5),
 		}
 	})
 }
 
-func (d *Dynatrace) getTypeOption(metric telegraf.Metric, field *telegraf.Field) dynatrace_metric.MetricOption {
+func (d *Dynatrace) getTypeOption(metric Dana.Metric, field *Dana.Field) dynatrace_metric.MetricOption {
 	metricName := metric.Name() + "." + field.Key
 	if d.isCounterMetricsMatch(d.AddCounterMetrics, metricName) ||
 		d.isCounterMetricsPatternsMatch(d.AddCounterMetricsPatterns, metricName) {

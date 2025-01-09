@@ -27,7 +27,7 @@ type Parser struct {
 	Separator          string            `toml:"separator"`
 	Templates          []string          `toml:"templates"`
 	DefaultTags        map[string]string `toml:"-"`
-	Log                telegraf.Logger   `toml:"-"`
+	Log                Dana.Logger       `toml:"-"`
 
 	templateEngine *templating.Engine
 
@@ -36,8 +36,8 @@ type Parser struct {
 }
 
 // Parse parses the input bytes to an array of metrics
-func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
-	metrics := make([]telegraf.Metric, 0)
+func (p *Parser) Parse(buf []byte) ([]Dana.Metric, error) {
+	metrics := make([]Dana.Metric, 0)
 
 	metricTime, err := p.parseTime(buf)
 	if err != nil {
@@ -98,7 +98,7 @@ func (p *Parser) Parse(buf []byte) ([]telegraf.Metric, error) {
 }
 
 // ParseLine is not supported by the dropwizard format
-func (p *Parser) ParseLine(_ string) (telegraf.Metric, error) {
+func (p *Parser) ParseLine(_ string) (Dana.Metric, error) {
 	return nil, errors.New("parsing line is not supported by the dropwizard format")
 }
 
@@ -176,7 +176,7 @@ func (p *Parser) unmarshalMetrics(buf []byte) (map[string]interface{}, error) {
 	return jsonOut, nil
 }
 
-func (p *Parser) readDWMetrics(metricType string, dwms interface{}, metrics []telegraf.Metric, tm time.Time) ([]telegraf.Metric, error) {
+func (p *Parser) readDWMetrics(metricType string, dwms interface{}, metrics []Dana.Metric, tm time.Time) ([]Dana.Metric, error) {
 	if dwmsTyped, ok := dwms.(map[string]interface{}); ok {
 		for dwmName, dwmFields := range dwmsTyped {
 			measurementName := dwmName
@@ -194,7 +194,7 @@ func (p *Parser) readDWMetrics(metricType string, dwms interface{}, metrics []te
 			}
 
 			parsed, err := p.seriesParser.Parse([]byte(measurementName))
-			var m telegraf.Metric
+			var m Dana.Metric
 			if err != nil || len(parsed) != 1 {
 				m = metric.New(measurementName, make(map[string]string), make(map[string]interface{}), tm)
 			} else {
@@ -253,7 +253,7 @@ func (p *Parser) Init() error {
 
 func init() {
 	parsers.Add("dropwizard",
-		func(string) telegraf.Parser {
+		func(string) Dana.Parser {
 			return &Parser{}
 		})
 }

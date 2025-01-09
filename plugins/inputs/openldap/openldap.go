@@ -52,7 +52,7 @@ func (*Openldap) SampleConfig() string {
 	return sampleConfig
 }
 
-func (o *Openldap) Gather(acc telegraf.Accumulator) error {
+func (o *Openldap) Gather(acc Dana.Accumulator) error {
 	if o.TLS == "" {
 		o.TLS = o.SSL
 	}
@@ -138,7 +138,7 @@ func (o *Openldap) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func gatherSearchResult(sr *ldap.SearchResult, o *Openldap, acc telegraf.Accumulator) {
+func gatherSearchResult(sr *ldap.SearchResult, o *Openldap, acc Dana.Accumulator) {
 	fields := make(map[string]interface{})
 	tags := map[string]string{
 		"server": o.Host,
@@ -199,5 +199,5 @@ func newOpenldap() *Openldap {
 }
 
 func init() {
-	inputs.Add("openldap", func() telegraf.Input { return newOpenldap() })
+	inputs.Add("openldap", func() Dana.Input { return newOpenldap() })
 }

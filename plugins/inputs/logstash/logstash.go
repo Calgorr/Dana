@@ -40,7 +40,7 @@ type Logstash struct {
 	Password string            `toml:"password"`
 	Headers  map[string]string `toml:"headers"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	client *http.Client
 	common_http.HTTPClientConfig
@@ -122,11 +122,11 @@ func (logstash *Logstash) Init() error {
 	return nil
 }
 
-func (*Logstash) Start(telegraf.Accumulator) error {
+func (*Logstash) Start(Dana.Accumulator) error {
 	return nil
 }
 
-func (logstash *Logstash) Gather(accumulator telegraf.Accumulator) error {
+func (logstash *Logstash) Gather(accumulator Dana.Accumulator) error {
 	if logstash.client == nil {
 		client, err := logstash.createHTTPClient()
 
@@ -231,7 +231,7 @@ func (logstash *Logstash) gatherJSONData(address string, value interface{}) erro
 }
 
 // gatherJVMStats gather the JVM metrics and add results to the accumulator
-func (logstash *Logstash) gatherJVMStats(address string, accumulator telegraf.Accumulator) error {
+func (logstash *Logstash) gatherJVMStats(address string, accumulator Dana.Accumulator) error {
 	jvmStats := &jvmStats{}
 
 	err := logstash.gatherJSONData(address, jvmStats)
@@ -257,7 +257,7 @@ func (logstash *Logstash) gatherJVMStats(address string, accumulator telegraf.Ac
 }
 
 // gatherProcessStats gather the Process metrics and add results to the accumulator
-func (logstash *Logstash) gatherProcessStats(address string, accumulator telegraf.Accumulator) error {
+func (logstash *Logstash) gatherProcessStats(address string, accumulator Dana.Accumulator) error {
 	processStats := &processStats{}
 
 	err := logstash.gatherJSONData(address, processStats)
@@ -283,7 +283,7 @@ func (logstash *Logstash) gatherProcessStats(address string, accumulator telegra
 }
 
 // gatherPluginsStats go through a list of plugins and add their metrics to the accumulator
-func gatherPluginsStats(plugins []plugin, pluginType string, tags map[string]string, accumulator telegraf.Accumulator) error {
+func gatherPluginsStats(plugins []plugin, pluginType string, tags map[string]string, accumulator Dana.Accumulator) error {
 	for _, plugin := range plugins {
 		pluginTags := map[string]string{
 			"plugin_name": plugin.Name,
@@ -365,7 +365,7 @@ func gatherPluginsStats(plugins []plugin, pluginType string, tags map[string]str
 	return nil
 }
 
-func gatherQueueStats(queue pipelineQueue, tags map[string]string, acc telegraf.Accumulator) error {
+func gatherQueueStats(queue pipelineQueue, tags map[string]string, acc Dana.Accumulator) error {
 	queueTags := map[string]string{
 		"queue_type": queue.Type,
 	}
@@ -411,7 +411,7 @@ func gatherQueueStats(queue pipelineQueue, tags map[string]string, acc telegraf.
 }
 
 // gatherPipelineStats gather the Pipeline metrics and add results to the accumulator (for Logstash < 6)
-func (logstash *Logstash) gatherPipelineStats(address string, accumulator telegraf.Accumulator) error {
+func (logstash *Logstash) gatherPipelineStats(address string, accumulator Dana.Accumulator) error {
 	pipelineStats := &pipelineStats{}
 
 	err := logstash.gatherJSONData(address, pipelineStats)
@@ -455,7 +455,7 @@ func (logstash *Logstash) gatherPipelineStats(address string, accumulator telegr
 }
 
 // gatherPipelinesStats gather the Pipelines metrics and add results to the accumulator (for Logstash >= 6)
-func (logstash *Logstash) gatherPipelinesStats(address string, accumulator telegraf.Accumulator) error {
+func (logstash *Logstash) gatherPipelinesStats(address string, accumulator Dana.Accumulator) error {
 	pipelinesStats := &pipelinesStats{}
 
 	err := logstash.gatherJSONData(address, pipelinesStats)
@@ -513,7 +513,7 @@ func newLogstash() *Logstash {
 }
 
 func init() {
-	inputs.Add("logstash", func() telegraf.Input {
+	inputs.Add("logstash", func() Dana.Input {
 		return newLogstash()
 	})
 }

@@ -35,7 +35,7 @@ type WinPerfCounters struct {
 	MaxBufferSize              config.Size
 	Sources                    []string
 
-	Log telegraf.Logger
+	Log Dana.Logger
 
 	lastRefreshed time.Time
 	queryCreator  PerformanceQueryCreator
@@ -412,7 +412,7 @@ func (m *WinPerfCounters) checkError(err error) error {
 	return err
 }
 
-func (m *WinPerfCounters) Gather(acc telegraf.Accumulator) error {
+func (m *WinPerfCounters) Gather(acc Dana.Accumulator) error {
 	// Parse the config once
 	var err error
 
@@ -468,7 +468,7 @@ func (m *WinPerfCounters) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (m *WinPerfCounters) gatherComputerCounters(hostCounterInfo *hostCountersInfo, acc telegraf.Accumulator) error {
+func (m *WinPerfCounters) gatherComputerCounters(hostCounterInfo *hostCountersInfo, acc Dana.Accumulator) error {
 	var value interface{}
 	var err error
 	collectedFields := make(fieldGrouping)
@@ -622,7 +622,7 @@ func (m *WinPerfCounters) Init() error {
 }
 
 func init() {
-	inputs.Add("win_perf_counters", func() telegraf.Input {
+	inputs.Add("win_perf_counters", func() Dana.Input {
 		return &WinPerfCounters{
 			CountersRefreshInterval:    config.Duration(time.Second * 60),
 			LocalizeWildcardsExpansion: true,

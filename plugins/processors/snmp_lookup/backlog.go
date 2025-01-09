@@ -8,7 +8,7 @@ import (
 )
 
 type backlogEntry struct {
-	metric   telegraf.Metric
+	metric   Dana.Metric
 	agent    string
 	index    string
 	resolved bool
@@ -18,13 +18,13 @@ type backlog struct {
 	elements *list.List
 	ordered  bool
 
-	acc telegraf.Accumulator
-	log telegraf.Logger
+	acc Dana.Accumulator
+	log Dana.Logger
 
 	sync.Mutex
 }
 
-func newBacklog(acc telegraf.Accumulator, log telegraf.Logger, ordered bool) *backlog {
+func newBacklog(acc Dana.Accumulator, log Dana.Logger, ordered bool) *backlog {
 	return &backlog{
 		elements: list.New(),
 		ordered:  ordered,
@@ -53,7 +53,7 @@ func (b *backlog) destroy() int {
 	return count
 }
 
-func (b *backlog) push(agent, index string, m telegraf.Metric) {
+func (b *backlog) push(agent, index string, m Dana.Metric) {
 	e := backlogEntry{
 		metric: m,
 		agent:  agent,

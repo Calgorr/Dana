@@ -15,7 +15,7 @@ func addr(v float64) *float64 {
 }
 
 func TestFieldNotFoundIsSuccess(t *testing.T) {
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},
@@ -32,7 +32,7 @@ func TestFieldNotFoundIsSuccess(t *testing.T) {
 }
 
 func TestStringFieldIsFailure(t *testing.T) {
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},
@@ -53,12 +53,12 @@ func TestStringFieldIsFailure(t *testing.T) {
 func TestFloatConvert(t *testing.T) {
 	tests := []struct {
 		name     string
-		metrics  []telegraf.Metric
+		metrics  []Dana.Metric
 		expected bool
 	}{
 		{
 			name: "int64 field",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -71,7 +71,7 @@ func TestFloatConvert(t *testing.T) {
 		},
 		{
 			name: "uint64 field",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -84,7 +84,7 @@ func TestFloatConvert(t *testing.T) {
 		},
 		{
 			name: "float64 field",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -97,7 +97,7 @@ func TestFloatConvert(t *testing.T) {
 		},
 		{
 			name: "bool field true",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -110,7 +110,7 @@ func TestFloatConvert(t *testing.T) {
 		},
 		{
 			name: "bool field false",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -123,7 +123,7 @@ func TestFloatConvert(t *testing.T) {
 		},
 		{
 			name: "string field",
-			metrics: []telegraf.Metric{
+			metrics: []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},
@@ -252,7 +252,7 @@ func TestOperators(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			metrics := []telegraf.Metric{
+			metrics := []Dana.Metric{
 				testutil.MustMetric(
 					"cpu",
 					map[string]string{},

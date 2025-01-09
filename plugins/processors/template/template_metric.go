@@ -14,7 +14,7 @@ var (
 )
 
 type TemplateMetric struct {
-	metric telegraf.TemplateMetric
+	metric Dana.TemplateMetric
 }
 
 func (m *TemplateMetric) Name() string {
@@ -49,7 +49,7 @@ func (m *TemplateMetric) TagList() map[string]string {
 	onceTagList.Do(func() {
 		config.PrintOptionValueDeprecationNotice(
 			"processors.template", "template", "{{.TagList}}",
-			telegraf.DeprecationInfo{
+			Dana.DeprecationInfo{
 				Since:     "1.28.0",
 				RemovalIn: "1.34.0",
 				Notice:    "use '{{.Tags}}' instead",
@@ -63,7 +63,7 @@ func (m *TemplateMetric) FieldList() map[string]interface{} {
 	onceFieldList.Do(func() {
 		config.PrintOptionValueDeprecationNotice(
 			"processors.template", "template", "{{.FieldList}}",
-			telegraf.DeprecationInfo{
+			Dana.DeprecationInfo{
 				Since:     "1.28.0",
 				RemovalIn: "1.34.0",
 				Notice:    "use '{{.Fields}}' instead",

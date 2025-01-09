@@ -8,7 +8,7 @@ import (
 // Serializer encodes metrics in MessagePack format
 type Serializer struct{}
 
-func marshalMetric(buf []byte, metric telegraf.Metric) ([]byte, error) {
+func marshalMetric(buf []byte, metric Dana.Metric) ([]byte, error) {
 	return (&Metric{
 		Name:   metric.Name(),
 		Time:   MessagePackTime{time: metric.Time()},
@@ -19,13 +19,13 @@ func marshalMetric(buf []byte, metric telegraf.Metric) ([]byte, error) {
 
 // Serialize implements serializers.Serializer.Serialize
 // github.com/influxdata/telegraf/plugins/serializers/Serializer
-func (s *Serializer) Serialize(metric telegraf.Metric) ([]byte, error) {
+func (s *Serializer) Serialize(metric Dana.Metric) ([]byte, error) {
 	return marshalMetric(nil, metric)
 }
 
 // SerializeBatch implements serializers.Serializer.SerializeBatch
 // github.com/influxdata/telegraf/plugins/serializers/Serializer
-func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
+func (s *Serializer) SerializeBatch(metrics []Dana.Metric) ([]byte, error) {
 	buf := make([]byte, 0)
 	for _, m := range metrics {
 		var err error
@@ -40,7 +40,7 @@ func (s *Serializer) SerializeBatch(metrics []telegraf.Metric) ([]byte, error) {
 
 func init() {
 	serializers.Add("msgpack",
-		func() telegraf.Serializer {
+		func() Dana.Serializer {
 			return &Serializer{}
 		},
 	)

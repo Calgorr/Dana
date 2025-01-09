@@ -28,7 +28,7 @@ type configurationOriginal struct {
 	HoldingRegisters []fieldDefinition `toml:"holding_registers"`
 	InputRegisters   []fieldDefinition `toml:"input_registers"`
 	workarounds      workarounds
-	logger           telegraf.Logger
+	logger           Dana.Logger
 }
 
 func (*configurationOriginal) sampleConfigPart() string {
@@ -278,7 +278,7 @@ func validateFieldDefinitions(fieldDefs []fieldDefinition, registerType string) 
 
 func (*configurationOriginal) normalizeInputDatatype(dataType string, words int) (string, error) {
 	if dataType == "FLOAT32" {
-		config.PrintOptionValueDeprecationNotice("input.modbus", "data_type", "FLOAT32", telegraf.DeprecationInfo{
+		config.PrintOptionValueDeprecationNotice("input.modbus", "data_type", "FLOAT32", Dana.DeprecationInfo{
 			Since:     "1.16.0",
 			RemovalIn: "1.35.0",
 			Notice:    "Use 'UFIXED' instead",

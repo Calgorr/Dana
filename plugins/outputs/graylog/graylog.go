@@ -320,7 +320,7 @@ type Graylog struct {
 	Timeout           config.Duration `toml:"timeout"`
 	Reconnection      bool            `toml:"connection_retry"`
 	ReconnectionTime  config.Duration `toml:"connection_retry_wait_time"`
-	Log               telegraf.Logger `toml:"-"`
+	Log               Dana.Logger     `toml:"-"`
 	common_tls.ClientConfig
 
 	writer      io.Writer
@@ -439,7 +439,7 @@ func (g *Graylog) Close() error {
 	return nil
 }
 
-func (g *Graylog) Write(metrics []telegraf.Metric) error {
+func (g *Graylog) Write(metrics []Dana.Metric) error {
 	g.Lock()
 	writer := g.writer
 	g.Unlock()
@@ -467,7 +467,7 @@ func (g *Graylog) Write(metrics []telegraf.Metric) error {
 	return nil
 }
 
-func (g *Graylog) serialize(metric telegraf.Metric) ([]string, error) {
+func (g *Graylog) serialize(metric Dana.Metric) ([]string, error) {
 	m := make(map[string]interface{})
 	m["version"] = "1.1"
 	m["timestamp"] = float64(metric.Time().UnixNano()) / 1_000_000_000
@@ -529,7 +529,7 @@ func fieldInSpec(field string) bool {
 }
 
 func init() {
-	outputs.Add("graylog", func() telegraf.Output {
+	outputs.Add("graylog", func() Dana.Output {
 		return &Graylog{
 			Timeout:          config.Duration(defaultTimeout),
 			ReconnectionTime: config.Duration(defaultReconnectionTime),

@@ -25,17 +25,17 @@ type message struct {
 }
 
 type MQTT struct {
-	TopicPrefix     string          `toml:"topic_prefix" deprecated:"1.25.0;1.35.0;use 'topic' instead"`
-	Topic           string          `toml:"topic"`
-	BatchMessage    bool            `toml:"batch" deprecated:"1.25.2;1.35.0;use 'layout = \"batch\"' instead"`
-	Layout          string          `toml:"layout"`
-	HomieDeviceName string          `toml:"homie_device_name"`
-	HomieNodeID     string          `toml:"homie_node_id"`
-	Log             telegraf.Logger `toml:"-"`
+	TopicPrefix     string      `toml:"topic_prefix" deprecated:"1.25.0;1.35.0;use 'topic' instead"`
+	Topic           string      `toml:"topic"`
+	BatchMessage    bool        `toml:"batch" deprecated:"1.25.2;1.35.0;use 'layout = \"batch\"' instead"`
+	Layout          string      `toml:"layout"`
+	HomieDeviceName string      `toml:"homie_device_name"`
+	HomieNodeID     string      `toml:"homie_node_id"`
+	Log             Dana.Logger `toml:"-"`
 	mqtt.MqttConfig
 
 	client     mqtt.Client
-	serializer telegraf.Serializer
+	serializer Dana.Serializer
 	generator  *TopicNameGenerator
 
 	homieDeviceNameGenerator *HomieGenerator
@@ -117,7 +117,7 @@ func (m *MQTT) Connect() error {
 	return err
 }
 
-func (m *MQTT) SetSerializer(serializer telegraf.Serializer) {
+func (m *MQTT) SetSerializer(serializer Dana.Serializer) {
 	m.serializer = serializer
 }
 
@@ -137,7 +137,7 @@ func (m *MQTT) Close() error {
 	return m.client.Close()
 }
 
-func (m *MQTT) Write(metrics []telegraf.Metric) error {
+func (m *MQTT) Write(metrics []Dana.Metric) error {
 	m.Lock()
 	defer m.Unlock()
 	if len(metrics) == 0 {
@@ -178,7 +178,7 @@ func (m *MQTT) Write(metrics []telegraf.Metric) error {
 	return nil
 }
 
-func (m *MQTT) collectNonBatch(hostname string, metrics []telegraf.Metric) []message {
+func (m *MQTT) collectNonBatch(hostname string, metrics []Dana.Metric) []message {
 	collection := make([]message, 0, len(metrics))
 	for _, metric := range metrics {
 		topic, err := m.generator.Generate(hostname, metric)
@@ -200,8 +200,8 @@ func (m *MQTT) collectNonBatch(hostname string, metrics []telegraf.Metric) []mes
 	return collection
 }
 
-func (m *MQTT) collectBatch(hostname string, metrics []telegraf.Metric) []message {
-	metricsCollection := make(map[string][]telegraf.Metric)
+func (m *MQTT) collectBatch(hostname string, metrics []Dana.Metric) []message {
+	metricsCollection := make(map[string][]Dana.Metric)
 	for _, metric := range metrics {
 		topic, err := m.generator.Generate(hostname, metric)
 		if err != nil {
@@ -224,7 +224,7 @@ func (m *MQTT) collectBatch(hostname string, metrics []telegraf.Metric) []messag
 	return collection
 }
 
-func (m *MQTT) collectField(hostname string, metrics []telegraf.Metric) []message {
+func (m *MQTT) collectField(hostname string, metrics []Dana.Metric) []message {
 	var collection []message
 	for _, metric := range metrics {
 		topic, err := m.generator.Generate(hostname, metric)
@@ -248,7 +248,7 @@ func (m *MQTT) collectField(hostname string, metrics []telegraf.Metric) []messag
 	return collection
 }
 
-func (m *MQTT) collectHomieV4(hostname string, metrics []telegraf.Metric) []message {
+func (m *MQTT) collectHomieV4(hostname string, metrics []Dana.Metric) []message {
 	var collection []message
 	for _, metric := range metrics {
 		topic, err := m.generator.Generate(hostname, metric)
@@ -296,7 +296,7 @@ func (m *MQTT) collectHomieV4(hostname string, metrics []telegraf.Metric) []mess
 }
 
 func init() {
-	outputs.Add("mqtt", func() telegraf.Output {
+	outputs.Add("mqtt", func() Dana.Output {
 		return &MQTT{
 			MqttConfig: mqtt.MqttConfig{
 				KeepAlive:     30,

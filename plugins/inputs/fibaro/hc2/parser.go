@@ -8,7 +8,7 @@ import (
 )
 
 // Parse parses data from sections, rooms and devices, and adds measurements containing parsed data.
-func Parse(acc telegraf.Accumulator, sectionBytes, roomBytes, devicesBytes []byte) error {
+func Parse(acc Dana.Accumulator, sectionBytes, roomBytes, devicesBytes []byte) error {
 	var tmpSections []Sections
 	if err := json.Unmarshal(sectionBytes, &tmpSections); err != nil {
 		return err

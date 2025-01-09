@@ -39,7 +39,7 @@ type IfName struct {
 	Ordered            bool            `toml:"ordered"`
 	CacheTTL           config.Duration `toml:"cache_ttl"`
 
-	Log telegraf.Logger `toml:"-"`
+	Log Dana.Logger `toml:"-"`
 
 	ifTable  *snmp.Table
 	ifXTable *snmp.Table
@@ -73,7 +73,7 @@ func (d *IfName) Init() error {
 	return nil
 }
 
-func (d *IfName) addTag(metric telegraf.Metric) error {
+func (d *IfName) addTag(metric Dana.Metric) error {
 	agent, ok := metric.GetTag(d.AgentTag)
 	if !ok {
 		d.Log.Warn("Agent tag missing.")
@@ -129,7 +129,7 @@ func (d *IfName) invalidate(agent string) {
 	d.lock.Unlock()
 }
 
-func (d *IfName) Start(acc telegraf.Accumulator) error {
+func (d *IfName) Start(acc Dana.Accumulator) error {
 	var err error
 
 	d.ifTable, err = d.makeTable("1.3.6.1.2.1.2.2.1.2")
@@ -141,12 +141,12 @@ func (d *IfName) Start(acc telegraf.Accumulator) error {
 		return fmt.Errorf("preparing ifXTable: %w", err)
 	}
 
-	fn := func(m telegraf.Metric) []telegraf.Metric {
+	fn := func(m Dana.Metric) []Dana.Metric {
 		err := d.addTag(m)
 		if err != nil {
 			d.Log.Debugf("Error adding tag: %v", err)
 		}
-		return []telegraf.Metric{m}
+		return []Dana.Metric{m}
 	}
 
 	if d.Ordered {
@@ -157,7 +157,7 @@ func (d *IfName) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (d *IfName) Add(metric telegraf.Metric, _ telegraf.Accumulator) error {
+func (d *IfName) Add(metric Dana.Metric, _ Dana.Accumulator) error {
 	d.parallel.Enqueue(metric)
 	return nil
 }
@@ -258,7 +258,7 @@ func (d *IfName) getMapRemoteNoMock(agent string) (nameMap, error) {
 }
 
 func init() {
-	processors.AddStreaming("ifname", func() telegraf.StreamingProcessor {
+	processors.AddStreaming("ifname", func() Dana.StreamingProcessor {
 		return &IfName{
 			SourceTag:          "ifIndex",
 			DestTag:            "ifName",

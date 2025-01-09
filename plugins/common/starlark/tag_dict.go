@@ -180,7 +180,7 @@ func (d TagDict) Iterate() starlark.Iterator {
 
 type TagIterator struct {
 	*Metric
-	tags []*telegraf.Tag
+	tags []*Dana.Tag
 }
 
 // Next implements the starlark.Iterator interface.

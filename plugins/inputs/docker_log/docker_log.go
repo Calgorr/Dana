@@ -32,9 +32,9 @@ import (
 var sampleConfig string
 
 var (
-	// ensure *DockerLogs implements telegraf.ServiceInput
-	_               telegraf.ServiceInput = (*DockerLogs)(nil)
-	containerStates                       = []string{"created", "restarting", "running", "removing", "paused", "exited", "dead"}
+	// ensure *DockerLogs implements Dana.ServiceInput
+	_               Dana.ServiceInput = (*DockerLogs)(nil)
+	containerStates                   = []string{"created", "restarting", "running", "removing", "paused", "exited", "dead"}
 )
 
 const (
@@ -127,8 +127,8 @@ func (d *DockerLogs) Init() error {
 	return nil
 }
 
-// Start is a noop which is required for a *DockerLogs to implement the telegraf.ServiceInput interface
-func (*DockerLogs) Start(telegraf.Accumulator) error {
+// Start is a noop which is required for a *DockerLogs to implement the Dana.ServiceInput interface
+func (*DockerLogs) Start(Dana.Accumulator) error {
 	return nil
 }
 
@@ -157,7 +157,7 @@ func (d *DockerLogs) SetState(state interface{}) error {
 	return nil
 }
 
-func (d *DockerLogs) Gather(acc telegraf.Accumulator) error {
+func (d *DockerLogs) Gather(acc Dana.Accumulator) error {
 	ctx := context.Background()
 	acc.SetPrecision(time.Nanosecond)
 
@@ -255,7 +255,7 @@ func (d *DockerLogs) hasTTY(ctx context.Context, cntnr types.Container) (bool, e
 
 func (d *DockerLogs) tailContainerLogs(
 	ctx context.Context,
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	cntnr types.Container,
 	containerName string,
 ) error {
@@ -354,7 +354,7 @@ func parseLine(line []byte) (time.Time, string, error) {
 }
 
 func tailStream(
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	baseTags map[string]string,
 	containerID string,
 	reader io.ReadCloser,
@@ -401,7 +401,7 @@ func tailStream(
 }
 
 func tailMultiplexed(
-	acc telegraf.Accumulator,
+	acc Dana.Accumulator,
 	tags map[string]string,
 	containerID string,
 	src io.ReadCloser,
@@ -487,7 +487,7 @@ func hostnameFromID(id string) string {
 }
 
 func init() {
-	inputs.Add("docker_log", func() telegraf.Input {
+	inputs.Add("docker_log", func() Dana.Input {
 		return &DockerLogs{
 			Timeout:       config.Duration(time.Second * 5),
 			Endpoint:      defaultEndpoint,

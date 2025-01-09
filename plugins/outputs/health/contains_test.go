@@ -11,7 +11,7 @@ import (
 )
 
 func TestFieldFound(t *testing.T) {
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},
@@ -29,7 +29,7 @@ func TestFieldFound(t *testing.T) {
 }
 
 func TestFieldNotFound(t *testing.T) {
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},
@@ -45,7 +45,7 @@ func TestFieldNotFound(t *testing.T) {
 }
 
 func TestOneMetricWithFieldIsSuccess(t *testing.T) {
-	metrics := []telegraf.Metric{
+	metrics := []Dana.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{},

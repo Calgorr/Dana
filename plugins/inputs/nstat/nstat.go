@@ -45,7 +45,7 @@ func (*Nstat) SampleConfig() string {
 	return sampleConfig
 }
 
-func (ns *Nstat) Gather(acc telegraf.Accumulator) error {
+func (ns *Nstat) Gather(acc Dana.Accumulator) error {
 	// load paths, get from env if config values are empty
 	ns.loadPaths()
 
@@ -74,7 +74,7 @@ func (ns *Nstat) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (ns *Nstat) gatherNetstat(data []byte, acc telegraf.Accumulator) {
+func (ns *Nstat) gatherNetstat(data []byte, acc Dana.Accumulator) {
 	metrics := ns.loadUglyTable(data)
 	tags := map[string]string{
 		"name": "netstat",
@@ -82,7 +82,7 @@ func (ns *Nstat) gatherNetstat(data []byte, acc telegraf.Accumulator) {
 	acc.AddFields("nstat", metrics, tags)
 }
 
-func (ns *Nstat) gatherSNMP(data []byte, acc telegraf.Accumulator) {
+func (ns *Nstat) gatherSNMP(data []byte, acc Dana.Accumulator) {
 	metrics := ns.loadUglyTable(data)
 	tags := map[string]string{
 		"name": "snmp",
@@ -90,7 +90,7 @@ func (ns *Nstat) gatherSNMP(data []byte, acc telegraf.Accumulator) {
 	acc.AddFields("nstat", metrics, tags)
 }
 
-func (ns *Nstat) gatherSNMP6(data []byte, acc telegraf.Accumulator) {
+func (ns *Nstat) gatherSNMP6(data []byte, acc Dana.Accumulator) {
 	metrics := ns.loadGoodTable(data)
 	tags := map[string]string{
 		"name": "snmp6",
@@ -194,7 +194,7 @@ func proc(env, path string) string {
 }
 
 func init() {
-	inputs.Add("nstat", func() telegraf.Input {
+	inputs.Add("nstat", func() Dana.Input {
 		return &Nstat{}
 	})
 }

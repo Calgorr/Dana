@@ -36,7 +36,7 @@ func (*Apache) SampleConfig() string {
 	return sampleConfig
 }
 
-func (n *Apache) Gather(acc telegraf.Accumulator) error {
+func (n *Apache) Gather(acc Dana.Accumulator) error {
 	var wg sync.WaitGroup
 
 	if len(n.Urls) == 0 {
@@ -88,7 +88,7 @@ func (n *Apache) createHTTPClient() (*http.Client, error) {
 	return client, nil
 }
 
-func (n *Apache) gatherURL(addr *url.URL, acc telegraf.Accumulator) error {
+func (n *Apache) gatherURL(addr *url.URL, acc Dana.Accumulator) error {
 	req, err := http.NewRequest("GET", addr.String(), nil)
 	if err != nil {
 		return fmt.Errorf("error on new request to %q: %w", addr.String(), err)
@@ -202,7 +202,7 @@ func getTags(addr *url.URL) map[string]string {
 }
 
 func init() {
-	inputs.Add("apache", func() telegraf.Input {
+	inputs.Add("apache", func() Dana.Input {
 		return &Apache{}
 	})
 }

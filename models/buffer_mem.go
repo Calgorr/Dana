@@ -11,7 +11,7 @@ type MemoryBuffer struct {
 	sync.Mutex
 	BufferStats
 
-	buf   []telegraf.Metric
+	buf   []Dana.Metric
 	first int // index of the first/oldest metric
 	last  int // one after the index of the last/newest metric
 	size  int // number of metrics currently in the buffer
@@ -24,7 +24,7 @@ type MemoryBuffer struct {
 func NewMemoryBuffer(capacity int, stats BufferStats) (*MemoryBuffer, error) {
 	return &MemoryBuffer{
 		BufferStats: stats,
-		buf:         make([]telegraf.Metric, capacity),
+		buf:         make([]Dana.Metric, capacity),
 		cap:         capacity,
 	}, nil
 }
@@ -36,7 +36,7 @@ func (b *MemoryBuffer) Len() int {
 	return b.length()
 }
 
-func (b *MemoryBuffer) Add(metrics ...telegraf.Metric) int {
+func (b *MemoryBuffer) Add(metrics ...Dana.Metric) int {
 	b.Lock()
 	defer b.Unlock()
 
@@ -63,7 +63,7 @@ func (b *MemoryBuffer) BeginTransaction(batchSize int) *Transaction {
 	b.batchFirst = b.first
 	b.batchSize = outLen
 	batchIndex := b.batchFirst
-	batch := make([]telegraf.Metric, outLen)
+	batch := make([]Dana.Metric, outLen)
 	for i := range batch {
 		batch[i] = b.buf[batchIndex]
 		b.buf[batchIndex] = nil
@@ -131,7 +131,7 @@ func (b *MemoryBuffer) length() int {
 	return min(b.size+b.batchSize, b.cap)
 }
 
-func (b *MemoryBuffer) addMetric(m telegraf.Metric) int {
+func (b *MemoryBuffer) addMetric(m Dana.Metric) int {
 	dropped := 0
 	// Check if Buffer is full
 	if b.size == b.cap {

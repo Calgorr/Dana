@@ -13,8 +13,8 @@ const smokeMetricName = "testmetric"
 type testCase struct {
 	name            string
 	o               *Options
-	inputMetrics    []telegraf.Metric
-	expectedMetrics []telegraf.Metric
+	inputMetrics    []Dana.Metric
+	expectedMetrics []Dana.Metric
 }
 
 func newOptions(basePath string) *Options {
@@ -83,8 +83,8 @@ func getSampleMetricFields(path string) map[string]interface{} {
 	}
 }
 
-func getSmokeTestInputMetrics(path string) []telegraf.Metric {
-	return []telegraf.Metric{
+func getSmokeTestInputMetrics(path string) []Dana.Metric {
+	return []Dana.Metric{
 		testutil.MustMetric(smokeMetricName, getSampleMetricTags(path), getSampleMetricFields(path),
 			time.Now()),
 	}

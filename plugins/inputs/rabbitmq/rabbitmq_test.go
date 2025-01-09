@@ -54,7 +54,7 @@ func TestRabbitMQGeneratesMetricsSet1(t *testing.T) {
 	defer ts.Close()
 
 	// Define test cases
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("rabbitmq_overview",
 			map[string]string{
 				"url": ts.URL,
@@ -273,7 +273,7 @@ func TestRabbitMQGeneratesMetricsSet2(t *testing.T) {
 	defer ts.Close()
 
 	// Define test cases
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		testutil.MustMetric("rabbitmq_overview",
 			map[string]string{
 				"url": ts.URL,

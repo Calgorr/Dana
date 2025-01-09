@@ -45,14 +45,14 @@ type CtrlXDataLayer struct {
 	Username config.Secret `toml:"username"`
 	Password config.Secret `toml:"password"`
 
-	Log          telegraf.Logger `toml:"-"`
+	Log          Dana.Logger `toml:"-"`
 	Subscription []subscription
 
 	url    string
 	wg     sync.WaitGroup
 	cancel context.CancelFunc
 
-	acc          telegraf.Accumulator
+	acc          Dana.Accumulator
 	connection   *http.Client
 	tokenManager token.TokenManager
 	common_http.HTTPClientConfig
@@ -94,7 +94,7 @@ func (c *CtrlXDataLayer) Init() error {
 	return nil
 }
 
-func (c *CtrlXDataLayer) Start(acc telegraf.Accumulator) error {
+func (c *CtrlXDataLayer) Start(acc Dana.Accumulator) error {
 	var ctx context.Context
 	ctx, c.cancel = context.WithCancel(context.Background())
 
@@ -131,7 +131,7 @@ func (c *CtrlXDataLayer) Start(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (*CtrlXDataLayer) Gather(telegraf.Accumulator) error {
+func (*CtrlXDataLayer) Gather(Dana.Accumulator) error {
 	// Metrics are sent to the accumulator asynchronously in worker thread. So nothing to do here.
 	return nil
 }
@@ -238,7 +238,7 @@ func (c *CtrlXDataLayer) addMetric(se *sseclient.SseEvent, sub *subscription) {
 }
 
 // createMetric - create metric depending on flag 'output_json' and data type
-func (c *CtrlXDataLayer) createMetric(em *sseEventData, sub *subscription) (telegraf.Metric, error) {
+func (c *CtrlXDataLayer) createMetric(em *sseEventData, sub *subscription) (Dana.Metric, error) {
 	t := convertTimestamp2UnixTime(em.Timestamp)
 	node := sub.node(em.Node)
 	if node == nil {
@@ -366,7 +366,7 @@ func (c *CtrlXDataLayer) gatherLoop(ctx context.Context) {
 
 // init registers the plugin in telegraf.
 func init() {
-	inputs.Add("ctrlx_datalayer", func() telegraf.Input {
+	inputs.Add("ctrlx_datalayer", func() Dana.Input {
 		return &CtrlXDataLayer{}
 	})
 }

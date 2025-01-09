@@ -15,7 +15,7 @@ type MinMax struct {
 	cache map[uint64]aggregate
 }
 
-func NewMinMax() telegraf.Aggregator {
+func NewMinMax() Dana.Aggregator {
 	mm := &MinMax{}
 	mm.Reset()
 	return mm
@@ -36,7 +36,7 @@ func (*MinMax) SampleConfig() string {
 	return sampleConfig
 }
 
-func (m *MinMax) Add(in telegraf.Metric) {
+func (m *MinMax) Add(in Dana.Metric) {
 	id := in.HashID()
 	if _, ok := m.cache[id]; !ok {
 		// hit an uncached metric, create caches for first time:
@@ -79,7 +79,7 @@ func (m *MinMax) Add(in telegraf.Metric) {
 	}
 }
 
-func (m *MinMax) Push(acc telegraf.Accumulator) {
+func (m *MinMax) Push(acc Dana.Accumulator) {
 	for _, aggregate := range m.cache {
 		fields := make(map[string]interface{}, len(aggregate.fields))
 		for k, v := range aggregate.fields {
@@ -108,7 +108,7 @@ func convert(in interface{}) (float64, bool) {
 }
 
 func init() {
-	aggregators.Add("minmax", func() telegraf.Aggregator {
+	aggregators.Add("minmax", func() Dana.Aggregator {
 		return NewMinMax()
 	})
 }

@@ -208,7 +208,7 @@ func TestSerializeMetricString(t *testing.T) {
 }
 
 func TestSerializeMetricBool(t *testing.T) {
-	requireMetric := func(tim time.Time, value bool) telegraf.Metric {
+	requireMetric := func(tim time.Time, value bool) Dana.Metric {
 		tags := map[string]string{
 			"tag_name": "tag_value",
 		}
@@ -224,7 +224,7 @@ func TestSerializeMetricBool(t *testing.T) {
 	now := time.Now()
 
 	testcases := []struct {
-		metric   telegraf.Metric
+		metric   Dana.Metric
 		format   string
 		expected string
 	}{
@@ -275,7 +275,7 @@ func TestSerializeBatch(t *testing.T) {
 		time.Unix(0, 0),
 	)
 
-	metrics := []telegraf.Metric{m, m}
+	metrics := []Dana.Metric{m, m}
 
 	testcases := []struct {
 		format   string
@@ -314,14 +314,14 @@ func TestSerializeMetricIsProperlySanitized(t *testing.T) {
 	now := time.Now()
 
 	testcases := []struct {
-		metricFunc  func() telegraf.Metric
+		metricFunc  func() Dana.Metric
 		format      string
 		expected    string
 		replaceChar string
 		expectedErr bool
 	}{
 		{
-			metricFunc: func() telegraf.Metric {
+			metricFunc: func() Dana.Metric {
 				fields := map[string]interface{}{
 					"usage_idle": float64(91.5),
 				}
@@ -331,7 +331,7 @@ func TestSerializeMetricIsProperlySanitized(t *testing.T) {
 			expected: fmt.Sprintf("metric=cpu:1 field=usage_idle  91.5 %d\n", now.Unix()),
 		},
 		{
-			metricFunc: func() telegraf.Metric {
+			metricFunc: func() Dana.Metric {
 				fields := map[string]interface{}{
 					"usage_idle": float64(91.5),
 				}
@@ -342,7 +342,7 @@ func TestSerializeMetricIsProperlySanitized(t *testing.T) {
 			replaceChar: "_",
 		},
 		{
-			metricFunc: func() telegraf.Metric {
+			metricFunc: func() Dana.Metric {
 				fields := map[string]interface{}{
 					"usage_idle": float64(91.5),
 				}
@@ -352,7 +352,7 @@ func TestSerializeMetricIsProperlySanitized(t *testing.T) {
 			expected: fmt.Sprintf("metric=cpu:1:tmp:custom field=usage_idle  91.5 %d\n", now.Unix()),
 		},
 		{
-			metricFunc: func() telegraf.Metric {
+			metricFunc: func() Dana.Metric {
 				fields := map[string]interface{}{
 					"usage_idle": float64(91.5),
 				}
@@ -362,7 +362,7 @@ func TestSerializeMetricIsProperlySanitized(t *testing.T) {
 			expected: fmt.Sprintf("metric=cpu:1:tmp:custom:namespace field=usage_idle  91.5 %d\n", now.Unix()),
 		},
 		{
-			metricFunc: func() telegraf.Metric {
+			metricFunc: func() Dana.Metric {
 				fields := map[string]interface{}{
 					"usage_idle": float64(91.5),
 				}
@@ -372,7 +372,7 @@ func TestSerializeMetricIsProperlySanitized(t *testing.T) {
 			expected: fmt.Sprintf("metric=cpu:1:tmp:custom:namespace_usage_idle  91.5 %d\n", now.Unix()),
 		},
 		{
-			metricFunc: func() telegraf.Metric {
+			metricFunc: func() Dana.Metric {
 				fields := map[string]interface{}{
 					"usage_idle": float64(91.5),
 				}
@@ -383,7 +383,7 @@ func TestSerializeMetricIsProperlySanitized(t *testing.T) {
 			replaceChar: "_",
 		},
 		{
-			metricFunc: func() telegraf.Metric {
+			metricFunc: func() Dana.Metric {
 				fields := map[string]interface{}{
 					"usage_idle": float64(91.5),
 				}

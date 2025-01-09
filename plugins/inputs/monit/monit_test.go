@@ -28,12 +28,12 @@ func TestServiceType(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name:     "check filesystem service type",
 			filename: "testdata/response_servicetype_0.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_filesystem",
 					map[string]string{
@@ -66,7 +66,7 @@ func TestServiceType(t *testing.T) {
 		{
 			name:     "check directory service type",
 			filename: "testdata/response_servicetype_1.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_directory",
 					map[string]string{
@@ -93,7 +93,7 @@ func TestServiceType(t *testing.T) {
 		{
 			name:     "check file service type",
 			filename: "testdata/response_servicetype_2.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_file",
 					map[string]string{
@@ -121,7 +121,7 @@ func TestServiceType(t *testing.T) {
 		{
 			name:     "check process service type",
 			filename: "testdata/response_servicetype_3.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_process",
 					map[string]string{
@@ -157,7 +157,7 @@ func TestServiceType(t *testing.T) {
 		{
 			name:     "check remote host service type",
 			filename: "testdata/response_servicetype_4.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_remote_host",
 					map[string]string{
@@ -189,7 +189,7 @@ func TestServiceType(t *testing.T) {
 		{
 			name:     "check system service type",
 			filename: "testdata/response_servicetype_5.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_system",
 					map[string]string{
@@ -225,7 +225,7 @@ func TestServiceType(t *testing.T) {
 		{
 			name:     "check fifo service type",
 			filename: "testdata/response_servicetype_6.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_fifo",
 					map[string]string{
@@ -252,7 +252,7 @@ func TestServiceType(t *testing.T) {
 		{
 			name:     "check program service type",
 			filename: "testdata/response_servicetype_7.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_program",
 					map[string]string{
@@ -280,7 +280,7 @@ func TestServiceType(t *testing.T) {
 		{
 			name:     "check network service type",
 			filename: "testdata/response_servicetype_8.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_network",
 					map[string]string{
@@ -349,12 +349,12 @@ func TestMonitFailure(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
-		expected []telegraf.Metric
+		expected []Dana.Metric
 	}{
 		{
 			name:     "check monit failure status",
 			filename: "testdata/response_servicetype_8_failure.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_network",
 					map[string]string{
@@ -395,7 +395,7 @@ func TestMonitFailure(t *testing.T) {
 		{
 			name:     "check passive mode",
 			filename: "testdata/response_servicetype_8_passivemode.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_network",
 					map[string]string{
@@ -436,7 +436,7 @@ func TestMonitFailure(t *testing.T) {
 		{
 			name:     "check initializing status",
 			filename: "testdata/response_servicetype_8_initializingmode.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_network",
 					map[string]string{
@@ -477,7 +477,7 @@ func TestMonitFailure(t *testing.T) {
 		{
 			name:     "check pending action",
 			filename: "testdata/response_servicetype_8_pendingaction.xml",
-			expected: []telegraf.Metric{
+			expected: []Dana.Metric{
 				testutil.MustMetric(
 					"monit_network",
 					map[string]string{

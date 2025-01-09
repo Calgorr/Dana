@@ -24,7 +24,7 @@ func NewGatherer(metrics []Metric) *Gatherer {
 
 // Gather adds points to an accumulator from responses returned
 // by a Jolokia agent.
-func (g *Gatherer) Gather(client *Client, acc telegraf.Accumulator) error {
+func (g *Gatherer) Gather(client *Client, acc Dana.Accumulator) error {
 	var tags map[string]string
 
 	if client.config.ProxyConfig != nil {
@@ -45,7 +45,7 @@ func (g *Gatherer) Gather(client *Client, acc telegraf.Accumulator) error {
 
 // gatherResponses adds points to an accumulator from the ReadResponse objects
 // returned by a Jolokia agent.
-func (g *Gatherer) gatherResponses(responses []ReadResponse, tags map[string]string, acc telegraf.Accumulator) {
+func (g *Gatherer) gatherResponses(responses []ReadResponse, tags map[string]string, acc Dana.Accumulator) {
 	series := make(map[string][]point)
 
 	for _, metric := range g.metrics {

@@ -556,7 +556,7 @@ func TestConfig_Filtering(t *testing.T) {
 	require.NoError(t, c.LoadAll("./testdata/filter_metricpass.toml"))
 	require.Len(t, c.Processors, 1)
 
-	in := []telegraf.Metric{
+	in := []Dana.Metric{
 		metric.New(
 			"machine",
 			map[string]string{"state": "on"},
@@ -576,7 +576,7 @@ func TestConfig_Filtering(t *testing.T) {
 			time.Date(2023, time.April, 24, 02, 15, 30, 0, time.UTC),
 		),
 	}
-	expected := []telegraf.Metric{
+	expected := []Dana.Metric{
 		metric.New(
 			"machine",
 			map[string]string{
@@ -635,11 +635,11 @@ func TestConfig_SerializerInterfaceNewFormat(t *testing.T) {
 		mask  []string
 	}{}
 
-	expected := make([]telegraf.Serializer, 0, len(formats))
+	expected := make([]Dana.Serializer, 0, len(formats))
 	for _, format := range formats {
 		logger := logging.New("serializers", format, "test")
 
-		var serializer telegraf.Serializer
+		var serializer Dana.Serializer
 		if creator, found := serializers.Serializers[format]; found {
 			t.Logf("new-style %q", format)
 			serializer = creator()
@@ -653,7 +653,7 @@ func TestConfig_SerializerInterfaceNewFormat(t *testing.T) {
 			}
 		}
 		models.SetLoggerOnPlugin(serializer, logger)
-		if s, ok := serializer.(telegraf.Initializer); ok {
+		if s, ok := serializer.(Dana.Initializer); ok {
 			require.NoError(t, s.Init())
 		}
 		expected = append(expected, serializer)
@@ -681,7 +681,7 @@ func TestConfig_SerializerInterfaceNewFormat(t *testing.T) {
 			cmpopts.IgnoreUnexported(stype),
 			cmpopts.IgnoreUnexported(reflect.Indirect(reflect.ValueOf(serializers_prometheus.MetricTypes{})).Interface()),
 			cmpopts.IgnoreTypes(sync.Mutex{}, regexp.Regexp{}),
-			cmpopts.IgnoreInterfaces(struct{ telegraf.Logger }{}),
+			cmpopts.IgnoreInterfaces(struct{ Dana.Logger }{}),
 		}
 		if settings, found := override[format]; found {
 			options = append(options, cmpopts.IgnoreFields(stype, settings.mask...))
@@ -748,7 +748,7 @@ func TestConfig_ParserInterface(t *testing.T) {
 		},
 	}
 
-	expected := make([]telegraf.Parser, 0, len(formats))
+	expected := make([]Dana.Parser, 0, len(formats))
 	for _, format := range formats {
 		logger := logging.New("parsers", format, "parser_test_new")
 
@@ -764,7 +764,7 @@ func TestConfig_ParserInterface(t *testing.T) {
 			}
 		}
 		models.SetLoggerOnPlugin(parser, logger)
-		if p, ok := parser.(telegraf.Initializer); ok {
+		if p, ok := parser.(Dana.Initializer); ok {
 			require.NoError(t, p.Init())
 		}
 		expected = append(expected, parser)
@@ -800,7 +800,7 @@ func TestConfig_ParserInterface(t *testing.T) {
 		options := []cmp.Option{
 			cmpopts.IgnoreUnexported(stype),
 			cmpopts.IgnoreTypes(sync.Mutex{}),
-			cmpopts.IgnoreInterfaces(struct{ telegraf.Logger }{}),
+			cmpopts.IgnoreInterfaces(struct{ Dana.Logger }{}),
 		}
 		if settings, found := override[format]; found {
 			options = append(options, cmpopts.IgnoreFields(stype, settings.mask...))
@@ -966,7 +966,7 @@ func TestConfig_ProcessorsWithParsers(t *testing.T) {
 		},
 	}
 
-	expected := make([]telegraf.Parser, 0, len(formats))
+	expected := make([]Dana.Parser, 0, len(formats))
 	for _, format := range formats {
 		logger := logging.New("parsers", format, "processors_with_parsers")
 
@@ -982,7 +982,7 @@ func TestConfig_ProcessorsWithParsers(t *testing.T) {
 			}
 		}
 		models.SetLoggerOnPlugin(parser, logger)
-		if p, ok := parser.(telegraf.Initializer); ok {
+		if p, ok := parser.(Dana.Initializer); ok {
 			require.NoError(t, p.Init())
 		}
 		expected = append(expected, parser)
@@ -992,11 +992,11 @@ func TestConfig_ProcessorsWithParsers(t *testing.T) {
 	actual := make([]interface{}, 0)
 	generated := make([]interface{}, 0)
 	for _, plugin := range c.Processors {
-		var processorIF telegraf.Processor
+		var processorIF Dana.Processor
 		if p, ok := plugin.Processor.(processors.HasUnwrap); ok {
 			processorIF = p.Unwrap()
 		} else {
-			processorIF = plugin.Processor.(telegraf.Processor)
+			processorIF = plugin.Processor.(Dana.Processor)
 		}
 		require.NotNil(t, processorIF)
 
@@ -1031,7 +1031,7 @@ func TestConfig_ProcessorsWithParsers(t *testing.T) {
 		options := []cmp.Option{
 			cmpopts.IgnoreUnexported(stype),
 			cmpopts.IgnoreTypes(sync.Mutex{}),
-			cmpopts.IgnoreInterfaces(struct{ telegraf.Logger }{}),
+			cmpopts.IgnoreInterfaces(struct{ Dana.Logger }{}),
 		}
 		if settings, found := override[format]; found {
 			options = append(options, cmpopts.IgnoreFields(stype, settings.mask...))
@@ -1194,20 +1194,20 @@ func TestPersisterProcessorRegistration(t *testing.T) {
 
 // Mockup INPUT plugin for (new) parser testing to avoid cyclic dependencies
 type MockupInputPluginParserNew struct {
-	Parser     telegraf.Parser
-	ParserFunc telegraf.ParserFunc
+	Parser     Dana.Parser
+	ParserFunc Dana.ParserFunc
 }
 
 func (m *MockupInputPluginParserNew) SampleConfig() string {
 	return "Mockup old parser test plugin"
 }
-func (m *MockupInputPluginParserNew) Gather(_ telegraf.Accumulator) error {
+func (m *MockupInputPluginParserNew) Gather(_ Dana.Accumulator) error {
 	return nil
 }
-func (m *MockupInputPluginParserNew) SetParser(parser telegraf.Parser) {
+func (m *MockupInputPluginParserNew) SetParser(parser Dana.Parser) {
 	m.Parser = parser
 }
-func (m *MockupInputPluginParserNew) SetParserFunc(f telegraf.ParserFunc) {
+func (m *MockupInputPluginParserNew) SetParserFunc(f Dana.ParserFunc) {
 	m.ParserFunc = f
 }
 
@@ -1225,59 +1225,59 @@ type MockupInputPlugin struct {
 	Command      string
 	Files        []string
 	PidFile      string
-	Log          telegraf.Logger `toml:"-"`
+	Log          Dana.Logger `toml:"-"`
 	tls.ServerConfig
 
-	parser telegraf.Parser
+	parser Dana.Parser
 }
 
 func (m *MockupInputPlugin) SampleConfig() string {
 	return "Mockup test input plugin"
 }
-func (m *MockupInputPlugin) Gather(_ telegraf.Accumulator) error {
+func (m *MockupInputPlugin) Gather(_ Dana.Accumulator) error {
 	return nil
 }
-func (m *MockupInputPlugin) SetParser(parser telegraf.Parser) {
+func (m *MockupInputPlugin) SetParser(parser Dana.Parser) {
 	m.parser = parser
 }
 
 // Mockup INPUT plugin with ParserFunc interface
 type MockupInputPluginParserFunc struct {
-	parserFunc telegraf.ParserFunc
+	parserFunc Dana.ParserFunc
 }
 
 func (m *MockupInputPluginParserFunc) SampleConfig() string {
 	return "Mockup test input plugin"
 }
-func (m *MockupInputPluginParserFunc) Gather(_ telegraf.Accumulator) error {
+func (m *MockupInputPluginParserFunc) Gather(_ Dana.Accumulator) error {
 	return nil
 }
-func (m *MockupInputPluginParserFunc) SetParserFunc(pf telegraf.ParserFunc) {
+func (m *MockupInputPluginParserFunc) SetParserFunc(pf Dana.ParserFunc) {
 	m.parserFunc = pf
 }
 
 // Mockup INPUT plugin without ParserFunc interface
 type MockupInputPluginParserOnly struct {
-	parser telegraf.Parser
+	parser Dana.Parser
 }
 
 func (m *MockupInputPluginParserOnly) SampleConfig() string {
 	return "Mockup test input plugin"
 }
-func (m *MockupInputPluginParserOnly) Gather(_ telegraf.Accumulator) error {
+func (m *MockupInputPluginParserOnly) Gather(_ Dana.Accumulator) error {
 	return nil
 }
-func (m *MockupInputPluginParserOnly) SetParser(p telegraf.Parser) {
+func (m *MockupInputPluginParserOnly) SetParser(p Dana.Parser) {
 	m.parser = p
 }
 
 // Mockup PROCESSOR plugin for testing to avoid cyclic dependencies
 type MockupProcessorPluginParser struct {
-	Parser     telegraf.Parser
-	ParserFunc telegraf.ParserFunc
+	Parser     Dana.Parser
+	ParserFunc Dana.ParserFunc
 }
 
-func (m *MockupProcessorPluginParser) Start(_ telegraf.Accumulator) error {
+func (m *MockupProcessorPluginParser) Start(_ Dana.Accumulator) error {
 	return nil
 }
 func (m *MockupProcessorPluginParser) Stop() {
@@ -1285,16 +1285,16 @@ func (m *MockupProcessorPluginParser) Stop() {
 func (m *MockupProcessorPluginParser) SampleConfig() string {
 	return "Mockup test processor plugin with parser"
 }
-func (m *MockupProcessorPluginParser) Apply(_ ...telegraf.Metric) []telegraf.Metric {
+func (m *MockupProcessorPluginParser) Apply(_ ...Dana.Metric) []Dana.Metric {
 	return nil
 }
-func (m *MockupProcessorPluginParser) Add(_ telegraf.Metric, _ telegraf.Accumulator) error {
+func (m *MockupProcessorPluginParser) Add(_ Dana.Metric, _ Dana.Accumulator) error {
 	return nil
 }
-func (m *MockupProcessorPluginParser) SetParser(parser telegraf.Parser) {
+func (m *MockupProcessorPluginParser) SetParser(parser Dana.Parser) {
 	m.Parser = parser
 }
-func (m *MockupProcessorPluginParser) SetParserFunc(f telegraf.ParserFunc) {
+func (m *MockupProcessorPluginParser) SetParserFunc(f Dana.ParserFunc) {
 	m.ParserFunc = f
 }
 
@@ -1304,7 +1304,7 @@ type MockupProcessorPlugin struct {
 	state  []uint64
 }
 
-func (m *MockupProcessorPlugin) Start(_ telegraf.Accumulator) error {
+func (m *MockupProcessorPlugin) Start(_ Dana.Accumulator) error {
 	return nil
 }
 func (m *MockupProcessorPlugin) Stop() {
@@ -1312,8 +1312,8 @@ func (m *MockupProcessorPlugin) Stop() {
 func (m *MockupProcessorPlugin) SampleConfig() string {
 	return "Mockup test processor plugin with parser"
 }
-func (m *MockupProcessorPlugin) Apply(in ...telegraf.Metric) []telegraf.Metric {
-	out := make([]telegraf.Metric, 0, len(in))
+func (m *MockupProcessorPlugin) Apply(in ...Dana.Metric) []Dana.Metric {
+	out := make([]Dana.Metric, 0, len(in))
 	for _, m := range in {
 		m.AddTag("processed", "yes")
 		out = append(out, m)
@@ -1335,10 +1335,10 @@ func (m *MockupProcessorPlugin) SetState(state interface{}) error {
 
 // Mockup PROCESSOR plugin with parser
 type MockupProcessorPluginParserOnly struct {
-	Parser telegraf.Parser
+	Parser Dana.Parser
 }
 
-func (m *MockupProcessorPluginParserOnly) Start(_ telegraf.Accumulator) error {
+func (m *MockupProcessorPluginParserOnly) Start(_ Dana.Accumulator) error {
 	return nil
 }
 func (m *MockupProcessorPluginParserOnly) Stop() {
@@ -1346,22 +1346,22 @@ func (m *MockupProcessorPluginParserOnly) Stop() {
 func (m *MockupProcessorPluginParserOnly) SampleConfig() string {
 	return "Mockup test processor plugin with parser"
 }
-func (m *MockupProcessorPluginParserOnly) Apply(_ ...telegraf.Metric) []telegraf.Metric {
+func (m *MockupProcessorPluginParserOnly) Apply(_ ...Dana.Metric) []Dana.Metric {
 	return nil
 }
-func (m *MockupProcessorPluginParserOnly) Add(_ telegraf.Metric, _ telegraf.Accumulator) error {
+func (m *MockupProcessorPluginParserOnly) Add(_ Dana.Metric, _ Dana.Accumulator) error {
 	return nil
 }
-func (m *MockupProcessorPluginParserOnly) SetParser(parser telegraf.Parser) {
+func (m *MockupProcessorPluginParserOnly) SetParser(parser Dana.Parser) {
 	m.Parser = parser
 }
 
 // Mockup PROCESSOR plugin with parser-function
 type MockupProcessorPluginParserFunc struct {
-	Parser telegraf.ParserFunc
+	Parser Dana.ParserFunc
 }
 
-func (m *MockupProcessorPluginParserFunc) Start(_ telegraf.Accumulator) error {
+func (m *MockupProcessorPluginParserFunc) Start(_ Dana.Accumulator) error {
 	return nil
 }
 func (m *MockupProcessorPluginParserFunc) Stop() {
@@ -1369,13 +1369,13 @@ func (m *MockupProcessorPluginParserFunc) Stop() {
 func (m *MockupProcessorPluginParserFunc) SampleConfig() string {
 	return "Mockup test processor plugin with parser"
 }
-func (m *MockupProcessorPluginParserFunc) Apply(_ ...telegraf.Metric) []telegraf.Metric {
+func (m *MockupProcessorPluginParserFunc) Apply(_ ...Dana.Metric) []Dana.Metric {
 	return nil
 }
-func (m *MockupProcessorPluginParserFunc) Add(_ telegraf.Metric, _ telegraf.Accumulator) error {
+func (m *MockupProcessorPluginParserFunc) Add(_ Dana.Metric, _ Dana.Accumulator) error {
 	return nil
 }
-func (m *MockupProcessorPluginParserFunc) SetParserFunc(pf telegraf.ParserFunc) {
+func (m *MockupProcessorPluginParserFunc) SetParserFunc(pf Dana.ParserFunc) {
 	m.Parser = pf
 }
 
@@ -1385,7 +1385,7 @@ type MockupOutputPlugin struct {
 	Headers         map[string]string `toml:"headers"`
 	Scopes          []string          `toml:"scopes"`
 	NamespacePrefix string            `toml:"namespace_prefix"`
-	Log             telegraf.Logger   `toml:"-"`
+	Log             Dana.Logger       `toml:"-"`
 	tls.ClientConfig
 }
 
@@ -1398,15 +1398,15 @@ func (m *MockupOutputPlugin) Close() error {
 func (m *MockupOutputPlugin) SampleConfig() string {
 	return "Mockup test output plugin"
 }
-func (m *MockupOutputPlugin) Write(_ []telegraf.Metric) error {
+func (m *MockupOutputPlugin) Write(_ []Dana.Metric) error {
 	return nil
 }
 
 type MockupOutputPluginSerializerNew struct {
-	Serializer telegraf.Serializer
+	Serializer Dana.Serializer
 }
 
-func (m *MockupOutputPluginSerializerNew) SetSerializer(s telegraf.Serializer) {
+func (m *MockupOutputPluginSerializerNew) SetSerializer(s Dana.Serializer) {
 	m.Serializer = s
 }
 func (*MockupOutputPluginSerializerNew) Connect() error {
@@ -1418,7 +1418,7 @@ func (*MockupOutputPluginSerializerNew) Close() error {
 func (*MockupOutputPluginSerializerNew) SampleConfig() string {
 	return "Mockup test output plugin"
 }
-func (*MockupOutputPluginSerializerNew) Write(_ []telegraf.Metric) error {
+func (*MockupOutputPluginSerializerNew) Write(_ []Dana.Metric) error {
 	return nil
 }
 
@@ -1478,66 +1478,66 @@ func (m *MockupStatePlugin) SampleConfig() string {
 	return "Mockup test plugin"
 }
 
-func (m *MockupStatePlugin) Gather(_ telegraf.Accumulator) error {
+func (m *MockupStatePlugin) Gather(_ Dana.Accumulator) error {
 	return nil
 }
 
 // Register the mockup plugin on loading
 func init() {
 	// Register the mockup input plugin for the required names
-	inputs.Add("parser_test_new", func() telegraf.Input {
+	inputs.Add("parser_test_new", func() Dana.Input {
 		return &MockupInputPluginParserNew{}
 	})
-	inputs.Add("parser", func() telegraf.Input {
+	inputs.Add("parser", func() Dana.Input {
 		return &MockupInputPluginParserOnly{}
 	})
-	inputs.Add("parser_func", func() telegraf.Input {
+	inputs.Add("parser_func", func() Dana.Input {
 		return &MockupInputPluginParserFunc{}
 	})
-	inputs.Add("exec", func() telegraf.Input {
+	inputs.Add("exec", func() Dana.Input {
 		return &MockupInputPlugin{Timeout: config.Duration(time.Second * 5)}
 	})
-	inputs.Add("file", func() telegraf.Input {
+	inputs.Add("file", func() Dana.Input {
 		return &MockupInputPlugin{}
 	})
-	inputs.Add("http_listener_v2", func() telegraf.Input {
+	inputs.Add("http_listener_v2", func() Dana.Input {
 		return &MockupInputPlugin{}
 	})
-	inputs.Add("memcached", func() telegraf.Input {
+	inputs.Add("memcached", func() Dana.Input {
 		return &MockupInputPlugin{}
 	})
-	inputs.Add("procstat", func() telegraf.Input {
+	inputs.Add("procstat", func() Dana.Input {
 		return &MockupInputPlugin{}
 	})
-	inputs.Add("statetest", func() telegraf.Input {
+	inputs.Add("statetest", func() Dana.Input {
 		return &MockupStatePlugin{}
 	})
 
 	// Register the mockup processor plugin for the required names
-	processors.Add("parser_test", func() telegraf.Processor {
+	processors.Add("parser_test", func() Dana.Processor {
 		return &MockupProcessorPluginParser{}
 	})
-	processors.Add("processor", func() telegraf.Processor {
+	processors.Add("processor", func() Dana.Processor {
 		return &MockupProcessorPlugin{}
 	})
-	processors.Add("processor_parser", func() telegraf.Processor {
+	processors.Add("processor_parser", func() Dana.Processor {
 		return &MockupProcessorPluginParserOnly{}
 	})
-	processors.Add("processor_parserfunc", func() telegraf.Processor {
+	processors.Add("processor_parserfunc", func() Dana.Processor {
 		return &MockupProcessorPluginParserFunc{}
 	})
-	processors.Add("statetest", func() telegraf.Processor {
+	processors.Add("statetest", func() Dana.Processor {
 		return &MockupProcessorPlugin{}
 	})
 
 	// Register the mockup output plugin for the required names
-	outputs.Add("azure_monitor", func() telegraf.Output {
+	outputs.Add("azure_monitor", func() Dana.Output {
 		return &MockupOutputPlugin{NamespacePrefix: "Telegraf/"}
 	})
-	outputs.Add("http", func() telegraf.Output {
+	outputs.Add("http", func() Dana.Output {
 		return &MockupOutputPlugin{}
 	})
-	outputs.Add("serializer_test_new", func() telegraf.Output {
+	outputs.Add("serializer_test_new", func() Dana.Output {
 		return &MockupOutputPluginSerializerNew{}
 	})
 }

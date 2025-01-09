@@ -95,7 +95,7 @@ func (i *testInput) Description() string {
 	return "test"
 }
 
-func (i *testInput) Gather(acc telegraf.Accumulator) error {
+func (i *testInput) Gather(acc Dana.Accumulator) error {
 	acc.AddFields("measurement",
 		map[string]interface{}{
 			"field": 1,
@@ -107,7 +107,7 @@ func (i *testInput) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (i *testInput) Start(_ telegraf.Accumulator) error {
+func (i *testInput) Start(_ Dana.Accumulator) error {
 	return nil
 }
 
@@ -128,7 +128,7 @@ func (i *serviceInput) Description() string {
 	return ""
 }
 
-func (i *serviceInput) Gather(acc telegraf.Accumulator) error {
+func (i *serviceInput) Gather(acc Dana.Accumulator) error {
 	acc.AddFields("measurement",
 		map[string]interface{}{
 			"field": 1,
@@ -140,7 +140,7 @@ func (i *serviceInput) Gather(acc telegraf.Accumulator) error {
 	return nil
 }
 
-func (i *serviceInput) Start(_ telegraf.Accumulator) error {
+func (i *serviceInput) Start(_ Dana.Accumulator) error {
 	return nil
 }
 
