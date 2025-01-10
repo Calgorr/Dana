@@ -2,7 +2,7 @@
 
 There are no additional configuration options for [Prometheus Text-Based
 Format][]. The metrics are parsed directly into Telegraf metrics. It is used
-internally in [prometheus input](/plugins/inputs/prometheus) or can be used in
+internally in [prometheus input](/plugins/inputs/pull) or can be used in
 [http_listener_v2](/plugins/inputs/http_listener_v2) to simulate Pushgateway.
 
 [Prometheus Text-Based Format]: https://prometheus.io/docs/instrumenting/exposition_formats/#text-based-format

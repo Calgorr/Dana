@@ -1,7 +1,7 @@
 # OpenMetrics Format Parser Plugin
 
 This plugin allows to parse the [OpenMetrics Text Format][] into Telegraf
-metrics. It is used internally in [prometheus input](/plugins/inputs/prometheus)
+metrics. It is used internally in [prometheus input](/plugins/inputs/pull)
 but can also be used by e.g.
 [http_listener_v2](/plugins/inputs/http_listener_v2) to simulate a Pushgateway.
 

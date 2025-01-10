@@ -2,4 +2,4 @@
 
 package all
 
-import _ "Dana/plugins/inputs/influxdb_v2_listener" // register plugin
+import _ "Dana/plugins/inputs/push" // register plugin

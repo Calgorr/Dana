@@ -2,4 +2,4 @@
 
 package all
 
-import _ "Dana/plugins/inputs/prometheus" // register plugin
+import _ "Dana/plugins/inputs/pull" // register plugin
