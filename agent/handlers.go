@@ -1,11 +1,15 @@
 package agent
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
+	"os"
+	"os/user"
+	"path/filepath"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -83,6 +87,11 @@ func (a *Server) PostInput(ctx echo.Context) error {
 		ctx.Logger().Error("Error converting data to TOML: ", err)
 		return ctx.JSON(500, "internal server error")
 	}
+	err = appendToFile("~/.Dana2/Dana2.conf", string(tomll))
+	if err != nil {
+		ctx.Logger().Error("Error appending data to file: ", err)
+		return err
+	}
 	newConfig := config.NewConfig()
 	if err := newConfig.LoadConfigData(tomll); err != nil {
 		ctx.Logger().Error("Error loading config data: ", err)
@@ -106,6 +115,38 @@ func (a *Server) PostInput(ctx echo.Context) error {
 	a.runInputs(ctx.Request().Context(), a.StartTime, iu)
 	ctx.Logger().Info("Inputs processed successfully")
 	return ctx.JSON(200, "OK")
+}
+
+func appendToFile(filePath string, textToAppend string) error {
+	filePath = expandHomeDir(filePath)
+	// Open the file in append mode, create it if it doesn't exist
+	file, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return err
+	}
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			return
+		}
+	}(file)
+
+	// Write the text to the file followed by a newline
+	_, err = file.WriteString(textToAppend + "\n")
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func expandHomeDir(path string) string {
+	if path[:2] == "~/" {
+		usr, _ := user.Current()
+		homeDir := usr.HomeDir
+		return filepath.Join(homeDir, path[2:])
+	}
+	return path
 }
 
 func (a *Server) GetInput(ctx echo.Context) error {
@@ -325,7 +366,6 @@ func (a *Server) SendNotification(ctx echo.Context) error {
 		})
 	}
 
-	//start with
 	if strings.Contains(notif.ChannelName, "telegram") {
 		notification.SendNotification("https://api.telegram.org", a.Config.ServerConfig.TelegramToken, "checkname: "+notif.CheckName+"\n"+"level: "+notif.Level+"\n"+"message: "+notif.Message, int64(n.ChatID))
 		ctx.Logger().Info("SendNotification: Notification sent to Telegram", "chatID", n.ChatID)
@@ -430,7 +470,31 @@ func ConvertMapToTOML(data map[string]interface{}, t string) ([]byte, error) {
 		return nil, fmt.Errorf("failed to marshal TOML: %w", err)
 	}
 
-	updatedToml := strings.ReplaceAll(string(tomlBytes), "\"inputs."+t+"\"", "input."+t)
+	updatedToml := processConfig2(string(tomlBytes), t)
 
 	return []byte(updatedToml), nil
+}
+
+func processConfig2(input string, t string) string {
+	var result strings.Builder
+	scanner := bufio.NewScanner(strings.NewReader(input))
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		var processedLine string
+		if strings.Contains(line, `inputs.`+t) {
+			spp := strings.Split(line, `"`)
+			for _, v := range spp {
+				processedLine += v
+			}
+			line = "[" + strings.TrimSpace(processedLine) + "]"
+		}
+		result.WriteString(line + "\n")
+	}
+
+	if err := scanner.Err(); err != nil {
+		fmt.Println("Error reading input:", err)
+	}
+
+	return result.String()
 }
