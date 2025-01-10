@@ -178,7 +178,7 @@ func (a *Server) Run(ctx context.Context) error {
 	a.echo.POST("/register", a.Register)
 	a.echo.GET("/health", a.HealthCheck)
 
-	go func() { a.echo.Logger.Fatal(a.echo.Start("0.0.0.0:" + a.Config.ServerConfig.Port)) }()
+	go func() { a.echo.Logger.Fatal(a.echo.Start("127.0.0.1:" + a.Config.ServerConfig.Port)) }()
 
 	log.Printf("I! [agent] Config: Interval:%s, Quiet:%#v, Hostname:%#v, "+
 		"Flush Interval:%s",
@@ -523,7 +523,6 @@ func (a *Server) runInputs(
 	log.Printf("D! [agent] Stopping service inputs")
 	stopRunningInputs(unit.inputs)
 
-	close(unit.dst)
 	log.Printf("D! [agent] Input channel closed")
 }
 

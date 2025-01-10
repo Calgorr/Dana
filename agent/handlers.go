@@ -16,6 +16,7 @@ import (
 	"Dana/agent/model"
 	"Dana/agent/notification"
 	"Dana/config"
+	"Dana/internal/snmp"
 )
 
 func (a *Server) HealthCheck(ctx echo.Context) error {
@@ -72,6 +73,7 @@ func (a *Server) PostInput(ctx echo.Context) error {
 		ctx.Logger().Error("Error binding input data: ", err)
 		return ctx.JSON(400, errors.New("invalid request"))
 	}
+	inputData.Type = ctx.Param("type")
 	if err := a.InputRepo.AddServerInput(ctx.Request().Context(), inputData); err != nil {
 		ctx.Logger().Error("Error adding server input: ", err)
 		return ctx.JSON(500, "internal server error")
@@ -87,6 +89,16 @@ func (a *Server) PostInput(ctx echo.Context) error {
 		return ctx.JSON(500, errors.New("internal server error"))
 	}
 	ctx.Logger().Info("Config data loaded successfully")
+	for _, input := range newConfig.Inputs {
+		// Share the snmp translator setting with plugins that need it.
+		if tp, ok := input.Input.(snmp.TranslatorPlugin); ok {
+			tp.SetTranslator(newConfig.Agent.SnmpTranslator)
+		}
+		err := input.Init()
+		if err != nil {
+			return fmt.Errorf("could not initialize input %s: %w", input.LogName(), err)
+		}
+	}
 	iu := &inputUnit{
 		dst:    a.InputDstChan,
 		inputs: newConfig.Inputs,
@@ -313,10 +325,11 @@ func (a *Server) SendNotification(ctx echo.Context) error {
 		})
 	}
 
-	if notif.ChannelName == "telegram" {
+	//start with
+	if strings.Contains(notif.ChannelName, "telegram") {
 		notification.SendNotification("https://api.telegram.org", a.Config.ServerConfig.TelegramToken, "checkname: "+notif.CheckName+"\n"+"level: "+notif.Level+"\n"+"message: "+notif.Message, int64(n.ChatID))
 		ctx.Logger().Info("SendNotification: Notification sent to Telegram", "chatID", n.ChatID)
-	} else if notif.ChannelName == "bale" {
+	} else if strings.Contains(notif.ChannelName, "bale") {
 		notification.SendNotification("https://tapi.bale.ai", a.Config.ServerConfig.BaleToken, "checkname: "+notif.CheckName+"\n"+"level: "+notif.Level+"\n"+"message: "+notif.Message, int64(n.ChatID))
 		ctx.Logger().Info("SendNotification: Notification sent to Bale", "chatID", n.ChatID)
 	} else {
@@ -405,7 +418,7 @@ func (a *Server) proxyRequest(ctx echo.Context, path string) (int, string, []byt
 	return resp.StatusCode, resp.Header.Get("Content-Type"), body
 }
 
-// ConvertMapToTOML takes a map[string]interface{} and converts it to a TOML-formatted []byte
+// ConvertMapToTOML takes a map[string]interface{} and converts it to a TOML-formatted file
 func ConvertMapToTOML(data map[string]interface{}, t string) ([]byte, error) {
 	tomlTree, err := toml.TreeFromMap(data)
 	if err != nil {
