@@ -68,7 +68,6 @@ type Config struct {
 	errs              []error // config load errors.
 	UnusedFields      map[string]bool
 	unusedFieldsMutex *sync.Mutex
-	ServerConfig      *ServerConfig
 
 	Tags               map[string]string
 	InputFilters       []string
@@ -77,10 +76,11 @@ type Config struct {
 
 	SecretStores map[string]Dana.SecretStore
 
-	Agent       *AgentConfig
-	Inputs      []*models.RunningInput
-	Outputs     []*models.RunningOutput
-	Aggregators []*models.RunningAggregator
+	ServerConfig *ServerConfig `toml:"server_config"`
+	Agent        *AgentConfig
+	Inputs       []*models.RunningInput
+	Outputs      []*models.RunningOutput
+	Aggregators  []*models.RunningAggregator
 	// Processors have a slice wrapper type because they need to be sorted
 	Processors        models.RunningProcessors
 	AggProcessors     models.RunningProcessors
@@ -725,6 +725,15 @@ func (c *Config) LoadConfigData(data []byte) error {
 						"This is either a typo or this config option does not exist in this version."
 					return fmt.Errorf(msg, name, pluginName, subTable.Line, keys(c.UnusedFields))
 				}
+			}
+		case "server_config":
+			subTable, ok := val.(*ast.Table)
+			if !ok {
+				return errors.New("invalid configuration, error parsing server_config table")
+			}
+			c.ServerConfig = &ServerConfig{}
+			if err = c.toml.UnmarshalTable(subTable, c.ServerConfig); err != nil {
+				return fmt.Errorf("error parsing [server_config]: %w", err)
 			}
 
 		// Assume it's an input for legacy config file support if no other
