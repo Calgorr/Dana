@@ -16,7 +16,7 @@ type DashboardRepo interface {
 	// GetDashboard gets a dashboard by id
 	GetDashboard(ctx context.Context, id string) (*model.Dashboard, error)
 	// UpdateDashboard updates a dashboard by id
-	UpdateDashboard(ctx context.Context, dashboard *model.Dashboard) error
+	UpdateDashboard(ctx context.Context, dashboard *model.Dashboard, dashboardID primitive.ObjectID) error
 	// DeleteDashboard deletes a dashboard by id
 	DeleteDashboard(ctx context.Context, id string) error
 	//GetDashboards gets all dashboards
@@ -67,8 +67,8 @@ func (d *dashboardRepo) GetDashboard(ctx context.Context, id string) (*model.Das
 	return &dashboard, nil
 }
 
-func (d *dashboardRepo) UpdateDashboard(ctx context.Context, dashboard *model.Dashboard) error {
-	filter := bson.M{"_id": dashboard.ID}
+func (d *dashboardRepo) UpdateDashboard(ctx context.Context, dashboard *model.Dashboard, dashboardID primitive.ObjectID) error {
+	filter := bson.M{"_id": dashboardID}
 	update := bson.M{
 		"$set": bson.M{
 			"name":      dashboard.Name,

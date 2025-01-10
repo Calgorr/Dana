@@ -155,7 +155,7 @@ func (a *Server) Run(ctx context.Context) error {
 	// Add dashboard routes
 	v1.POST("/dashboards", a.CreateDashboard)
 	v1.GET("/dashboards/:id", a.GetDashboard)
-	v1.PUT("/dashboards", a.UpdateDashboard)
+	v1.PUT("/dashboards/:id", a.UpdateDashboard)
 	v1.DELETE("/dashboards/:id", a.DeleteDashboard)
 	v1.GET("/dashboards", a.GetDashboards)
 

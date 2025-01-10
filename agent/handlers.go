@@ -14,6 +14,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/pelletier/go-toml"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	authentication "Dana/agent/Auth"
@@ -211,7 +212,8 @@ func (a *Server) UpdateDashboard(ctx echo.Context) error {
 		ctx.Logger().Error("Error binding dashboard data: ", err)
 		return ctx.JSON(400, errors.New("invalid request"))
 	}
-	if err := a.DashboardRepo.UpdateDashboard(ctx.Request().Context(), dashboard); err != nil {
+	id, _ := primitive.ObjectIDFromHex(ctx.Param("id"))
+	if err := a.DashboardRepo.UpdateDashboard(ctx.Request().Context(), dashboard, id); err != nil {
 		ctx.Logger().Error("Error updating dashboard: ", err)
 		return ctx.JSON(500, "internal server error")
 	}
