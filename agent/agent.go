@@ -178,7 +178,7 @@ func (a *Server) Run(ctx context.Context) error {
 	a.echo.POST("/register", a.Register)
 	a.echo.GET("/health", a.HealthCheck)
 
-	go func() { a.echo.Logger.Fatal(a.echo.Start("0.0.0.0:8080")) }()
+	go func() { a.echo.Logger.Fatal(a.echo.Start("0.0.0.0:" + a.Config.ServerConfig.Port)) }()
 
 	log.Printf("I! [agent] Config: Interval:%s, Quiet:%#v, Hostname:%#v, "+
 		"Flush Interval:%s",

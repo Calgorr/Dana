@@ -12,6 +12,7 @@ import (
 	"Dana/config"
 	"Dana/internal/snmp"
 	"Dana/plugins/inputs"
+	"Dana/testutil"
 )
 
 //go:embed sample.conf
@@ -60,7 +61,7 @@ func (s *Snmp) Init() error {
 			return err
 		}
 	case "netsnmp":
-		s.translator = snmp.NewNetsnmpTranslator(s.Log)
+		s.translator = snmp.NewNetsnmpTranslator(testutil.Logger{})
 	default:
 		return errors.New("invalid translator value")
 	}
