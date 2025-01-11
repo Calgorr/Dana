@@ -66,7 +66,7 @@ func (a *Server) Login(ctx echo.Context) error {
 
 func (a *Server) Query(ctx echo.Context) error {
 	ctx.Logger().Info("Query endpoint called")
-	status, header, body := a.proxyRequest(ctx, "/query")
+	status, header, body := a.proxyRequest(ctx, "/query", "GET")
 	ctx.Logger().Infof("Query completed with status: %d", status)
 	return ctx.Blob(status, header, body)
 }
@@ -384,25 +384,61 @@ func (a *Server) SendNotification(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, notif)
 }
 
-func (a *Server) NotificationEndpoints(ctx echo.Context) error {
-	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationEndpoints")
+func (a *Server) NotificationEndpointsGet(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationEndpoints", "GET")
 	ctx.Logger().Info("NotificationEndpoints: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
 }
 
-func (a *Server) NotificationRules(ctx echo.Context) error {
-	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationRules")
+func (a *Server) NotificationRulesGet(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationRules", "GET")
 	ctx.Logger().Info("NotificationRules: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
 }
 
-func (a *Server) Checks(ctx echo.Context) error {
-	status, header, body := a.proxyRequest(ctx, "/api/v2/checks")
+func (a *Server) ChecksGet(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/checks", "GET")
 	ctx.Logger().Info("Checks: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
 }
 
-func (a *Server) proxyRequest(ctx echo.Context, path string) (int, string, []byte) {
+func (a *Server) NotificationEndpointsPost(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationEndpoints", "POST")
+	ctx.Logger().Info("NotificationEndpoints: Proxy request completed", "status", status)
+	return ctx.Blob(status, header, body)
+}
+
+func (a *Server) NotificationRulesPost(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationRules", "POST")
+	ctx.Logger().Info("NotificationRules: Proxy request completed", "status", status)
+	return ctx.Blob(status, header, body)
+}
+
+func (a *Server) ChecksPost(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/checks", "POST")
+	ctx.Logger().Info("Checks: Proxy request completed", "status", status)
+	return ctx.Blob(status, header, body)
+}
+
+func (a *Server) NotificationEndpointsDelete(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationEndpoints", "DELETE")
+	ctx.Logger().Info("NotificationEndpoints: Proxy request completed", "status", status)
+	return ctx.Blob(status, header, body)
+}
+
+func (a *Server) NotificationRulesDelete(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationRules", "DELETE")
+	ctx.Logger().Info("NotificationRules: Proxy request completed", "status", status)
+	return ctx.Blob(status, header, body)
+}
+
+func (a *Server) ChecksDelete(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/checks", "DELETE")
+	ctx.Logger().Info("Checks: Proxy request completed", "status", status)
+	return ctx.Blob(status, header, body)
+}
+
+func (a *Server) proxyRequest(ctx echo.Context, path string, method string) (int, string, []byte) {
 	baseURL := a.Config.ServerConfig.InfluxHost + ":" + a.Config.ServerConfig.InfluxPort
 
 	targetURL, err := url.Parse(baseURL)
@@ -421,6 +457,7 @@ func (a *Server) proxyRequest(ctx echo.Context, path string) (int, string, []byt
 	if req.Body != nil {
 		bodyReader = req.Body
 	}
+	req.Method = method
 
 	targetReq, err := http.NewRequest(req.Method, targetURL.String(), bodyReader)
 	if err != nil {
