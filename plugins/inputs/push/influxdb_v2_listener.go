@@ -25,6 +25,7 @@ import (
 	"Dana/plugins/parsers/influx"
 	"Dana/plugins/parsers/influx/influx_upstream"
 	"Dana/selfstat"
+	"Dana/testutil"
 )
 
 //go:embed sample.conf
@@ -116,6 +117,7 @@ func (h *InfluxDBV2Listener) Init() error {
 	if h.WriteTimeout < config.Duration(time.Second) {
 		h.WriteTimeout = config.Duration(defaultWriteTimeout)
 	}
+	h.Log = testutil.Logger{}
 
 	return nil
 }
