@@ -30,6 +30,7 @@ type handlerInputRepo struct {
 func (p *handlerInputRepo) AddServerInput(ctx context.Context, handlerInput *model.HandlerInput) error {
 	// Create a new document for insertion
 	document := bson.M{
+		"name": handlerInput.Name,
 		"type": handlerInput.Type,
 		"data": handlerInput.Data,
 	}
