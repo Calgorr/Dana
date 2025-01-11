@@ -5,8 +5,10 @@ import (
 	"io"
 	"log"
 	"os"
+	"os/signal"
 	"sort"
 	"strings"
+	"syscall"
 
 	"github.com/awnumar/memguard"
 	"github.com/urfave/cli/v2"
@@ -403,6 +405,17 @@ func runApp(args []string, outputBuffer io.Writer, pprof Server, c Dana2Config, 
 func main() {
 	// #13481: disables gh:99designs/keyring kwallet.go from connecting to dbus
 	os.Setenv("DISABLE_KWALLET", "1")
+
+	// Channel to receive OS signals
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, os.Interrupt, syscall.SIGTERM)
+
+	go func() {
+		// Wait for a signal
+		<-signalChan
+		fmt.Println("\nReceived interrupt signal, shutting down...")
+		os.Exit(1)
+	}()
 
 	agent := Dana2{}
 	pprof := NewPprofServer()
