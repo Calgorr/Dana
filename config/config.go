@@ -108,6 +108,7 @@ type ServerConfig struct {
 	MongoPort     string `toml:"mongo_port"`
 	TelegramToken string `toml:"telegram_token"`
 	BaleToken     string `toml:"bale_token"`
+	InfluxToken   string `toml:"influx_token"`
 }
 
 // MongoURI returns the MongoDB connection URI based on the host and port

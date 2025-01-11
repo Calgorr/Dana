@@ -10,10 +10,10 @@ type Dashboard struct {
 }
 
 type Panel struct {
-	Name  string   `json:"name" bson:"name"`
-	Query []string `json:"query" bson:"query"`
-	Index int      `json:"index" bson:"index"`
-	Color string   `json:"color" bson:"color"`
+	Name   string   `json:"name" bson:"name"`
+	Query  []string `json:"query" bson:"query"`
+	Index  int      `json:"index" bson:"index"`
+	Colors []string `json:"color" bson:"color"`
 }
 
 type Variable struct {

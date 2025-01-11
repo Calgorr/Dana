@@ -69,13 +69,23 @@ func (d *dashboardRepo) GetDashboard(ctx context.Context, id string) (*model.Das
 
 func (d *dashboardRepo) UpdateDashboard(ctx context.Context, dashboard *model.Dashboard, dashboardID primitive.ObjectID) error {
 	filter := bson.M{"_id": dashboardID}
-	update := bson.M{
-		"$set": bson.M{
-			"name":      dashboard.Name,
-			"panels":    dashboard.Panels,
-			"variables": dashboard.Variables,
-		},
+	updateFields := bson.M{}
+
+	if dashboard.Name != "" {
+		updateFields["name"] = dashboard.Name
 	}
+	if dashboard.Panels != nil && len(dashboard.Panels) > 0 {
+		updateFields["panels"] = dashboard.Panels
+	}
+	if dashboard.Variables != nil && len(dashboard.Variables) > 0 {
+		updateFields["variables"] = dashboard.Variables
+	}
+
+	if len(updateFields) == 0 {
+		return nil
+	}
+
+	update := bson.M{"$set": updateFields}
 
 	_, err := d.collection.UpdateOne(ctx, filter, update)
 	return err

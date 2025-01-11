@@ -471,6 +471,8 @@ func (a *Server) proxyRequest(ctx echo.Context, path string, method string) (int
 		}
 	}
 
+	req.Header.Set("Authorization", "Token "+a.Config.ServerConfig.InfluxToken)
+
 	resp, err := client.Do(targetReq)
 	if err != nil {
 		ctx.Logger().Error("proxyRequest: Failed to contact target server", "error", err)

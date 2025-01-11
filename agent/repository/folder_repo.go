@@ -76,13 +76,25 @@ func (f *folderRepo) UpdateDashboardInFolder(ctx context.Context, folderID strin
 	}
 
 	filter := bson.M{"_id": folderObjectID}
-	update := bson.M{
-		"$set": bson.M{
-			"dashboards.$[elem].name":      dashboard.Name,
-			"dashboards.$[elem].panels":    dashboard.Panels,
-			"dashboards.$[elem].variables": dashboard.Variables,
-		},
+
+	updateFields := bson.M{}
+
+	if dashboard.Name != "" {
+		updateFields["dashboards.$[elem].name"] = dashboard.Name
 	}
+	if dashboard.Panels != nil && len(dashboard.Panels) > 0 {
+		updateFields["dashboards.$[elem].panels"] = dashboard.Panels
+	}
+	if dashboard.Variables != nil && len(dashboard.Variables) > 0 {
+		updateFields["dashboards.$[elem].variables"] = dashboard.Variables
+	}
+
+	if len(updateFields) == 0 {
+		return nil
+	}
+
+	update := bson.M{"$set": updateFields}
+
 	arrayFilters := options.ArrayFilters{
 		Filters: []interface{}{
 			bson.M{"elem._id": dashboardObjectID},
