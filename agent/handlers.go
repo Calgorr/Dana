@@ -5,12 +5,15 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"os/user"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/pelletier/go-toml"
@@ -66,7 +69,7 @@ func (a *Server) Login(ctx echo.Context) error {
 
 func (a *Server) Query(ctx echo.Context) error {
 	ctx.Logger().Info("Query endpoint called")
-	status, header, body := a.proxyRequest(ctx, "/query", "GET")
+	status, header, body := a.proxyRequest(ctx, "/query")
 	ctx.Logger().Infof("Query completed with status: %d", status)
 	return ctx.Blob(status, header, body)
 }
@@ -113,6 +116,10 @@ func (a *Server) PostInput(ctx echo.Context) error {
 		dst:    a.InputDstChan,
 		inputs: newConfig.Inputs,
 	}
+	go func() {
+		time.Sleep(5 * time.Second)
+		execSelf()
+	}()
 	a.runInputs(ctx.Request().Context(), a.StartTime, iu)
 	ctx.Logger().Info("Inputs processed successfully")
 	return ctx.JSON(200, "OK")
@@ -385,110 +392,118 @@ func (a *Server) SendNotification(ctx echo.Context) error {
 }
 
 func (a *Server) NotificationEndpointsGet(ctx echo.Context) error {
-	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationEndpoints", "GET")
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationEndpoints")
 	ctx.Logger().Info("NotificationEndpoints: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
 }
 
 func (a *Server) NotificationRulesGet(ctx echo.Context) error {
-	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationRules", "GET")
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationRules")
 	ctx.Logger().Info("NotificationRules: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
 }
 
 func (a *Server) ChecksGet(ctx echo.Context) error {
-	status, header, body := a.proxyRequest(ctx, "/api/v2/checks", "GET")
+	status, header, body := a.proxyRequest(ctx, "/api/v2/checks")
 	ctx.Logger().Info("Checks: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
 }
 
 func (a *Server) NotificationEndpointsPost(ctx echo.Context) error {
-	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationEndpoints", "POST")
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationEndpoints")
 	ctx.Logger().Info("NotificationEndpoints: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
 }
 
 func (a *Server) NotificationRulesPost(ctx echo.Context) error {
-	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationRules", "POST")
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationRules")
 	ctx.Logger().Info("NotificationRules: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
 }
 
 func (a *Server) ChecksPost(ctx echo.Context) error {
-	status, header, body := a.proxyRequest(ctx, "/api/v2/checks", "POST")
+	status, header, body := a.proxyRequest(ctx, "/api/v2/checks")
 	ctx.Logger().Info("Checks: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
 }
 
 func (a *Server) NotificationEndpointsDelete(ctx echo.Context) error {
-	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationEndpoints", "DELETE")
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationEndpoints")
 	ctx.Logger().Info("NotificationEndpoints: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
 }
 
 func (a *Server) NotificationRulesDelete(ctx echo.Context) error {
-	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationRules", "DELETE")
+	status, header, body := a.proxyRequest(ctx, "/api/v2/notificationRules")
 	ctx.Logger().Info("NotificationRules: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
 }
 
 func (a *Server) ChecksDelete(ctx echo.Context) error {
-	status, header, body := a.proxyRequest(ctx, "/api/v2/checks", "DELETE")
+	status, header, body := a.proxyRequest(ctx, "/api/v2/checks")
 	ctx.Logger().Info("Checks: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
 }
 
-func (a *Server) proxyRequest(ctx echo.Context, path string, method string) (int, string, []byte) {
-	baseURL := a.Config.ServerConfig.InfluxHost + ":" + a.Config.ServerConfig.InfluxPort
+func (a *Server) proxyRequest(ctx echo.Context, path string) (int, string, []byte) {
+	baseURL := fmt.Sprintf("http://%s:%s", a.Config.ServerConfig.InfluxHost, a.Config.ServerConfig.InfluxPort)
 
 	targetURL, err := url.Parse(baseURL)
 	if err != nil {
-		ctx.Logger().Error("proxyRequest: Invalid target URL", "error", err)
-		return http.StatusInternalServerError, "Invalid target URL", nil
+		ctx.Logger().Errorf("proxyRequest: Invalid target URL: %v", err)
+		return http.StatusInternalServerError, "application/json", []byte(`{"error": "Invalid target URL"}`)
 	}
 
 	targetURL.Path = path
 	targetURL.RawQuery = ctx.QueryString()
 
 	req := ctx.Request()
-	client := &http.Client{}
-
-	var bodyReader io.Reader = nil
-	if req.Body != nil {
-		bodyReader = req.Body
+	client := &http.Client{
+		Timeout: 10 * time.Second,
 	}
-	req.Method = method
 
-	targetReq, err := http.NewRequest(req.Method, targetURL.String(), bodyReader)
+	var requestBody io.ReadCloser
+	if req.Method != http.MethodGet {
+		requestBody = req.Body
+		defer func() {
+			if requestBody != nil {
+				_ = requestBody.Close()
+			}
+		}()
+	}
+
+	targetReq, err := http.NewRequestWithContext(req.Context(), req.Method, targetURL.String(), requestBody)
 	if err != nil {
-		ctx.Logger().Error("proxyRequest: Failed to create proxy request", "error", err)
-		return http.StatusInternalServerError, "Failed to create proxy request", nil
+		ctx.Logger().Errorf("proxyRequest: Failed to create request: %v", err)
+		return http.StatusInternalServerError, "application/json", []byte(`{"error": "Failed to create request"}`)
 	}
 
+	// Copy headers from original request
 	for name, values := range req.Header {
 		for _, value := range values {
 			targetReq.Header.Add(name, value)
 		}
 	}
 
-	req.Header.Set("Authorization", "Token "+a.Config.ServerConfig.InfluxToken)
+	if a.Config.ServerConfig.InfluxToken != "" {
+		targetReq.Header.Set("Authorization", "Token "+a.Config.ServerConfig.InfluxToken)
+	}
 
 	resp, err := client.Do(targetReq)
 	if err != nil {
-		ctx.Logger().Error("proxyRequest: Failed to contact target server", "error", err)
-		return http.StatusBadGateway, "Failed to contact target server", nil
+		ctx.Logger().Errorf("proxyRequest: Failed to contact target server [requestID=%s]: %v", err)
+		return http.StatusBadGateway, "application/json", []byte(`{"error": "Failed to contact target server"}`)
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			ctx.Logger().Warn("proxyRequest: Failed to close response body", "error", err)
+	defer func() {
+		if resp.Body != nil {
+			_ = resp.Body.Close()
 		}
-	}(resp.Body)
+	}()
 
-	body, err := io.ReadAll(resp.Body)
+	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		ctx.Logger().Error("proxyRequest: Failed to read response body", "error", err)
-		return http.StatusInternalServerError, "Failed to read response body", nil
+		ctx.Logger().Errorf("proxyRequest: Failed to read response body [requestID=%s]: %v", err)
+		return http.StatusInternalServerError, "application/json", []byte(`{"error": "Failed to read response body"}`)
 	}
 
 	for name, values := range resp.Header {
@@ -496,7 +511,9 @@ func (a *Server) proxyRequest(ctx echo.Context, path string, method string) (int
 			ctx.Response().Header().Add(name, value)
 		}
 	}
-	return resp.StatusCode, resp.Header.Get("Content-Type"), body
+
+	fmt.Println("moz Response body: ", string(responseBody))
+	return resp.StatusCode, resp.Header.Get("Content-Type"), responseBody
 }
 
 // ConvertMapToTOML takes a map[string]interface{} and converts it to a TOML-formatted file
@@ -522,15 +539,17 @@ func processConfig2(input string, t string) string {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		var processedLine string
-		if strings.Contains(line, `inputs.`+t) {
-			spp := strings.Split(line, `"`)
-			for _, v := range spp {
-				processedLine += v
-			}
-			line = "[" + strings.TrimSpace(processedLine) + "]"
+		trimmedLine := strings.TrimSpace(line)
+		indentation := strings.Repeat(" ", len(line)-len(trimmedLine))
+		if strings.Contains(trimmedLine, `[["inputs.`+t) {
+			processedLine := strings.ReplaceAll(trimmedLine, `"`, "")
+			result.WriteString(indentation + processedLine + "\n")
+		} else if strings.Contains(trimmedLine, `["inputs.`+t) {
+			processedLine := "[" + strings.ReplaceAll(trimmedLine, `"`, "") + "]"
+			result.WriteString(indentation + processedLine + "\n")
+		} else {
+			result.WriteString(line + "\n")
 		}
-		result.WriteString(line + "\n")
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -538,4 +557,24 @@ func processConfig2(input string, t string) string {
 	}
 
 	return result.String()
+}
+
+// execSelf relaunches the current binary
+func execSelf() {
+	binary, err := os.Executable()
+	if err != nil {
+		log.Fatalf("Failed to find executable: %v", err)
+	}
+
+	args := os.Args
+	log.Printf("Restarting application: %s %v\n", binary, args)
+
+	cmd := exec.Command(binary, args[1:]...) // Pass command-line arguments
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Start(); err != nil {
+		log.Fatalf("Failed to restart: %v", err)
+	}
+
+	os.Exit(0) // Exit current process
 }

@@ -3,7 +3,6 @@ package snmp
 
 import (
 	_ "embed"
-	"errors"
 	"fmt"
 	"sync"
 	"time"
@@ -63,7 +62,7 @@ func (s *Snmp) Init() error {
 	case "netsnmp":
 		s.translator = snmp.NewNetsnmpTranslator(testutil.Logger{})
 	default:
-		return errors.New("invalid translator value")
+		s.translator = snmp.NewNetsnmpTranslator(testutil.Logger{})
 	}
 
 	s.connectionCache = make([]snmp.Connection, len(s.Agents))
