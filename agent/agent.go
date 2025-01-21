@@ -149,6 +149,7 @@ func (a *Server) Run(ctx context.Context) error {
 	v1.Use(authentication.ValidateJWT)
 	v1.GET("/query", a.Query)
 	v1.GET("/inputs", a.GetInput)
+	v1.GET("/orgs", a.Orgs)
 	v1.GET("/inputs/:type", a.GetInputByType)
 	v1.POST("/input/:type", a.PostInput)
 

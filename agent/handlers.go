@@ -445,6 +445,12 @@ func (a *Server) ChecksDelete(ctx echo.Context) error {
 	return ctx.Blob(status, header, body)
 }
 
+func (a *Server) OrgsGet(ctx echo.Context) error {
+	status, header, body := a.proxyRequest(ctx, "/api/v2/orgs")
+	ctx.Logger().Info("Orgs: Proxy request completed", "status", status)
+	return ctx.Blob(status, header, body)
+}
+
 func (a *Server) proxyRequest(ctx echo.Context, path string) (int, string, []byte) {
 	baseURL := fmt.Sprintf("http://%s:%s", a.Config.ServerConfig.InfluxHost, a.Config.ServerConfig.InfluxPort)
 
