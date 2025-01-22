@@ -445,7 +445,7 @@ func (a *Server) ChecksDelete(ctx echo.Context) error {
 	return ctx.Blob(status, header, body)
 }
 
-func (a *Server) OrgsGet(ctx echo.Context) error {
+func (a *Server) Orgs(ctx echo.Context) error {
 	status, header, body := a.proxyRequest(ctx, "/api/v2/orgs")
 	ctx.Logger().Info("Orgs: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
