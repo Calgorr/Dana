@@ -35,6 +35,7 @@ type Server struct {
 	DashboardRepo    repository.DashboardRepo
 	FolderRepo       repository.FolderRepo
 	NotificationRepo repository.NotificationRepo
+	NetworkRepo      repository.NetworkRepo
 	InputDstChan     chan<- Dana.Metric
 	StartTime        time.Time
 }
@@ -61,6 +62,7 @@ func NewServer(cfg *config.Config) *Server {
 	dashboardRepo := repository.NewDashboardRepo(client, "db", "dashboards")
 	folderRepo := repository.NewFolderRepo(client, "db", "folders")
 	notificationRepo := repository.NewNotificationRepo(client, "db", "notifications")
+	networkRepo := repository.NewNetworkRepo(client, "db", "networks")
 
 	log.Println("Connected to MongoDB")
 	a := &Server{
@@ -72,6 +74,7 @@ func NewServer(cfg *config.Config) *Server {
 	a.DashboardRepo = dashboardRepo
 	a.FolderRepo = folderRepo
 	a.NotificationRepo = notificationRepo
+	a.NetworkRepo = networkRepo
 
 	return a
 }
@@ -180,6 +183,12 @@ func (a *Server) Run(ctx context.Context) error {
 	v1.DELETE("/notificationEndpoints", a.NotificationEndpointsDelete)
 	v1.DELETE("/notificationRules", a.NotificationRulesDelete)
 	v1.DELETE("/checks", a.ChecksDelete)
+
+	//nmap
+	v1.POST("/addnetwork", a.AddNetwork)
+	v1.GET("/networks", a.GetNetworks)
+	v1.GET("/network/:name", a.GetNetwork)
+	v1.DELETE("/network/:name", a.DeleteNetwork)
 
 	a.echo.POST("/login", a.Login)
 	a.echo.POST("/register", a.Register)

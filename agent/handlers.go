@@ -12,6 +12,7 @@ import (
 	"os/exec"
 	"os/user"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 
@@ -449,6 +450,77 @@ func (a *Server) Orgs(ctx echo.Context) error {
 	status, header, body := a.proxyRequest(ctx, "/api/v2/orgs")
 	ctx.Logger().Info("Orgs: Proxy request completed", "status", status)
 	return ctx.Blob(status, header, body)
+}
+
+func (a *Server) AddNetwork(ctx echo.Context) error {
+	ctx.Logger().Info("AddNetwork endpoint called")
+	network := &model.Network{}
+	if err := ctx.Bind(network); err != nil {
+		ctx.Logger().Error("Error binding network data", err)
+		return ctx.JSON(400, errors.New("invalid request"))
+	}
+
+	go func(name string, networkAddress string) {
+		ticker := time.Tick(1 * time.Minute)
+		select {
+		case <-ticker:
+			cmd := exec.Command("sudo", "nmap", "-sn", networkAddress)
+
+			output, err := cmd.CombinedOutput()
+			if err != nil {
+				fmt.Println("Error executing nmap:", err)
+				return
+			}
+			result := string(output)
+
+			ipRegex := regexp.MustCompile(`\d+\.\d+\.\d+\.\d+`)
+
+			ips := ipRegex.FindAllString(result, -1)
+
+			for _, ip := range ips {
+				_ = a.NetworkRepo.CreateNetwork(ctx.Request().Context(), &model.KnownServer{
+					Name: name,
+					IP:   ip,
+				})
+			}
+		}
+
+	}(network.Name, network.NetworkAddress)
+	return ctx.JSON(200, "OK")
+}
+
+func (a *Server) GetNetwork(ctx echo.Context) error {
+	ctx.Logger().Info("GetNetwork endpoint called")
+	name := ctx.Param("name")
+	network, err := a.NetworkRepo.GetNetwork(ctx.Request().Context(), name)
+	if err != nil {
+		ctx.Logger().Error("Error retrieving network", err)
+		return ctx.JSON(500, "internal server error")
+	}
+	ctx.Logger().Info("Network retrieved successfully")
+	return ctx.JSON(200, network)
+}
+
+func (a *Server) GetNetworks(ctx echo.Context) error {
+	ctx.Logger().Info("GetNetworks endpoint called")
+	networks, err := a.NetworkRepo.GetNetworks(ctx.Request().Context())
+	if err != nil {
+		ctx.Logger().Error("Error retrieving networks", err)
+		return ctx.JSON(500, "internal server error")
+	}
+	ctx.Logger().Info("Networks retrieved successfully")
+	return ctx.JSON(200, networks)
+}
+
+func (a *Server) DeleteNetwork(ctx echo.Context) error {
+	ctx.Logger().Info("DeleteNetwork endpoint called")
+	name := ctx.Param("name")
+	if err := a.NetworkRepo.DeleteNetwork(ctx.Request().Context(), name); err != nil {
+		ctx.Logger().Error("Error deleting network", err)
+		return ctx.JSON(500, "internal server error")
+	}
+	ctx.Logger().Info("Network deleted successfully")
+	return ctx.JSON(200, "OK")
 }
 
 func (a *Server) proxyRequest(ctx echo.Context, path string) (int, string, []byte) {
