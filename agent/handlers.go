@@ -523,6 +523,24 @@ func (a *Server) DeleteNetwork(ctx echo.Context) error {
 	return ctx.JSON(200, "OK")
 }
 
+func (a *Server) AddScript(ctx echo.Context) error {
+	req := struct {
+		Filename string `json:"filename"`
+		Script   string `json:"script"`
+	}{}
+	if err := ctx.Bind(&req); err != nil {
+		return ctx.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid request"})
+	}
+
+	dir := "~/.Dana2/script"
+	filePath := fmt.Sprintf("%s/%s", dir, req.Filename)
+
+	if err := os.WriteFile(filePath, []byte(req.Script), 0755); err != nil {
+		return ctx.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to save script"})
+	}
+
+	return ctx.JSON(http.StatusOK, map[string]string{"message": "Script saved successfully", "path": filePath})
+}
 func (a *Server) proxyRequest(ctx echo.Context, path string) (int, string, []byte) {
 	baseURL := fmt.Sprintf("http://%s:%s", a.Config.ServerConfig.InfluxHost, a.Config.ServerConfig.InfluxPort)
 

@@ -190,6 +190,8 @@ func (a *Server) Run(ctx context.Context) error {
 	v1.GET("/network/:name", a.GetNetwork)
 	v1.DELETE("/network/:name", a.DeleteNetwork)
 
+	v1.POST("/script", a.AddScript)
+
 	a.echo.POST("/login", a.Login)
 	a.echo.POST("/register", a.Register)
 	a.echo.GET("/health", a.HealthCheck)
