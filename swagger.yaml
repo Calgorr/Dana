@@ -6,6 +6,94 @@ info:
 servers:
   - url: http://localhost:8080/api
 paths:
+  /addnetwork:
+    post:
+      summary: Add a new network
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Network'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid request
+        '500':
+          description: Internal server error
+
+  /networks:
+    get:
+      summary: Get all networks
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Network'
+        '500':
+          description: Internal server error
+
+  /network/{name}:
+    get:
+      summary: Get a network by name
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+          description: Network name
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Network'
+        '404':
+          description: Network not found
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete a network by name
+      parameters:
+        - in: path
+          name: name
+          schema:
+            type: string
+          required: true
+          description: Network name
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Network not found
+        '500':
+          description: Internal server error
+
+  /script:
+    post:
+      summary: Add a new script
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Script'
+      responses:
+        '200':
+          description: Script saved successfully
+        '400':
+          description: Invalid request
+        '500':
+          description: Failed to save script
+
   /healthcheck:
     get:
       summary: Health check endpoint
@@ -396,4 +484,22 @@ components:
         channel_name:
           type: string
         alert_on:
+          type: string
+
+    Network:
+      type: object
+      properties:
+          id:
+            type: string
+          name:
+            type: string
+          network_address:
+            type: string
+
+    Script:
+      type: object
+      properties:
+        filename:
+          type: string
+        script:
           type: string
